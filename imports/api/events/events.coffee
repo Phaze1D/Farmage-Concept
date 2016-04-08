@@ -54,6 +54,12 @@ EventSchema =
       sparse: true
       denyUpdate: true
 
+    for_type:
+      type: String
+      label: 'event.for_type'
+      index: true
+      denyUpdate: true
+
     for_id:
       type: String
       index: true

@@ -26,11 +26,7 @@ InventorySchema =
       label: 'expiration_date'
       optional: true
 
-    barcode_url:
-      type: String
-      label: 'barcode'
-      optional: true
-
+    # Should probably add product sub document
     product_id:
       type: String
       index: true

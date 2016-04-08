@@ -23,6 +23,12 @@ ProductSchema =
       index: true
       max: 64
 
+    description:
+      type: String
+      label: 'description'
+      max: 256
+      optional: true
+
     sku:
       type: String
       label: 'SKU'
@@ -56,6 +62,10 @@ ProductSchema =
       label: 'tax_rate'
       decimal: true
       max: 100
+
+    product_image_url:
+      type: String
+      optional: true
 
 
   , TimestampSchema])

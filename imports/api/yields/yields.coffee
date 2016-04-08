@@ -27,19 +27,15 @@ YieldSchema =
       decimal: true
       min: 0
 
-    usable:
-      type: Number
-      label: 'yield.usable'
-      decimal: true
-      min: 0
-
     measurement_unit:
       type: String
       label: 'measurement_unit'
       max: 64
 
+    # May need to add unit sub document
     unit_id:
       type: String
+      denyUpdate: true
       index: true
 
   , CreateByUserSchema, TimestampSchema])
