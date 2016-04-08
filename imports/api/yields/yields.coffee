@@ -4,7 +4,7 @@
 { TimestampSchema } = require '../timestamps.coffee'
 { CreateByUserSchema } = require '../created_by_user.coffee'
 
-class InventoriesCollection extends Mongo.Collection
+class YieldsCollection extends Mongo.Collection
   insert: (doc, callback) ->
     super(doc, callback)
 
@@ -14,34 +14,40 @@ class InventoriesCollection extends Mongo.Collection
   remove: (selector, callback) ->
     super(selector, callback)
 
-
-InventorySchema =
+YieldSchema =
   new SimpleSchema([
-    amount:
+    name:
+      type: String
+      label: 'name'
+      max: 64
+
+    total:
       type: Number
+      label: 'yield.total'
+      decimal: true
       min: 0
 
-    expiration_date:
-      type: Date
-      label: 'expiration_date'
-      optional: true
+    usable:
+      type: Number
+      label: 'yield.usable'
+      decimal: true
+      min: 0
 
-    barcode_url:
+    measurement_unit:
       type: String
-      label: 'barcode'
-      optional: true
+      label: 'measurement_unit'
+      max: 64
 
-    product_id:
+    unit_id:
       type: String
       index: true
-      denyUpdate: true
 
   , CreateByUserSchema, TimestampSchema])
 
-Inventories = exports.Inventories = new InventoriesCollection('inventories')
-Inventories.attachSchema InventorySchema
+Yields = exports.Yields = new YieldsCollection('yields')
+Yields.attachSchema YieldSchema
 
-Inventories.deny
+Yields.deny
   insert: ->
     yes
   update: ->

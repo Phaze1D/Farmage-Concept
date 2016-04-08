@@ -1,8 +1,9 @@
-
-{ TAPi18n } = require 'meteor/tap:i18n'
 { Mongo } = require 'meteor/mongo'
 { SimpleSchema } = require 'meteor/aldeed:simple-schema'
+{ Meteor } = require 'meteor/meteor'
 
+{ ContactSchema } = require '../contact_info.coffee'
+{ TimestampSchema } = require '../timestamps.coffee'
 
 
 class CustomersCollection extends Mongo.Collection
@@ -18,30 +19,23 @@ class CustomersCollection extends Mongo.Collection
     # Code for hooks
     super(selector, callback)
 
-# Associations
-  # organization: () ->
-  #   Organizations.find {id: this.organization_id}
-  #
-  # sells: () ->
-  #   Sells.find {client_id: this._id}
-
 # Schema
-CustomersSchema =
+CustomerSchema =
   new SimpleSchema([
     first_name:
       type: String
-      label: TAPi18n.__ "first_name"
+      label: "first_name"
       max: 45
 
     last_name:
       type: String
-      label: TAPi18n.__ "last_name"
+      label: "last_name"
       optional: true
       max: 45
 
     company:
       type: String
-      label: TAPi18n.__ "company"
+      label: "company"
       optional: true
       max: 45
 
@@ -49,10 +43,10 @@ CustomersSchema =
       type: String
       index: true
 
-  , share.ContactSchema, share.TimestampSchema])
+  , ContactSchema, TimestampSchema])
 
 Customers = exports.Customers = new CustomersCollection "customers"
-Customers.attachSchema CustomersSchema
+Customers.attachSchema CustomerSchema
 
 Customers.deny
   insert: ->
@@ -69,7 +63,3 @@ if Meteor.isServer
 
   Customers.rawCollection().createIndex multikeys, unique: true, (error) ->
     # console.log error
-
-
-
-# Methods

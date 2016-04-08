@@ -1,6 +1,4 @@
 
-CustomersModule = require 'meteor/steadypathstudios:sa-core'
-Customers = CustomersModule.Customers
 
 describe "Testing customers collection on the client side", () ->
 

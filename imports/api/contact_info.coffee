@@ -1,44 +1,46 @@
 
 # Shared Schemas that are used in mulitple documents
 
+{ SimpleSchema } = require 'meteor/aldeed:simple-schema'
+
 AddressSchema =
   new SimpleSchema(
 
     name:
       type: String
-      label: TAPi18n.__ "address_name"
+      label: "address_name"
       max: 45
       optional: true
 
     street:
       type: String
-      label: TAPi18n.__ "street"
+      label: "street"
       max: 45
 
     street2:
       type: String
-      label: TAPi18n.__ "street2"
+      label: "street2"
       optional: true
       max: 45
 
     city:
       type: String
-      label: TAPi18n.__ "city"
+      label: "city"
       max: 45
 
     state:
       type: String
-      label: TAPi18n.__ "state"
+      label: "state"
       max: 45
 
     zip_code:
       type: Number
-      label: TAPi18n.__ "zip_code"
+      label: "zip_code"
       max: 999999999
 
     country:
       type: String
-      label: TAPi18n.__ "country"
+      label: "country"
       optional: true
       max: 45
   )
@@ -47,22 +49,22 @@ TelephoneSchema =
   new SimpleSchema(
     name:
       type: String
-      label: TAPi18n.__ "telephone_name"
+      label: "telephone_name"
       optional: true
       max: 45
 
     number:
       type: String
-      label: TAPi18n.__ "telephone"
+      label: "telephone"
       max: 20
   )
 
 
-share.ContactSchema =
+exports.ContactSchema =
   new SimpleSchema(
     email:
       type: String
-      label: TAPi18n.__ "email"
+      label: "email"
       regEx: SimpleSchema.RegEx.Email
       index: true
       sparse: true

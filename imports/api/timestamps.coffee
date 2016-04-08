@@ -1,16 +1,18 @@
 
+{ SimpleSchema } = require 'meteor/aldeed:simple-schema'
+{ TAPi18n } = require 'meteor/tap:i18n'
 
-share.TimestampSchema = new SimpleSchema(
+exports.TimestampSchema = new SimpleSchema(
   created_at:
     type: Date
     label: TAPi18n.__ "created_at"
     autoValue: () ->
-      if this.isInsert
+      if @isInsert
         return new Date();
-      else if this.isUpsert
+      else if @isUpsert
         return $setOnInsert: new Date()
       else
-        this.unset()
+        @unset()
         return
     optional: true
     denyUpdate: true
@@ -19,7 +21,7 @@ share.TimestampSchema = new SimpleSchema(
     type: Date
     label: TAPi18n.__ "updated_at"
     autoValue: () ->
-      if this.isUpdate
+      if @isUpdate
         return new Date()
     denyInsert: true
     optional: true
