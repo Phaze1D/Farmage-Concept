@@ -12,6 +12,8 @@ class ProductsCollection extends Mongo.Collection
     super(selector, modifier, options, callback)
 
   remove: (selector, callback) ->
+    # If a product gets remove check to see if there exists an 
+    # inventory that is not at 0 and ask the user what to do with the left over product
     super(selector, callback)
 
 
@@ -45,12 +47,14 @@ ProductSchema =
       type: String
       label: 'measurement_unit'
       max: 64
+      denyUpdate: true
 
     quantity:
       type: Number
       label: 'product.quantity'
       decimal: true
       min: 0
+      denyUpdate: true
 
     currency:
       type: String

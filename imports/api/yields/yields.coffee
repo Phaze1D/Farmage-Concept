@@ -30,13 +30,15 @@ YieldSchema =
     measurement_unit:
       type: String
       label: 'measurement_unit'
+      denyUpdate: true
       max: 64
 
-    # May need to add unit sub document
+    # May need to add unit sub document for deleted units
     unit_id:
       type: String
-      denyUpdate: true
       index: true
+      denyUpdate: true
+
 
   , CreateByUserSchema, TimestampSchema])
 

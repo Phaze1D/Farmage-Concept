@@ -26,7 +26,8 @@ InventorySchema =
       label: 'expiration_date'
       optional: true
 
-    # Should probably add product sub document
+
+    # Should probably add product sub document for deleted products
     product_id:
       type: String
       index: true
