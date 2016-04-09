@@ -1,3 +1,8 @@
+{ Mongo } = require 'meteor/mongo'
+{ SimpleSchema } = require 'meteor/aldeed:simple-schema'
+{ Meteor } = require 'meteor/meteor'
+
+{ TimestampSchema } = require '../timestamps.coffee'
 
 class SellsCollection extends Mongo.Collection
   insert: (doc, callback) ->
@@ -8,3 +13,15 @@ class SellsCollection extends Mongo.Collection
 
   remove: (selector, callback) ->
     super(selector, callback)
+
+
+SellDetailsSchema =
+  new SimpleSchema([
+
+  ])
+
+SellSchema =
+  new SimpleSchema([
+
+
+  , TimestampSchema])

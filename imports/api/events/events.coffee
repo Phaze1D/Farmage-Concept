@@ -13,6 +13,8 @@ class EventsCollection extends Mongo.Collection
     super(selector, modifier, options, callback)
 
   remove: (selector, callback) ->
+    # Events cannot be deleted if user needs to change
+    # an error then made from and event they must create a new one
     super(selector, callback)
 
 # Schema
@@ -37,21 +39,6 @@ EventSchema =
 
     auto_generated: # Careful the user may try and set this filter params from the client side
       type: Boolean
-      denyUpdate: true
-
-    because_type:
-      type: String
-      label: 'event.because_type'
-      optional: true
-      index: true
-      sparse: true
-      denyUpdate: true
-
-    because_id:
-      type: String
-      optional: true
-      index: true
-      sparse: true
       denyUpdate: true
 
     for_type:

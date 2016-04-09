@@ -15,6 +15,20 @@ class InventoriesCollection extends Mongo.Collection
     super(selector, callback)
 
 
+YieldAssociationSchema =
+  new SimpleSchema(
+    yield_id:
+      type: String
+      denyUpdate: true
+      index: true
+
+    amount_taken:  # Max number most be the yield max amount (total amount that is currently avaiable)
+      type: Number
+      decimal: true
+      min: 0
+  )
+
+
 InventorySchema =
   new SimpleSchema([
     amount:
@@ -27,7 +41,11 @@ InventorySchema =
       optional: true
 
 
-    # Should probably add product sub document for deleted products
+    yield_object:
+      type: [YieldAssociateSchema]
+      min: 1
+
+    # If Product gets delete warn user about leftover inventory
     product_id:
       type: String
       index: true

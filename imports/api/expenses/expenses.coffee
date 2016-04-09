@@ -12,6 +12,8 @@ class ExpensesCollection extends Mongo.Collection
     super(selector, modifier, options, callback)
 
   remove: (selector, callback) ->
+    # Check to see if there is an event assiated with this expense and
+    # if so create a new event to counter act the previous one
     super(selector, callback)
 
 
