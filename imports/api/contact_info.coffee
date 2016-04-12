@@ -3,7 +3,7 @@
 
 { SimpleSchema } = require 'meteor/aldeed:simple-schema'
 
-AddressSchema =
+exports.AddressSchema =
   new SimpleSchema(
 
     name:
@@ -45,7 +45,7 @@ AddressSchema =
       max: 45
   )
 
-TelephoneSchema =
+exports.TelephoneSchema =
   new SimpleSchema(
     name:
       type: String

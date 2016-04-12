@@ -1,9 +1,9 @@
 { Mongo } = require 'meteor/mongo'
 { SimpleSchema } = require 'meteor/aldeed:simple-schema'
-{ Meteor } = require 'meteor/meteor'
 
 { TimestampSchema } = require '../timestamps.coffee'
 { CreateByUserSchema } = require '../created_by_user.coffee'
+{ BelongsOrganizationSchema } = require '../belong_organization'
 
 class EventsCollection extends Mongo.Collection
   insert: (doc, callback) ->
@@ -37,10 +37,6 @@ EventSchema =
       max: 256
       optional: true
 
-    auto_generated: # Careful the user may try and set this filter params from the client side
-      type: Boolean
-      denyUpdate: true
-
     for_type:
       type: String
       label: 'event.for_type'
@@ -52,7 +48,7 @@ EventSchema =
       index: true
       denyUpdate: true
 
-  , CreateByUserSchema, TimestampSchema])
+  , CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 
 Events = exports.Events = new EventsCollection('events')
 Events.attachSchema EventSchema
@@ -65,9 +61,8 @@ Events.deny
   remove: ->
     yes
 
-if Meteor.isServer
-  multikeys =
-    because_id: 1
-    for_id: 1
-
-  Events.rawCollection().createIndex multikeys, unique: true, (error) ->
+# Events depends on for_id ( The object that the event affected ). If for_id is deleted then delete all its events
+# Events depends on organization_id. If organization is deleted then all events of that organization will be deleted
+# Events depends on user_id. If user is delete then user_id will change to the current user
+# A User cannot delete events
+# A User cannot update events (expect there description)

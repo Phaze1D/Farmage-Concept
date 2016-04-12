@@ -4,6 +4,8 @@
 
 { ContactSchema } = require '../contact_info.coffee'
 { TimestampSchema } = require '../timestamps.coffee'
+{ BelongsOrganizationSchema } = require '../belong_organization'
+{ CreateByUserSchema } = require '../created_by_user.coffee'
 
 
 class CustomersCollection extends Mongo.Collection
@@ -15,7 +17,7 @@ class CustomersCollection extends Mongo.Collection
     # Code for hooks
     super(selector, modifier, options, callback)
 
-  remove: (selector, callback) -> # Careful with removing a client who has dependencias
+  remove: (selector, callback) ->
     # Code for hooks
     super(selector, callback)
 
@@ -25,25 +27,21 @@ CustomerSchema =
     first_name:
       type: String
       label: "first_name"
-      max: 45
+      max: 64
 
     last_name:
       type: String
       label: "last_name"
       optional: true
-      max: 45
+      max: 64
 
     company:
       type: String
       label: "company"
       optional: true
-      max: 45
+      max: 64
 
-    organization_id: # Think about adding autoValue for this field
-      type: String
-      index: true
-
-  , ContactSchema, TimestampSchema])
+  ,ContactSchema, CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 
 Customers = exports.Customers = new CustomersCollection "customers"
 Customers.attachSchema CustomerSchema
@@ -63,3 +61,7 @@ if Meteor.isServer
 
   Customers.rawCollection().createIndex multikeys, unique: true, (error) ->
     # console.log error
+
+
+# Customers depends on organization. If an Organization is deleted then delete all its customers
+# Customers depends on user. If a User is deleted then reasign user_id to the person who deleted the previous user

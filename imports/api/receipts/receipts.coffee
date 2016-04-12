@@ -2,6 +2,8 @@
 { SimpleSchema } = require 'meteor/aldeed:simple-schema'
 
 { TimestampSchema } = require '../timestamps.coffee'
+{ CreateByUserSchema } = require '../created_by_user.coffee'
+{ BelongsOrganizationSchema } = require '../belong_organization'
 
 class ReceiptsCollection extends Mongo.Collection
   insert: (doc, callback) ->
@@ -17,10 +19,11 @@ ReceiptSchema =
   new SimpleSchema([
     receipt_image_url:
       type: String
-      
-  , TimestampSchema])
+
+  , CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 
 Receipts = exports.Receipts = new ReceiptsCollection('receipts')
+Receipts.attachSchema ReceiptSchema
 
 Receipts.deny
   insert: ->

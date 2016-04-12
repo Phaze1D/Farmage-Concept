@@ -3,7 +3,7 @@
 exports.CreateByUserSchema = new SimpleSchema([
   user_id:
     type: String
-    denyUpdate: true
+    index: true
     autoValue: () ->
       return @userId
   ])

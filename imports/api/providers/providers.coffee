@@ -4,6 +4,8 @@
 
 { ContactSchema } = require '../contact_info.coffee'
 { TimestampSchema } = require '../timestamps.coffee'
+{ CreateByUserSchema } = require '../created_by_user.coffee'
+{ BelongsOrganizationSchema } = require '../belong_organization'
 
 class ProvidersCollection extends Mongo.Collection
   insert: (doc, callback) ->
@@ -20,25 +22,21 @@ ProviderSchema =
       first_name:
         type: String
         label: "first_name"
-        max: 45
+        max: 64
 
       last_name:
         type: String
         label: "last_name"
         optional: true
-        max: 45
+        max: 64
 
       company:
         type: String
         label: "company"
         optional: true
-        max: 45
+        max: 64
 
-      organization_id: # Think about adding autoValue for this field
-        type: String
-        index: true
-
-  , ContactSchema, TimestampSchema])
+  , ContactSchema, CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 
 Providers = exports.Providers = new CustomersCollection "providers"
 Providers.attachSchema ProviderSchema
@@ -58,3 +56,6 @@ if Meteor.isServer
 
   Providers.rawCollection().createIndex multikeys, unique: true, (error) ->
     # console.log error
+
+# * depends on organization_id. If organization is deleted then all * of that organization will be deleted
+# * depends on user_id. If user is delete then user_id will change to the current user or owner

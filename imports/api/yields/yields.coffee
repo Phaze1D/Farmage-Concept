@@ -14,6 +14,7 @@ class YieldsCollection extends Mongo.Collection
   remove: (selector, callback) ->
     super(selector, callback)
 
+
 YieldSchema =
   new SimpleSchema([
     name:
@@ -21,7 +22,19 @@ YieldSchema =
       label: 'name'
       max: 64
 
-    total:
+    initial:
+      type: Number
+      label: 'initial_amount'
+      decimal: true
+      min: 0
+
+    discarded:
+      type: Number
+      label: 'discared_amount'
+      decimal: true
+      min: 0
+
+    current:
       type: Number
       label: 'yield.total'
       decimal: true

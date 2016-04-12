@@ -3,6 +3,8 @@
 { Meteor } = require 'meteor/meteor'
 
 { TimestampSchema } = require '../timestamps.coffee'
+{ CreateByUserSchema } = require '../created_by_user.coffee'
+{ BelongsOrganizationSchema } = require '../belong_organization'
 
 
 class ProductsCollection extends Mongo.Collection
@@ -36,13 +38,13 @@ ProductSchema =
       type: String
       label: 'SKU'
       index: true
-      unique: true
       max: 64
 
-    price:
+    price_excluding_tax:
       type: Number
-      label: 'product.price_without_tax'
+      label: 'product.price_excluding_tax'
       decimal: true
+      min: 0
 
     package_amount:
       type: Number
@@ -72,11 +74,7 @@ ProductSchema =
       type: String
       optional: true
 
-    organization_id: # Think about adding autoValue for this field
-      type: String
-      index: true
-
-  , TimestampSchema])
+  , CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 
 Products= exports.Products = new CustomersCollection "products"
 Products.attachSchema ProductSchema
@@ -97,3 +95,7 @@ if Meteor.isServer
 
   Products.rawCollection().createIndex multikeys, unique: true, (error) ->
     # console.log error
+
+# Products can only be soft deleted
+# * depends on organization_id. If organization is deleted then all * of that organization will be deleted
+# * depends on user_id. If user is delete then user_id will change to the current user or owner

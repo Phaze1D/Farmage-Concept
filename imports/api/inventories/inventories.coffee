@@ -3,6 +3,7 @@
 
 { TimestampSchema } = require '../timestamps.coffee'
 { CreateByUserSchema } = require '../created_by_user.coffee'
+{ BelongsOrganizationSchema } = require '../belong_organization'
 
 class InventoriesCollection extends Mongo.Collection
   insert: (doc, callback) ->
@@ -33,6 +34,7 @@ InventorySchema =
   new SimpleSchema([
     amount:
       type: Number
+      label: 'amount'
       min: 0
 
     expiration_date:
@@ -40,18 +42,16 @@ InventorySchema =
       label: 'expiration_date'
       optional: true
 
-
     yield_object:
       type: [YieldAssociateSchema]
-      min: 1
+      min: 0
 
-    # If Product gets delete warn user about leftover inventory
     product_id:
       type: String
       index: true
       denyUpdate: true
 
-  , CreateByUserSchema, TimestampSchema])
+  , CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 
 Inventories = exports.Inventories = new InventoriesCollection('inventories')
 Inventories.attachSchema InventorySchema
@@ -63,3 +63,11 @@ Inventories.deny
     yes
   remove: ->
     yes
+
+# Inventory depends on yield_id. Yields can only be soft deleted
+# Inventory depends on product_id. If Product gets soft deleted and Inventory amount > 0 ask user to set amount = 0
+# Inventory amount can only be changes with events
+# Inventory amount max must be equal to the converted amount of the sum of yield.amount_taken
+# Deleting a yield object will create events to correct Inventory amount and put back yield
+# * depends on organization_id. If organization is deleted then all * of that organization will be deleted
+# * depends on user_id. If user is delete then user_id will change to the current user or owner
