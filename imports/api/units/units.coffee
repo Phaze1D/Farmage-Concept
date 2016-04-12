@@ -3,6 +3,8 @@
 { Meteor } = require 'meteor/meteor'
 
 { TimestampSchema } = require '../timestamps.coffee'
+{ CreateByUserSchema } = require '../created_by_user.coffee'
+{ BelongsOrganizationSchema } = require '../belong_organization'
 
 
 class UnitsCollection extends Mongo.Collection
@@ -19,7 +21,7 @@ class UnitsCollection extends Mongo.Collection
 UnitSchema =
   new SimpleSchema([
 
-    name: # Unique on organization id and name
+    name:
       type: String
       label: 'unit_name'
       index: true
@@ -43,7 +45,7 @@ UnitSchema =
       sparse: true
       optional: true
 
-  , TimestampSchema])
+  , CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 
 Units = exports.Units = new UnitsCollection('units')
 Units.attachSchema UnitSchema
@@ -55,3 +57,14 @@ Units.deny
       yes
     remove: ->
       yes
+
+if Meteor.isServer
+  multikeys =
+    name: 1
+    organization_id: 1
+
+  Units.rawCollection().createIndex multikeys, unique: true, (error) ->
+
+# Unit depends on unit id. If parent unit is delete
+#                         Option 1: Set unit_id to parents parent
+#                         Option 2: Make unit_id null

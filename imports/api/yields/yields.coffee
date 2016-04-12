@@ -3,6 +3,8 @@
 
 { TimestampSchema } = require '../timestamps.coffee'
 { CreateByUserSchema } = require '../created_by_user.coffee'
+{ BelongsOrganizationSchema } = require '../belong_organization'
+
 
 class YieldsCollection extends Mongo.Collection
   insert: (doc, callback) ->
@@ -26,6 +28,7 @@ YieldSchema =
       type: Number
       label: 'initial_amount'
       decimal: true
+      denyUpdate: true
       min: 0
 
     discarded:
@@ -46,14 +49,12 @@ YieldSchema =
       denyUpdate: true
       max: 64
 
-    # May need to add unit sub document for deleted units
     unit_id:
       type: String
       index: true
       denyUpdate: true
 
-
-  , CreateByUserSchema, TimestampSchema])
+  , CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 
 Yields = exports.Yields = new YieldsCollection('yields')
 Yields.attachSchema YieldSchema
@@ -65,3 +66,7 @@ Yields.deny
     yes
   remove: ->
     yes
+
+# Yield depends on unit_id. On Unit delete
+#             Option 1: move yield to parent Unit
+#             Option 2: delete yields

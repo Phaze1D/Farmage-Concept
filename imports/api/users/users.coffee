@@ -4,8 +4,8 @@
 
 { ContactSchema } = require '../contact_info.coffee'
 { TimestampSchema } = require '../timestamps.coffee'
+{ BelongsOrganizationSchema } = require '../belong_organization'
 
-# Missing permissons
 
 UserProfileSchema =
   new SimpleSchema([
@@ -21,6 +21,37 @@ UserProfileSchema =
       max: 64
 
   , ContactSchema.pick(['addresses', 'telephones']) ])
+
+PermissonSchema =
+  new SimpleSchema(
+    owner:
+      type: Boolean
+      defaultValue: false
+
+    editor:
+      type: Boolean
+      defaultValue: false
+
+    expanses_manager:
+      type: Boolean
+      defaultValue: false
+
+    sells_manager:
+      type: Boolean
+      defaultValue: false
+
+    units_manager:
+      type: Boolean
+      defaultValue: false
+
+    inventories_manager:
+      type: Boolean
+      defaultValue: false
+
+    users_manager:
+      type: Boolean
+      defaultValue: false
+  )
 
 UserSchema =
   new SimpleSchema([
@@ -51,6 +82,18 @@ UserSchema =
         optional: true
         blackbox: true
 
-  , TimestampSchema])
+    permissons:
+      type: PermissonSchema
+      label: 'permissons'
+
+  , BelongsOrganizationSchema, TimestampSchema])
 
   Meteor.users.attachSchema UserSchema
+
+  Meteor.users.deny
+    insert: ->
+      yes
+    update: ->
+      yes
+    remove: ->
+      yes

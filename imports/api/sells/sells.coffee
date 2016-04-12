@@ -48,7 +48,7 @@ SellDetailsSchema =
       decimal: true
       min: 0
 
-    inventories: 
+    inventories:
       type: [InventoryAssociationSchema]
 
     unit_id:
@@ -98,10 +98,10 @@ SellSchema =
       label: 'sell_details'
       min: 1
 
-    status:
+    status:         # Ordered, Canceled, Sent, Paid, Returned
       type: String
       label: 'status'
-      max: 45
+      allowedValues: ['ordered', 'canceled', 'sent', 'paid', 'returned']
 
     note:
       type: String
@@ -133,3 +133,9 @@ Sells.deny
     yes
   remove: ->
     yes
+
+# Sells depends on inventory id. Inventory can only be soft delete
+# Sells depends on unit_id. On unit delete
+                            # Option 1 sells will pass to the parent unit.
+                            # Option 2 unit_id will be null
+# Sells depends on customer_id. Customers can only be soft deleted
