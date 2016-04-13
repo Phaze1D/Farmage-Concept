@@ -53,7 +53,7 @@ ExpenseSchema =
       decimal: true
       min: 1
 
-    receipts_id:
+    receipt_id:
       type: String
       optional: true
       index: true

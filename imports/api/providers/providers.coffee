@@ -7,6 +7,10 @@
 { CreateByUserSchema } = require '../created_by_user.coffee'
 { BelongsOrganizationSchema } = require '../belong_organization.coffee'
 
+OrganizationModule = require '../organizations/organizations.coffee'
+ExpenseModule = require '../expenses/expenses.coffee'
+
+
 class ProvidersCollection extends Mongo.Collection
   insert: (doc, callback) ->
     super(doc, callback)
@@ -48,6 +52,16 @@ Providers.deny
     yes
   remove: ->
     yes
+
+Providers.helpers
+    expanses: ->
+      ExpenseModule.Expenses.find { provider_id: @_id}
+
+    organization: ->
+      OrganizationModule.Organizations.findOne { _id: @organization_id }
+
+    created_by: ->
+      Meteor.users.findOne { _id: @user_id}
 
 if Meteor.isServer
   multikeys =
