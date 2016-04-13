@@ -5,6 +5,12 @@
 { CreateByUserSchema } = require '../created_by_user.coffee'
 { BelongsOrganizationSchema } = require '../belong_organization.coffee'
 
+OrganizationModule = require '../organizations/organizations.coffee'
+UnitModule = require '../units/units.coffee'
+InventoryModule = require '../inventories/inventories.coffee'
+EventModule = require '../events/events.coffee'
+
+
 
 class YieldsCollection extends Mongo.Collection
   insert: (doc, callback) ->
@@ -66,6 +72,23 @@ Yields.deny
     yes
   remove: ->
     yes
+
+Yields.helpers
+
+  unit: ->
+    UnitModule.Units.findOne { _id: @unit_id }
+
+  inventories: ->
+    InventoryModule.Inventories.find {'yield_objects.yield_id': @_id}
+
+  events: ->
+    EventModule.Events.find { for_id: @_id}
+
+  organization: ->
+    OrganizationModule.Organizations.findOne { _id: @organization_id }
+
+  created_by: ->
+    Meteor.users.findOne { _id: @user_id}
 
 # Yield depends on unit_id. On Unit delete
 #             Option 1: move yield to parent Unit

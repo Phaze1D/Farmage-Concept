@@ -79,7 +79,7 @@ ProductSchema =
 
   , CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 
-Products = exports.Products = new CustomersCollection "products"
+Products = exports.Products = new ProductsCollection "products"
 Products.attachSchema ProductSchema
 
 Products.deny

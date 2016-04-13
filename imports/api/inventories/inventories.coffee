@@ -49,7 +49,7 @@ InventorySchema =
       optional: true
 
     yield_objects:
-      type: [YieldAssociateSchema]
+      type: [YieldAssociationSchema]
       min: 1
 
     product_id:

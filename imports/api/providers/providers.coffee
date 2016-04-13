@@ -42,7 +42,7 @@ ProviderSchema =
 
   , ContactSchema, CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 
-Providers = exports.Providers = new CustomersCollection "providers"
+Providers = exports.Providers = new ProvidersCollection "providers"
 Providers.attachSchema ProviderSchema
 
 Providers.deny

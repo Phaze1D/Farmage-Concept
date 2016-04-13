@@ -6,6 +6,12 @@ ContactExports = require '../contact_info.coffee'
 { CreateByUserSchema } = require '../created_by_user.coffee'
 { BelongsOrganizationSchema } = require '../belong_organization.coffee'
 
+OrganizationModule = require '../organizations/organizations.coffee'
+CustomerModule = require '../customers/customers.coffee'
+UnitModule = require '../units/units.coffee'
+ProductModule = require '../products/products.coffee'
+InventoryModule = require '../inventories/inventories.coffee'
+
 
 class SellsCollection extends Mongo.Collection
   insert: (doc, callback) ->
@@ -30,6 +36,10 @@ InventoryAssociationSchema =
 
 SellDetailsSchema =
   new SimpleSchema([
+
+    product_id:
+      type: String
+      index: true
 
     quantity:
       type: Number
@@ -58,8 +68,6 @@ SellDetailsSchema =
       sparse: true
       optional: true
   ])
-
-
 
 SellSchema =
   new SimpleSchema([
@@ -136,8 +144,32 @@ Sells.deny
   remove: ->
     yes
 
+Sells.helpers
+
+  customer: ->
+    CustomerModule.Customers.findOne { _id: @customer_id }
+
+  sell_detail_unit: (sell_detail) ->
+    unless sell_detail.unit_id?
+      UnitModule.Units.findOne { _id: sell_detail.unit_id }
+
+  sell_detail_product: (sell_detail) ->
+    ProductModule.Products.findOne { _id: sell_detail.product_id }
+
+  sell_detail_inventories: (sell_detail) ->
+    id_array = ( inventory_item.inventory_id for inventory_item in sell_detail.inventories )
+    InventoryModule.Inventories.find { _id: $in: id_array }
+
+  organization: ->
+    OrganizationModule.Organizations.findOne { _id: @organization_id }
+
+  created_by: ->
+    Meteor.users.findOne { _id: @user_id}
+
+
 # Sells depends on inventory id. Inventory can only be soft delete
 # Sells depends on unit_id. On unit delete
                             # Option 1 sells will pass to the parent unit.
                             # Option 2 unit_id will be null
 # Sells depends on customer_id. Customers can only be soft deleted
+# Sells depends on product_id. Product can only be soft delete
