@@ -4,6 +4,17 @@
 { ContactSchema } = require '../contact_info.coffee'
 { TimestampSchema } = require '../timestamps.coffee'
 
+CustomerModule = require '../customers/customers.coffee'
+EventModule = require '../events/events.coffee'
+ExpenseModule = require '../expenses/expenses.coffee'
+InventoryModule = require '../inventories/inventories.coffee'
+ProductModule = require '../products/products.coffee'
+ProviderModule = require '../providers/providers.coffee'
+ReceiptModule = require '../receipts/receipts.coffee'
+SellModule = require '../sells/sells.coffee'
+UnitModule = require '../units/units.coffee'
+YieldModule = require '../yields/yields.coffee'
+
 
 class OrganizationsCollection extends Mongo.Collection
   insert: (doc, callback) ->
@@ -36,3 +47,27 @@ Organizations.deny
     yes
   remove: ->
     yes
+
+Organizations.helpers
+  customers: ->
+    CustomerModule.Customers.find { organization_id: @_id }
+  events: ->
+    EventModule.Events.find { organization_id: @_id }
+  expenses: ->
+    ExpenseModule.Expenses.find { organization_id: @_id }
+  inventories: ->
+    InventoryModule.Inventories.find { organization_id: @_id }
+  products: ->
+    ProductModule.Products.find { organization_id: @_id }
+  providers:->
+    ProviderModule.Providers.find { organization_id: @_id }
+  receipts: ->
+    ReceiptModule.Receipts.find { organization_id: @_id }
+  sells: ->
+    SellModule.Sells.find { organization_id: @_id }
+  units: ->
+    UnitModule.Units.find { organization_id: @_id }
+  users: ->
+    Meteor.users.find { organization_id: @_id }
+  yields: ->
+    YieldModule.Yields.find { organization_id: @_id }

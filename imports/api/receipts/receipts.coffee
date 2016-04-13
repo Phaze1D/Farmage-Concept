@@ -3,7 +3,7 @@
 
 { TimestampSchema } = require '../timestamps.coffee'
 { CreateByUserSchema } = require '../created_by_user.coffee'
-{ BelongsOrganizationSchema } = require '../belong_organization'
+{ BelongsOrganizationSchema } = require '../belong_organization.coffee'
 
 class ReceiptsCollection extends Mongo.Collection
   insert: (doc, callback) ->

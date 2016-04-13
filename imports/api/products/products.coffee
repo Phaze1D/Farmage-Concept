@@ -4,7 +4,10 @@
 
 { TimestampSchema } = require '../timestamps.coffee'
 { CreateByUserSchema } = require '../created_by_user.coffee'
-{ BelongsOrganizationSchema } = require '../belong_organization'
+{ BelongsOrganizationSchema } = require '../belong_organization.coffee'
+
+InventoryModule = require '../products/products.coffee'
+OrganizationModule = require '../organizations/organizations.coffee'
 
 
 class ProductsCollection extends Mongo.Collection
@@ -76,7 +79,7 @@ ProductSchema =
 
   , CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 
-Products= exports.Products = new CustomersCollection "products"
+Products = exports.Products = new CustomersCollection "products"
 Products.attachSchema ProductSchema
 
 Products.deny
@@ -86,6 +89,16 @@ Products.deny
     yes
   remove: ->
     yes
+
+Products.helpers
+  inventories: ->
+    InventoryModule.Inventories.find { product_id: @_id}
+
+  organization: ->
+    OrganizationModule.Organizations.findOne { _id: @organization_id }
+
+  created_by: ->
+    Meteor.users.findOne { _id: @user_id}
 
   # SKU must be unique to a single organization only
 if Meteor.isServer

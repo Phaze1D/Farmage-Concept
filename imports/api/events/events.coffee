@@ -3,7 +3,13 @@
 
 { TimestampSchema } = require '../timestamps.coffee'
 { CreateByUserSchema } = require '../created_by_user.coffee'
-{ BelongsOrganizationSchema } = require '../belong_organization'
+{ BelongsOrganizationSchema } = require '../belong_organization.coffee'
+
+OrganizationModule = require '../organizations/organizations.coffee'
+UnitModule = require '../units/units.coffee'
+YieldModule = require '../yields/yields.coffee'
+InventoryModule = require '../inventories/inventories.coffee'
+
 
 class EventsCollection extends Mongo.Collection
   insert: (doc, callback) ->
@@ -42,6 +48,7 @@ EventSchema =
       label: 'event.for_type'
       index: true
       denyUpdate: true
+      allowedValues: ['unit', 'yield', 'inventory']
 
     for_id:
       type: String
@@ -60,6 +67,23 @@ Events.deny
     yes
   remove: ->
     yes
+
+Events.helpers
+  for_doc: ->
+    switch @for_type
+      when 'unit' then  UnitModule.Units.findOnd { _id: @for_id}
+      when 'yield' then YieldModule.Yields.findOne { _id: @for_id }
+      when 'inventory' then InventoryModule.Inventories.findOne { _id: @for_id}
+      else
+        return
+
+  organization: ->
+    OrganizationModule.Organizations.findOne { _id: @organization_id }
+
+  created_by: ->
+    Meteor.users.findOne { _id: @user_id}
+
+
 
 # Events depends on for_id ( The object that the event affected ). If for_id is deleted then delete all its events
 # Events depends on organization_id. If organization is deleted then all events of that organization will be deleted

@@ -4,8 +4,11 @@
 
 { ContactSchema } = require '../contact_info.coffee'
 { TimestampSchema } = require '../timestamps.coffee'
-{ BelongsOrganizationSchema } = require '../belong_organization'
+{ BelongsOrganizationSchema } = require '../belong_organization.coffee'
 { CreateByUserSchema } = require '../created_by_user.coffee'
+
+OrganizationModule = require '../organizations/organizations.coffee'
+SellModule = require '../sells/sells.coffee'
 
 
 class CustomersCollection extends Mongo.Collection
@@ -53,6 +56,20 @@ Customers.deny
     yes
   remove: ->
     yes
+
+
+Customers.helpers
+  sells: ->  # This may not be necessary could use the route for this
+    SellModule.Sells.find {customer_id: @_id},  sort: created_at: -1
+
+  organization: ->
+    OrganizationModule.Organizations.findOne { _id: @organization_id }
+
+  created_by: ->
+    Meteor.users.findOne { _id: @user_id}
+
+
+
 
 if Meteor.isServer
   multikeys =

@@ -3,7 +3,13 @@
 
 { TimestampSchema } = require '../timestamps.coffee'
 { CreateByUserSchema } = require '../created_by_user.coffee'
-{ BelongsOrganizationSchema } = require '../belong_organization'
+{ BelongsOrganizationSchema } = require '../belong_organization.coffee'
+
+OrganizationModule = require '../organizations/organizations.coffee'
+ReceiptModule = require '../receipts/receipts.coffee'
+ProviderModule = require '../providers/providers.coffee'
+UnitModule = require '../units/units.coffee'
+
 
 class ExpensesCollection extends Mongo.Collection
   insert: (doc, callback) ->
@@ -75,6 +81,24 @@ Expenses.deny
     yes
   remove: ->
     yes
+
+Expenses.helpers
+  receipt: ->
+    unless @receipts_id?
+       return ReceiptModule.Receipts.findOne { _id: @receipts_id}
+
+  provider: ->
+    unless @provider_id?
+      return ProviderModule.Providers.findOne { _id: @provider_id}
+
+  unit: ->
+    UnitModule.Units.findOne { _id: @unit_id}
+
+  organization: ->
+    OrganizationModule.Organizations.findOne { _id: @organization_id }
+
+  created_by: ->
+    Meteor.users.findOne { _id: @user_id}
 
 # Expense depends on receipts_id. If receipt is deleted then receipts_id will be null
 # Expense depends on provider_id. If provider is deleted then provider_id will be null

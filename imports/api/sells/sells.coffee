@@ -4,7 +4,7 @@
 { TimestampSchema } = require '../timestamps.coffee'
 ContactExports = require '../contact_info.coffee'
 { CreateByUserSchema } = require '../created_by_user.coffee'
-{ BelongsOrganizationSchema } = require '../belong_organization'
+{ BelongsOrganizationSchema } = require '../belong_organization.coffee'
 
 
 class SellsCollection extends Mongo.Collection
@@ -50,6 +50,7 @@ SellDetailsSchema =
 
     inventories:
       type: [InventoryAssociationSchema]
+      min: 1
 
     unit_id:
       type: String
@@ -97,6 +98,7 @@ SellSchema =
       type: [SellDetailsSchema]
       label: 'sell_details'
       min: 1
+      max: 100
 
     status:         # Ordered, Canceled, Sent, Paid, Returned
       type: String

@@ -21,3 +21,4 @@ coffeescript
 aldeed:simple-schema
 aldeed:collection2
 tap:i18n
+dburles:collection-helpers

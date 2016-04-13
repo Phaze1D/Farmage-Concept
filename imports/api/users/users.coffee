@@ -4,7 +4,7 @@
 
 { ContactSchema } = require '../contact_info.coffee'
 { TimestampSchema } = require '../timestamps.coffee'
-{ BelongsOrganizationSchema } = require '../belong_organization'
+{ BelongsOrganizationSchema } = require '../belong_organization.coffee'
 
 
 UserProfileSchema =
@@ -20,7 +20,12 @@ UserProfileSchema =
       label: 'last_name'
       max: 64
 
-  , ContactSchema.pick(['addresses', 'telephones']) ])
+    user_avatar_url:
+      type: String
+      label: 'avatar'
+      optional: true
+
+  , ContactSchema.pick(['addresses', 'telephones'])  ])
 
 PermissonSchema =
   new SimpleSchema(
@@ -88,12 +93,12 @@ UserSchema =
 
   , BelongsOrganizationSchema, TimestampSchema])
 
-  Meteor.users.attachSchema UserSchema
+Meteor.users.attachSchema UserSchema
 
-  Meteor.users.deny
-    insert: ->
-      yes
-    update: ->
-      yes
-    remove: ->
-      yes
+Meteor.users.deny
+  insert: ->
+    yes
+  update: ->
+    yes
+  remove: ->
+    yes
