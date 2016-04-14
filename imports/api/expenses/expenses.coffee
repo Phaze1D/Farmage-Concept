@@ -19,7 +19,9 @@ class ExpensesCollection extends Mongo.Collection
     super(selector, modifier, options, callback)
 
   remove: (selector, callback) ->
-
+    ###
+      Ask User "Are you sure" then delete if so
+    ###
     super(selector, callback)
 
 
@@ -98,7 +100,10 @@ Expenses.helpers
     OrganizationModule.Organizations.findOne { _id: @organization_id }
 
   created_by: ->
-    Meteor.users.findOne { _id: @user_id}
+    Meteor.users.findOne { _id: @created_user_id}
+
+  updated_by: ->
+    Meteor.users.findOne { _id: @updated_user_id}
 
 # Expense depends on receipts_id. If receipt is deleted then receipts_id will be null
 # Expense depends on provider_id. If provider is deleted then provider_id will be null

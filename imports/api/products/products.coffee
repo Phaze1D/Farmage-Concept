@@ -18,8 +18,11 @@ class ProductsCollection extends Mongo.Collection
     super(selector, modifier, options, callback)
 
   remove: (selector, callback) ->
-    # If a product gets remove check to see if there exists an
-    # inventory that is not at 0 and ask the user what to do with the left over product
+    ###
+      If a product gets remove check to see if there exists an
+      inventory that is not at 0 and ask the user what to do with the left over product
+      and then soft delete
+    ###
     super(selector, callback)
 
 
@@ -98,7 +101,10 @@ Products.helpers
     OrganizationModule.Organizations.findOne { _id: @organization_id }
 
   created_by: ->
-    Meteor.users.findOne { _id: @user_id}
+    Meteor.users.findOne { _id: @created_user_id}
+
+  updated_by: ->
+    Meteor.users.findOne { _id: @updated_user_id}
 
   # SKU must be unique to a single organization only
 if Meteor.isServer

@@ -21,10 +21,14 @@ class SellsCollection extends Mongo.Collection
     super(selector, modifier, options, callback)
 
   remove: (selector, callback) ->
+    ###
+      Warn the user if he/she really wants to delete this sell.
+      Show the user that they can cancel a sell and return the inventory with an event
+    ###
     super(selector, callback)
 
-InventoryAssociationSchema =
-  new SimpleSchema(
+InventoryAssociationSchema =   # When removing Inventory after it has been saved then insure the user that the inventory will be put back
+  new SimpleSchema(            # Cannot removing or update after status is 'canceled', 'sent', 'paid', 'returned'
     quantity_taken:
       type: Number
       min: 0
@@ -34,8 +38,8 @@ InventoryAssociationSchema =
       index: true
   )
 
-SellDetailsSchema =
-  new SimpleSchema([
+SellDetailsSchema =     # When removing SellDetails after a sell has been saved then insure the user that the inventory will be put back
+  new SimpleSchema([    # Cannot removing or update after status is 'canceled', 'sent', 'paid', 'returned'
 
     product_id:
       type: String
@@ -164,7 +168,10 @@ Sells.helpers
     OrganizationModule.Organizations.findOne { _id: @organization_id }
 
   created_by: ->
-    Meteor.users.findOne { _id: @user_id}
+    Meteor.users.findOne { _id: @created_user_id }
+
+  updated_by: ->
+    Meteor.users.findOne { _id: @updated_user_id }
 
 
 # Sells depends on inventory id. Inventory can only be soft delete

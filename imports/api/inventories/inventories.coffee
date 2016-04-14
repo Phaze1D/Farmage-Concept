@@ -19,6 +19,9 @@ class InventoriesCollection extends Mongo.Collection
     super(selector, modifier, options, callback)
 
   remove: (selector, callback) ->
+    ###
+      Inventories cannot be deleted but they can be hided
+    ###
     super(selector, callback)
 
 
@@ -89,7 +92,10 @@ Inventories.helpers
     OrganizationModule.Organizations.findOne { _id: @organization_id }
 
   created_by: ->
-    Meteor.users.findOne { _id: @user_id}
+    Meteor.users.findOne { _id: @created_user_id}
+
+  updated_by: ->
+    Meteor.users.findOne { _id: @updated_user_id}
 
 # Inventory depends on yield_id. Yields can only be soft deleted
 # Inventory depends on product_id. If Product gets soft deleted and Inventory amount > 0 ask user to set amount = 0

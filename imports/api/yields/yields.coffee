@@ -20,6 +20,9 @@ class YieldsCollection extends Mongo.Collection
     super(selector, modifier, options, callback)
 
   remove: (selector, callback) ->
+    ###
+      Inventories cannot be deleted but they can be hided
+    ###
     super(selector, callback)
 
 
@@ -88,7 +91,10 @@ Yields.helpers
     OrganizationModule.Organizations.findOne { _id: @organization_id }
 
   created_by: ->
-    Meteor.users.findOne { _id: @user_id}
+    Meteor.users.findOne { _id: @created_user_id}
+
+  updated_by: ->
+    Meteor.users.findOne { _id: @updated_user_id}
 
 # Yield depends on unit_id. On Unit delete
 #             Option 1: move yield to parent Unit

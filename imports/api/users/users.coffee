@@ -6,6 +6,17 @@
 { TimestampSchema } = require '../timestamps.coffee'
 { BelongsOrganizationSchema } = require '../belong_organization.coffee'
 
+CustomerModule = require '../customers/customers.coffee'
+EventModule = require '../events/events.coffee'
+ExpenseModule = require '../expenses/expenses.coffee'
+InventoryModule = require '../inventories/inventories.coffee'
+ProductModule = require '../products/products.coffee'
+ProviderModule = require '../providers/providers.coffee'
+ReceiptModule = require '../receipts/receipts.coffee'
+SellModule = require '../sells/sells.coffee'
+UnitModule = require '../units/units.coffee'
+YieldModule = require '../yields/yields.coffee'
+
 
 UserProfileSchema =
   new SimpleSchema([
@@ -102,3 +113,27 @@ Meteor.users.deny
     yes
   remove: ->
     yes
+
+Meteor.users.helpers
+  customers: ->
+    CustomerModule.Customers.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
+  events: ->
+    EventModule.Events.find { $or:  [ created_user_id: @_id, updated_user_id: @_id]}, sort: created_at: -1
+  expenses: ->
+    ExpenseModule.Expenses.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
+  inventories: ->
+    InventoryModule.Inventories.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
+  products: ->
+    ProductModule.Products.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
+  providers:->
+    ProviderModule.Providers.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
+  receipts: ->
+    ReceiptModule.Receipts.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
+  sells: ->
+    SellModule.Sells.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
+  units: ->
+    UnitModule.Units.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
+  users: ->
+    Meteor.users.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
+  yields: ->
+    YieldModule.Yields.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1

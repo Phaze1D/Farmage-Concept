@@ -21,6 +21,14 @@ class UnitsCollection extends Mongo.Collection
     super(selector, modifier, options, callback)
 
   remove: (selector, callback) ->
+        ###
+        Unit can only be soft deleted
+         * depends on unit_id. On unit soft delete
+             Option 1 * will pass to the parent unit.
+             If parent unit = null
+             Option 2 unit will be soft deleted
+        ###
+
     super(selector, callback)
 
 
@@ -77,7 +85,7 @@ Units.helpers
     YieldModule.Yields.find { unit_id: @_id }
 
   sells: ->
-    SellModule.Sells.find { 'sell_details.unit_id': @_id} 
+    SellModule.Sells.find { 'sell_details.unit_id': @_id}
 
   events: ->
     EventModule.Events.find { for_id: @_id }
@@ -89,7 +97,10 @@ Units.helpers
     OrganizationModule.Organizations.findOne { _id: @organization_id }
 
   created_by: ->
-    Meteor.users.findOne { _id: @user_id}
+    Meteor.users.findOne { _id: @created_user_id}
+
+  updated_by: ->
+    Meteor.users.findOne { _id: @updated_user_id}
 
 if Meteor.isServer
   multikeys =
