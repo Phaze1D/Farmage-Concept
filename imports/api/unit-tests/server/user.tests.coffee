@@ -6,10 +6,10 @@ faker = require 'faker'
 { resetDatabase } = require 'meteor/xolvio:cleaner'
 { _ } = require 'meteor/underscore'
 
-require '../users.coffee'
+require '../../collections/users/users.coffee'
 
 
-describe 'User Tests', () ->
+xdescribe 'User Tests Server side', () ->
 
   beforeEach () ->
     if Meteor.isServer

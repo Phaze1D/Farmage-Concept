@@ -68,6 +68,6 @@ Organizations.helpers
   units: ->
     UnitModule.Units.find { organization_id: @_id }
   users: ->
-    Meteor.users.find { organization_id: @_id }
+    Meteor.users.find { organizations: $elemMatch: organization_id: @_id }
   yields: ->
     YieldModule.Yields.find { organization_id: @_id }

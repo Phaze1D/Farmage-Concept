@@ -5,9 +5,9 @@ faker = require 'faker'
 { _ } = require 'meteor/underscore'
 { resetDatabase } = require 'meteor/xolvio:cleaner'
 
-{ Customers } = require '../customers.coffee'
+{ Customers } = require '../../collections/customers/customers.coffee'
 
-describe 'Simple Customers Tests', () ->
+xdescribe 'Simple Customers Tests Server side', () ->
 
   beforeEach () ->
     resetDatabase()
@@ -28,6 +28,9 @@ describe 'Simple Customers Tests', () ->
 
       assert.typeOf(Customers.insert(doc1), 'string')
       assert.typeOf(Customers.insert(doc2), 'string')
+
+      Customers.find().forEach (doc) ->
+        console.log doc
 
     it 'emails are the same, organization_ids are the same', () ->
         same_email = faker.internet.email()

@@ -48,7 +48,7 @@ UserProfileSchema =
       max: 5
    ])
 
-PermissonSchema =
+PermissionSchema =
   new SimpleSchema(
     owner:
       type: Boolean
@@ -86,8 +86,32 @@ PermissonSchema =
 
   )
 
+OrganizationsSchema =
+  new SimpleSchema([
+
+    organization_id:
+      type: String
+      index: true
+      denyUpdate: true
+
+    permission:
+      type: PermissionSchema
+      optional: true
+      label: 'permissons'
+
+    selected:
+      type: Boolean
+      defaultValue: false
+      optional: true
+
+  ])
+
 UserSchema =
   new SimpleSchema([
+
+    _id:
+      type: String
+      optional: true
 
     username:
       type: String
@@ -116,12 +140,11 @@ UserSchema =
         optional: true
         blackbox: true
 
-    permissons:
-      type: PermissonSchema
+    organizations:
+      type: [OrganizationsSchema]
       optional: true
-      label: 'permissons'
 
-  , BelongsOrganizationSchema, TimestampSchema])
+  , TimestampSchema])
 
 Meteor.users.attachSchema UserSchema
 

@@ -6,9 +6,9 @@ faker = require 'faker'
 { resetDatabase } = require 'meteor/xolvio:cleaner'
 { _ } = require 'meteor/underscore'
 
-{ Organizations } = require '../organizations.coffee'
+{ Organizations } = require '../../collections/organizations/organizations.coffee'
 
-describe 'Simple Organizations Tests', () ->
+xdescribe 'Simple Organizations Tests Server Side', () ->
 
   beforeEach () ->
     resetDatabase()

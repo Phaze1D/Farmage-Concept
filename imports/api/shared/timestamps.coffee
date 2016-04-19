@@ -2,7 +2,7 @@
 { SimpleSchema } = require 'meteor/aldeed:simple-schema'
 
 exports.TimestampSchema = new SimpleSchema(
-  created_at:
+  createdAt:
     type: Date
     label: "created_at"
     autoValue: () ->
@@ -16,7 +16,7 @@ exports.TimestampSchema = new SimpleSchema(
     optional: true
     denyUpdate: true
 
-  updated_at:
+  updatedAt:
     type: Date
     label: "updated_at"
     autoValue: () ->
