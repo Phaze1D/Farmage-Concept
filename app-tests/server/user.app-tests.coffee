@@ -7,23 +7,37 @@ faker = require 'faker'
 { _ } = require 'meteor/underscore'
 
 require '../../imports/api/collections/users/users.coffee'
-require '../../imports/api/collections/users/server/code.coffee'
+
 
 describe 'User Full App Tests Server', () ->
 
-  beforeEach () ->
-    if Meteor.isServer
-      resetDatabase()
+  after(() ->
+    resetDatabase()
+  )
 
   describe 'User sign up flow', () ->
+    it 'Check all users have only one selected organization', () ->
+      Meteor.users.find().forEach (doc) ->
+        count = 0
+        count++ for user_organ in doc.organizations when user_organ.selected isnt false
+        expect(count).to.be.at.most(1);
+
+    it 'Testing user organizations association', () ->
+      Meteor.users.find().forEach (doc) ->
+        id_array = ( organization.organization_id for organization in doc.organizations )
+        doc.organizations_as().forEach (doc1) ->
+          expect(doc1._id in id_array).to.equal(true)
+
     it 'User simple schema failed validations', () ->
+
       doc =
         email: faker.internet.email()
         password: '12345678'
 
-      expect( ()->
+      expect(()->
         Accounts.createUser(doc)
-      ).to.Throw()
+      ).to.Throw('validation-error')
+
 
     it 'User simple schema success validations', () ->
       doc =
@@ -32,4 +46,6 @@ describe 'User Full App Tests Server', () ->
           first_name: faker.name.firstName()
           last_name: faker.name.lastName()
 
-      Accounts.createUser(doc)
+      expect(() ->
+        Accounts.createUser(doc)
+      ).not.to.Throw()

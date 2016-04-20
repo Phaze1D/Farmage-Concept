@@ -74,10 +74,10 @@ exports.ContactSchema =
     addresses:
       type: [AddressSchema]
       optional: true
-      max: 5
+      maxCount: 5
 
     telephones:
       type: [TelephoneSchema]
       optional: true
-      max: 5
+      maxCount: 5
   )

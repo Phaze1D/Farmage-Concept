@@ -7,29 +7,37 @@ faker = require 'faker'
 { _ } = require 'meteor/underscore'
 
 require '../../imports/api/collections/users/users.coffee'
+{ insert } = require '../../imports/api/collections/organizations/methods.coffee'
 
 describe 'User Full App Tests Client', () ->
+  before( (done) ->
+    Meteor.logout( (err) ->
+      done()
+    )
+  )
 
-  beforeEach () ->
-    if Meteor.isServer
-      resetDatabase()
-
-  afterEach () ->
-    Meteor.logout()
+  after( (done) ->
+    Meteor.logout( (err) ->
+      done()
+    )
+  )
 
   describe 'User sign up flow', () ->
-    it 'User simple schema fail validations', (done) ->
 
+    it 'User simple schema fail validations', (done) ->
+      expect(Meteor.user()).to.not.exist
 
       doc =
         email: faker.internet.email()
         password: '1234568878'
 
-      Accounts.createUser doc, (error) ->
-        expect(error).to.exist
+      Accounts.createUser doc, (err) ->
+        expect(err).to.have.property('error', 'validation-error');
         done()
 
     it 'User simple schema success validations', (done) ->
+
+      expect(Meteor.user()).to.not.exist
       doc =
         email: faker.internet.email()
         password: '123123123'

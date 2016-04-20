@@ -53,7 +53,7 @@ InventorySchema =
 
     yield_objects:
       type: [YieldAssociationSchema]
-      min: 1
+      minCount: 1
 
     product_id:
       type: String

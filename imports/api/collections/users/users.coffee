@@ -5,6 +5,8 @@
 ContactModule = require '../../shared/contact_info.coffee'
 { TimestampSchema } = require '../../shared/timestamps.coffee'
 { BelongsOrganizationSchema } = require '../../shared/belong_organization.coffee'
+{ CreateByUserSchema } = require '../../shared/created_by_user.coffee'
+
 
 CustomerModule = require '../customers/customers.coffee'
 EventModule = require '../events/events.coffee'
@@ -16,6 +18,7 @@ ReceiptModule = require '../receipts/receipts.coffee'
 SellModule = require '../sells/sells.coffee'
 UnitModule = require '../units/units.coffee'
 YieldModule = require '../yields/yields.coffee'
+OrganizationModule = require '../organizations/organizations.coffee'
 
 
 UserProfileSchema =
@@ -40,12 +43,12 @@ UserProfileSchema =
     addresses:
       type: [ContactModule.AddressSchema]
       optional: true
-      max: 5
+      maxCount: 5
 
     telephones:
       type: [ContactModule.TelephoneSchema]
       optional: true
-      max: 5
+      maxCount: 5
    ])
 
 PermissionSchema =
@@ -92,7 +95,6 @@ OrganizationsSchema =
     organization_id:
       type: String
       index: true
-      denyUpdate: true
 
     permission:
       type: PermissionSchema
@@ -143,8 +145,10 @@ UserSchema =
     organizations:
       type: [OrganizationsSchema]
       optional: true
+      defaultValue: []
+      minCount: 0
 
-  , TimestampSchema])
+  , CreateByUserSchema, TimestampSchema])
 
 Meteor.users.attachSchema UserSchema
 
@@ -179,3 +183,6 @@ Meteor.users.helpers
     Meteor.users.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
   yields: ->
     YieldModule.Yields.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
+  organizations_as: ->
+    id_array = ( organization_item.organization_id for organization_item in @organizations )
+    OrganizationModule.Organizations.find { _id: $in: id_array }
