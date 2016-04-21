@@ -18,9 +18,37 @@ require './users.coffee'
 
 ###
 
+isLoggedIn = (userId) ->
+  unless userId?
+    throw new Meteor.Error 'notLoggedIn', 'Must be logged in'
+
+
+userOwnsOrganization = (user, organization_id) ->
+  for user_organ in user.organizations
+    if user_organ.organization_id is organization_id and user_organ.permission.owner
+      return true
+
+  throw new Meteor.Error 'notAuthorized', 'User does not belong to this organization'
+
+
+sendInvitationEmail = (user) ->
+
+
+
 
 # Invite User to organization ( Can't trust client side organization_id )
 module.exports.inviteUser = new ValidatedMethod
   name: 'user.inviteUser'
-  validate: Meteor.users.simpleSchema().validator()
-  run: (user_doc) ->
+  validate: new SimpleSchema(
+              email:
+                type: String
+                regEx: SimpleSchema.RegEx.Email
+                max: 45
+            ).validator()
+  run: (email, organization_id) ->
+    isLoggedIn(@userId)
+    userOwnsOrganization(Meteor.users.find(_id: @userId), organization_id)
+
+    if Meteor.isServer
+      @unblock()
+      sendInvitationEmail(email) # Handle whether the user exist or not after they click the link

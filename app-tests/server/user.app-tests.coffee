@@ -19,14 +19,25 @@ describe 'User Full App Tests Server', () ->
     it 'Check all users have only one selected organization', () ->
       Meteor.users.find().forEach (doc) ->
         count = 0
-        count++ for user_organ in doc.organizations when user_organ.selected isnt false
+        count++ for user_organ in doc.organizations when user_organ.selected is true
         expect(count).to.be.at.most(1);
+
+      return
 
     it 'Testing user organizations association', () ->
       Meteor.users.find().forEach (doc) ->
         id_array = ( organization.organization_id for organization in doc.organizations )
         doc.organizations_as().forEach (doc1) ->
           expect(doc1._id in id_array).to.equal(true)
+
+      return
+
+    it 'Testing user does not have duplicate organizations', () ->
+      Meteor.users.find().forEach (doc) ->
+        array = ( organization.organization_id for organization in doc.organizations )
+        expect((new Set(array)).size).to.equal array.length
+
+      return
 
     it 'User simple schema failed validations', () ->
 
@@ -37,6 +48,8 @@ describe 'User Full App Tests Server', () ->
       expect(()->
         Accounts.createUser(doc)
       ).to.Throw('validation-error')
+
+      return
 
 
     it 'User simple schema success validations', () ->
@@ -49,3 +62,5 @@ describe 'User Full App Tests Server', () ->
       expect(() ->
         Accounts.createUser(doc)
       ).not.to.Throw()
+
+      return

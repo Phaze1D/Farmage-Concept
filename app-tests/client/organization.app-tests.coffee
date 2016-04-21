@@ -16,26 +16,27 @@ describe 'Organizations Full App Tests Client', () ->
     Meteor.logout( (err) ->
       done()
     )
+    return
   )
 
   after( (done) ->
     Meteor.logout( (err) ->
       done()
     )
+    return
   )
 
   describe 'Organizations creation', () ->
 
     it 'Organization insert failed validation', () ->
-
       expect(Meteor.user()).to.not.exist
-
       organ =
         email: faker.internet.email()
 
       expect ->
         insert.call organ
       .to.Throw('validation-error')
+      return
 
 
     it 'Organizations insert not logged in', (done) ->
@@ -56,14 +57,14 @@ describe 'Organizations Full App Tests Client', () ->
           first_name: faker.name.firstName()
           last_name: faker.name.lastName()
 
-
       Accounts.createUser doc, (error) ->
         expect(error).not.to.exist
         done()
+        return
+      return
 
 
     it 'Organizations insert validation success', (done) ->
-
       expect(Meteor.user()).to.exist
 
       organ_doc =
@@ -73,6 +74,8 @@ describe 'Organizations Full App Tests Client', () ->
       insert.call organ_doc, (err, res) ->
         expect(err).to.not.exist
         done()
+        return
+      return
 
     it 'Organizations insert second', (done) ->
       expect(Meteor.user()).to.exist
@@ -84,6 +87,8 @@ describe 'Organizations Full App Tests Client', () ->
       insert.call organ_doc, (err, res) ->
         expect(err).to.not.exist
         done()
+        return
+      return
 
     it 'Organizations insert third', (done) ->
       expect(Meteor.user()).to.exist
@@ -95,6 +100,8 @@ describe 'Organizations Full App Tests Client', () ->
       insert.call organ_doc, (err, res) ->
         expect(err).to.not.exist
         done()
+        return
+      return
 
     it 'Organizations selected method doesnt belong', (done) ->
       expect(Meteor.user()).to.exist
@@ -105,6 +112,8 @@ describe 'Organizations Full App Tests Client', () ->
       select.call select_doc, (err, res) ->
         expect(err).to.have.property('error', 'notAuthorized');
         done()
+        return
+      return
 
     it 'Organizations selected method belongs', (done) ->
       expect(Meteor.user()).to.exist
@@ -114,8 +123,10 @@ describe 'Organizations Full App Tests Client', () ->
       select.call select_doc, (err, res) ->
         expect(err).to.not.exist
         done()
+        return
+      return
 
-    it 'Organizations selected method different  belongs', (done) ->
+    it 'Organizations selected method different belongs', (done) ->
       expect(Meteor.user()).to.exist
       select_doc =
         organization_id: Meteor.user().organizations[1].organization_id
@@ -123,3 +134,5 @@ describe 'Organizations Full App Tests Client', () ->
       select.call select_doc, (err, res) ->
         expect(err).to.not.exist
         done()
+        return
+      return

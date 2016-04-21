@@ -6,20 +6,23 @@ faker = require 'faker'
 { resetDatabase } = require 'meteor/xolvio:cleaner'
 { _ } = require 'meteor/underscore'
 
+{ inviteUser } = require '../../imports/api/collections/users/methods.coffee'
 require '../../imports/api/collections/users/users.coffee'
-{ insert } = require '../../imports/api/collections/organizations/methods.coffee'
+
 
 describe 'User Full App Tests Client', () ->
   before( (done) ->
     Meteor.logout( (err) ->
       done()
     )
+    return
   )
 
   after( (done) ->
     Meteor.logout( (err) ->
       done()
     )
+    return
   )
 
   describe 'User sign up flow', () ->
@@ -34,6 +37,8 @@ describe 'User Full App Tests Client', () ->
       Accounts.createUser doc, (err) ->
         expect(err).to.have.property('error', 'validation-error');
         done()
+        return
+      return
 
     it 'User simple schema success validations', (done) ->
 
@@ -48,3 +53,10 @@ describe 'User Full App Tests Client', () ->
       Accounts.createUser doc, (error) ->
         expect(error).to.not.exist
         done()
+        return
+      return
+
+    it 'Invite nonexistent user to new organization', (done) ->
+
+
+      done()

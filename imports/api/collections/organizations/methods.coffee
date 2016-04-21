@@ -15,9 +15,45 @@ OrganizationModule = require './organizations.coffee'
 
 ###
 
+
 isLoggedIn = (userId) ->
   unless userId?
     throw new Meteor.Error 'notLoggedIn', 'Must be logged in'
+
+  return true
+
+selectOrganization = (user, organization_id) ->
+
+  for user_organ in user.organizations
+    user_organ.selected = false
+    if user_organ.organization_id == organization_id
+      user_organ.selected = true
+      belongs = true
+
+  if belongs?
+    return user
+  else
+    throw new Meteor.Error 'notAuthorized', 'User does not belong to this organization'
+
+addNewOrganization = (user, organization_id) ->
+
+  for user_organ in user.organizations
+    user_organ.selected = false
+
+  organschema_doc =
+    organization_id: organization_id
+    permission:
+        owner: true
+        editor: true
+        expanses_manager: true
+        sells_manager: true
+        units_manager: true
+        inventories_manager: true
+        users_manager: true
+    selected: true
+
+  user.organizations.push organschema_doc
+  user
 
 
 # Insert
@@ -26,27 +62,8 @@ module.exports.insert = new ValidatedMethod
   validate: OrganizationModule.Organizations.simpleSchema().validator()
   run: (organization_doc) ->
     isLoggedIn(@userId)
-
     organization_id = OrganizationModule.Organizations.insert organization_doc
-
-    # Refactor this code
-    user = Meteor.user()
-    for user_organ in user.organizations
-      user_organ.selected = false
-
-    organschema_doc =
-      organization_id: organization_id
-      permission:
-          owner: true
-          editor: true
-          expanses_manager: true
-          sells_manager: true
-          units_manager: true
-          inventories_manager: true
-          users_manager: true
-      selected: true
-
-    user.organizations.push organschema_doc
+    user = addNewOrganization Meteor.users.findOne(_id: @userId), organization_id
     Meteor.users.update @userId, $set: organizations: user.organizations
 
 
@@ -56,18 +73,9 @@ module.exports.select = new ValidatedMethod
   validate: new SimpleSchema(
               organization_id:
                 type: String
+                max: 128
             ).validator()
   run: (selected_doc) ->
     isLoggedIn(@userId)
-    user = Meteor.user()
-    belongs
-    for user_organ in user.organizations
-      user_organ.selected = false
-      if user_organ.organization_id == selected_doc.organization_id
-        user_organ.selected = true
-        belongs = true
-
-    unless belongs?
-      throw new Meteor.Error 'notAuthorized', 'User does not belong to this organization'
-
+    user = selectOrganization Meteor.users.findOne(_id: @userId), selected_doc.organization_id
     Meteor.users.update @userId, $set: organizations: user.organizations
