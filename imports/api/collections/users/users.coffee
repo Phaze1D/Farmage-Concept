@@ -158,6 +158,7 @@ UserSchema =
       optional: true
       defaultValue: []
       minCount: 0
+      maxCount: 10
 
   , CreateByUserSchema, TimestampSchema])
 

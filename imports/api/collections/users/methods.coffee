@@ -23,8 +23,8 @@ require './users.coffee'
 
 ###
 
-isLoggedIn = (userId) ->
-  unless userId?
+isLoggedIn = (currentUserId) ->
+  unless currentUserId?
     throw new Meteor.Error 'notLoggedIn', 'Must be logged in'
 
 
@@ -77,3 +77,10 @@ module.exports.inviteUser = new ValidatedMethod
       else
         new_user = createNewUser(invited_user_doc)
         sendInvitationEmailWithPasswordLink(new_user)
+
+
+# Update Profile
+
+# Update Organization Permissons
+
+# Remove Organization

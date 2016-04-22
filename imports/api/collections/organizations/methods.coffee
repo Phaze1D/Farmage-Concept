@@ -50,7 +50,7 @@ addNewOrganization = (user, organization_id) ->
         units_manager: true
         inventories_manager: true
         users_manager: true
-    selected: true
+    selected: false
 
   user.organizations.push organschema_doc
   user
@@ -64,10 +64,10 @@ module.exports.insert = new ValidatedMethod
     isLoggedIn(@userId)
     organization_id = OrganizationModule.Organizations.insert organization_doc
     user = addNewOrganization Meteor.users.findOne(_id: @userId), organization_id
-    Meteor.users.update @userId, $set: organizations: user.organizations
+    Meteor.users.update @userId, $set: organizations: user.organizations # Move this line inside addNewOrganization
 
 
-# Select Organization
+# Select Organization ( Move to User methods )
 module.exports.select = new ValidatedMethod
   name: 'organization.select'
   validate: new SimpleSchema(
