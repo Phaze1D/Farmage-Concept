@@ -26,7 +26,7 @@ describe 'Organizations Full App Tests Client', () ->
     return
   )
 
-  describe 'Organizations creation', () ->
+  describe 'Organizations Insert Method', () ->
 
     it 'Organization insert failed validation', () ->
       expect(Meteor.user()).to.not.exist
@@ -102,6 +102,8 @@ describe 'Organizations Full App Tests Client', () ->
         done()
         return
       return
+
+  describe 'Organizations Select Method', ->
 
     it 'Organizations selected method doesnt belong', (done) ->
       expect(Meteor.user()).to.exist

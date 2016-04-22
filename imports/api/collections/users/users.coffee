@@ -33,6 +33,7 @@ UserProfileSchema =
       type: String
       label: 'last_name'
       max: 64
+      optional: true
 
     user_avatar_url:
       type: String
@@ -55,36 +56,43 @@ PermissionSchema =
   new SimpleSchema(
     owner:
       type: Boolean
+      optional: true
       defaultValue: false
 
 
     editor:
       type: Boolean
+      optional: true
       defaultValue: false
 
 
     expanses_manager:
       type: Boolean
+      optional: true
       defaultValue: false
 
 
     sells_manager:
       type: Boolean
+      optional: true
       defaultValue: false
 
 
     units_manager:
       type: Boolean
+      optional: true
       defaultValue: false
 
 
     inventories_manager:
       type: Boolean
+      optional: true
       defaultValue: false
 
 
     users_manager:
       type: Boolean
+      optional: true
       defaultValue: false
 
   )
@@ -133,9 +141,12 @@ UserSchema =
 
     "emails.$.verified":
         type: Boolean
+        optional: true
+        defaultValue: false
 
     profile:
       type: UserProfileSchema
+
 
     services:
         type: Object
