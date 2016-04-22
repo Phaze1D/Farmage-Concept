@@ -63,15 +63,29 @@ describe 'Organizations Full App Tests Client', () ->
         return
       return
 
-
+    sharedName = faker.company.companyName()
     it 'Organizations insert validation success', (done) ->
       expect(Meteor.user()).to.exist
 
       organ_doc =
-        name: faker.company.companyName()
+        name: sharedName
         email: faker.internet.email()
 
       insert.call organ_doc, (err, res) ->
+        expect(err).to.not.exist
+        done()
+        return
+      return
+
+    it 'Organizations insert validation unqiue name should fail', (done) ->
+      expect(Meteor.user()).to.exist
+
+      organ_doc =
+        name: sharedName
+        email: faker.internet.email()
+
+      insert.call organ_doc, (err, res) ->
+        console.log err
         expect(err).to.not.exist
         done()
         return

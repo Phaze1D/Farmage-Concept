@@ -58,7 +58,7 @@ sendInvitationEmailWithPasswordLink = (user) ->
   Accounts.sendEnrollmentEmail(user._id)
 
 
-# Invite User to organization ( Can't trust client side organization_id )
+# Invite User to organization
 module.exports.inviteUser = new ValidatedMethod
   name: 'user.inviteUser'
   validate: Meteor.users.simpleSchema().validator()
@@ -68,12 +68,12 @@ module.exports.inviteUser = new ValidatedMethod
 
     if Meteor.isServer
       @unblock()
-      user = Accounts.findUserByEmail invited_user_doc.emails[0].address
+      invited_user = Accounts.findUserByEmail invited_user_doc.emails[0].address
 
-      if user?
-        user.organizations.push invited_user_doc.organizations[0]
-        Meteor.users.update user._id, $set: organizations: user.organizations
-        sendInvitationEmail(user)
+      if invited_user?
+        invited_user.organizations.push invited_user_doc.organizations[0]
+        Meteor.users.update invited_user._id, $set: organizations: invited_user.organizations
+        sendInvitationEmail(invited_user)
       else
         new_user = createNewUser(invited_user_doc)
         sendInvitationEmailWithPasswordLink(new_user)

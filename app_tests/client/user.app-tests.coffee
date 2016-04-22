@@ -11,8 +11,9 @@ faker = require 'faker'
 
 require '../../imports/api/collections/users/users.coffee'
 
-# MIssing login user test
-describe 'User Full App Tests Client', () ->
+xdescribe 'User Full App Tests Client', () ->
+
+
   before( (done) ->
     Meteor.logout( (err) ->
       done()
@@ -63,9 +64,29 @@ describe 'User Full App Tests Client', () ->
 
       Accounts.createUser doc, (error) ->
         expect(error).to.not.exist
+        Meteor.logout( (err) ->
+          done()
+        )
+        return
+      return
+
+    it 'User simple schema duplicate emails', (done) ->
+
+      expect(Meteor.user()).to.not.exist
+      doc =
+        email: sharedEmail
+        password: '123123123'
+        profile:
+          first_name: faker.name.firstName()
+          last_name: faker.name.lastName()
+
+      Accounts.createUser doc, (error) ->
+        expect(error).to.have.property('reason', 'Email already exists.')
         done()
         return
       return
+
+
 
   describe 'Invite user to organization', ->
 
@@ -197,6 +218,7 @@ describe 'User Full App Tests Client', () ->
           last_name: faker.name.lastName()
 
       Accounts.createUser doc, (error) ->
+        console.log error
         Meteor.logout( (err) ->
           done()
         )

@@ -23,7 +23,6 @@ isLoggedIn = (userId) ->
   return true
 
 selectOrganization = (user, organization_id) ->
-
   for user_organ in user.organizations
     user_organ.selected = false
     if user_organ.organization_id == organization_id
@@ -36,7 +35,6 @@ selectOrganization = (user, organization_id) ->
     throw new Meteor.Error 'notAuthorized', 'User does not belong to this organization'
 
 addNewOrganization = (user, organization_id) ->
-
   for user_organ in user.organizations
     user_organ.selected = false
 
@@ -53,7 +51,7 @@ addNewOrganization = (user, organization_id) ->
     selected: false
 
   user.organizations.push organschema_doc
-  user
+  Meteor.users.update user._id, $set: organizations: user.organizations
 
 
 # Insert
@@ -63,8 +61,8 @@ module.exports.insert = new ValidatedMethod
   run: (organization_doc) ->
     isLoggedIn(@userId)
     organization_id = OrganizationModule.Organizations.insert organization_doc
-    user = addNewOrganization Meteor.users.findOne(_id: @userId), organization_id
-    Meteor.users.update @userId, $set: organizations: user.organizations # Move this line inside addNewOrganization
+    addNewOrganization Meteor.users.findOne(_id: @userId), organization_id
+
 
 
 # Select Organization ( Move to User methods )
