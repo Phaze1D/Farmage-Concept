@@ -5,6 +5,7 @@
 { Accounts } = require 'meteor/accounts-base'
 
 { Organizations } = require '../organizations/organizations.coffee'
+{ loggedIn } = require '../../mixins/loggedIn.coffee'
 
 
 if Meteor.isServer
@@ -22,12 +23,6 @@ if Meteor.isServer
 
 ###
 
-# Create Mixin
-isLoggedIn = (currentUserId) ->
-  unless currentUserId?
-    throw new Meteor.Error 'notLoggedIn', 'Must be logged in'
-
-
 
 # Invite User to organization
 module.exports.inviteUser = new ValidatedMethod
@@ -40,9 +35,10 @@ module.exports.inviteUser = new ValidatedMethod
     unless permission?
       throw new Meteor.Error 'invalidArgs', 'invalid arguments'
 
+  mixins: [loggedIn]
+
   run: ({invited_user_doc, organization_id, permission}) ->
     @unblock()
-    isLoggedIn(@userId)
 
     unless @isSimulation
       organization = SMC.userOwnsOrganization(Meteor.users.findOne(_id: @userId), organization_id)

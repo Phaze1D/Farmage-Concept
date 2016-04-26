@@ -4,6 +4,7 @@
 { DDPRateLimiter }  = require  'meteor/ddp-rate-limiter'
 
 OrganizationModule = require './organizations.coffee'
+{ loggedIn } = require '../../mixins/loggedIn.coffee'
 
 
 ###
@@ -16,12 +17,6 @@ OrganizationModule = require './organizations.coffee'
 
 ###
 
-# Create Mixin
-isLoggedIn = (userId) ->
-  unless userId?
-    throw new Meteor.Error 'notLoggedIn', 'Must be logged in'
-  return true
-
 
 # Insert
 module.exports.insert = new ValidatedMethod
@@ -31,6 +26,7 @@ module.exports.insert = new ValidatedMethod
       throw new Meteor.Error 'nameNotUnqiue', 'name must be unqiue'
     OrganizationModule.Organizations.simpleSchema().validate(organization_doc)
 
+  mixins: [loggedIn]
+
   run: (organization_doc) ->
-    isLoggedIn(@userId)
     OrganizationModule.Organizations.insert organization_doc
