@@ -100,7 +100,7 @@ describe 'User Full App Tests Client', () ->
     it 'Invite nonexistent user to new organization not logged in', (done) ->
       expect(Meteor.user()).to.not.exist
 
-      user_doc =
+      invited_user_doc =
         emails:
           [
             address: faker.internet.email()
@@ -114,7 +114,7 @@ describe 'User Full App Tests Client', () ->
         units_manager: true
 
       expect ->
-        inviteUser.call {user_doc, organization_id, permission}
+        inviteUser.call {invited_user_doc, organization_id, permission}
       .to.Throw('notLoggedIn')
 
       doc =
@@ -133,7 +133,7 @@ describe 'User Full App Tests Client', () ->
     it 'Invite nonexistent user to new organization not Auth', (done) ->
       expect(Meteor.user()).to.exist
 
-      user_doc =
+      invited_user_doc =
         emails:
           [
             address: faker.internet.email()
@@ -146,7 +146,7 @@ describe 'User Full App Tests Client', () ->
       permission =
         units_manager: true
 
-      inviteUser.call {user_doc, organization_id, permission}, (err, res) ->
+      inviteUser.call {invited_user_doc , organization_id, permission}, (err, res) ->
         expect(err).to.have.property('error', 'notAuthorized');
         done()
 
@@ -167,7 +167,7 @@ describe 'User Full App Tests Client', () ->
 
       shared_organization = Organizations.findOne()._id
 
-      user_doc =
+      invited_user_doc =
         emails:
           [
             address: faker.internet.email()
@@ -180,7 +180,7 @@ describe 'User Full App Tests Client', () ->
       permission =
         units_manager: true
 
-      inviteUser.call {user_doc, organization_id, permission}, (err, res) ->
+      inviteUser.call {invited_user_doc, organization_id, permission}, (err, res) ->
         expect(err).to.not.exist
         done()
 
@@ -190,7 +190,7 @@ describe 'User Full App Tests Client', () ->
     it 'Invite existent user to organization' , (done) ->
       expect(Meteor.user()).to.exist
 
-      user_doc =
+      invited_user_doc =
         emails:
           [
             address: sharedEmail
@@ -203,7 +203,7 @@ describe 'User Full App Tests Client', () ->
       permission =
         units_manager: true
 
-      inviteUser.call {user_doc, organization_id, permission}, (err, res) ->
+      inviteUser.call {invited_user_doc, organization_id, permission}, (err, res) ->
         expect(err).to.not.exist
         done()
 

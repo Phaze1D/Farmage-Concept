@@ -3,11 +3,11 @@
 { SSR } = require 'meteor/meteorhacks:ssr'
 
 
+
 # User Accounts
 Accounts.validateNewUser (user) ->
   Meteor.users.simpleSchema().validate(user)
   return true
-
 
 # Compiling User emails
 SSR.compileTemplate('enrollmentInvite', Assets.getText('emails/enrollment_invite.html'))
@@ -18,9 +18,7 @@ Accounts.emailTemplates.siteName = 'SA Units'
 Accounts.emailTemplates.from = 'SA Units <steadypathapp@gmail.com>'
 Accounts.emailTemplates.enrollAccount.subject = (user) ->
   'Invited to new SA Unit Organization'
-
 Accounts.emailTemplates.enrollAccount.text = (user, url) ->
   ''
-
 Accounts.emailTemplates.enrollAccount.html = (user, url, organization) ->
   SSR.render('enrollmentInvite', { user: user, organization: organization, url: url })

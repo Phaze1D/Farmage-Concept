@@ -1,5 +1,5 @@
 # Server Side Logic
-require '../../api/collections/users/server/code.coffee'
+require './startup_code.coffee'
 
 
 # Methods
