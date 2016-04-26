@@ -22,6 +22,7 @@ if Meteor.isServer
 
 ###
 
+# Create Mixin
 isLoggedIn = (currentUserId) ->
   unless currentUserId?
     throw new Meteor.Error 'notLoggedIn', 'Must be logged in'

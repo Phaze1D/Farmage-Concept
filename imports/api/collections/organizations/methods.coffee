@@ -16,12 +16,11 @@ OrganizationModule = require './organizations.coffee'
 
 ###
 
+# Create Mixin
 isLoggedIn = (userId) ->
   unless userId?
     throw new Meteor.Error 'notLoggedIn', 'Must be logged in'
-
   return true
-
 
 
 # Insert
