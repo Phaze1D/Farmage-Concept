@@ -5,6 +5,7 @@
 
 OrganizationModule = require './organizations.coffee'
 
+
 ###
 
   Methods checklist
@@ -15,65 +16,22 @@ OrganizationModule = require './organizations.coffee'
 
 ###
 
-
 isLoggedIn = (userId) ->
   unless userId?
     throw new Meteor.Error 'notLoggedIn', 'Must be logged in'
 
   return true
 
-selectOrganization = (user, organization_id) ->
-  for user_organ in user.organizations
-    user_organ.selected = false
-    if user_organ.organization_id == organization_id
-      user_organ.selected = true
-      belongs = true
-
-  if belongs?
-    return user
-  else
-    throw new Meteor.Error 'notAuthorized', 'User does not belong to this organization'
-
-addNewOrganization = (user, organization_id) ->
-  for user_organ in user.organizations
-    user_organ.selected = false
-
-  organschema_doc =
-    organization_id: organization_id
-    permission:
-        owner: true
-        editor: true
-        expanses_manager: true
-        sells_manager: true
-        units_manager: true
-        inventories_manager: true
-        users_manager: true
-    selected: false
-
-  user.organizations.push organschema_doc
-  Meteor.users.update user._id, $set: organizations: user.organizations
 
 
 # Insert
 module.exports.insert = new ValidatedMethod
   name: 'organization.insert'
-  validate: OrganizationModule.Organizations.simpleSchema().validator()
+  validate: (organization_doc) ->
+    if OrganizationModule.Organizations.findOne(name: organization_doc.name)?
+      throw new Meteor.Error 'nameNotUnqiue', 'name must be unqiue'
+    OrganizationModule.Organizations.simpleSchema().validate(organization_doc)
+
   run: (organization_doc) ->
     isLoggedIn(@userId)
-    organization_id = OrganizationModule.Organizations.insert organization_doc
-    addNewOrganization Meteor.users.findOne(_id: @userId), organization_id
-
-
-
-# Select Organization ( Move to User methods )
-module.exports.select = new ValidatedMethod
-  name: 'organization.select'
-  validate: new SimpleSchema(
-              organization_id:
-                type: String
-                max: 128
-            ).validator()
-  run: (selected_doc) ->
-    isLoggedIn(@userId)
-    user = selectOrganization Meteor.users.findOne(_id: @userId), selected_doc.organization_id
-    Meteor.users.update @userId, $set: organizations: user.organizations
+    OrganizationModule.Organizations.insert organization_doc

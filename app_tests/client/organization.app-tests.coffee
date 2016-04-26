@@ -6,9 +6,7 @@ faker = require 'faker'
 { resetDatabase } = require 'meteor/xolvio:cleaner'
 { _ } = require 'meteor/underscore'
 
-require '../../imports/api/collections/users/users.coffee'
-{ Organizations } =  require '../../imports/api/collections/organizations/organizations.coffee'
-{ insert, select } = require '../../imports/api/collections/organizations/methods.coffee'
+{ insert } = require '../../imports/api/collections/organizations/methods.coffee'
 
 describe 'Organizations Full App Tests Client', () ->
 
@@ -72,6 +70,7 @@ describe 'Organizations Full App Tests Client', () ->
         email: faker.internet.email()
 
       insert.call organ_doc, (err, res) ->
+
         expect(err).to.not.exist
         done()
         return
@@ -85,8 +84,7 @@ describe 'Organizations Full App Tests Client', () ->
         email: faker.internet.email()
 
       insert.call organ_doc, (err, res) ->
-        console.log err
-        expect(err).to.not.exist
+        expect(err).to.have.property('error', 'nameNotUnqiue')
         done()
         return
       return
@@ -112,43 +110,9 @@ describe 'Organizations Full App Tests Client', () ->
         email: faker.internet.email()
 
       insert.call organ_doc, (err, res) ->
+
         expect(err).to.not.exist
-        done()
-        return
-      return
 
-  describe 'Organizations Select Method', ->
-
-    it 'Organizations selected method doesnt belong', (done) ->
-      expect(Meteor.user()).to.exist
-
-      select_doc =
-        organization_id: 'NONONONO'
-
-      select.call select_doc, (err, res) ->
-        expect(err).to.have.property('error', 'notAuthorized');
-        done()
-        return
-      return
-
-    it 'Organizations selected method belongs', (done) ->
-      expect(Meteor.user()).to.exist
-      select_doc =
-        organization_id: Meteor.user().organizations[0].organization_id
-
-      select.call select_doc, (err, res) ->
-        expect(err).to.not.exist
-        done()
-        return
-      return
-
-    it 'Organizations selected method different belongs', (done) ->
-      expect(Meteor.user()).to.exist
-      select_doc =
-        organization_id: Meteor.user().organizations[1].organization_id
-
-      select.call select_doc, (err, res) ->
-        expect(err).to.not.exist
         done()
         return
       return

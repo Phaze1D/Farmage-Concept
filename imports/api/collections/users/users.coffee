@@ -52,70 +52,6 @@ UserProfileSchema =
       maxCount: 5
    ])
 
-PermissionSchema =
-  new SimpleSchema(
-    owner:
-      type: Boolean
-      optional: true
-      defaultValue: false
-
-
-    editor:
-      type: Boolean
-      optional: true
-      defaultValue: false
-
-
-    expanses_manager:
-      type: Boolean
-      optional: true
-      defaultValue: false
-
-
-    sells_manager:
-      type: Boolean
-      optional: true
-      defaultValue: false
-
-
-    units_manager:
-      type: Boolean
-      optional: true
-      defaultValue: false
-
-
-    inventories_manager:
-      type: Boolean
-      optional: true
-      defaultValue: false
-
-
-    users_manager:
-      type: Boolean
-      optional: true
-      defaultValue: false
-
-  )
-
-OrganizationsSchema =
-  new SimpleSchema([
-
-    organization_id:
-      type: String
-      index: true
-
-    permission:
-      type: PermissionSchema
-      optional: true
-      label: 'permissons'
-
-    selected:
-      type: Boolean
-      defaultValue: false
-      optional: true
-
-  ])
-
 UserSchema =
   new SimpleSchema([
 
@@ -147,18 +83,10 @@ UserSchema =
     profile:
       type: UserProfileSchema
 
-
     services:
         type: Object
         optional: true
         blackbox: true
-
-    organizations:
-      type: [OrganizationsSchema]
-      optional: true
-      defaultValue: []
-      minCount: 0
-      maxCount: 10
 
   , CreateByUserSchema, TimestampSchema])
 
@@ -195,6 +123,5 @@ Meteor.users.helpers
     Meteor.users.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
   yields: ->
     YieldModule.Yields.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
-  organizations_as: ->
-    id_array = ( organization_item.organization_id for organization_item in @organizations )
-    OrganizationModule.Organizations.find { _id: $in: id_array }
+  organizations: ->
+    OrganizationModule.Organizations.find { user_ids: $elemMatch: user_id: @_id }

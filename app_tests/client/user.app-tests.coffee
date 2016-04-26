@@ -6,13 +6,13 @@ faker = require 'faker'
 { resetDatabase } = require 'meteor/xolvio:cleaner'
 { _ } = require 'meteor/underscore'
 
+{ Organizations } =  require '../../imports/api/collections/organizations/organizations.coffee'
+
 { inviteUser } = require '../../imports/api/collections/users/methods.coffee'
-{ insert, select } = require '../../imports/api/collections/organizations/methods.coffee'
+{ insert } = require '../../imports/api/collections/organizations/methods.coffee'
 
-require '../../imports/api/collections/users/users.coffee'
 
-xdescribe 'User Full App Tests Client', () ->
-
+describe 'User Full App Tests Client', () ->
 
   before( (done) ->
     Meteor.logout( (err) ->
@@ -107,15 +107,14 @@ xdescribe 'User Full App Tests Client', () ->
           ]
         profile:
           first_name: faker.name.firstName()
-        organizations:
-          [
-            organization_id: 'Dont Own'
-            permission:
-              units_manager: true
-          ]
+
+      organization_id = 'Dont Own'
+
+      permission =
+        units_manager: true
 
       expect ->
-        inviteUser.call user_doc
+        inviteUser.call {user_doc, organization_id, permission}
       .to.Throw('notLoggedIn')
 
       doc =
@@ -141,20 +140,20 @@ xdescribe 'User Full App Tests Client', () ->
           ]
         profile:
           first_name: faker.name.firstName()
-        organizations:
-          [
-            organization_id: 'Dont Own'
-            permission:
-              units_manager: true
-          ]
 
-      inviteUser.call user_doc, (err, res) ->
+      organization_id = 'AijWjNwoih4aB7mLK'
+
+      permission =
+        units_manager: true
+
+      inviteUser.call {user_doc, organization_id, permission}, (err, res) ->
         expect(err).to.have.property('error', 'notAuthorized');
         done()
 
       return
 
 
+    shared_organization =
     it 'Invite nonexistent user to new organization', (done) ->
       expect(Meteor.user()).to.exist
 
@@ -166,6 +165,8 @@ xdescribe 'User Full App Tests Client', () ->
         expect(err).to.not.exist
         return
 
+      shared_organization = Organizations.findOne()._id
+
       user_doc =
         emails:
           [
@@ -173,21 +174,21 @@ xdescribe 'User Full App Tests Client', () ->
           ]
         profile:
           first_name: faker.name.firstName()
-        organizations:
-          [
-            organization_id: Meteor.user().organizations[0].organization_id
-            permission:
-              units_manager: true
-          ]
 
-      inviteUser.call user_doc, (err, res) ->
+      organization_id = shared_organization
+
+      permission =
+        units_manager: true
+
+      inviteUser.call {user_doc, organization_id, permission}, (err, res) ->
+        expect(err).to.not.exist
         done()
+
 
       return
 
     it 'Invite existent user to organization' , (done) ->
       expect(Meteor.user()).to.exist
-      expect(Meteor.user().organizations.length).to.be.at.least(1)
 
       user_doc =
         emails:
@@ -196,18 +197,20 @@ xdescribe 'User Full App Tests Client', () ->
           ]
         profile:
           first_name: faker.name.firstName()
-        organizations:
-          [
-            organization_id: Meteor.user().organizations[0].organization_id
-            permission:
-              units_manager: true
-          ]
 
-      inviteUser.call user_doc, (err, res) ->
+      organization_id = shared_organization
+
+      permission =
+        units_manager: true
+
+      inviteUser.call {user_doc, organization_id, permission}, (err, res) ->
         expect(err).to.not.exist
         done()
 
-  describe 'User Login flow', ->
+
+
+
+  xdescribe 'User Login flow', ->
 
     before( (done) ->
       doc =

@@ -1,20 +1,12 @@
 { Meteor } = require 'meteor/meteor'
 { Accounts } = require 'meteor/accounts-base'
 { SSR } = require 'meteor/meteorhacks:ssr'
-{ Organizations } = require '../../organizations/organizations.coffee'
-
-require '../users.coffee'
 
 
 # User Accounts
 Accounts.validateNewUser (user) ->
   Meteor.users.simpleSchema().validate(user)
   return true
-
-Accounts.onCreateUser (options, user) ->
-  user.organizations = []
-  user.profile = options.profile
-  return user
 
 
 # Compiling User emails
@@ -30,6 +22,5 @@ Accounts.emailTemplates.enrollAccount.subject = (user) ->
 Accounts.emailTemplates.enrollAccount.text = (user, url) ->
   ''
 
-Accounts.emailTemplates.enrollAccount.html = (user, url) ->
-  organ = Organizations.findOne(user.organizations[0].organization_id)
-  SSR.render('enrollmentInvite', { user: user, organization: organ, url: url })
+Accounts.emailTemplates.enrollAccount.html = (user, url, organization) ->
+  SSR.render('enrollmentInvite', { user: user, organization: organization, url: url })
