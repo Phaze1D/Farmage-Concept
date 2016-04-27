@@ -124,4 +124,4 @@ Meteor.users.helpers
   yields: ->
     YieldModule.Yields.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
   organizations: ->
-    OrganizationModule.Organizations.find { user_ids: $elemMatch: user_id: @_id }
+    OrganizationModule.Organizations.find { ousers: $elemMatch: user_id: @_id } # careful

@@ -9,9 +9,8 @@ OrganizationModule  = require '../../organizations/organizations.coffee'
 # Secert Method Code
 exports.SMC =
 
-  createInvitedUser: (user_doc, organization_id, permission) ->
+  createInvitedUser: (user_doc) ->
     new_user_id = Accounts.createUser(email: user_doc.emails[0].address, profile: user_doc.profile)
-    OrganizationModule.Organizations.update(_id: organization_id, { $addToSet: user_ids: {user_id: new_user_id, permission: permission}})
     Meteor.users.findOne(_id: new_user_id)
 
   # Simple invitational email linking to the organization site

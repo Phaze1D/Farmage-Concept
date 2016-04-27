@@ -12,7 +12,7 @@ faker = require 'faker'
 { insert } = require '../../imports/api/collections/organizations/methods.coffee'
 
 
-xdescribe 'User Full App Tests Client', () ->
+describe 'User Full App Tests Client', () ->
 
   before( (done) ->
     Meteor.logout( (err) ->
@@ -112,7 +112,14 @@ xdescribe 'User Full App Tests Client', () ->
       organization_id = 'Dont Own'
 
       permission =
-        units_manager: true
+        owner: false
+        editor: false
+        expanses_manager: false
+        sells_manager: false
+        units_manager: false
+        inventories_manager: true
+        users_manager: false
+
 
       expect ->
         inviteUser.call {invited_user_doc, organization_id, permission}
@@ -145,7 +152,13 @@ xdescribe 'User Full App Tests Client', () ->
       organization_id = 'AijWjNwoih4aB7mLK'
 
       permission =
-        units_manager: true
+          owner: false
+          editor: false
+          expanses_manager: false
+          sells_manager: false
+          units_manager: false
+          inventories_manager: true
+          users_manager: false
 
       inviteUser.call {invited_user_doc , organization_id, permission}, (err, res) ->
         expect(err).to.have.property('error', 'notAuthorized');
@@ -179,7 +192,13 @@ xdescribe 'User Full App Tests Client', () ->
       organization_id = shared_organization
 
       permission =
-        units_manager: true
+        owner: false
+        editor: false
+        expanses_manager: false
+        sells_manager: false
+        units_manager: false
+        inventories_manager: true
+        users_manager: false
 
       currentUser = Meteor.userId()
 
@@ -205,7 +224,13 @@ xdescribe 'User Full App Tests Client', () ->
       organization_id = shared_organization
 
       permission =
-        units_manager: true
+        owner: false
+        editor: false
+        expanses_manager: false
+        sells_manager: false
+        units_manager: false
+        inventories_manager: true
+        users_manager: false
 
       inviteUser.call {invited_user_doc, organization_id, permission}, (err, res) ->
         expect(err).to.not.exist
@@ -226,7 +251,13 @@ xdescribe 'User Full App Tests Client', () ->
         organization_id = shared_organization
 
         permission =
-          units_manager: true
+          owner: false
+          editor: false
+          expanses_manager: false
+          sells_manager: false
+          units_manager: false
+          inventories_manager: true
+          users_manager: false
 
         inviteUser.call {invited_user_doc, organization_id, permission}, (err, res) ->
           expect(err).to.have.property('error','notOwner')

@@ -28,47 +28,40 @@ class OrganizationsCollection extends Mongo.Collection
     super(selector, callback)
 
 
-PermissionSchema =
+PermissionSchema = exports.PermissionSchema =
   new SimpleSchema(
     owner:
       type: Boolean
-      optional: true
       defaultValue: false
 
 
     editor:
       type: Boolean
-      optional: true
       defaultValue: false
 
 
     expanses_manager:
       type: Boolean
-      optional: true
       defaultValue: false
 
 
     sells_manager:
       type: Boolean
-      optional: true
       defaultValue: false
 
 
     units_manager:
       type: Boolean
-      optional: true
       defaultValue: false
 
 
     inventories_manager:
       type: Boolean
-      optional: true
       defaultValue: false
 
 
     users_manager:
       type: Boolean
-      optional: true
       defaultValue: false
 
   )
@@ -94,7 +87,7 @@ OrganizationSchema =
       unique: true
       index: true
 
-    user_ids:
+    ousers:
       type: [UsersSchema]
       optional: true
       label: 'users'
@@ -149,7 +142,12 @@ Organizations.helpers
   units: ->
     UnitModule.Units.find { organization_id: @_id }
   users: ->
-    id_array = ( user.user_id for user in @user_ids )
+    id_array = ( user.user_id for user in @ousers )
     Meteor.users.find { _id: $in: id_array }
   yields: ->
     YieldModule.Yields.find { organization_id: @_id }
+  hasUser: (user_id) ->
+    for user in @ousers
+      if user_id is user.user_id
+        return user
+    return

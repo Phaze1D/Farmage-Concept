@@ -21,7 +21,7 @@ describe 'User Full App Tests Server', () ->
     it 'Testing user organizations association', () ->
       Meteor.users.find().forEach (doc) ->
         doc.organizations().forEach (doc2) ->
-          id_array = ( user.user_id for user in doc2.user_ids )
+          id_array = ( user.user_id for user in doc2.ousers )
           expect(doc._id in id_array).to.equal(true)
 
 
@@ -30,7 +30,7 @@ describe 'User Full App Tests Server', () ->
       Meteor.users.find().forEach (doc) ->
         doc.organizations().forEach (doc2) ->
           count = 0
-          for user in doc2.user_ids
+          for user in doc2.ousers
             if user.user_id is doc._id
               count++
           expect(count).to.be.at.most(1)
