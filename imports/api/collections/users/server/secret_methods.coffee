@@ -4,24 +4,15 @@
 { Random } = require 'meteor/random'
 { Email } = require 'meteor/email'
 
-{ Organizations } = require '../../organizations/organizations.coffee'
+OrganizationModule  = require '../../organizations/organizations.coffee'
 
 # Secert Method Code
 exports.SMC =
-  userOwnsOrganization: (user, organization_id) ->
-    organization = Organizations.findOne(_id: organization_id, user_ids: $elemMatch: user_id: user._id)
-    if organization?
-      return organization
-    else
-      throw new Meteor.Error 'notAuthorized', 'Only owners can invite'
-
 
   createInvitedUser: (user_doc, organization_id, permission) ->
     new_user_id = Accounts.createUser(email: user_doc.emails[0].address, profile: user_doc.profile)
-    Organizations.update(_id: organization_id, { $addToSet: user_ids: {user_id: new_user_id, permission: permission}})
+    OrganizationModule.Organizations.update(_id: organization_id, { $addToSet: user_ids: {user_id: new_user_id, permission: permission}})
     Meteor.users.findOne(_id: new_user_id)
-
-
 
   # Simple invitational email linking to the organization site
   sendInvitationEmail: (user, organization) ->

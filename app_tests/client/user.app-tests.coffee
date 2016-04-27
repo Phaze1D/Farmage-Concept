@@ -12,7 +12,7 @@ faker = require 'faker'
 { insert } = require '../../imports/api/collections/organizations/methods.coffee'
 
 
-describe 'User Full App Tests Client', () ->
+xdescribe 'User Full App Tests Client', () ->
 
   before( (done) ->
     Meteor.logout( (err) ->
@@ -57,7 +57,7 @@ describe 'User Full App Tests Client', () ->
       expect(Meteor.user()).to.not.exist
       doc =
         email: sharedEmail
-        password: '123123123'
+        password: '12345678'
         profile:
           first_name: faker.name.firstName()
           last_name: faker.name.lastName()
@@ -99,6 +99,7 @@ describe 'User Full App Tests Client', () ->
 
     it 'Invite nonexistent user to new organization not logged in', (done) ->
       expect(Meteor.user()).to.not.exist
+
 
       invited_user_doc =
         emails:
@@ -180,8 +181,11 @@ describe 'User Full App Tests Client', () ->
       permission =
         units_manager: true
 
+      currentUser = Meteor.userId()
+
       inviteUser.call {invited_user_doc, organization_id, permission}, (err, res) ->
         expect(err).to.not.exist
+        expect(currentUser).to.equal(Meteor.userId())
         done()
 
 
@@ -208,9 +212,29 @@ describe 'User Full App Tests Client', () ->
         done()
 
 
+    it 'Invite without correct permission', (done) ->
+      Meteor.loginWithPassword sharedEmail, '12345678', (err) ->
+        expect(err).to.not.exist
+        invited_user_doc =
+          emails:
+            [
+              address: faker.internet.email()
+            ]
+          profile:
+            first_name: faker.name.firstName()
+
+        organization_id = shared_organization
+
+        permission =
+          units_manager: true
+
+        inviteUser.call {invited_user_doc, organization_id, permission}, (err, res) ->
+          expect(err).to.have.property('error','notOwner')
+          done()
 
 
-  xdescribe 'User Login flow', ->
+
+  describe 'User Login flow', ->
 
     before( (done) ->
       doc =
@@ -221,7 +245,6 @@ describe 'User Full App Tests Client', () ->
           last_name: faker.name.lastName()
 
       Accounts.createUser doc, (error) ->
-        console.log error
         Meteor.logout( (err) ->
           done()
         )

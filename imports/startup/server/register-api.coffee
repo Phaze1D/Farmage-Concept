@@ -8,3 +8,4 @@ require '../../api/collections/users/methods.coffee'
 
 # Publications
 require '../../api/collections/users/server/publications.coffee'
+require '../../api/collections/organizations/server/publications.coffee'

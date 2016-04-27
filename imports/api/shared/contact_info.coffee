@@ -9,29 +9,29 @@ AddressSchema = exports.AddressSchema =
     name:
       type: String
       label: "address_name"
-      max: 45
+      max: 64
       optional: true
 
     street:
       type: String
       label: "street"
-      max: 45
+      max: 64
 
     street2:
       type: String
       label: "street2"
       optional: true
-      max: 45
+      max: 64
 
     city:
       type: String
       label: "city"
-      max: 45
+      max: 64
 
     state:
       type: String
       label: "state"
-      max: 45
+      max: 64
 
     zip_code:
       type: String
@@ -42,7 +42,7 @@ AddressSchema = exports.AddressSchema =
       type: String
       label: "country"
       optional: true
-      max: 45
+      max: 64
   )
 
 TelephoneSchema = exports.TelephoneSchema =
@@ -53,10 +53,10 @@ TelephoneSchema = exports.TelephoneSchema =
       optional: true
       max: 45
 
-    number:
+    number: # Need to add telephone regex validation
       type: String
       label: "telephone"
-      max: 20
+      max: 32
   )
 
 
@@ -74,10 +74,12 @@ exports.ContactSchema =
     addresses:
       type: [AddressSchema]
       optional: true
+      defaultValue: []
       maxCount: 5
 
     telephones:
       type: [TelephoneSchema]
       optional: true
+      defaultValue: []
       maxCount: 5
   )
