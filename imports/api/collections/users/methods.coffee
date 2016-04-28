@@ -5,7 +5,11 @@
 { Accounts } = require 'meteor/accounts-base'
 
 OrganizationModule = require '../organizations/organizations.coffee'
+ContactModule = require '../../shared/contact_info.coffee'
+UsersModule = require './users.coffee'
+
 { loggedIn, ownsOrganization } = require '../../mixins/mixins.coffee'
+
 
 
 if Meteor.isServer
@@ -46,6 +50,7 @@ hasUserManagerPermission = (methodOptions) ->
 
   return methodOptions
 
+
 updateUserBelongsToOrgan = (methodOptions) ->
     RUN = methodOptions.run
     methodOptions.run = () ->
@@ -75,7 +80,7 @@ addUserToOrganization = (user_id, organization, permission) ->
 # ----------- Methods ------------ #
 # Invite User to organization
 module.exports.inviteUser = new ValidatedMethod
-  name: 'user.inviteUser'
+  name: 'users.inviteUser'
   validate: ({invited_user_doc, organization_id, permission}) ->
     Meteor.users.simpleSchema().validate(invited_user_doc)
     OrganizationModule.PermissionSchema.validate(permission)
@@ -96,9 +101,10 @@ module.exports.inviteUser = new ValidatedMethod
         SMC.sendInvitationEmailWithPasswordLink(new_user, new_user.emails[0].address, organization)
 
 
+
 # Update User Organization Permissons
 module.exports.updatePermission = new ValidatedMethod
-  name: 'user.updatePermisson'
+  name: 'users.updatePermisson'
   validate: ({update_user_id, organization_id, permission}) ->
     OrganizationModule.PermissionSchema.validate(permission)
 
@@ -126,14 +132,29 @@ module.exports.updatePermission = new ValidatedMethod
 
 # Remove User from Organization
 module.exports.removeFromOrganization = new ValidatedMethod
-  name: 'user.removeFromOrganization'
+  name: 'users.removeFromOrganization'
   validate: null
   mixins: [updateUserBelongsToOrgan, ownsOrganization, loggedIn]
   run: ({update_user_id, organization_id}) ->
-    # Pervents owners from removing themselves
-    if update_user_id is @userId
-      throw new Meteor.Error 'notAuthorized', 'an owner cannot remove themselves'
+    unless @isSimulation
+      # Pervents owners from removing themselves
+      if update_user_id is @userId
+        throw new Meteor.Error 'notAuthorized', 'an owner cannot remove themselves'
 
-
+      OrganizationModule.Organizations.update _id: organization_id,
+                                              $pull:
+                                                ousers:
+                                                  user_id: update_user_id
 
 # Update Profile
+module.exports.updateProfile = new ValidatedMethod
+  name: 'users.updateProfile'
+  validate: ({profile_doc}) ->
+    UsersModule.UserProfileSchema.validate(profile_doc)
+
+  mixins: [loggedIn]
+
+  run: ({profile_doc}) ->
+    Meteor.users.update @userId,
+                        $set:
+                          profile: profile_doc

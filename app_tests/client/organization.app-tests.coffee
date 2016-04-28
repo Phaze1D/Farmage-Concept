@@ -8,16 +8,12 @@ faker = require 'faker'
 
 {
   insert
-  updateNameAndEmail
-  addAddress
-  deleteAddress
-  addTelephone
-  deleteTelephone
+  updateInfo
 } = require '../../imports/api/collections/organizations/methods.coffee'
 
 { Organizations } = require '../../imports/api/collections/organizations/organizations.coffee'
 
-xdescribe 'Organizations Full App Tests Client', () ->
+describe 'Organizations Full App Tests Client', () ->
 
   before( (done) ->
     Meteor.logout( (err) ->
@@ -129,7 +125,7 @@ xdescribe 'Organizations Full App Tests Client', () ->
 
 
 
-  describe 'Organizations Update Name/Email', () ->
+  describe 'Organizations Update Info', () ->
     organization = ''
 
     before( (done) ->
@@ -150,7 +146,7 @@ xdescribe 'Organizations Full App Tests Client', () ->
         name: faker.company.companyName()
         email: faker.internet.email()
 
-      updateNameAndEmail.call {organization_id, updated_organization_doc}, (err, res) ->
+      updateInfo.call {organization_id, updated_organization_doc}, (err, res) ->
         expect(err).to.have.property('error', 'notAuthorized')
         done()
 
@@ -163,7 +159,7 @@ xdescribe 'Organizations Full App Tests Client', () ->
         name: organization.name
         email: faker.internet.email()
 
-      updateNameAndEmail.call {organization_id, updated_organization_doc}, (err, res) ->
+      updateInfo.call {organization_id, updated_organization_doc}, (err, res) ->
         expect(err).to.not.exist
         done()
 
@@ -205,7 +201,7 @@ xdescribe 'Organizations Full App Tests Client', () ->
         name: organization.name
         email: faker.internet.email()
 
-      updateNameAndEmail.call {organization_id, updated_organization_doc}, (err, res) ->
+      updateInfo.call {organization_id, updated_organization_doc}, (err, res) ->
         expect(err).to.have.property('error', 'nameNotUnique')
         done()
 
@@ -217,170 +213,26 @@ xdescribe 'Organizations Full App Tests Client', () ->
         name: faker.company.companyName()
         email: faker.internet.email()
 
-      updateNameAndEmail.call {organization_id, updated_organization_doc}, (err, res) ->
+      updateInfo.call {organization_id, updated_organization_doc}, (err, res) ->
         expect(err).to.not.exist
         expect(organization2.name).to.not.equal(Organizations.findOne().name)
         expect(organization2.email).to.not.equal(Organizations.findOne().email)
         done()
 
 
-
-  xdescribe 'Organizations add address', () ->
-
-    shared_address_doc =
-      name: 'home'
-      street: faker.address.streetAddress()
-      city: faker.address.city()
-      state: faker.address.state()
-      zip_code: faker.address.zipCode()
-      country: faker.address.country()
-
-    it 'Invalid address', (done) ->
-      organization_id = Organizations.findOne()._id
-
-      address_doc =
-        name: 'home'
-        street2: faker.address.streetAddress()
-        city: faker.address.city()
-        state: faker.address.state()
-        zip_code: faker.address.zipCode()
-        country: faker.address.country()
-
-      addAddress.call {organization_id, address_doc}, (err, res) ->
-        expect(err).to.have.property('error', 'validation-error')
-        done()
-
-    it 'Valid address', (done) ->
-
+    it 'Update organization with telephone', (done) ->
       organization2 = Organizations.findOne()
-      expect(organization2.addresses.length).to.equal(0)
+
       organization_id = organization2._id
+      updated_organization_doc =
+        name: faker.company.companyName()
+        email: faker.internet.email()
+        telephones: [
+          name: "Name"
+          number: faker.phone.phoneNumber()
+        ]
 
-      address_doc = shared_address_doc
-
-      addAddress.call {organization_id, address_doc}, (err, res) ->
+      updateInfo.call {organization_id, updated_organization_doc}, (err, res) ->
         expect(err).to.not.exist
-        expect(Organizations.findOne().addresses.length).to.equal(1)
-        done()
-
-    it 'Duplicate address', (done) ->
-
-      organization2 = Organizations.findOne()
-      expect(organization2.addresses.length).to.equal(1)
-      organization_id = organization2._id
-
-      address_doc = shared_address_doc
-
-      addAddress.call {organization_id, address_doc}, (err, res) ->
-        expect(err).to.not.exist
-        expect(Organizations.findOne().addresses.length).to.equal(1)
-        done()
-
-
-
-  xdescribe 'Organizations remove address', () ->
-
-    it 'Remove nonexistent address', (done) ->
-      organization2 = Organizations.findOne()
-      expect(organization2.addresses.length).to.equal(1)
-      organization_id = organization2._id
-
-      address_doc =
-          name: 'home'
-          street: faker.address.streetAddress()
-          city: faker.address.city()
-          state: faker.address.state()
-          zip_code: faker.address.zipCode()
-          country: faker.address.country()
-
-      deleteAddress.call {organization_id, address_doc}, (err, res) ->
-        expect(err).to.not.exist
-        expect(Organizations.findOne().addresses.length).to.equal(1)
-        done()
-
-    it 'Remove existent address', (done) ->
-      organization2 = Organizations.findOne()
-      expect(organization2.addresses.length).to.equal(1)
-      organization_id = organization2._id
-
-      address_doc = organization2.addresses[0]
-
-      deleteAddress.call {organization_id, address_doc}, (err, res) ->
-        expect(err).to.not.exist
-        expect(Organizations.findOne().addresses.length).to.equal(0)
-        done()
-
-
-
-  xdescribe ' Organizations add telephones', () ->
-
-    shared_telephone =
-      name: 'Home Number'
-      number: faker.phone.phoneNumber()
-
-    it 'Invalid telephone', (done) ->
-      organization_id = Organizations.findOne()._id
-
-      telephone_doc =
-        name: faker.name.firstName()
-        number: 'REallladsfLOngNumberasdThatisnotok'
-
-
-      addTelephone.call {organization_id, telephone_doc}, (err, res) ->
-        expect(err).to.have.property('error', 'validation-error')
-        done()
-
-    it 'Valid telephone', (done) ->
-
-      organization2 = Organizations.findOne()
-      expect(organization2.telephones.length).to.equal(0)
-      organization_id = organization2._id
-
-      telephone_doc = shared_telephone
-
-      addTelephone.call {organization_id, telephone_doc}, (err, res) ->
-        expect(err).to.not.exist
-        expect(Organizations.findOne().telephones.length).to.equal(1)
-        done()
-
-    it 'Duplicate telephones', (done) ->
-
-      organization2 = Organizations.findOne()
-      expect(organization2.telephones.length).to.equal(1)
-      organization_id = organization2._id
-
-      telephone_doc = shared_telephone
-
-      addTelephone.call {organization_id, telephone_doc}, (err, res) ->
-        expect(err).to.not.exist
-        expect(Organizations.findOne().telephones.length).to.equal(1)
-        done()
-
-
-  xdescribe 'Organizations remove telephones', () ->
-
-    it 'Remove nonexistent telephones', (done) ->
-      organization2 = Organizations.findOne()
-      expect(organization2.telephones.length).to.equal(1)
-      organization_id = organization2._id
-
-      telephone_doc =
-        name: faker.name.firstName()
-        number: faker.phone.phoneNumber()
-
-      deleteTelephone.call {organization_id, telephone_doc}, (err, res) ->
-        expect(err).to.not.exist
-        expect(Organizations.findOne().telephones.length).to.equal(1)
-        done()
-
-    it 'Remove existent telephone', (done) ->
-      organization2 = Organizations.findOne()
-      expect(organization2.telephones.length).to.equal(1)
-      organization_id = organization2._id
-
-      telephone_doc = organization2.telephones[0]
-
-      deleteTelephone.call {organization_id, telephone_doc}, (err, res) ->
-        expect(err).to.not.exist
-        expect(Organizations.findOne().telephones.length).to.equal(0)
+        expect(Organizations.findOne().telephones.length).to.be.at.least(1)
         done()

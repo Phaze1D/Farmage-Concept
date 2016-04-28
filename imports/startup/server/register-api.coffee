@@ -1,3 +1,6 @@
+#
+require '../../api/collections/users/users.coffee'
+
 # Server Side Logic
 require './startup_code.coffee'
 

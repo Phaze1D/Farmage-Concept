@@ -21,7 +21,7 @@ YieldModule = require '../yields/yields.coffee'
 OrganizationModule = require '../organizations/organizations.coffee'
 
 
-UserProfileSchema =
+UserProfileSchema = exports.UserProfileSchema =
   new SimpleSchema([
 
     first_name:
@@ -44,11 +44,13 @@ UserProfileSchema =
     addresses:
       type: [ContactModule.AddressSchema]
       optional: true
+      defaultValue: []
       maxCount: 5
 
     telephones:
       type: [ContactModule.TelephoneSchema]
       optional: true
+      defaultValue: []
       maxCount: 5
    ])
 

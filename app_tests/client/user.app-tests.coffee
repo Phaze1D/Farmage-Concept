@@ -8,11 +8,18 @@ faker = require 'faker'
 
 { Organizations } =  require '../../imports/api/collections/organizations/organizations.coffee'
 
-{ inviteUser, updatePermission } = require '../../imports/api/collections/users/methods.coffee'
+{
+  inviteUser
+  updatePermission
+  removeFromOrganization
+  updateProfile
+} = require '../../imports/api/collections/users/methods.coffee'
+
 { insert } = require '../../imports/api/collections/organizations/methods.coffee'
 
 
-describe 'User Full App Tests Client', () ->
+
+xdescribe 'User Full App Tests Client', () ->
 
   before( (done) ->
     Meteor.logout( (err) ->
@@ -40,6 +47,7 @@ describe 'User Full App Tests Client', () ->
     )
 
     it 'User simple schema fail validations', (done) ->
+
       expect(Meteor.user()).to.not.exist
 
       doc =
@@ -313,7 +321,7 @@ describe 'User Full App Tests Client', () ->
 
 
 
-  describe 'User update permission', ->
+  xdescribe 'User update permission', ->
 
     before( (done) ->
       callbacks =
@@ -589,4 +597,162 @@ describe 'User Full App Tests Client', () ->
 
       updatePermission.call {update_user_id, organization_id, permission}, (err, res) ->
         expect(err).to.have.property('error','notAuthorized')
+        done()
+
+
+
+  xdescribe 'Remove user from organization', ->
+
+    it 'Log out and login with owner', (done) ->
+      Meteor.logout( (err) ->
+        expect(err).to.not.exist
+        Meteor.loginWithPassword 'example@hotmail.com', '12345678', (err) ->
+          expect(err).to.not.exist
+          done()
+      )
+
+    it 'Remove nonexistent user', (done) ->
+
+      update_user_id = "nonono"
+      organization_id = Organizations.findOne()._id
+
+      removeFromOrganization.call {update_user_id, organization_id}, (err, res) ->
+        expect(err).to.have.property('error', 'userNotInOrganization')
+        done()
+
+    it 'Remove existent user but not in organ', (done) ->
+
+      update_user_id = "nonono"
+      organization_id = Organizations.findOne()._id
+      Organizations.find().forEach (doc) ->
+        if doc.ousers.length > 1
+          for ouser in doc.ousers
+            if ouser.user_id isnt Meteor.userId()
+              update_user_id = ouser.user_id
+        else
+          organization_id = doc._id
+
+      removeFromOrganization.call {update_user_id, organization_id}, (err, res) ->
+        expect(err).to.have.property('error', 'userNotInOrganization')
+        done()
+
+
+    it 'Try to remove owner', (done) ->
+
+      update_user_id = Meteor.userId()
+      organization_id = Organizations.findOne()._id
+
+      removeFromOrganization.call {update_user_id, organization_id}, (err, res) ->
+        expect(err).to.have.property('error', 'notAuthorized')
+        expect(err).to.have.property('reason', 'an owner cannot remove themselves')
+        done()
+
+
+    it 'Remove correct', (done) ->
+
+      update_user_id = "nonono"
+      organization_id = Organizations.findOne()._id
+      length = ''
+      Organizations.find().forEach (doc) ->
+        if doc.ousers.length > 1
+          organization_id = doc._id
+          length = doc.ousers.length
+          for ouser in doc.ousers
+            if ouser.user_id isnt Meteor.userId()
+              update_user_id = ouser.user_id
+
+      removeFromOrganization.call {update_user_id, organization_id}, (err, res) ->
+        doc = Organizations.findOne(organization_id)
+        expect(length).to.be.above(doc.ousers.length)
+        expect(doc.hasUser(update_user_id)).to.not.exist
+        done()
+
+
+  describe 'Updating User profile', ->
+
+    before( (done) ->
+      doc =
+        email: 'footdavid@hotmail.com'
+        password: '12345678'
+        profile:
+          first_name: faker.name.firstName()
+          last_name: faker.name.lastName()
+
+      Accounts.createUser doc, (error) ->
+        done()
+    )
+
+    it 'Invalid profile doc', (done) ->
+      expect(Meteor.user()).to.exist
+
+      profile_doc =
+          nono: faker.name.firstName()
+          last_name: faker.name.lastName()
+
+
+      updateProfile.call {profile_doc}, (err, res) ->
+        expect(err).to.have.property('error', 'validation-error')
+        done()
+
+    it 'Valid profile doc update', (done) ->
+      expect(Meteor.user()).to.exist
+
+      firstName = Meteor.user().profile.first_name
+
+      profile_doc =
+          first_name: faker.name.firstName()
+          last_name: faker.name.lastName()
+
+
+      updateProfile.call {profile_doc}, (err, res) ->
+        expect(err).to.not.exist
+        expect(Meteor.user().profile.first_name).to.not.equal(firstName)
+        done()
+
+
+    it 'Valid profile doc with address update', (done) ->
+      expect(Meteor.user()).to.exist
+
+      firstName = Meteor.user().profile.first_name
+      address =
+        street: faker.address.streetAddress()
+        city: faker.address.city()
+        state: faker.address.state()
+        zip_code: faker.address.zipCode()
+        country: faker.address.country()
+
+      profile_doc =
+          first_name: faker.name.firstName()
+          last_name: faker.name.lastName()
+          addresses: [
+            address
+          ]
+
+
+      updateProfile.call {profile_doc}, (err, res) ->
+        expect(err).to.not.exist
+        expect(Meteor.user().profile.first_name).to.not.equal(firstName)
+        expect(Meteor.user().profile.addresses.length).to.be.at.least(1)
+        console.log Meteor.user()
+        done()
+
+    it 'Valid profile doc with invalid address update', (done) ->
+      expect(Meteor.user()).to.exist
+
+      firstName = Meteor.user().profile.first_name
+      address =
+        city: faker.address.city()
+        state: faker.address.state()
+        zip_code: faker.address.zipCode()
+        country: faker.address.country()
+
+      profile_doc =
+          first_name: faker.name.firstName()
+          last_name: faker.name.lastName()
+          addresses: [
+            address
+          ]
+
+      updateProfile.call {profile_doc}, (err, res) ->
+        expect(err).to.have.property('error','validation-error')
         done()
