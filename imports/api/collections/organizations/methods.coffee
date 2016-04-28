@@ -21,19 +21,19 @@ ContactModule = require '../../shared/contact_info.coffee'
 ###
 
 
-# Insert
+# Insert (For unique names it will pass on the client side but fail on the server)
 module.exports.insert = new ValidatedMethod
   name: 'organization.insert'
   validate: (organization_doc) ->
     OrganizationModule.Organizations.simpleSchema().validate(organization_doc)
-    if OrganizationModule.Organizations.findOne(name: organization_doc.name)?
-      throw new Meteor.Error 'nameNotUnique', 'name must be unqiue'
 
   mixins: [loggedIn]
 
   run: (organization_doc) ->
+    if OrganizationModule.Organizations.findOne(name: organization_doc.name)?
+      throw new Meteor.Error 'nameNotUnique', 'name must be unqiue'
     OrganizationModule.Organizations.insert organization_doc
-
+    
 
 
 # Update Name and/ or Email

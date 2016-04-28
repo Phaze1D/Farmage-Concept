@@ -8,7 +8,7 @@ faker = require 'faker'
 
 { Organizations } =  require '../../imports/api/collections/organizations/organizations.coffee'
 
-{ inviteUser } = require '../../imports/api/collections/users/methods.coffee'
+{ inviteUser, updatePermission } = require '../../imports/api/collections/users/methods.coffee'
 { insert } = require '../../imports/api/collections/organizations/methods.coffee'
 
 
@@ -30,7 +30,7 @@ describe 'User Full App Tests Client', () ->
 
   sharedEmail = faker.internet.email()
 
-  describe 'User sign up flow', () ->
+  xdescribe 'User sign up flow', () ->
 
     after( (done) ->
       Meteor.logout( (err) ->
@@ -88,7 +88,7 @@ describe 'User Full App Tests Client', () ->
 
 
 
-  describe 'Invite user to organization', ->
+  xdescribe 'Invite user to organization', ->
 
     after( (done) ->
       Meteor.logout( (err) ->
@@ -265,7 +265,7 @@ describe 'User Full App Tests Client', () ->
 
 
 
-  describe 'User Login flow', ->
+  xdescribe 'User Login flow', ->
 
     before( (done) ->
       doc =
@@ -280,6 +280,12 @@ describe 'User Full App Tests Client', () ->
           done()
         )
       return
+    )
+
+    after( (done) ->
+      Meteor.logout( (err) ->
+        done()
+      )
     )
 
     it 'Invalid email', (done) ->
@@ -303,4 +309,284 @@ describe 'User Full App Tests Client', () ->
       Meteor.loginWithPassword 'footdavid@hotmail.com', '12345678', (err) ->
         expect(err).to.not.exist
         expect(Meteor.user()).to.exist
+        done()
+
+
+
+  describe 'User update permission', ->
+
+    before( (done) ->
+      callbacks =
+        onStop: () ->
+        onReady: () ->
+          done()
+
+      Meteor.subscribe("organizations", callbacks)
+    )
+
+    it 'Create new user', (done) ->
+      doc =
+        email: 'example@hotmail.com'
+        password: '12345678'
+        profile:
+          first_name: faker.name.firstName()
+          last_name: faker.name.lastName()
+
+      Accounts.createUser doc, (err) ->
+        expect(err).to.not.exist
+        done()
+
+    organization_id00 = ''
+    it 'Create organization', (done) ->
+      organ_doc =
+        name: faker.company.companyName()
+        email: faker.internet.email()
+
+      insert.call organ_doc, (err, res) ->
+        expect(err).to.not.exist
+        organization_id00 = res
+        done()
+
+
+    it 'Log Out and create new user log out again', (done) ->
+      Meteor.logout((err) ->
+        expect(err).to.not.exist
+        doc =
+          email: 'example2@hotmail.com'
+          password: '12345678'
+          profile:
+            first_name: faker.name.firstName()
+            last_name: faker.name.lastName()
+
+        Accounts.createUser doc, (err) ->
+          expect(err).to.not.exist
+          Meteor.logout( (err) ->
+            expect(err).to.not.exist
+            done()
+          )
+      )
+
+    it 'Login and invite user', (done) ->
+      Meteor.loginWithPassword 'example@hotmail.com', '12345678', (err) ->
+        expect(err).to.not.exist
+        invited_user_doc =
+          emails:
+            [
+              address: 'example2@hotmail.com'
+            ]
+          profile:
+            first_name: faker.name.firstName()
+
+        organization_id = organization_id00
+
+        permission =
+          owner: false
+          editor: false
+          expanses_manager: false
+          sells_manager: false
+          units_manager: false
+          inventories_manager: true
+          users_manager: false
+
+        inviteUser.call {invited_user_doc, organization_id, permission}, (err, res) ->
+          expect(err).to.not.exist
+          done()
+
+
+    it 'Log out and login with non auth user', (done) ->
+      Meteor.logout( (err) ->
+        expect(err).to.not.exist
+        Meteor.loginWithPassword 'example2@hotmail.com', '12345678', (err) ->
+          expect(err).to.not.exist
+          done()
+      )
+
+
+    updateUser = ''
+    it 'Is not owner or user manager but belongs to organ', (done) ->
+      updateUser = Meteor.userId()
+      update_user_id = updateUser
+      organization_id = organization_id00
+      permission =
+        owner: true
+        editor: false
+        expanses_manager: false
+        sells_manager: false
+        units_manager: false
+        inventories_manager: true
+        users_manager: false
+
+      updatePermission.call {update_user_id, organization_id, permission}, (err, res) ->
+        expect(err).to.have.property('error', 'notUserManager')
+        done()
+
+
+    it 'Log out and login with auth user', (done) ->
+      Meteor.logout( (err) ->
+        expect(err).to.not.exist
+        Meteor.loginWithPassword 'example@hotmail.com', '12345678', (err) ->
+          expect(err).to.not.exist
+          done()
+      )
+
+    it 'Is auth user update permission other user', (done) ->
+      expect(Organizations.findOne().hasUser(updateUser).permission.owner).to.equal(false)
+      update_user_id = updateUser
+      organization_id = organization_id00
+      permission =
+        owner: true
+        editor: false
+        expanses_manager: false
+        sells_manager: false
+        units_manager: false
+        inventories_manager: true
+        users_manager: false
+
+      updatePermission.call {update_user_id, organization_id, permission}, (err, res) ->
+        expect(err).to.not.exist
+        expect(Organizations.findOne().hasUser(updateUser).permission.owner).to.equal(true)
+        done()
+
+    it 'Is auth user update permission same user', (done) ->
+      expect(Organizations.findOne().hasUser(Meteor.userId()).permission.owner).to.equal(true)
+      update_user_id = Meteor.userId()
+      organization_id = organization_id00
+      permission =
+        owner: false
+        editor: false
+        expanses_manager: false
+        sells_manager: false
+        units_manager: false
+        inventories_manager: true
+        users_manager: true
+
+      updatePermission.call {update_user_id, organization_id, permission}, (err, res) ->
+        expect(err).to.have.property('error', 'notAuthorized')
+        done()
+
+    it 'Is auth user update permission other user', (done) ->
+      expect(Organizations.findOne().hasUser(updateUser).permission.owner).to.equal(true)
+      update_user_id = updateUser
+      organization_id = organization_id00
+      permission =
+        owner: false
+        editor: false
+        expanses_manager: false
+        sells_manager: false
+        units_manager: false
+        inventories_manager: true
+        users_manager: true
+
+      updatePermission.call {update_user_id, organization_id, permission}, (err, res) ->
+        expect(err).to.not.exist
+        expect(Organizations.findOne().hasUser(updateUser).permission.owner).to.equal(false)
+        done()
+
+    it 'Log out and login with auth user', (done) ->
+      Meteor.logout( (err) ->
+        expect(err).to.not.exist
+        Meteor.loginWithPassword 'example2@hotmail.com', '12345678', (err) ->
+          expect(err).to.not.exist
+          done()
+      )
+
+    it 'Is user manager only, setting owner ', (done) ->
+      expect(Organizations.findOne().hasUser(Meteor.userId()).permission.owner).to.equal(false)
+      update_user_id = Meteor.userId()
+      organization_id = organization_id00
+      permission =
+        owner: true
+        editor: false
+        expanses_manager: false
+        sells_manager: false
+        units_manager: false
+        inventories_manager: true
+        users_manager: true
+
+      updatePermission.call {update_user_id, organization_id, permission}, (err, res) ->
+        expect(err).to.have.property('error', 'notOwner')
+        done()
+
+
+    it 'Is user manager only, setting other', (done) ->
+      update_user_id = Meteor.userId()
+      organization_id = organization_id00
+      permission =
+        owner: false
+        editor: true
+        expanses_manager: false
+        sells_manager: false
+        units_manager: false
+        inventories_manager: true
+        users_manager: true
+
+      updatePermission.call {update_user_id, organization_id, permission}, (err, res) ->
+        expect(err).to.not.exist
+        expect(Organizations.findOne().hasUser(Meteor.userId()).permission.editor).to.equal(true)
+        done()
+
+
+    it 'Log out and login with auth user', (done) ->
+      Meteor.logout( (err) ->
+        expect(err).to.not.exist
+        Meteor.loginWithPassword 'example@hotmail.com', '12345678', (err) ->
+          expect(err).to.not.exist
+          done()
+      )
+
+    organization_id01 = ''
+    it 'Create new organization', (done) ->
+      organ_doc =
+        name: faker.company.companyName()
+        email: faker.internet.email()
+
+      insert.call organ_doc, (err, res) ->
+        expect(err).to.not.exist
+        organization_id01 = res
+        done()
+
+    it 'Update nonexistent user of organization', (done) ->
+      this.timeout(50000);
+      setTimeout(done, 10000);
+
+      update_user_id = updateUser
+      organization_id = organization_id01
+      permission =
+        owner: true
+        editor: false
+        expanses_manager: false
+        sells_manager: false
+        units_manager: false
+        inventories_manager: true
+        users_manager: false
+
+      updatePermission.call {update_user_id, organization_id, permission}, (err, res) ->
+        expect(err).to.have.property('error','userNotInOrganization')
+
+
+
+    it 'Log out and login with non auth user', (done) ->
+      updateUser = Meteor.userId()
+      Meteor.logout( (err) ->
+        expect(err).to.not.exist
+        Meteor.loginWithPassword 'example2@hotmail.com', '12345678', (err) ->
+          expect(err).to.not.exist
+          done()
+      )
+
+    it 'Update existent user of non auth organization', (done) ->
+
+      update_user_id = updateUser
+      organization_id = organization_id01
+      permission =
+        owner: true
+        editor: false
+        expanses_manager: false
+        sells_manager: false
+        units_manager: false
+        inventories_manager: true
+        users_manager: false
+
+      updatePermission.call {update_user_id, organization_id, permission}, (err, res) ->
+        expect(err).to.have.property('error','notAuthorized')
         done()

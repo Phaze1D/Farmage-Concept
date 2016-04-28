@@ -17,7 +17,6 @@ module.exports.ownsOrganization = (methodOptions) ->
   methodOptions.run = () ->
     unless @isSimulation
       organization = OrganizationModule.Organizations.findOne(_id: arguments[0].organization_id)
-
       unless organization?
         throw new Meteor.Error 'notAuthorized', 'not authorized'
 

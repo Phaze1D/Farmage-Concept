@@ -34,8 +34,11 @@ hasUserManagerPermission = (methodOptions) ->
       unless organization?
         throw new Meteor.Error 'notAuthorized', 'not authorized'
 
-      user = organization.hasUser(@userId)
-      unless( user? && (user.permission.owner || user.permission.users_manager) )
+      cuser = organization.hasUser(@userId)
+      unless cuser?
+        throw new Meteor.Error 'notAuthorized', 'not authorized'
+
+      unless(cuser.permission.owner || cuser.permission.users_manager)
         throw new Meteor.Error 'notUserManager', 'only user managers can access this'
 
       arguments[0].organization = organization
@@ -48,7 +51,8 @@ updateUserBelongsToOrgan = (methodOptions) ->
     methodOptions.run = () ->
       unless @isSimulation
         organization = OrganizationModule.Organizations.findOne(_id: arguments[0].organization_id)
-        unless( organization? && organization.hasUser(arguments.update_user_id)? )
+
+        unless( organization? && organization.hasUser(arguments[0].update_user_id)? )
           throw new Meteor.Error 'userNotInOrganization', 'not authorized'
 
         arguments[0].organization = organization
@@ -93,7 +97,7 @@ module.exports.inviteUser = new ValidatedMethod
 
 
 # Update User Organization Permissons
-module.exports.updatePermisson = new ValidatedMethod
+module.exports.updatePermission = new ValidatedMethod
   name: 'user.updatePermisson'
   validate: ({update_user_id, organization_id, permission}) ->
     OrganizationModule.PermissionSchema.validate(permission)
@@ -103,13 +107,33 @@ module.exports.updatePermisson = new ValidatedMethod
   run: ({update_user_id, organization_id, permission}) ->
     unless @isSimulation
       organization = arguments[0].organization
-      ouser = organization.hasUser(update_user_id)
-      ouser.permission = permission
+      uuser = organization.hasUser(update_user_id)
+      cuser = organization.hasUser(@userId)
+
+      # Only owners can change the owner permission
+      if !cuser.permission.owner && permission.owner isnt uuser.permission.owner
+        throw new Meteor.Error 'notOwner', 'user managers cannot set the owner permission'
+
+      # Pervents from there every not being an owner
+      if update_user_id is @userId && permission.owner isnt uuser.permission.owner
+        throw new Meteor.Error 'notAuthorized', 'an owner cannot set his/her own permission.owner'
+
+      uuser.permission = permission
       OrganizationModule.Organizations.update _id: organization_id,
                                               $set:
                                                 ousers: organization.ousers
 
 
 # Remove User from Organization
+module.exports.removeFromOrganization = new ValidatedMethod
+  name: 'user.removeFromOrganization'
+  validate: null
+  mixins: [updateUserBelongsToOrgan, ownsOrganization, loggedIn]
+  run: ({update_user_id, organization_id}) ->
+    # Pervents owners from removing themselves
+    if update_user_id is @userId
+      throw new Meteor.Error 'notAuthorized', 'an owner cannot remove themselves'
+
+
 
 # Update Profile

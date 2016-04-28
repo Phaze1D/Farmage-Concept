@@ -46,7 +46,7 @@ xdescribe 'Organizations Full App Tests Client', () ->
       return
 
 
-    it 'Organizations insert not logged in', (done) ->
+    it 'Organizations insert not logged in', () ->
       expect(Meteor.user()).to.not.exist
 
       doc =
@@ -56,7 +56,9 @@ xdescribe 'Organizations Full App Tests Client', () ->
       expect ->
         insert.call(doc)
       .to.Throw('notLoggedIn')
+      return
 
+    it 'Login', (done) ->
       doc =
         email: faker.internet.email()
         password: '123123123'
@@ -67,8 +69,7 @@ xdescribe 'Organizations Full App Tests Client', () ->
       Accounts.createUser doc, (error) ->
         expect(error).not.to.exist
         done()
-        return
-      return
+
 
     sharedName = faker.company.companyName()
     it 'Organizations insert validation success', (done) ->
@@ -224,7 +225,7 @@ xdescribe 'Organizations Full App Tests Client', () ->
 
 
 
-  describe 'Organizations add address', () ->
+  xdescribe 'Organizations add address', () ->
 
     shared_address_doc =
       name: 'home'
@@ -277,7 +278,7 @@ xdescribe 'Organizations Full App Tests Client', () ->
 
 
 
-  describe 'Organizations remove address', () ->
+  xdescribe 'Organizations remove address', () ->
 
     it 'Remove nonexistent address', (done) ->
       organization2 = Organizations.findOne()
@@ -311,7 +312,7 @@ xdescribe 'Organizations Full App Tests Client', () ->
 
 
 
-  describe ' Organizations add telephones', () ->
+  xdescribe ' Organizations add telephones', () ->
 
     shared_telephone =
       name: 'Home Number'
@@ -356,7 +357,7 @@ xdescribe 'Organizations Full App Tests Client', () ->
         done()
 
 
-  describe 'Organizations remove telephones', () ->
+  xdescribe 'Organizations remove telephones', () ->
 
     it 'Remove nonexistent telephones', (done) ->
       organization2 = Organizations.findOne()
