@@ -6,6 +6,9 @@
 
 CustomerModule  = require './customers.coffee'
 
+{ loggedIn, ownsOrganization } = require '../../mixins/mixins.coffee'
+{ hasSellsManagerPermission } = require '../../mixins/sells_manager_mixins.coffee'
+
 ###
 
   Methods checklist
@@ -19,23 +22,8 @@ CustomerModule  = require './customers.coffee'
 # Insert Customer
 module.exports.insert = new ValidatedMethod
   name: 'customers.insert'
-  validate: CustomerModule.Customers.simpleSchema().validator()
-  run: (customer_doc) ->
-    unless @userId?
-      throw new Meteor.Error 'notLoggedIn', 'Must be logged in'
-
+  validate: ({organization_id, customer_doc}) ->
+    CustomerModule.Customers.simpleSchema().validate(customer_doc)
+  mixins: [hasSellsManagerPermission, loggedIn]
+  run: ({organization_id, customer_doc}) ->
     CustomerModule.Customers.insert customer_doc
-
-
-
-
-# Update Customer First Name
-
-
-# Update Customer Last Name
-
-
-# Update Customer Company
-
-
-# Remove

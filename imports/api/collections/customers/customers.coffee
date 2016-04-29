@@ -49,6 +49,7 @@ CustomerSchema =
 
   ,ContactSchema, CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 
+
 Customers = exports.Customers = new CustomersCollection "customers"
 Customers.attachSchema CustomerSchema
 

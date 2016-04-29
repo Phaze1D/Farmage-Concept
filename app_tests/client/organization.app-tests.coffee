@@ -13,7 +13,7 @@ faker = require 'faker'
 
 { Organizations } = require '../../imports/api/collections/organizations/organizations.coffee'
 
-describe 'Organizations Full App Tests Client', () ->
+xdescribe 'Organizations Full App Tests Client', () ->
 
   before( (done) ->
     Meteor.logout( (err) ->

@@ -9,6 +9,7 @@ ContactModule = require '../../shared/contact_info.coffee'
 UsersModule = require './users.coffee'
 
 { loggedIn, ownsOrganization } = require '../../mixins/mixins.coffee'
+{ hasUserManagerPermission, updateUserBelongsToOrgan } = require '../../mixins/users_manager_mixins.coffee'
 
 
 
@@ -26,44 +27,6 @@ if Meteor.isServer
     Check organization user limit
 
 ###
-
-
-# ---------- User Only Mixins ------------ #
-hasUserManagerPermission = (methodOptions) ->
-  RUN = methodOptions.run
-  methodOptions.run = () ->
-    unless @isSimulation
-      organization = OrganizationModule.Organizations.findOne(_id: arguments[0].organization_id)
-
-      unless organization?
-        throw new Meteor.Error 'notAuthorized', 'not authorized'
-
-      cuser = organization.hasUser(@userId)
-      unless cuser?
-        throw new Meteor.Error 'notAuthorized', 'not authorized'
-
-      unless(cuser.permission.owner || cuser.permission.users_manager)
-        throw new Meteor.Error 'notUserManager', 'only user managers can access this'
-
-      arguments[0].organization = organization
-    RUN.call(@, arguments[0])
-
-  return methodOptions
-
-
-updateUserBelongsToOrgan = (methodOptions) ->
-    RUN = methodOptions.run
-    methodOptions.run = () ->
-      unless @isSimulation
-        organization = OrganizationModule.Organizations.findOne(_id: arguments[0].organization_id)
-
-        unless( organization? && organization.hasUser(arguments[0].update_user_id)? )
-          throw new Meteor.Error 'userNotInOrganization', 'not authorized'
-
-        arguments[0].organization = organization
-      RUN.call(@, arguments[0])
-
-    return methodOptions
 
 
 # ----------- Common Code ----------- #
@@ -155,6 +118,8 @@ module.exports.updateProfile = new ValidatedMethod
   mixins: [loggedIn]
 
   run: ({profile_doc}) ->
+    profile_doc.user_avatar_url = Meteor.findOne(@userId).profile.user_avatar_url
+    
     Meteor.users.update @userId,
                         $set:
                           profile: profile_doc

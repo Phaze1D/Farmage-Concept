@@ -37,7 +37,7 @@ xdescribe 'User Full App Tests Client', () ->
 
   sharedEmail = faker.internet.email()
 
-  xdescribe 'User sign up flow', () ->
+  describe 'User sign up flow', () ->
 
     after( (done) ->
       Meteor.logout( (err) ->
@@ -96,7 +96,7 @@ xdescribe 'User Full App Tests Client', () ->
 
 
 
-  xdescribe 'Invite user to organization', ->
+  describe 'Invite user to organization', ->
 
     after( (done) ->
       Meteor.logout( (err) ->
@@ -273,7 +273,7 @@ xdescribe 'User Full App Tests Client', () ->
 
 
 
-  xdescribe 'User Login flow', ->
+  describe 'User Login flow', ->
 
     before( (done) ->
       doc =
@@ -292,8 +292,10 @@ xdescribe 'User Full App Tests Client', () ->
 
     after( (done) ->
       Meteor.logout( (err) ->
-        done()
+
       )
+      @timeout(20000)
+      setTimeout(done, 10000)
     )
 
     it 'Invalid email', (done) ->
@@ -321,7 +323,7 @@ xdescribe 'User Full App Tests Client', () ->
 
 
 
-  xdescribe 'User update permission', ->
+  describe 'User update permission', ->
 
     before( (done) ->
       callbacks =
@@ -331,6 +333,7 @@ xdescribe 'User Full App Tests Client', () ->
 
       Meteor.subscribe("organizations", callbacks)
     )
+
 
     it 'Create new user', (done) ->
       doc =
@@ -601,7 +604,7 @@ xdescribe 'User Full App Tests Client', () ->
 
 
 
-  xdescribe 'Remove user from organization', ->
+  describe 'Remove user from organization', ->
 
     it 'Log out and login with owner', (done) ->
       Meteor.logout( (err) ->
@@ -666,6 +669,7 @@ xdescribe 'User Full App Tests Client', () ->
         expect(length).to.be.above(doc.ousers.length)
         expect(doc.hasUser(update_user_id)).to.not.exist
         done()
+
 
 
   describe 'Updating User profile', ->
