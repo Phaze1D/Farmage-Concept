@@ -26,4 +26,7 @@ module.exports.insert = new ValidatedMethod
     CustomerModule.Customers.simpleSchema().validate(customer_doc)
   mixins: [hasSellsManagerPermission, loggedIn]
   run: ({organization_id, customer_doc}) ->
+    customer_doc.organization_id = organization_id
     CustomerModule.Customers.insert customer_doc
+
+# Update
