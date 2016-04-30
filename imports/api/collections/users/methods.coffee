@@ -108,6 +108,7 @@ module.exports.removeFromOrganization = new ValidatedMethod
                                               $pull:
                                                 ousers:
                                                   user_id: update_user_id
+                                                  
 
 # Update Profile
 module.exports.updateProfile = new ValidatedMethod
@@ -118,8 +119,7 @@ module.exports.updateProfile = new ValidatedMethod
   mixins: [loggedIn]
 
   run: ({profile_doc}) ->
-    profile_doc.user_avatar_url = Meteor.findOne(@userId).profile.user_avatar_url
-    
+    profile_doc.user_avatar_url = "" # This needs to change cannot trust user
     Meteor.users.update @userId,
                         $set:
                           profile: profile_doc

@@ -8,7 +8,7 @@ faker = require 'faker'
 
 {
   insert
-  updateInfo
+  update
 } = require '../../imports/api/collections/organizations/methods.coffee'
 
 { Organizations } = require '../../imports/api/collections/organizations/organizations.coffee'
@@ -146,7 +146,7 @@ xdescribe 'Organizations Full App Tests Client', () ->
         name: faker.company.companyName()
         email: faker.internet.email()
 
-      updateInfo.call {organization_id, updated_organization_doc}, (err, res) ->
+      update.call {organization_id, updated_organization_doc}, (err, res) ->
         expect(err).to.have.property('error', 'notAuthorized')
         done()
 
@@ -159,7 +159,7 @@ xdescribe 'Organizations Full App Tests Client', () ->
         name: organization.name
         email: faker.internet.email()
 
-      updateInfo.call {organization_id, updated_organization_doc}, (err, res) ->
+      update.call {organization_id, updated_organization_doc}, (err, res) ->
         expect(err).to.not.exist
         done()
 
@@ -201,7 +201,7 @@ xdescribe 'Organizations Full App Tests Client', () ->
         name: organization.name
         email: faker.internet.email()
 
-      updateInfo.call {organization_id, updated_organization_doc}, (err, res) ->
+      update.call {organization_id, updated_organization_doc}, (err, res) ->
         expect(err).to.have.property('error', 'nameNotUnique')
         done()
 
@@ -213,7 +213,7 @@ xdescribe 'Organizations Full App Tests Client', () ->
         name: faker.company.companyName()
         email: faker.internet.email()
 
-      updateInfo.call {organization_id, updated_organization_doc}, (err, res) ->
+      update.call {organization_id, updated_organization_doc}, (err, res) ->
         expect(err).to.not.exist
         expect(organization2.name).to.not.equal(Organizations.findOne().name)
         expect(organization2.email).to.not.equal(Organizations.findOne().email)
@@ -232,7 +232,7 @@ xdescribe 'Organizations Full App Tests Client', () ->
           number: faker.phone.phoneNumber()
         ]
 
-      updateInfo.call {organization_id, updated_organization_doc}, (err, res) ->
+      update.call {organization_id, updated_organization_doc}, (err, res) ->
         expect(err).to.not.exist
         expect(Organizations.findOne().telephones.length).to.be.at.least(1)
         done()

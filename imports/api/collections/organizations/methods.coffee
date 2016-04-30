@@ -26,19 +26,18 @@ module.exports.insert = new ValidatedMethod
   name: 'organization.insert'
   validate: (organization_doc) ->
     OrganizationModule.Organizations.simpleSchema().validate(organization_doc)
-
+    if OrganizationModule.Organizations.findOne(name: organization_doc.name)?
+      throw new Meteor.Error 'nameNotUnique', 'name must be unqiue'
   mixins: [loggedIn]
 
   run: (organization_doc) ->
-    if OrganizationModule.Organizations.findOne(name: organization_doc.name)?
-      throw new Meteor.Error 'nameNotUnique', 'name must be unqiue'
     OrganizationModule.Organizations.insert organization_doc
 
 
 
 # Update Name and/ or Email
-module.exports.updateInfo = new ValidatedMethod
-  name: 'organizations.updateInfo'
+module.exports.update = new ValidatedMethod
+  name: 'organizations.update'
   validate: ({organization_id, updated_organization_doc}) ->
     OrganizationModule.Organizations.simpleSchema().validate(updated_organization_doc)
     if OrganizationModule.Organizations.findOne( {$and: [ { _id: {$ne: organization_id } }, {name: updated_organization_doc.name} ] })?

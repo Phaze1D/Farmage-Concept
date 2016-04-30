@@ -6,8 +6,14 @@
 
 CustomerModule  = require './customers.coffee'
 
-{ loggedIn, ownsOrganization } = require '../../mixins/mixins.coffee'
-{ hasSellsManagerPermission } = require '../../mixins/sells_manager_mixins.coffee'
+{
+  loggedIn
+  ownsOrganization
+} = require '../../mixins/mixins.coffee'
+{
+  hasSellsManagerPermission
+  customerBelongsToOrgan
+} = require '../../mixins/sells_manager_mixins.coffee'
 
 ###
 
@@ -24,9 +30,22 @@ module.exports.insert = new ValidatedMethod
   name: 'customers.insert'
   validate: ({organization_id, customer_doc}) ->
     CustomerModule.Customers.simpleSchema().validate(customer_doc)
+
   mixins: [hasSellsManagerPermission, loggedIn]
+
   run: ({organization_id, customer_doc}) ->
     customer_doc.organization_id = organization_id
     CustomerModule.Customers.insert customer_doc
 
+
 # Update
+module.exports.update = new ValidatedMethod
+  name: 'customers.update'
+  validate: ({organization_id, customer_id, customer_doc}) ->
+    CustomerModule.Customers.simpleSchema().validate(customer_doc)
+
+  mixins: [customerBelongsToOrgan, hasSellsManagerPermission, loggedIn]
+
+  run: ({organization_id, customer_id, customer_doc}) ->
+    CustomerModule.Customers.update customer_id,
+                                    $set: customer_doc

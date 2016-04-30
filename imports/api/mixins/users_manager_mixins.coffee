@@ -1,6 +1,6 @@
 OrganizationModule = require '../collections/organizations/organizations.coffee'
 
-# ---------- User Only Mixins ------------ #
+
 module.exports.hasUserManagerPermission = (methodOptions) ->
   RUN = methodOptions.run
   methodOptions.run = () ->
