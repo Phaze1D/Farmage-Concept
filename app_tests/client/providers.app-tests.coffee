@@ -6,14 +6,14 @@ faker = require 'faker'
 { resetDatabase } = require 'meteor/xolvio:cleaner'
 { _ } = require 'meteor/underscore'
 
-CustomerModule = require '../../imports/api/collections/customers/customers.coffee'
+ProviderModule = require '../../imports/api/collections/providers/providers.coffee'
 OrganizationModule = require '../../imports/api/collections/organizations/organizations.coffee'
 
-{ insert, update } = require '../../imports/api/collections/customers/methods.coffee'
+{ insert, update } = require '../../imports/api/collections/providers/methods.coffee'
 OMethods = require '../../imports/api/collections/organizations/methods.coffee'
 
 
-describe "Customer Full App Tests Client", ->
+describe "Provider Full App Tests Client", ->
 
   before( (done) ->
     Meteor.logout( (err) ->
@@ -29,20 +29,20 @@ describe "Customer Full App Tests Client", ->
     return
   )
   organizationID = ''
-  customerID = ''
+  providerID = ''
 
-  describe 'Customer Inserts Test', () ->
+  describe 'Provider Inserts Test', () ->
 
     it 'Insert not valid', (done) ->
 
       expect(Meteor.user()).to.not.exist
 
       organization_id = "NONONOOONOO"
-      customer_doc =
+      provider_doc =
         first_name: faker.name.firstName()
         last_name: faker.name.lastName()
 
-      insert.call {organization_id, customer_doc}, (err, res) ->
+      insert.call {organization_id, provider_doc}, (err, res) ->
         expect(err).to.have.property('error','validation-error')
         done()
 
@@ -50,12 +50,12 @@ describe "Customer Full App Tests Client", ->
       expect(Meteor.user()).to.not.exist
 
       organization_id = "NONONOOONOO"
-      customer_doc =
+      provider_doc =
         first_name: faker.name.firstName()
         last_name: faker.name.lastName()
         organization_id: organization_id
 
-      insert.call {organization_id, customer_doc}, (err, res) ->
+      insert.call {organization_id, provider_doc}, (err, res) ->
         expect(err).to.have.property('error','notLoggedIn')
         done()
 
@@ -75,12 +75,12 @@ describe "Customer Full App Tests Client", ->
       expect(Meteor.user()).to.exist
 
       organization_id = "NONONOOONOO"
-      customer_doc =
+      provider_doc =
         first_name: faker.name.firstName()
         last_name: faker.name.lastName()
         organization_id: organization_id
 
-      insert.call {organization_id, customer_doc}, (err, res) ->
+      insert.call {organization_id, provider_doc}, (err, res) ->
         expect(err).to.have.property('error','notAuthorized')
         done()
 
@@ -104,77 +104,77 @@ describe "Customer Full App Tests Client", ->
         onReady: () ->
           done()
 
-      Meteor.subscribe("customers", organizationID, callbacks)
+      Meteor.subscribe("providers", organizationID, callbacks)
 
-    it 'Insert customer ', (done) ->
+    it 'Insert provider ', (done) ->
       expect(Meteor.user()).to.exist
-      expect(CustomerModule.Customers.find().count()).to.equal(0)
+      expect(ProviderModule.Providers.find().count()).to.equal(0)
       organization_id = organizationID
-      customer_doc =
+      provider_doc =
         first_name: faker.name.firstName()
         last_name: faker.name.lastName()
         organization_id: organization_id
 
-      insert.call {organization_id, customer_doc}, (err, res) ->
-        customerID = res
-        expect(CustomerModule.Customers.find().count()).to.equal(1)
+      insert.call {organization_id, provider_doc}, (err, res) ->
+        providerID = res
+        expect(ProviderModule.Providers.find().count()).to.equal(1)
         expect(err).to.not.exist
         done()
 
 
-  describe 'Customers Update Tests', ->
+  describe 'Providers Update Tests', ->
     it 'Not valid update', (done) ->
       expect(Meteor.user()).to.exist
-      expect(CustomerModule.Customers.find().count()).to.equal(1)
+      expect(ProviderModule.Providers.find().count()).to.equal(1)
       organization_id = organizationID
-      customer_id = "NONONO"
+      provider_id = "NONONO"
 
-      customer_doc =
+      provider_doc =
         last_name: () ->
           console.log "hacking"
 
 
-      update.call {organization_id, customer_id, customer_doc}, (err, res) ->
+      update.call {organization_id, provider_id, provider_doc}, (err, res) ->
         expect(err).to.have.property('error', 'validation-error')
         done()
 
 
     it 'Not auth update', (done) ->
       expect(Meteor.user()).to.exist
-      expect(CustomerModule.Customers.find().count()).to.equal(1)
+      expect(ProviderModule.Providers.find().count()).to.equal(1)
       organization_id = "NONONOOONOO"
-      customer_id = "NONONO"
+      provider_id = "NONONO"
 
-      customer_doc =
+      provider_doc =
         last_name: faker.name.lastName()
 
 
-      update.call {organization_id, customer_id, customer_doc}, (err, res) ->
+      update.call {organization_id, provider_id, provider_doc}, (err, res) ->
         expect(err).to.have.property('error', 'notAuthorized')
         done()
 
     it 'Non existent update', (done) ->
       expect(Meteor.user()).to.exist
-      expect(CustomerModule.Customers.find().count()).to.equal(1)
+      expect(ProviderModule.Providers.find().count()).to.equal(1)
       organization_id = organizationID
-      customer_id = "NONONO"
+      provider_id = "NONONO"
 
-      customer_doc =
+      provider_doc =
         last_name: faker.name.lastName()
 
 
-      update.call {organization_id, customer_id, customer_doc}, (err, res) ->
+      update.call {organization_id, provider_id, provider_doc}, (err, res) ->
         expect(err).to.have.property('error', 'notAuthorized')
         done()
 
 
     it 'Update with address success', (done) ->
       organization_id = organizationID
-      customer_id = customerID
+      provider_id = providerID
 
-      cus = CustomerModule.Customers.findOne()
+      cus = ProviderModule.Providers.findOne()
       expect(cus.addresses.length).to.equal(0)
-      customer_doc =
+      provider_doc =
         addresses: [
           street: faker.address.streetName()
           city: faker.address.city()
@@ -183,6 +183,6 @@ describe "Customer Full App Tests Client", ->
           zip_code: faker.address.zipCode()
         ]
 
-      update.call {organization_id, customer_id, customer_doc}, (err, res) ->
-        expect(CustomerModule.Customers.findOne().addresses.length).to.equal(1)
+      update.call {organization_id, provider_id, provider_doc}, (err, res) ->
+        expect(ProviderModule.Providers.findOne().addresses.length).to.equal(1)
         done()

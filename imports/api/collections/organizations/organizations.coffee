@@ -40,7 +40,7 @@ PermissionSchema = exports.PermissionSchema =
       defaultValue: false
 
 
-    expanses_manager:
+    expenses_manager:
       type: Boolean
       defaultValue: false
 
@@ -103,7 +103,7 @@ OrganizationSchema =
               inventories_manager: true
               units_manager: true
               sells_manager: true
-              expanses_manager: true
+              expenses_manager: true
 
           return [sub_doc]
 

@@ -47,6 +47,10 @@ module.exports.inviteUser = new ValidatedMethod
   validate: ({invited_user_doc, organization_id, permission}) ->
     Meteor.users.simpleSchema().validate(invited_user_doc)
     OrganizationModule.PermissionSchema.validate(permission)
+    new SimpleSchema(
+      organization_id:
+        type: String
+    ).validate({organization_id})
 
   mixins: [ownsOrganization, loggedIn]
 
@@ -70,6 +74,14 @@ module.exports.updatePermission = new ValidatedMethod
   name: 'users.updatePermisson'
   validate: ({update_user_id, organization_id, permission}) ->
     OrganizationModule.PermissionSchema.validate(permission)
+
+    new SimpleSchema(
+      update_user_id:
+        type: String
+
+      organization_id:
+        type: String
+    ).validate({update_user_id, organization_id})
 
   mixins: [updateUserBelongsToOrgan, hasUserManagerPermission, loggedIn]
 
@@ -96,7 +108,15 @@ module.exports.updatePermission = new ValidatedMethod
 # Remove User from Organization
 module.exports.removeFromOrganization = new ValidatedMethod
   name: 'users.removeFromOrganization'
-  validate: null
+  validate: ({update_user_id, organization_id}) ->
+    new SimpleSchema(
+      update_user_id:
+        type: String
+
+      organization_id:
+        type: String
+    ).validate({update_user_id, organization_id})
+
   mixins: [updateUserBelongsToOrgan, ownsOrganization, loggedIn]
   run: ({update_user_id, organization_id}) ->
     unless @isSimulation
@@ -108,7 +128,7 @@ module.exports.removeFromOrganization = new ValidatedMethod
                                               $pull:
                                                 ousers:
                                                   user_id: update_user_id
-                                                  
+
 
 # Update Profile
 module.exports.updateProfile = new ValidatedMethod

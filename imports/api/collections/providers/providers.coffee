@@ -24,6 +24,7 @@ class ProvidersCollection extends Mongo.Collection
     ###
     super(selector, callback)
 
+
 ProviderSchema =
   new SimpleSchema([
       first_name:

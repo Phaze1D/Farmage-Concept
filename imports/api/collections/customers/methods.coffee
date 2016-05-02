@@ -30,6 +30,10 @@ module.exports.insert = new ValidatedMethod
   name: 'customers.insert'
   validate: ({organization_id, customer_doc}) ->
     CustomerModule.Customers.simpleSchema().validate(customer_doc)
+    new SimpleSchema(
+      organization_id:
+        type: String
+    ).validate({organization_id})
 
   mixins: [hasSellsManagerPermission, loggedIn]
 
@@ -42,10 +46,19 @@ module.exports.insert = new ValidatedMethod
 module.exports.update = new ValidatedMethod
   name: 'customers.update'
   validate: ({organization_id, customer_id, customer_doc}) ->
-    CustomerModule.Customers.simpleSchema().validate(customer_doc)
+    CustomerModule.Customers.simpleSchema().validate({$set: customer_doc}, modifier: true)
+
+    new SimpleSchema(
+      customer_id:
+        type: String
+
+      organization_id:
+        type: String
+    ).validate({customer_id, organization_id})
 
   mixins: [customerBelongsToOrgan, hasSellsManagerPermission, loggedIn]
 
   run: ({organization_id, customer_id, customer_doc}) ->
+    delete customer_doc.organization_id
     CustomerModule.Customers.update customer_id,
                                     $set: customer_doc

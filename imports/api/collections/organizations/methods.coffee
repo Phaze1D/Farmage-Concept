@@ -40,6 +40,12 @@ module.exports.update = new ValidatedMethod
   name: 'organizations.update'
   validate: ({organization_id, updated_organization_doc}) ->
     OrganizationModule.Organizations.simpleSchema().validate(updated_organization_doc)
+
+    new SimpleSchema(
+      organization_id:
+        type: String
+    ).validate({organization_id})
+
     if OrganizationModule.Organizations.findOne( {$and: [ { _id: {$ne: organization_id } }, {name: updated_organization_doc.name} ] })?
       throw new Meteor.Error 'nameNotUnique', 'name must be unqiue'
 
