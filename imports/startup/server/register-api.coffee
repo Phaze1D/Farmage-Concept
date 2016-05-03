@@ -10,9 +10,11 @@ require '../../api/collections/organizations/methods.coffee'
 require '../../api/collections/users/methods.coffee'
 require '../../api/collections/customers/methods.coffee'
 require '../../api/collections/providers/methods.coffee'
+require '../../api/collections/receipts/methods.coffee'
 
 # Publications
 require '../../api/collections/users/server/publications.coffee'
 require '../../api/collections/organizations/server/publications.coffee'
 require '../../api/collections/customers/server/publications.coffee'
 require '../../api/collections/providers/server/publications.coffee'
+require '../../api/collections/receipts/server/publications.coffee'
