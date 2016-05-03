@@ -10,6 +10,11 @@ ProviderModule = require '../../imports/api/collections/providers/providers.coff
 OrganizationModule = require '../../imports/api/collections/organizations/organizations.coffee'
 
 { insert, update } = require '../../imports/api/collections/providers/methods.coffee'
+
+{
+  inviteUser
+} = require '../../imports/api/collections/users/methods.coffee'
+
 OMethods = require '../../imports/api/collections/organizations/methods.coffee'
 
 
@@ -30,6 +35,8 @@ describe "Provider Full App Tests Client", ->
   )
   organizationID = ''
   providerID = ''
+  user1 = faker.internet.email()
+  user2 = faker.internet.email()
 
   describe 'Provider Inserts Test', () ->
 
@@ -61,7 +68,7 @@ describe "Provider Full App Tests Client", ->
 
     it 'loggedIn', (done) ->
       doc =
-        email: faker.internet.email()
+        email: user1
         password: '12345678'
         profile:
           first_name: faker.name.firstName()
@@ -123,6 +130,90 @@ describe "Provider Full App Tests Client", ->
 
 
   describe 'Providers Update Tests', ->
+
+    it 'Log Out and create new user log out again', (done) ->
+      Meteor.logout((err) ->
+        expect(err).to.not.exist
+        doc =
+          email: user2
+          password: '12345678'
+          profile:
+            first_name: faker.name.firstName()
+            last_name: faker.name.lastName()
+
+        Accounts.createUser doc, (err) ->
+          expect(err).to.not.exist
+          Meteor.logout( (err) ->
+            expect(err).to.not.exist
+            done()
+          )
+      )
+
+    it 'Login and invite user', (done) ->
+      Meteor.loginWithPassword user1, '12345678', (err) ->
+        expect(err).to.not.exist
+        invited_user_doc =
+          emails:
+            [
+              address: user2
+            ]
+          profile:
+            first_name: faker.name.firstName()
+
+        organization_id = organizationID
+
+        permission =
+          owner: false
+          editor: false
+          expenses_manager: false
+          sells_manager: false
+          units_manager: false
+          inventories_manager: true
+          users_manager: false
+
+        inviteUser.call {invited_user_doc, organization_id, permission}, (err, res) ->
+          expect(err).to.not.exist
+          done()
+
+
+    it 'Log out and login with non auth user', (done) ->
+      Meteor.logout( (err) ->
+        expect(err).to.not.exist
+        Meteor.loginWithPassword user2, '12345678', (err) ->
+          expect(err).to.not.exist
+          done()
+      )
+
+
+
+    it 'Is not owner or expenses_manager but belongs to organ', (done) ->
+      organization_id = organizationID
+      provider_id = providerID
+
+      cus = ProviderModule.Providers.findOne()
+      expect(cus.addresses.length).to.equal(0)
+      provider_doc =
+        addresses: [
+          street: faker.address.streetName()
+          city: faker.address.city()
+          state: faker.address.state()
+          country: faker.address.country()
+          zip_code: faker.address.zipCode()
+        ]
+
+      update.call {organization_id, provider_id, provider_doc}, (err, res) ->
+        expect(err).to.have.property('error', 'notExpensesManager')
+        done()
+
+
+    it 'Log out and login with auth user', (done) ->
+      Meteor.logout( (err) ->
+        expect(err).to.not.exist
+        Meteor.loginWithPassword user1, '12345678', (err) ->
+          expect(err).to.not.exist
+          done()
+      )
+
     it 'Not valid update', (done) ->
       expect(Meteor.user()).to.exist
       expect(ProviderModule.Providers.find().count()).to.equal(1)

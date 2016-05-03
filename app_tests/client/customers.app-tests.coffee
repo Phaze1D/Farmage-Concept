@@ -10,6 +10,9 @@ CustomerModule = require '../../imports/api/collections/customers/customers.coff
 OrganizationModule = require '../../imports/api/collections/organizations/organizations.coffee'
 
 { insert, update } = require '../../imports/api/collections/customers/methods.coffee'
+{
+  inviteUser
+} = require '../../imports/api/collections/users/methods.coffee'
 OMethods = require '../../imports/api/collections/organizations/methods.coffee'
 
 
@@ -24,12 +27,17 @@ describe "Customer Full App Tests Client", ->
 
   after( (done) ->
     Meteor.logout( (err) ->
-      done()
+
     )
-    return
+    @timeout(20000)
+    setTimeout(done, 10000)
   )
+
+
   organizationID = ''
   customerID = ''
+  user1 = faker.internet.email()
+  user2 = faker.internet.email()
 
   describe 'Customer Inserts Test', () ->
 
@@ -61,7 +69,7 @@ describe "Customer Full App Tests Client", ->
 
     it 'loggedIn', (done) ->
       doc =
-        email: faker.internet.email()
+        email: user1
         password: '12345678'
         profile:
           first_name: faker.name.firstName()
@@ -123,6 +131,92 @@ describe "Customer Full App Tests Client", ->
 
 
   describe 'Customers Update Tests', ->
+
+    it 'Log Out and create new user log out again', (done) ->
+      Meteor.logout((err) ->
+        expect(err).to.not.exist
+        doc =
+          email: user2
+          password: '12345678'
+          profile:
+            first_name: faker.name.firstName()
+            last_name: faker.name.lastName()
+
+        Accounts.createUser doc, (err) ->
+          expect(err).to.not.exist
+          Meteor.logout( (err) ->
+            expect(err).to.not.exist
+            done()
+          )
+      )
+
+    it 'Login and invite user', (done) ->
+      Meteor.loginWithPassword user1, '12345678', (err) ->
+        expect(err).to.not.exist
+        invited_user_doc =
+          emails:
+            [
+              address: user2
+            ]
+          profile:
+            first_name: faker.name.firstName()
+
+        organization_id = organizationID
+
+        permission =
+          owner: false
+          editor: false
+          expenses_manager: false
+          sells_manager: false
+          units_manager: false
+          inventories_manager: true
+          users_manager: false
+
+        inviteUser.call {invited_user_doc, organization_id, permission}, (err, res) ->
+          expect(err).to.not.exist
+          done()
+
+
+    it 'Log out and login with non auth user', (done) ->
+      Meteor.logout( (err) ->
+        expect(err).to.not.exist
+        Meteor.loginWithPassword user2, '12345678', (err) ->
+          expect(err).to.not.exist
+          done()
+      )
+
+
+
+    it 'Is not owner or expenses_manager but belongs to organ', (done) ->
+      organization_id = organizationID
+      customer_id = customerID
+
+      cus = CustomerModule.Customers.findOne()
+      expect(cus.addresses.length).to.equal(0)
+      customer_doc =
+        addresses: [
+          street: faker.address.streetName()
+          city: faker.address.city()
+          state: faker.address.state()
+          country: faker.address.country()
+          zip_code: faker.address.zipCode()
+        ]
+
+      update.call {organization_id, customer_id, customer_doc}, (err, res) ->
+        expect(err).to.have.property('error', 'notSellsManager')
+        done()
+
+
+    it 'Log out and login with auth user', (done) ->
+      Meteor.logout( (err) ->
+        expect(err).to.not.exist
+        Meteor.loginWithPassword user1, '12345678', (err) ->
+          expect(err).to.not.exist
+          done()
+      )
+
+
+
     it 'Not valid update', (done) ->
       expect(Meteor.user()).to.exist
       expect(CustomerModule.Customers.find().count()).to.equal(1)

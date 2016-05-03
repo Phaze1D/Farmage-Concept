@@ -122,7 +122,7 @@ xdescribe 'User Full App Tests Client', () ->
       permission =
         owner: false
         editor: false
-        expanses_manager: false
+        expenses_manager: false
         sells_manager: false
         units_manager: false
         inventories_manager: true
@@ -162,7 +162,7 @@ xdescribe 'User Full App Tests Client', () ->
       permission =
           owner: false
           editor: false
-          expanses_manager: false
+          expenses_manager: false
           sells_manager: false
           units_manager: false
           inventories_manager: true
@@ -202,7 +202,7 @@ xdescribe 'User Full App Tests Client', () ->
       permission =
         owner: false
         editor: false
-        expanses_manager: false
+        expenses_manager: false
         sells_manager: false
         units_manager: false
         inventories_manager: true
@@ -234,7 +234,7 @@ xdescribe 'User Full App Tests Client', () ->
       permission =
         owner: false
         editor: false
-        expanses_manager: false
+        expenses_manager: false
         sells_manager: false
         units_manager: false
         inventories_manager: true
@@ -261,7 +261,7 @@ xdescribe 'User Full App Tests Client', () ->
         permission =
           owner: false
           editor: false
-          expanses_manager: false
+          expenses_manager: false
           sells_manager: false
           units_manager: false
           inventories_manager: true
@@ -393,7 +393,7 @@ xdescribe 'User Full App Tests Client', () ->
         permission =
           owner: false
           editor: false
-          expanses_manager: false
+          expenses_manager: false
           sells_manager: false
           units_manager: false
           inventories_manager: true
@@ -421,7 +421,7 @@ xdescribe 'User Full App Tests Client', () ->
       permission =
         owner: true
         editor: false
-        expanses_manager: false
+        expenses_manager: false
         sells_manager: false
         units_manager: false
         inventories_manager: true
@@ -447,7 +447,7 @@ xdescribe 'User Full App Tests Client', () ->
       permission =
         owner: true
         editor: false
-        expanses_manager: false
+        expenses_manager: false
         sells_manager: false
         units_manager: false
         inventories_manager: true
@@ -465,7 +465,7 @@ xdescribe 'User Full App Tests Client', () ->
       permission =
         owner: false
         editor: false
-        expanses_manager: false
+        expenses_manager: false
         sells_manager: false
         units_manager: false
         inventories_manager: true
@@ -482,7 +482,7 @@ xdescribe 'User Full App Tests Client', () ->
       permission =
         owner: false
         editor: false
-        expanses_manager: false
+        expenses_manager: false
         sells_manager: false
         units_manager: false
         inventories_manager: true
@@ -508,7 +508,7 @@ xdescribe 'User Full App Tests Client', () ->
       permission =
         owner: true
         editor: false
-        expanses_manager: false
+        expenses_manager: false
         sells_manager: false
         units_manager: false
         inventories_manager: true
@@ -525,7 +525,7 @@ xdescribe 'User Full App Tests Client', () ->
       permission =
         owner: false
         editor: true
-        expanses_manager: false
+        expenses_manager: false
         sells_manager: false
         units_manager: false
         inventories_manager: true
@@ -565,7 +565,7 @@ xdescribe 'User Full App Tests Client', () ->
       permission =
         owner: true
         editor: false
-        expanses_manager: false
+        expenses_manager: false
         sells_manager: false
         units_manager: false
         inventories_manager: true
@@ -592,7 +592,7 @@ xdescribe 'User Full App Tests Client', () ->
       permission =
         owner: true
         editor: false
-        expanses_manager: false
+        expenses_manager: false
         sells_manager: false
         units_manager: false
         inventories_manager: true
