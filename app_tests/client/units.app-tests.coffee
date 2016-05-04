@@ -21,6 +21,15 @@ OMethods = require '../../imports/api/collections/organizations/methods.coffee'
 
 describe 'Units Full App Test Client', () ->
 
+  # it 'Subscribe to ', (done) ->
+  #   callbacks =
+  #     onStop: (err) ->
+  #
+  #     onReady: () ->
+  #       done()
+  #
+  #   Meteor.subscribe('organizations', callbacks)
+
   user1E = faker.internet.email()
   user2E = faker.internet.email()
 
@@ -28,6 +37,16 @@ describe 'Units Full App Test Client', () ->
   user2id = ""
 
   organizationID = ""
+  oldOrgan = ""
+
+  unit1N = faker.company.companyName()
+  unit2N = faker.company.companyName()
+
+  unit1id = ""
+  unit2id = ""
+
+  subHandler = ""
+
 
   createUser = (done, email) ->
     doc =
@@ -66,26 +85,38 @@ describe 'Units Full App Test Client', () ->
       expect(err).to.not.exist
       done()
 
-  inviteUse = (done) ->
+  inviteUse = (done, email) ->
+    invited_user_doc =
+      emails:
+        [
+          address: email
+        ]
+      profile:
+        first_name: faker.name.firstName()
 
+    organization_id = organizationID
 
-  before( (done) ->
-    Meteor.logout( (err) ->
+    permission =
+      owner: false
+      editor: false
+      expenses_manager: false
+      sells_manager: false
+      units_manager: false
+      inventories_manager: true
+      users_manager: false
+
+    inviteUser.call {invited_user_doc, organization_id, permission}, (err, res) ->
       done()
-    )
-    return
-  )
-
-  after( (done) ->
-    Meteor.logout( (err) ->
-
-    )
-    @timeout(10000)
-    setTimeout(done, 5000)
-  )
 
 
   describe 'Insert Unit', () ->
+    before( (done) ->
+      Meteor.logout()
+      @timeout(10000)
+      setTimeout(done, 5000)
+      return
+    )
+
     it 'create user1', (done) ->
       createUser(done, user1E)
 
@@ -145,7 +176,36 @@ describe 'Units Full App Test Client', () ->
     it 'create organization', (done) ->
       createOrgan(done)
 
-    it 'Insert without permission', (done) ->
+    it 'Subscribe to ', (done) ->
+      callbacks =
+        onStop: (err) ->
+
+        onReady: () ->
+          done()
+
+      subHandler = Meteor.subscribe("units", organizationID, callbacks)
+
+    it 'Insert without permission and not in ousers', () ->
+      expect(Meteor.user()).to.exist
+      unit_doc =
+        name: faker.company.companyName()
+        amount: 12
+        organization_id: "NONkjhO"
+
+      organization_id = organizationID
+      userId = user2id
+      expect( () ->
+        insert._execute {userId}, {organization_id, unit_doc}
+      ).to.Throw('notAuthorized')
+
+
+    it 'invite user', (done) ->
+      inviteUse(done, user2E)
+
+    it 'login user2', (done) ->
+      login(done, user2E)
+
+    it 'Insert without permission and in ousers', (done) ->
       expect(Meteor.user()).to.exist
 
       unit_doc =
@@ -155,53 +215,358 @@ describe 'Units Full App Test Client', () ->
 
       organization_id = organizationID
       userId = user2id
-      insert._execute {userId}, {organization_id, unit_doc}, (err, res) ->
-        console.log err
-        expect(err).to.have.property('error', 'notAuthorized')
+
+      insert.call {organization_id, unit_doc}, (err, res) ->
+        expect(err).to.have.property('error','notUnitsManager')
         done()
 
-    it 'Insert success', () ->
 
-    it 'Insert unique name failed', () ->
+    it 'logout', (done) ->
+      logout(done)
 
-    it 'Insert with non unique name but different organization', () ->
+    it 'login user1', (done) ->
+      login(done, user1E)
 
-    it 'Insert with non unique name and organization', () ->
+    it 'Insert success', (done) ->
+      expect(Meteor.user()).to.exist
+      unit_doc =
+        name: unit1N
+        amount: 12
+        organization_id: "NONkjhO"
+
+      organization_id = organizationID
+
+      insert.call {organization_id, unit_doc}, (err, res) ->
+        expect(UnitModule.Units.findOne().amount).to.equal(0)
+        expect(err).to.not.exist
+        unit1id = res
+        done()
+
+
+    it 'create organization', (done) ->
+      oldOrgan = organizationID
+      createOrgan(done)
+
+    it 'Subscribe to ', (done) ->
+      subHandler.stop()
+      callbacks =
+        onStop: (err) ->
+
+        onReady: () ->
+          done()
+
+      subHandler = Meteor.subscribe("units", organizationID, callbacks)
+
+    it 'Insert with same name but different organization', (done) ->
+      expect(UnitModule.Units.find().count()).to.equal(0)
+      expect(Meteor.user()).to.exist
+      unit_doc =
+        name: unit1N
+        amount: 12
+        organization_id: "NONkjhO"
+
+      organization_id = organizationID
+
+      insert.call {organization_id, unit_doc}, (err, res) ->
+        unit2id = res
+        expect(UnitModule.Units.findOne().amount).to.equal(0)
+        expect(err).to.not.exist
+        done()
+
+
+    it 'Insert with same name and organization', (done) ->
+      expect(UnitModule.Units.find().count()).to.equal(1)
+      expect(Meteor.user()).to.exist
+
+      unit_doc =
+        name: unit1N
+        amount: 12
+        organization_id: "NONkjhO"
+
+      organization_id = oldOrgan
+
+      insert.call {organization_id, unit_doc}, (err, res) ->
+        expect(UnitModule.Units.find().count()).to.equal(1)
+        expect(err).to.have.property('error','nameNotUnique')
+        subHandler.stop()
+        done()
 
 
   describe 'Update Unit', () ->
-    it 'Update not logged in', () ->
+    before( (done) ->
+      Meteor.logout()
+      @timeout(10000)
+      setTimeout(done, 5000)
+      return
+    )
 
-    it 'Update not valid', () ->
 
-    it 'Update not auth', () ->
+    it 'Update not valid', (done) ->
+      expect(Meteor.user()).to.not.exist
+      unit_doc =
+        descrip: faker.lorem.paragraph()
+        amount: 12
 
-    it 'Update without permission', () ->
+      organization_id = "NONO"
 
-    it 'Update success', () ->
+      unit_id = unit1id
 
-    it 'Update with same name', () ->
+      update.call {organization_id, unit_id, unit_doc}, (err, res) ->
+        expect(err).to.have.property('error', 'validation-error')
+        done()
 
-    it 'Update with non unique name but different organization', () ->
+    it 'Update not logged in', (done) ->
+      expect(Meteor.user()).to.not.exist
+      unit_doc =
+        description: faker.lorem.sentence()
+        amount: 12
 
-    it 'Update with non unique name and organization', () ->
+      organization_id = "NONO"
 
+      unit_id = unit1id
+
+      update.call {organization_id, unit_id, unit_doc}, (err, res) ->
+        expect(err).to.have.property('error', 'notLoggedIn')
+        done()
+
+    it 'login', (done) ->
+      login(done, user1E)
+
+    it 'Update not auth', (done) ->
+      expect(Meteor.user()).to.exist
+      unit_doc =
+        description: faker.lorem.sentence()
+        amount: 12
+
+      organization_id = "NONO"
+
+      unit_id = unit1id
+
+      update.call {organization_id, unit_id, unit_doc}, (err, res) ->
+        expect(err).to.have.property('error', 'notAuthorized')
+        done()
+
+    it 'Update without permission ', () ->
+      expect(Meteor.user()).to.exist
+
+      unit_doc =
+        name: faker.company.companyName()
+        amount: 12
+        organization_id: "NONkjhO"
+
+      organization_id = oldOrgan
+      unit_id = unit1id
+      userId = user2id
+
+      expect( () ->
+        update._execute {userId}, {organization_id, unit_id, unit_doc}
+      ).to.Throw('notAuthorized')
+
+    it 'Update does not belong', (done) ->
+      unit_doc =
+        description: faker.lorem.sentence()
+        amount: 12
+
+      organization_id = organizationID
+
+      unit_id = unit1id
+
+      update.call {organization_id, unit_id, unit_doc}, (err, res) ->
+        expect(err).to.have.property('error', 'notAuthorized')
+        done()
+
+    it 'Subscribe to ', (done) ->
+      callbacks =
+        onStop: (err) ->
+
+        onReady: () ->
+          done()
+
+      subHandler = Meteor.subscribe("units", oldOrgan, callbacks)
+
+
+    it 'Update with same name', (done) ->
+      expect(UnitModule.Units.find().count()).to.equal(1)
+      expect(UnitModule.Units.findOne().description).to.not.exist
+      unit_doc =
+        name: UnitModule.Units.findOne().name
+        description: faker.lorem.sentence()
+        amount: 12
+
+      organization_id = oldOrgan
+
+      unit_id = unit1id
+
+      update.call {organization_id, unit_id, unit_doc}, (err, res) ->
+        expect(err).to.not.exist
+        expect(UnitModule.Units.findOne().amount).to.equal(0)
+        expect(UnitModule.Units.findOne().description).to.exist
+        done()
+
+    it 'Update success', (done) ->
+      expect(UnitModule.Units.find().count()).to.equal(1)
+      unit1N = faker.name.firstName()
+      unit_doc =
+        name: unit1N
+        description: faker.lorem.sentence()
+        amount: 12
+
+      organization_id = oldOrgan
+
+      unit_id = unit1id
+
+      update.call {organization_id, unit_id, unit_doc}, (err, res) ->
+        expect(err).to.not.exist
+        expect(UnitModule.Units.findOne().amount).to.equal(0)
+        expect(UnitModule.Units.findOne().description).to.exist
+        done()
+
+    it 'Update with same name but different organization', (done) ->
+      expect(UnitModule.Units.find().count()).to.equal(1)
+      unit1N = unit2N
+      unit_doc =
+        name: unit1N
+        description: faker.lorem.sentence()
+        amount: 12
+
+      organization_id = oldOrgan
+
+      unit_id = unit1id
+
+      update.call {organization_id, unit_id, unit_doc}, (err, res) ->
+        expect(err).to.not.exist
+        expect(UnitModule.Units.findOne().amount).to.equal(0)
+        done()
+
+
+    sn2 = faker.name.firstName()
+    it 'Insert success', (done) ->
+      expect(Meteor.user()).to.exist
+      unit_doc =
+        name: sn2
+        amount: 12
+        organization_id: "NONkjhO"
+
+      organization_id = oldOrgan
+
+      insert.call {organization_id, unit_doc}, (err, res) ->
+        expect(err).to.not.exist
+        done()
+
+    it 'Update with same name and organization', (done) ->
+      expect(UnitModule.Units.find().count()).to.equal(2)
+      unit_doc =
+        name: sn2
+        description: faker.lorem.sentence()
+        amount: 12
+
+      organization_id = oldOrgan
+
+      unit_id = unit1id
+
+      update.call {organization_id, unit_id, unit_doc}, (err, res) ->
+        expect(err).to.have.property('error', 'nameNotUnique')
+        done()
 
   describe 'Insert with Parent', () ->
-    it 'Insert nonexisent parent', () ->
+    it 'Insert nonexisent parent', (done) ->
+      expect(Meteor.user()).to.exist
+      unit_doc =
+        name: faker.name.firstName()
+        amount: 12
+        organization_id: "NONkjhO"
+        unit_id: "nononon"
 
-    it 'Insert exisent parent but not to organ', () ->
+      organization_id = oldOrgan
 
-    it 'Insert parent with having same ID', () ->
+      insert.call {organization_id, unit_doc}, (err, res) ->
+        expect(err).to.have.property('error','notAuthorized')
+        done()
 
-    it 'Insert parent success', () ->
+    it 'Insert exisent parent but not to organ', (done) ->
+      expect(Meteor.user()).to.exist
+      unit_doc =
+        name: faker.name.firstName()
+        amount: 12
+        organization_id: "NONkjhO"
+        unit_id: unit2id
+
+      organization_id = oldOrgan
+
+      insert.call {organization_id, unit_doc}, (err, res) ->
+        expect(err).to.have.property('error','notAuthorized')
+        done()
+
+    it 'Insert parent success', (done) ->
+      expect(Meteor.user()).to.exist
+      unit_doc =
+        name: faker.name.firstName()
+        amount: 12
+        organization_id: "NONkjhO"
+        unit_id: unit2id
+
+      organization_id = organizationID
+
+      insert.call {organization_id, unit_doc}, (err, res) ->
+        expect(err).to.not.exist
+        done()
 
 
   describe 'Update with Parent', () ->
-    it 'Update nonexisent parent', () ->
+    it 'Update nonexisent parent', (done) ->
+      unit_doc =
+        description: faker.lorem.sentence()
+        amount: 12
+        unit_id: "nonnono"
 
-    it 'Update exisent parent but not to organ', () ->
+      organization_id = oldOrgan
 
-    it 'Update parent with having same ID', () ->
+      unit_id = unit1id
 
-    it 'Update parent success', () ->
+      update.call {organization_id, unit_id, unit_doc}, (err, res) ->
+        expect(err).to.have.property('error','notAuthorized')
+        done()
+
+    it 'Update exisent parent but not to organ', (done) ->
+      unit_doc =
+        description: faker.lorem.sentence()
+        amount: 12
+        unit_id: unit2id
+
+      organization_id = oldOrgan
+
+      unit_id = unit1id
+
+      update.call {organization_id, unit_id, unit_doc}, (err, res) ->
+        expect(err).to.have.property('error','notAuthorized')
+        done()
+
+    it 'Update parent with having same ID', (done) ->
+      unit_doc =
+        description: faker.lorem.sentence()
+        amount: 12
+        unit_id: unit1id
+
+      organization_id = oldOrgan
+
+      unit_id = unit1id
+
+      update.call {organization_id, unit_id, unit_doc}, (err, res) ->
+        expect(err).to.have.property('error','loopError')
+        done()
+
+    it 'Update parent success', (done) ->
+
+      unit_doc =
+        description: faker.lorem.sentence()
+        amount: 12
+        unit_id: UnitModule.Units.findOne(_id: {$ne: unit1id})._id
+
+      organization_id = oldOrgan
+
+      unit_id = unit1id
+
+      update.call {organization_id, unit_id, unit_doc}, (err, res) ->
+        expect(UnitModule.Units.findOne(_id: unit1id).unit_id).to.exist
+        expect(err).to.not.exist
+        done()
