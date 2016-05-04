@@ -54,9 +54,13 @@ module.exports.update = new ValidatedMethod
   mixins: [parentUnitBelongsToOrgan, unitBelongsToOrgan, hasUnitsManagerPermission, loggedIn]
 
   run: ({organization_id, unit_id, unit_doc}) ->
-    delete unit_doc.organization_id
+    delete unit_doc.organization_id # Organization ID can't be update
+
     if UnitModule.Units.findOne( $and: [{_id: {$ne: unit_id }}, { organization_id: organization_id }, {name: unit_doc.name}] )?
       throw new Meteor.Error 'nameNotUnique', 'name must be unqiue'
 
+    if unit_id is unit_doc.unit_id
+      throw new Meteor.Error 'loopError', 'cannot be parent of itself'
+      
     UnitModule.Units.update unit_id,
                             $set: unit_doc
