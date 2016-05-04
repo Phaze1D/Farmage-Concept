@@ -41,7 +41,7 @@ module.exports.parentUnitBelongsToOrgan = (methodOptions) ->
   methodOptions.run = () ->
     unless @isSimulation
       unless arguments[0].unit_doc.unit_id?
-        RUN.call(@, arguments[0])
+        return RUN.call(@, arguments[0])
 
       parent_unit = UnitModule.Units.findOne(_id: arguments[0].unit_doc.unit_id)
 

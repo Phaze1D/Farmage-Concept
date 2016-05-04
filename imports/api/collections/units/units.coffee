@@ -46,10 +46,11 @@ UnitSchema =
       optional: true
       max: 256
 
-    amount:
+    amount: # Can only be updated/inserted with events
       type: Number
       label: 'amount'
       min: 0
+      optional: true
       defaultValue: 0
 
     unit_id:
