@@ -11,6 +11,7 @@ require '../../api/collections/users/methods.coffee'
 require '../../api/collections/customers/methods.coffee'
 require '../../api/collections/providers/methods.coffee'
 require '../../api/collections/receipts/methods.coffee'
+require '../../api/collections/units/methods.coffee'
 
 # Publications
 require '../../api/collections/users/server/publications.coffee'

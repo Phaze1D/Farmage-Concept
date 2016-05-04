@@ -19,6 +19,7 @@ describe 'User Full App Tests Server', () ->
   describe 'User sign up flow', () ->
 
     it 'Testing user organizations association', () ->
+      
       Meteor.users.find().forEach (doc) ->
         doc.organizations().forEach (doc2) ->
           id_array = ( user.user_id for user in doc2.ousers )

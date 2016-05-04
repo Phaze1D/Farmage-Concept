@@ -23,8 +23,11 @@ class ReceiptsCollection extends Mongo.Collection
 
 ReceiptSchema =
   new SimpleSchema([
+
     receipt_image_url:
       type: String
+      regEx: SimpleSchema.RegEx.Url
+      denyUpdate: true
 
   , CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 

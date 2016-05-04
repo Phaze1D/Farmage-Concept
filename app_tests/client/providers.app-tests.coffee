@@ -18,7 +18,7 @@ OrganizationModule = require '../../imports/api/collections/organizations/organi
 OMethods = require '../../imports/api/collections/organizations/methods.coffee'
 
 
-describe "Provider Full App Tests Client", ->
+xdescribe "Provider Full App Tests Client", ->
 
   before( (done) ->
     Meteor.logout( (err) ->

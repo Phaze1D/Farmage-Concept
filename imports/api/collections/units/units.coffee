@@ -31,7 +31,6 @@ class UnitsCollection extends Mongo.Collection
     ###
 
 
-
 UnitSchema =
   new SimpleSchema([
 
@@ -85,7 +84,7 @@ Units.helpers
     YieldModule.Yields.find { unit_id: @_id }
 
   sells: ->
-    SellModule.Sells.find { 'sell_details.unit_id': @_id}
+    SellModule.Sells.find { 'sell_details.unit_id': @_id} # Possible error
 
   events: ->
     EventModule.Events.find { for_id: @_id }
