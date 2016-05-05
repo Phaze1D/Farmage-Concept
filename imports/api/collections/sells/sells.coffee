@@ -27,7 +27,7 @@ class SellsCollection extends Mongo.Collection
     ###
     super(selector, callback)
 
-InventoryAssociationSchema =   # When removing Inventory after it has been saved then insure the user that the inventory will be put back
+InventoryAssociationSchema =   # When removing inventory after it has been saved then insure the user that the inventory will be put back
   new SimpleSchema(            # Cannot removing or update after status is 'canceled', 'sent', 'paid', 'returned'
     quantity_taken:
       type: Number
@@ -120,7 +120,7 @@ SellSchema =
     note:
       type: String
       label: 'note'
-      max: 128
+      max: 256
       optional: true
 
     customer_id:

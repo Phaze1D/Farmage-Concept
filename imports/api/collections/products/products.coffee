@@ -25,6 +25,34 @@ class ProductsCollection extends Mongo.Collection
     ###
     super(selector, callback)
 
+IngredientSchema =
+  new SimpleSchema(
+    ingredient_name: # Trim and downcase
+      type: String
+      label: 'ingredient'
+      max: 128
+      denyUpdate: true
+      autoValue: () ->
+        if @isSet
+          return value.toLowerCase().replace(/\s+/g,' ').trim();
+
+    amount:
+      type: Number
+      label: 'product.package_amount'
+      decimal: true
+      min: 0
+      denyUpdate: true
+
+    measurement_unit: # Trim and downcase
+      type: String
+      label: 'measurement_unit'
+      max: 64
+      denyUpdate: true
+      autoValue: () ->
+        if @isSet
+          return value.toLowerCase().replace(/\s+/g,' ').trim();
+  )
+
 
 ProductSchema =
   new SimpleSchema([
@@ -46,24 +74,11 @@ ProductSchema =
       index: true
       max: 64
 
-    price_excluding_tax:
+    unit_price: # Excluding tax
       type: Number
-      label: 'product.price_excluding_tax'
+      label: 'product.unit_price'
       decimal: true
       min: 0
-
-    package_amount:
-      type: Number
-      label: 'product.quantity'
-      decimal: true
-      min: 0
-      denyUpdate: true
-
-    measurement_unit:
-      type: String
-      label: 'measurement_unit'
-      max: 64
-      denyUpdate: true
 
     currency:
       type: String
@@ -76,9 +91,16 @@ ProductSchema =
       decimal: true
       max: 100
 
+    ingredients:
+      type: [IngredientSchema]
+      label: 'ingredients'
+      denyUpdate: true
+      minCount: 1
+
     product_image_url:
       type: String
       optional: true
+      regEx: SimpleSchema.RegEx.Url
 
   , CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 

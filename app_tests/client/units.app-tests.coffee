@@ -19,16 +19,7 @@ OrganizationModule = require '../../imports/api/collections/organizations/organi
 OMethods = require '../../imports/api/collections/organizations/methods.coffee'
 
 
-describe 'Units Full App Test Client', () ->
-
-  # it 'Subscribe to ', (done) ->
-  #   callbacks =
-  #     onStop: (err) ->
-  #
-  #     onReady: () ->
-  #       done()
-  #
-  #   Meteor.subscribe('organizations', callbacks)
+xdescribe 'Units Full App Test Client', () ->
 
   user1E = faker.internet.email()
   user2E = faker.internet.email()

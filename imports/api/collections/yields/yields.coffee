@@ -40,7 +40,7 @@ YieldSchema =
       denyUpdate: true
       min: 0
 
-    discarded:
+    discarded: # (Add a discard action that discards a certain amount)
       type: Number
       label: 'discared_amount'
       decimal: true
@@ -52,11 +52,17 @@ YieldSchema =
       decimal: true
       min: 0
 
-    measurement_unit:
+    measurement_unit: # Trim and downcase
       type: String
       label: 'measurement_unit'
       denyUpdate: true
       max: 64
+
+    ingredient_name: # Trim and downcase
+      type: String
+      label: 'ingredient'
+      denyUpdate: true
+      max: 128
 
     unit_id:
       type: String
