@@ -25,14 +25,12 @@ ContactModule = require '../../shared/contact_info.coffee'
 module.exports.insert = new ValidatedMethod
   name: 'organization.insert'
   validate: (organization_doc) ->
+    OrganizationModule.Organizations.simpleSchema().clean(organization_doc)
     OrganizationModule.Organizations.simpleSchema().validate(organization_doc)
 
   mixins: [loggedIn]
 
   run: (organization_doc) ->
-    if OrganizationModule.Organizations.findOne(name: organization_doc.name)?
-      throw new Meteor.Error 'nameNotUnique', 'name must be unqiue'
-
     OrganizationModule.Organizations.insert organization_doc
 
 
@@ -41,6 +39,7 @@ module.exports.insert = new ValidatedMethod
 module.exports.update = new ValidatedMethod
   name: 'organizations.update'
   validate: ({organization_id, updated_organization_doc}) ->
+    OrganizationModule.Organizations.simpleSchema().clean(updated_organization_doc)
     OrganizationModule.Organizations.simpleSchema().validate(updated_organization_doc)
     new SimpleSchema(
       organization_id:
@@ -50,8 +49,6 @@ module.exports.update = new ValidatedMethod
   mixins: [ownsOrganization, loggedIn]
 
   run: ({organization_id, updated_organization_doc}) ->
-    if OrganizationModule.Organizations.findOne( {$and: [ { _id: {$ne: organization_id } }, {name: updated_organization_doc.name} ] })?
-      throw new Meteor.Error 'nameNotUnique', 'name must be unqiue'
 
     OrganizationModule.Organizations.update _id: organization_id,
                                             $set:

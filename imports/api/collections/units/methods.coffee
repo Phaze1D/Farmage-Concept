@@ -22,6 +22,7 @@ UnitModule = require './units.coffee'
 module.exports.insert = new ValidatedMethod
   name: 'units.insert'
   validate: ({organization_id, unit_doc}) ->
+    UnitModule.Units.simpleSchema().clean(unit_doc)
     UnitModule.Units.simpleSchema().validate(unit_doc)
     new SimpleSchema(
       organization_id:
@@ -44,7 +45,7 @@ module.exports.insert = new ValidatedMethod
 module.exports.update = new ValidatedMethod
   name: 'units.update'
   validate: ({organization_id, unit_id, unit_doc}) ->
-
+    UnitModule.Units.simpleSchema().clean(unit_doc)
     UnitModule.Units.simpleSchema().validate({$set: unit_doc}, modifier: true)
     new SimpleSchema(
       organization_id:

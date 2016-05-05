@@ -82,7 +82,7 @@ xdescribe 'Organizations Full App Tests Client', () ->
         return
       return
 
-    it 'Organizations insert validation unqiue name should fail', (done) ->
+    it 'Organizations insert validation unqiue name should not fail', (done) ->
       expect(Meteor.user()).to.exist
 
       organ_doc =
@@ -90,7 +90,7 @@ xdescribe 'Organizations Full App Tests Client', () ->
         email: faker.internet.email()
 
       insert.call organ_doc, (err, res) ->
-        expect(err).to.have.property('error', 'nameNotUnique')
+        expect(err).to.not.exist
         done()
         return
       return
@@ -183,7 +183,7 @@ xdescribe 'Organizations Full App Tests Client', () ->
         expect(Organizations.find().count()).to.equal(0)
         done()
 
-    it ' Update organizations unique name failed', (done) ->
+    it ' Update organizations unique name not failed', (done) ->
       expect(Meteor.user()).to.exist
 
       organ_doc =
@@ -202,7 +202,7 @@ xdescribe 'Organizations Full App Tests Client', () ->
         email: faker.internet.email()
 
       update.call {organization_id, updated_organization_doc}, (err, res) ->
-        expect(err).to.have.property('error', 'nameNotUnique')
+        expect(err).to.not.exist
         done()
 
     it 'Update organization name and email success', (done) ->

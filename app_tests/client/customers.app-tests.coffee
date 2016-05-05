@@ -1,5 +1,4 @@
 faker = require 'faker'
-
 { chai, assert, expect } = require 'meteor/practicalmeteor:chai'
 { Meteor } = require 'meteor/meteor'
 { Accounts } = require 'meteor/accounts-base'

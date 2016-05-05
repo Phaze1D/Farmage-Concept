@@ -291,21 +291,6 @@ xdescribe 'Units Full App Test Client', () ->
       return
     )
 
-
-    it 'Update not valid', (done) ->
-      expect(Meteor.user()).to.not.exist
-      unit_doc =
-        descrip: faker.lorem.paragraph()
-        amount: 12
-
-      organization_id = "NONO"
-
-      unit_id = unit1id
-
-      update.call {organization_id, unit_id, unit_doc}, (err, res) ->
-        expect(err).to.have.property('error', 'validation-error')
-        done()
-
     it 'Update not logged in', (done) ->
       expect(Meteor.user()).to.not.exist
       unit_doc =
@@ -322,6 +307,21 @@ xdescribe 'Units Full App Test Client', () ->
 
     it 'login', (done) ->
       login(done, user1E)
+
+    it 'Update not valid', (done) ->
+      expect(Meteor.user()).to.exist
+      unit_doc =
+        description: faker.lorem.paragraphs()
+        amount: 12
+
+      organization_id = "NONO"
+
+      unit_id = unit1id
+
+      update.call {organization_id, unit_id, unit_doc}, (err, res) ->
+        expect(err).to.have.property('error', 'validation-error')
+        done()
+
 
     it 'Update not auth', (done) ->
       expect(Meteor.user()).to.exist
@@ -398,7 +398,6 @@ xdescribe 'Units Full App Test Client', () ->
       expect(UnitModule.Units.find().count()).to.equal(1)
       unit1N = faker.name.firstName()
       unit_doc =
-        name: unit1N
         description: faker.lorem.sentence()
         amount: 12
 

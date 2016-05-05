@@ -84,8 +84,6 @@ OrganizationSchema =
       type: String
       max: 128
       label: 'organization.name'
-      unique: true
-      index: true
 
     ousers:
       type: [UsersSchema]

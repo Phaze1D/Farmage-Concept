@@ -69,10 +69,15 @@ ProductSchema =
       optional: true
 
     sku:
-      type: String
+      type: String # UpCase, No Space
       label: 'SKU'
       index: true
       max: 64
+      custom: () ->
+        if @isSet
+          if /\s/g.test(value) || !(/\b[A-Z0-9-]+/g.test(value))
+            throw Meteor.Error "regExError", "Can only contain uppercase letters, digits, dashes"
+
 
     unit_price: # Excluding tax
       type: Number
