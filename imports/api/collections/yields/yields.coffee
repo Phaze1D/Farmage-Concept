@@ -32,27 +32,15 @@ YieldSchema =
       type: String
       label: 'name'
       max: 64
+      optional: true
 
-    initial:
-      type: Number
-      label: 'initial_amount'
-      decimal: true
-      denyUpdate: true
-      min: 0
-
-    discarded: # (Add a discard action that discards a certain amount)
-      type: Number
-      label: 'discared_amount'
-      decimal: true
-      min: 0
-
-    current:
+    amount:
       type: Number
       label: 'yield.total'
       decimal: true
       min: 0
 
-    measurement_unit: # Trim and downcase
+    measurement_unit:
       type: String
       label: 'measurement_unit'
       denyUpdate: true
@@ -61,7 +49,7 @@ YieldSchema =
         if @isSet
           return @value.toLowerCase().replace(/\s+/g,' ').trim();
 
-    ingredient_name: # Trim and downcase
+    ingredient_name:
       type: String
       label: 'ingredient'
       denyUpdate: true

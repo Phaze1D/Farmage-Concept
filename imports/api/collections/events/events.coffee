@@ -42,7 +42,11 @@ EventSchema =
       label: 'description'
       max: 256
       optional: true
-      
+
+    is_user_event:
+      type: Boolean
+      denyUpdate: true
+
     for_type:
       type: String
       label: 'event.for_type'
