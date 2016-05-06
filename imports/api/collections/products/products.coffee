@@ -34,7 +34,7 @@ IngredientSchema =
       denyUpdate: true
       autoValue: () ->
         if @isSet
-          return value.toLowerCase().replace(/\s+/g,' ').trim();
+          return @value.toLowerCase().replace(/\s+/g,' ').trim();
 
     amount:
       type: Number
@@ -50,7 +50,7 @@ IngredientSchema =
       denyUpdate: true
       autoValue: () ->
         if @isSet
-          return value.toLowerCase().replace(/\s+/g,' ').trim();
+          return @value.toLowerCase().replace(/\s+/g,' ').trim();
   )
 
 
@@ -69,14 +69,14 @@ ProductSchema =
       optional: true
 
     sku:
-      type: String # UpCase, No Space
+      type: String
       label: 'SKU'
       index: true
       max: 64
       custom: () ->
         if @isSet
-          if /\s/g.test(value) || !(/\b[A-Z0-9-]+/g.test(value))
-            throw Meteor.Error "regExError", "Can only contain uppercase letters, digits, dashes"
+          if /\s/g.test(@value)
+            throw new Meteor.Error "regExError", "Cannot contain whitespaces"
 
 
     unit_price: # Excluding tax
@@ -95,6 +95,7 @@ ProductSchema =
       label: 'tax_rate'
       decimal: true
       max: 100
+      min: 0
 
     ingredients:
       type: [IngredientSchema]

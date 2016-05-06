@@ -21,6 +21,7 @@ module.exports.insert = new ValidatedMethod
   validate: ({organization_id, product_doc}) ->
     ProductModule.Products.simpleSchema().clean(product_doc)
     ProductModule.Products.simpleSchema().validate(product_doc)
+
     new SimpleSchema(
       organization_id:
         type: String
@@ -54,7 +55,7 @@ module.exports.update = new ValidatedMethod
 
   run: ({organization_id, product_id, product_doc}) ->
     delete product_doc.organization_id # Organization ID can't be update
-
+    
     if ProductModule.Products.findOne( $and: [{_id: {$ne: product_id }}, { organization_id: organization_id }, {sku: product_doc.sku}] )?
       throw new Meteor.Error 'skuNotUnique', 'sku must be unqiue'
 

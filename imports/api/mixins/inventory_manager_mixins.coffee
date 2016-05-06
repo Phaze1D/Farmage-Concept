@@ -1,5 +1,5 @@
 OrganizationModule = require '../collections/organizations/organizations.coffee'
-ProductModule = require '../collections/customers/customers.coffee'
+ProductModule = require '../collections/products/products.coffee'
 #
 module.exports.hasInventoryManagerPermission = (methodOptions) ->
   RUN = methodOptions.run

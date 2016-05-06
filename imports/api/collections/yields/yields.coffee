@@ -57,12 +57,18 @@ YieldSchema =
       label: 'measurement_unit'
       denyUpdate: true
       max: 64
+      autoValue: () ->
+        if @isSet
+          return @value.toLowerCase().replace(/\s+/g,' ').trim();
 
     ingredient_name: # Trim and downcase
       type: String
       label: 'ingredient'
       denyUpdate: true
       max: 128
+      autoValue: () ->
+        if @isSet
+          return @value.toLowerCase().replace(/\s+/g,' ').trim();
 
     unit_id:
       type: String
