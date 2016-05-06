@@ -42,7 +42,7 @@ EventSchema =
       label: 'description'
       max: 256
       optional: true
-
+      
     for_type:
       type: String
       label: 'event.for_type'

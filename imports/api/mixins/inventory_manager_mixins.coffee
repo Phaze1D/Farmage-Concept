@@ -21,6 +21,7 @@ module.exports.hasInventoryManagerPermission = (methodOptions) ->
 
   return methodOptions
 
+# 
 module.exports.productBelongsToOrgan = (methodOptions) ->
   RUN = methodOptions.run
   methodOptions.run = () ->
