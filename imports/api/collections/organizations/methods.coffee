@@ -6,7 +6,10 @@
 OrganizationModule = require './organizations.coffee'
 ContactModule = require '../../shared/contact_info.coffee'
 
-{ loggedIn, ownsOrganization } = require '../../mixins/mixins.coffee'
+{
+  loggedIn
+  hasPermission
+} = require '../../mixins/mixins.coffee'
 
 
 
@@ -28,9 +31,8 @@ module.exports.insert = new ValidatedMethod
     OrganizationModule.Organizations.simpleSchema().clean(organization_doc)
     OrganizationModule.Organizations.simpleSchema().validate(organization_doc)
 
-  mixins: [loggedIn]
-
   run: (organization_doc) ->
+    loggedIn(@userId)
     OrganizationModule.Organizations.insert organization_doc
 
 
@@ -46,9 +48,12 @@ module.exports.update = new ValidatedMethod
         type: String
     ).validate({organization_id})
 
-  mixins: [ownsOrganization, loggedIn]
-
   run: ({organization_id, updated_organization_doc}) ->
+
+    loggedIn(@userId)
+    
+    unless @isSimulation
+      hasPermission(@userId, organization_id, 'owner')
 
     OrganizationModule.Organizations.update _id: organization_id,
                                             $set:

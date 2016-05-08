@@ -19,7 +19,7 @@ faker = require 'faker'
 
 
 
-xdescribe 'User Full App Tests Client', () ->
+describe 'User Full App Tests Client', () ->
 
   before( (done) ->
     Meteor.logout( (err) ->
@@ -241,6 +241,7 @@ xdescribe 'User Full App Tests Client', () ->
         users_manager: false
 
       inviteUser.call {invited_user_doc, organization_id, permission}, (err, res) ->
+        console.log err
         expect(err).to.not.exist
         done()
 
@@ -268,7 +269,7 @@ xdescribe 'User Full App Tests Client', () ->
           users_manager: false
 
         inviteUser.call {invited_user_doc, organization_id, permission}, (err, res) ->
-          expect(err).to.have.property('error','notOwner')
+          expect(err).to.have.property('error','permissionDenied')
           done()
 
 
@@ -428,7 +429,7 @@ xdescribe 'User Full App Tests Client', () ->
         users_manager: false
 
       updatePermission.call {update_user_id, organization_id, permission}, (err, res) ->
-        expect(err).to.have.property('error', 'notUserManager')
+        expect(err).to.have.property('error', 'permissionDenied')
         done()
 
 
@@ -515,7 +516,7 @@ xdescribe 'User Full App Tests Client', () ->
         users_manager: true
 
       updatePermission.call {update_user_id, organization_id, permission}, (err, res) ->
-        expect(err).to.have.property('error', 'notOwner')
+        expect(err).to.have.property('error', 'permissionDenied')
         done()
 
 
@@ -572,7 +573,7 @@ xdescribe 'User Full App Tests Client', () ->
         users_manager: false
 
       updatePermission.call {update_user_id, organization_id, permission}, (err, res) ->
-        expect(err).to.have.property('error','userNotInOrganization')
+        expect(err).to.have.property('error','notAuthorized')
 
 
 
@@ -599,7 +600,7 @@ xdescribe 'User Full App Tests Client', () ->
         users_manager: false
 
       updatePermission.call {update_user_id, organization_id, permission}, (err, res) ->
-        expect(err).to.have.property('error','notAuthorized')
+        expect(err).to.have.property('error','permissionDenied')
         done()
 
 
@@ -620,7 +621,7 @@ xdescribe 'User Full App Tests Client', () ->
       organization_id = Organizations.findOne()._id
 
       removeFromOrganization.call {update_user_id, organization_id}, (err, res) ->
-        expect(err).to.have.property('error', 'userNotInOrganization')
+        expect(err).to.have.property('error', 'notAuthorized')
         done()
 
     it 'Remove existent user but not in organ', (done) ->
@@ -636,7 +637,7 @@ xdescribe 'User Full App Tests Client', () ->
           organization_id = doc._id
 
       removeFromOrganization.call {update_user_id, organization_id}, (err, res) ->
-        expect(err).to.have.property('error', 'userNotInOrganization')
+        expect(err).to.have.property('error', 'notAuthorized')
         done()
 
 

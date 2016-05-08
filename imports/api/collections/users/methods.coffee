@@ -8,8 +8,12 @@ OrganizationModule = require '../organizations/organizations.coffee'
 ContactModule = require '../../shared/contact_info.coffee'
 UsersModule = require './users.coffee'
 
-{ loggedIn, ownsOrganization } = require '../../mixins/mixins.coffee'
-{ hasUserManagerPermission, updateUserBelongsToOrgan } = require '../../mixins/users_manager_mixins.coffee'
+
+{
+  loggedIn
+  hasPermission
+  userBelongsToOrgan
+} = require '../../mixins/mixins.coffee'
 
 
 
@@ -52,12 +56,16 @@ module.exports.inviteUser = new ValidatedMethod
         type: String
     ).validate({organization_id})
 
-  mixins: [ownsOrganization, loggedIn]
 
   run: ({invited_user_doc, organization_id, permission}) ->
     @unblock()
+
+    loggedIn(@userId)
+
     unless @isSimulation
-      organization = arguments[0].organization
+      organization = hasPermission(@userId, organization_id, "owner")
+
+    unless @isSimulation
       invited_user = Accounts.findUserByEmail invited_user_doc.emails[0].address
       if invited_user?
         addUserToOrganization(invited_user._id, organization, permission)
@@ -83,17 +91,21 @@ module.exports.updatePermission = new ValidatedMethod
         type: String
     ).validate({update_user_id, organization_id})
 
-  mixins: [updateUserBelongsToOrgan, hasUserManagerPermission, loggedIn]
-
   run: ({update_user_id, organization_id, permission}) ->
+
+    loggedIn(@userId)
+
     unless @isSimulation
-      organization = arguments[0].organization
+      organization = hasPermission(@userId, organization_id, "users_manager")
+      userBelongsToOrgan(update_user_id, organization_id)
+
+    unless @isSimulation
       uuser = organization.hasUser(update_user_id)
       cuser = organization.hasUser(@userId)
 
       # Only owners can change the owner permission
       if !cuser.permission.owner && permission.owner isnt uuser.permission.owner
-        throw new Meteor.Error 'notOwner', 'user managers cannot set the owner permission'
+        throw new Meteor.Error 'permissionDenied', 'user managers cannot set the owner permission'
 
       # Pervents from there every not being an owner
       if update_user_id is @userId && permission.owner isnt uuser.permission.owner
@@ -117,8 +129,13 @@ module.exports.removeFromOrganization = new ValidatedMethod
         type: String
     ).validate({update_user_id, organization_id})
 
-  mixins: [updateUserBelongsToOrgan, ownsOrganization, loggedIn]
   run: ({update_user_id, organization_id}) ->
+    loggedIn(@userId)
+
+    unless @isSimulation
+      hasPermission(@userId, organization_id, "owner")
+      userBelongsToOrgan(update_user_id, organization_id)
+
     unless @isSimulation
       # Pervents owners from removing themselves
       if update_user_id is @userId
@@ -136,9 +153,8 @@ module.exports.updateProfile = new ValidatedMethod
   validate: ({profile_doc}) ->
     UsersModule.UserProfileSchema.validate(profile_doc)
 
-  mixins: [loggedIn]
-
   run: ({profile_doc}) ->
+    loggedIn(@userId)
     profile_doc.user_avatar_url = "" # This needs to change cannot trust user
     Meteor.users.update @userId,
                         $set:

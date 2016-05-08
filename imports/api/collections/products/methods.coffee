@@ -7,12 +7,9 @@ ProductModule  = require './products.coffee'
 
 {
   loggedIn
-  ownsOrganization
-} = require '../../mixins/mixins.coffee'
-{
+  hasPermission
   productBelongsToOrgan
-  hasInventoryManagerPermission
-} = require '../../mixins/inventory_manager_mixins.coffee'
+} = require '../../mixins/mixins.coffee'
 
 
 # insert
@@ -27,9 +24,11 @@ module.exports.insert = new ValidatedMethod
         type: String
     ).validate({organization_id})
 
-  mixins: [hasInventoryManagerPermission, loggedIn]
-
   run: ({organization_id, product_doc}) ->
+    loggedIn(@userId)
+
+    unless @isSimulation
+      hasPermission(@userId, organization_id, "inventories_manager")
 
     if ProductModule.Products.findOne( $and: [ { organization_id: organization_id }, {sku: product_doc.sku} ] )?
       throw new Meteor.Error 'skuNotUnique', 'sku must be unqiue'
@@ -51,11 +50,15 @@ module.exports.update = new ValidatedMethod
         type: String
     ).validate({organization_id, product_id})
 
-  mixins: [productBelongsToOrgan, hasInventoryManagerPermission, loggedIn]
-
   run: ({organization_id, product_id, product_doc}) ->
+
+    loggedIn(@userId)
+    unless @isSimulation
+      hasPermission(@userId, organization_id, "inventories_manager")
+      productBelongsToOrgan(product_id, organization_id)
+
     delete product_doc.organization_id # Organization ID can't be update
-    
+
     if ProductModule.Products.findOne( $and: [{_id: {$ne: product_id }}, { organization_id: organization_id }, {sku: product_doc.sku}] )?
       throw new Meteor.Error 'skuNotUnique', 'sku must be unqiue'
 

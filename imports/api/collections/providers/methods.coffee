@@ -8,12 +8,9 @@ ProviderModule  = require './providers.coffee'
 
 {
   loggedIn
-  ownsOrganization
-} = require '../../mixins/mixins.coffee'
-{
-  hasExpensesManagerPermission
+  hasPermission
   providerBelongsToOrgan
-} = require '../../mixins/expenses_manager_mixins.coffee'
+} = require '../../mixins/mixins.coffee'
 
 ###
 
@@ -35,9 +32,12 @@ module.exports.insert = new ValidatedMethod
         type: String
     ).validate({organization_id})
 
-  mixins: [hasExpensesManagerPermission, loggedIn]
-
   run: ({organization_id, provider_doc}) ->
+
+    loggedIn(@userId)
+    unless @isSimulation
+      hasPermission(@userId, organization_id, "expenses_manager")
+
     provider_doc.organization_id = organization_id
     ProviderModule.Providers.insert provider_doc
 
@@ -56,9 +56,13 @@ module.exports.update = new ValidatedMethod
         type: String
     ).validate({provider_id, organization_id})
 
-  mixins: [providerBelongsToOrgan, hasExpensesManagerPermission, loggedIn]
-
   run: ({organization_id, provider_id, provider_doc}) ->
+
+    loggedIn(@userId)
+    unless @isSimulation
+      hasPermission(@userId, organization_id, "expenses_manager")
+      providerBelongsToOrgan(provider_id, organization_id)
+
     delete provider_doc.organization_id
     ProviderModule.Providers.update provider_id,
                                     $set: provider_doc

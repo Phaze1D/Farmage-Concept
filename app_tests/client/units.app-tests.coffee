@@ -208,7 +208,7 @@ xdescribe 'Units Full App Test Client', () ->
       userId = user2id
 
       insert.call {organization_id, unit_doc}, (err, res) ->
-        expect(err).to.have.property('error','notUnitsManager')
+        expect(err).to.have.property('error','permissionDenied')
         done()
 
 

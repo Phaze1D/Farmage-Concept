@@ -7,11 +7,8 @@ ReceiptsModule = require './receipts.coffee'
 
 {
   loggedIn
-  ownsOrganization
+  hasPermission
 } = require '../../mixins/mixins.coffee'
-{
-  hasExpensesManagerPermission
-} = require '../../mixins/expenses_manager_mixins.coffee'
 
 
 # Insert
@@ -24,9 +21,12 @@ module.exports.insert = new ValidatedMethod
         type: String
     ).validate({organization_id})
 
-  mixins: [hasExpensesManagerPermission, loggedIn]
-
   run: ({organization_id, receipt_doc}) ->
+
+    loggedIn(@userId)
+    unless @isSimulation
+      hasPermission(@userId, organization_id, "expenses_manager")
+
     receipt_doc.organization_id = organization_id
     ReceiptsModule.Receipts.insert receipt_doc
 

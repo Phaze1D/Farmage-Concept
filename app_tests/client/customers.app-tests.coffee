@@ -202,7 +202,7 @@ xdescribe "Customer Full App Tests Client", ->
         ]
 
       update.call {organization_id, customer_id, customer_doc}, (err, res) ->
-        expect(err).to.have.property('error', 'notSellsManager')
+        expect(err).to.have.property('error', 'permissionDenied')
         done()
 
 

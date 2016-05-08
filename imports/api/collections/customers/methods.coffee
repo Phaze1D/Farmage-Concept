@@ -6,14 +6,12 @@
 
 CustomerModule  = require './customers.coffee'
 
+
 {
   loggedIn
-  ownsOrganization
-} = require '../../mixins/mixins.coffee'
-{
-  hasSellsManagerPermission
+  hasPermission
   customerBelongsToOrgan
-} = require '../../mixins/sells_manager_mixins.coffee'
+} = require '../../mixins/mixins.coffee'
 
 ###
 
@@ -35,9 +33,12 @@ module.exports.insert = new ValidatedMethod
         type: String
     ).validate({organization_id})
 
-  mixins: [hasSellsManagerPermission, loggedIn]
-
   run: ({organization_id, customer_doc}) ->
+
+    loggedIn(@userId)
+    unless @isSimulation
+      hasPermission(@userId, organization_id, "sells_manager")
+
     customer_doc.organization_id = organization_id
     CustomerModule.Customers.insert customer_doc
 
@@ -56,9 +57,14 @@ module.exports.update = new ValidatedMethod
         type: String
     ).validate({customer_id, organization_id})
 
-  mixins: [customerBelongsToOrgan, hasSellsManagerPermission, loggedIn]
-
   run: ({organization_id, customer_id, customer_doc}) ->
+
+    loggedIn(@userId)
+    
+    unless @isSimulation
+      hasPermission(@userId, organization_id, "sells_manager")
+      customerBelongsToOrgan(customer_id, organization_id)
+
     delete customer_doc.organization_id
     CustomerModule.Customers.update customer_id,
                                     $set: customer_doc

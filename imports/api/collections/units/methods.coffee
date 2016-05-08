@@ -6,16 +6,12 @@
 
 
 UnitModule = require './units.coffee'
-{
-  loggedIn
-  ownsOrganization
-} = require '../../mixins/mixins.coffee'
 
 {
-  hasUnitsManagerPermission
+  loggedIn
+  hasPermission
   unitBelongsToOrgan
-  parentUnitBelongsToOrgan
-} = require '../../mixins/units_manager_mixins.coffee'
+} = require '../../mixins/mixins.coffee'
 
 
 # insert
@@ -29,9 +25,13 @@ module.exports.insert = new ValidatedMethod
         type: String
     ).validate({organization_id})
 
-  mixins: [parentUnitBelongsToOrgan, hasUnitsManagerPermission, loggedIn]
-
   run: ({organization_id, unit_doc}) ->
+
+    loggedIn(@userId)
+    unless @isSimulation
+      hasPermission(@userId, organization_id, "units_manager")
+      unitBelongsToOrgan(unit_doc.unit_id, organization_id) if unit_doc.unit_id?
+
     delete unit_doc.amount # User cannot insert unit amount via this method (defaults to 0)
 
     if UnitModule.Units.findOne( $and: [ { organization_id: organization_id }, {name: unit_doc.name} ] )?
@@ -54,9 +54,14 @@ module.exports.update = new ValidatedMethod
         type: String
     ).validate({organization_id, unit_id})
 
-  mixins: [parentUnitBelongsToOrgan, unitBelongsToOrgan, hasUnitsManagerPermission, loggedIn]
-
   run: ({organization_id, unit_id, unit_doc}) ->
+
+    loggedIn(@userId)
+    unless @isSimulation
+      hasPermission(@userId, organization_id, "units_manager")
+      unitBelongsToOrgan(unit_id, organization_id)
+      unitBelongsToOrgan(unit_doc.unit_id, organization_id) if unit_doc.unit_id?
+
     delete unit_doc.organization_id # Organization ID can't be update
     delete unit_doc.amount # User cannot update unit amount via this method
 
