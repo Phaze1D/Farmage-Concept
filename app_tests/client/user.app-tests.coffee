@@ -19,7 +19,7 @@ faker = require 'faker'
 
 
 
-describe 'User Full App Tests Client', () ->
+xdescribe 'User Full App Tests Client', () ->
 
   before( (done) ->
     Meteor.logout( (err) ->

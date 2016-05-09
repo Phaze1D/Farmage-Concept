@@ -38,6 +38,8 @@ YieldSchema =
       type: Number
       label: 'yield.total'
       decimal: true
+      optional: true
+      defaultValue: 0
       min: 0
 
     measurement_unit:
