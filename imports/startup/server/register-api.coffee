@@ -14,6 +14,7 @@ require '../../api/collections/receipts/methods.coffee'
 require '../../api/collections/units/methods.coffee'
 require '../../api/collections/products/methods.coffee'
 require '../../api/collections/yields/methods.coffee'
+require '../../api/collections/expenses/methods.coffee'
 
 # Publications
 require '../../api/collections/users/server/publications.coffee'
@@ -24,3 +25,4 @@ require '../../api/collections/receipts/server/publications.coffee'
 require '../../api/collections/units/server/publications.coffee'
 require '../../api/collections/products/server/publications.coffee'
 require '../../api/collections/yields/server/publications.coffee'
+require '../../api/collections/expenses/server/publications.coffee'
