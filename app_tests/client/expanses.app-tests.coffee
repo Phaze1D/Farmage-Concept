@@ -24,7 +24,7 @@ OMethods = require '../../imports/api/collections/organizations/methods.coffee'
 } = require '../../imports/api/collections/expenses/methods.coffee'
 
 
-describe "Expenses Full App Client", ->
+xdescribe "Expenses Full App Client", ->
   before( (done) ->
     Meteor.logout( (err) ->
       done()

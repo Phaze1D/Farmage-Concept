@@ -47,6 +47,8 @@ CustomerSchema =
       optional: true
       max: 64
 
+    # Think about RFC
+
   ,ContactSchema, CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 
 

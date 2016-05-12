@@ -73,6 +73,3 @@ module.exports.update = new ValidatedMethod
 
     UnitModule.Units.update unit_id,
                             $set: unit_doc
-
-
-# user event

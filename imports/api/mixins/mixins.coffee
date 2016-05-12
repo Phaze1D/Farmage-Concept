@@ -5,8 +5,8 @@ CustomerModule = require '../collections/customers/customers.coffee'
 UnitModule = require '../collections/units/units.coffee'
 YieldModule = require '../collections/yields/yields.coffee'
 ReceiptModule = require '../collections/receipts/receipts.coffee'
-ExpensesModule = require '../collections/expenses/expenses.coffee'
-
+ExpenseModule = require '../collections/expenses/expenses.coffee'
+InventoryModule = require '../collections/inventories/inventories.coffee'
 
 module.exports.loggedIn = (user_id) ->
   unless user_id?
@@ -86,9 +86,18 @@ module.exports.receiptBelongsToOrgan = (receipt_id, organization_id) ->
   return receipt
 
 module.exports.expenseBelongsToOrgan = (expense_id, organization_id) ->
-  expense = ExpensesModule.Expenses.findOne(_id: expense_id)
+  expense = ExpenseModule.Expenses.findOne(_id: expense_id)
 
   unless (expense? && expense.organization_id is organization_id)
     throw new Meteor.Error 'notAuthorized', 'expense does not belong'
 
   return expense
+
+
+module.exports.inventoryBelongsToOrgan = (inventory_id, organization_id) ->
+  inventory = InventoryModule.Inventories.findOne(_id: inventory_id)
+
+  unless (inventory? && inventory.organization_id is organization_id)
+    throw new Meteor.Error 'notAuthorized', 'inventory does not belong'
+
+  return inventory

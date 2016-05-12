@@ -29,12 +29,7 @@ EventSchema =
     amount:
       type: Number
       label: 'event.amount'
-      denyUpdate: true
-      min: 1
-
-    sign:
-      type: Boolean
-      label: 'event.sign'
+      decimal: true
       denyUpdate: true
 
     description:

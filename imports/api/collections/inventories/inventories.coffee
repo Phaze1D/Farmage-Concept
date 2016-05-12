@@ -38,12 +38,15 @@ YieldAssociationSchema =
       min: 0
   )
 
+# 
 
 InventorySchema =
   new SimpleSchema([
     amount:
       type: Number
       label: 'amount'
+      optional: true
+      defaultValue: 0
       min: 0
 
     expiration_date:
@@ -53,7 +56,9 @@ InventorySchema =
 
     yield_objects:
       type: [YieldAssociationSchema]
-      minCount: 1
+      optional: true
+      defaultValue: []
+      minCount: 0
 
     product_id:
       type: String
