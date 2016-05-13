@@ -89,6 +89,7 @@ OrganizationSchema =
       type: [UsersSchema]
       optional: true
       label: 'users'
+      maxCount: 5
       autoValue: ->
         if @isInsert
           @unset()
@@ -144,7 +145,7 @@ Organizations.helpers
     Meteor.users.find { _id: $in: id_array }
   yields: ->
     YieldModule.Yields.find { organization_id: @_id }
-    
+
   hasUser: (user_id) ->
     for user in @ousers
       if user_id is user.user_id

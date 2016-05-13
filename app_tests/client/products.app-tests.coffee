@@ -28,7 +28,6 @@ xdescribe 'Product Full App Test Client', () ->
         last_name: faker.name.lastName()
 
     Accounts.createUser doc, (error) ->
-      console.log error
       done()
 
   login = (done, email) ->
@@ -49,7 +48,6 @@ xdescribe 'Product Full App Test Client', () ->
 
     OMethods.insert.call organ_doc, (err, res) ->
       organizationID = res
-      console.log err
       expect(err).to.not.exist
       done()
 
@@ -115,7 +113,6 @@ xdescribe 'Product Full App Test Client', () ->
       organization_id = organizationID
 
       insert.call {organization_id, product_doc}, (err, res) ->
-        console.log err
         expect(err).to.not.exist
         done()
 
@@ -176,14 +173,13 @@ xdescribe 'Product Full App Test Client', () ->
         currency: "MXN"
         tax_rate: 10
         ingredients: [
-          ingredient_name: inmame
+          {ingredient_name: inmame
           amount: 123.123
-          measurement_unit: mu
+          measurement_unit: mu}
         ]
         organization_id: "NONO"
 
       organization_id = organizationID
-
       insert.call {organization_id, product_doc}, (err, res) ->
         expect(ProductModule.Products.findOne(res).ingredients[0].ingredient_name).to.not.equal(inmame)
         expect(ProductModule.Products.findOne(res).ingredients[0].measurement_unit).to.not.equal(mu)

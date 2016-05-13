@@ -32,13 +32,20 @@ YieldAssociationSchema =
       denyUpdate: true
       index: true
 
-    amount_taken:  # Max number most be the yield max amount (total amount that is currently avaiable)
+    amount_taken:  # amount with yield measurement_units
       type: Number
       decimal: true
       min: 0
+
+    # Conversation rate (1 product ingredient = )
+    conversation_rate:
+      type: Number
+      decimal: true
+      min: 0
+      exclusiveMin: true
   )
 
-# 
+#
 
 InventorySchema =
   new SimpleSchema([
@@ -59,6 +66,7 @@ InventorySchema =
       optional: true
       defaultValue: []
       minCount: 0
+      maxCount: 100
 
     product_id:
       type: String

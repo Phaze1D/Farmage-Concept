@@ -27,7 +27,7 @@ class ProductsCollection extends Mongo.Collection
 
 IngredientSchema =
   new SimpleSchema(
-    ingredient_name: # Trim and downcase
+    ingredient_name: # Single do not use pural
       type: String
       label: 'ingredient'
       max: 128
@@ -97,11 +97,12 @@ ProductSchema =
       max: 100
       min: 0
 
-    ingredients:
+    ingredients: # this array cannot contain items that have the same ingredient_name
       type: [IngredientSchema]
       label: 'ingredients'
       denyUpdate: true
       minCount: 1
+      maxCount: 100
 
     product_image_url:
       type: String

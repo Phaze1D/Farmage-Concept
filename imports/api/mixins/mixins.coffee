@@ -69,12 +69,12 @@ module.exports.providerBelongsToOrgan = (provider_id, organization_id) ->
 
 
 module.exports.yieldBelongsToOrgan = (yield_id, organization_id) ->
-  yield_ = YieldModule.Yields.findOne(_id: yield_id)
+  _yield = YieldModule.Yields.findOne(_id: yield_id)
 
-  unless (yield_? && yield_.organization_id is organization_id)
+  unless (_yield? && _yield.organization_id is organization_id)
     throw new Meteor.Error 'notAuthorized', 'yield does not belong'
 
-  return yield_
+  return _yield
 
 
 module.exports.receiptBelongsToOrgan = (receipt_id, organization_id) ->

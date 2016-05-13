@@ -51,7 +51,7 @@ YieldSchema =
         if @isSet
           return @value.toLowerCase().replace(/\s+/g,' ').trim();
 
-    ingredient_name:
+    ingredient_name: # Single do not use pural
       type: String
       label: 'ingredient'
       denyUpdate: true

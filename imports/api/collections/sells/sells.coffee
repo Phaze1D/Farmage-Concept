@@ -65,6 +65,7 @@ SellDetailsSchema =     # When removing SellDetails after a sell has been saved 
     inventories:
       type: [InventoryAssociationSchema]
       minCount: 1
+      maxCount: 25
 
     unit_id:
       type: String
@@ -110,7 +111,7 @@ SellSchema =
       type: [SellDetailsSchema]
       label: 'sell_details'
       minCount: 1
-      max: 100
+      maxCount: 100
 
     status:         # Ordered, Canceled, Sent, Paid, Returned
       type: String
