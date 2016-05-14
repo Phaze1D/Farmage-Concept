@@ -126,8 +126,27 @@ createInventory = (done, pIndex) ->
     inventoryIDS.push res
     done()
 
-createProduct = (done, length) ->
+createProduct = (done, ings) ->
+  ingredientsL = []
+  for ing in ings
+    ing_doc =
+      ingredient_name: ing
+      amount: (Random.fraction() * 100).toFixed(2)
+      measurement_unit: "g"
+    ingredientsL.push ing_doc
 
+  product_doc =
+    name: faker.commerce.productName()
+    sku: faker.random.uuid()
+    unit_price: 12.23
+    currency: 'mxn'
+    tax_rate: 16
+    ingredients: ingredientsL
+
+  organization_id = organizationIDs[0]
+  PMethods.insert.call {organization_id, product_doc}, (err, res) ->
+    productIDs.push res
+    done()
 
 inviteUse = (done, email) ->
   invited_user_doc =
