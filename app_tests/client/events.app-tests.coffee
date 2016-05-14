@@ -27,15 +27,20 @@ ingredients = []
 describe "Events Client Side Test", ->
 
   describe "Setup", ->
-    it "Create User", ->
+    it "Create User", (done)->
+      createUser(done, faker.internet.email())
 
-    it "Create Organization", ->
+    it "Create Organization", (done)->
+      createOrgan(done)
 
-    it "Create Unit", ->
+    it "Create Unit", (done)->
+      createUnit(done)
+
+    it "Create Yield", (done) ->
+      createYield(done)
 
     it "Create Product", ->
 
-    it "Create Yield", ->
 
     it "Create Inventory", ->
 
