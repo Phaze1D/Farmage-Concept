@@ -26,6 +26,9 @@ ingredients = []
 
 describe "Events Client Side Test", ->
 
+  before ->
+    resetDatabase(null);
+
   describe "Setup", ->
     it "Create User", (done)->
       createUser(done, faker.internet.email())
@@ -39,14 +42,27 @@ describe "Events Client Side Test", ->
     it "Create Yield", (done) ->
       createYield(done)
 
-    it "Create Product", ->
+    it "Create Product", (done) ->
+      ings = [ingredients[0]]
+      createProduct(done, ings)
 
-
-    it "Create Inventory", ->
+    it "Create Inventory", (done) ->
+      createInventory(done, 0)
 
 
 
   describe "User Event Tests", ->
+    it "Add to unit", ->
+
+    it "Take away from unit", ->
+
+    it "Add to yield", ->
+
+    it "Take away from yield", ->
+
+    it "Add to inventory", ->
+
+    it "Take away from inventory", ->
 
 
 
@@ -67,8 +83,8 @@ createUser = (done, email) ->
       first_name: faker.name.firstName()
       last_name: faker.name.lastName()
 
-  Accounts.createUser doc, (error) ->
-    expect(error).to.not.exist
+  Accounts.createUser doc, (err) ->
+    throw err if err?
     done()
 
 login = (done, email) ->
@@ -86,8 +102,8 @@ createOrgan = (done) ->
     email: faker.internet.email()
 
   OMethods.insert.call organ_doc, (err, res) ->
+    throw err if err?
     organizationIDs.push res
-    expect(err).to.not.exist
     done()
 
 createUnit = (done) ->
@@ -123,6 +139,7 @@ createYield = (done) ->
 createInventory = (done, pIndex) ->
   inventory_doc =
     product_id: productIDs[pIndex]
+    organization_id: "noo"
 
   organization_id = organizationIDs[0]
 
@@ -147,9 +164,11 @@ createProduct = (done, ings) ->
     currency: 'mxn'
     tax_rate: 16
     ingredients: ingredientsL
+    organization_id: "nno"
 
   organization_id = organizationIDs[0]
   PMethods.insert.call {organization_id, product_doc}, (err, res) ->
+    throw err if err?
     productIDs.push res
     done()
 
@@ -174,4 +193,5 @@ inviteUse = (done, email) ->
     users_manager: false
 
   inviteUser.call {invited_user_doc, organization_id, permission}, (err, res) ->
+    throw err if err?
     done()
