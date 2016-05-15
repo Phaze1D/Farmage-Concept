@@ -52,7 +52,23 @@ module.exports.userEvent = new ValidatedMethod
           transcation organization_id, event_doc, @userId, "inventoryBelongsToOrgan", "Inventories", "inventories_manager"
 
 
+transcation = (organization_id, event_doc, userId, belongsToM, collection, permission) ->
+  mixins.hasPermission(userId, organization_id, permission)
+  mixins[belongsToM](event_doc.for_id, organization_id)
 
+  event_doc.is_user_event = true
+  event_doc.organization_id = organization_id
+
+  type = collections[collection].findOne event_doc.for_id
+  if type.amount + event_doc.amount < 0
+    throw new Meteor.Error "amountError", "amount cannot be less then 0"
+
+  # Trans
+  collections[collection].update _id: event_doc.for_id,
+                                $inc:
+                                  amount: event_doc.amount
+  EventModule.Events.insert event_doc
+  # Trans
 
 
 
@@ -106,24 +122,6 @@ module.exports.packageEvent = new ValidatedMethod
 # putting back sell item when sell has not been sold
 
 
-
-transcation = (organization_id, event_doc, userId, belongsToM, collection, permission) ->
-  mixins.hasPermission(userId, organization_id, permission)
-  mixins[belongsToM](event_doc.for_id, organization_id)
-
-  event_doc.is_user_event = true
-  event_doc.organization_id = organization_id
-
-  type = collections[collection].findOne event_doc.for_id
-  if type.amount + event_doc.amount < 0
-    throw new Meteor.Error "amountError", "amount cannot be less then 0"
-
-  # Trans
-  collections[collection].update _id: event_doc.for_id,
-                                $inc:
-                                  amount: event_doc.amount
-  EventModule.Events.insert event_doc
-  # Trans
 
 
 convertToDictionary = (array, key) ->

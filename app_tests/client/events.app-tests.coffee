@@ -8,6 +8,7 @@ faker = require 'faker'
 { _ } = require 'meteor/underscore'
 
 UnitModule = require '../../imports/api/collections/units/units.coffee'
+YieldModule = require '../../imports/api/collections/yields/yields.coffee'
 EventModule = require '../../imports/api/collections/events/events.coffee'
 
 EMethods = require '../../imports/api/collections/events/methods.coffee'
@@ -53,6 +54,9 @@ describe "Events Client Side Test", ->
 
     it "Subscribe to units", (done) ->
       subscribe(done, 'units')
+
+    it "Subscribe to yields", (done) ->
+      subscribe(done, 'yields')
 
     it "Subscribe to events", (done) ->
       subscribe(done, 'events')
@@ -105,11 +109,47 @@ describe "Events Client Side Test", ->
         expect(UnitModule.Units.findOne().amount).to.equal(1032-103)
         done()
 
-    it "Add to yield", ->
+    it "Add to yield",(done) ->
+      expect(YieldModule.Yields.findOne().amount).to.equal(0)
+      event_doc =
+        amount: 1032
+        for_type: 'yield'
+        for_id: yieldIDs[0]
+        organization_id: "k"
 
-    it "Take away from yield", ->
+      organization_id = organizationIDs[0]
 
-    it "Take away more then current yield amount", ->
+      EMethods.userEvent.call {organization_id, event_doc}, (err, res) ->
+        expect(YieldModule.Yields.findOne().amount).to.equal(1032)
+        expect(EventModule.Events.findOne(_id: res).for_id).to.equal(YieldModule.Yields.findOne()._id)
+        done()
+
+    it "Take away from yield", (done) ->
+      event_doc =
+        amount: -103
+        for_type: 'yield'
+        for_id: yieldIDs[0]
+        organization_id: "k"
+
+      organization_id = organizationIDs[0]
+
+      EMethods.userEvent.call {organization_id, event_doc}, (err, res) ->
+        expect(YieldModule.Yields.findOne().amount).to.equal(1032 - 103)
+        expect(EventModule.Events.findOne(_id: res).for_id).to.equal(YieldModule.Yields.findOne()._id)
+        done()
+
+    it "Take away more then current yield amount", (done) ->
+      event_doc =
+        amount: -1033
+        for_type: 'yield'
+        for_id: yieldIDs[0]
+        organization_id: "k"
+
+      organization_id = organizationIDs[0]
+
+      EMethods.userEvent.call {organization_id, event_doc}, (err, res) ->
+        expect(err).to.have.property('error','amountError')
+        done()
 
     it "Add to inventory", ->
 
