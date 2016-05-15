@@ -41,6 +41,7 @@ EventSchema =
     is_user_event:
       type: Boolean
       denyUpdate: true
+      optional: true
 
     for_type:
       type: String

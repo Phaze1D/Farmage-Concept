@@ -59,7 +59,7 @@ module.exports.userEvent = new ValidatedMethod
 # ++++++++++++++++++++++++ App Events
 # moving yield to inventory (packaging event)
 ###
-  amount = sum(yo.amount_taken/yo.conversation_rate) / p.ingredient.amount when yo.ingredient is p.ingredient for all p.ingredients
+  p.amount == sum(yo.amount_taken/yo.conversation_rate) / p.ingredient.amount when yo.ingredient is p.ingredient for all p.ingredients
 
   Description
     yield amount taken divide by the yield conversation_rate

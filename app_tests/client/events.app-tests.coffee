@@ -7,6 +7,8 @@ faker = require 'faker'
 { Random } = require 'meteor/random'
 { _ } = require 'meteor/underscore'
 
+UnitModule = require '../../imports/api/collections/units/units.coffee'
+EventModule = require '../../imports/api/collections/events/events.coffee'
 
 EMethods = require '../../imports/api/collections/events/methods.coffee'
 OMethods = require '../../imports/api/collections/organizations/methods.coffee'
@@ -30,13 +32,13 @@ describe "Events Client Side Test", ->
     resetDatabase(null);
 
   describe "Setup", ->
-    it "Create User", (done)->
+    it "Create User", (done) ->
       createUser(done, faker.internet.email())
 
-    it "Create Organization", (done)->
+    it "Create Organization", (done) ->
       createOrgan(done)
 
-    it "Create Unit", (done)->
+    it "Create Unit", (done) ->
       createUnit(done)
 
     it "Create Yield", (done) ->
@@ -49,20 +51,71 @@ describe "Events Client Side Test", ->
     it "Create Inventory", (done) ->
       createInventory(done, 0)
 
+    it "Subscribe to units", (done) ->
+      subscribe(done, 'units')
+
+    it "Subscribe to events", (done) ->
+      subscribe(done, 'events')
+
+
 
 
   describe "User Event Tests", ->
-    it "Add to unit", ->
 
-    it "Take away from unit", ->
+    it "Add to unit",(done) ->
+      expect(UnitModule.Units.findOne().amount).to.equal(0)
+      event_doc =
+        amount: 1032
+        for_type: 'unit'
+        for_id: unitIDs[0]
+        organization_id: "k"
+
+      organization_id = organizationIDs[0]
+
+      EMethods.userEvent.call {organization_id, event_doc}, (err, res) ->
+        expect(UnitModule.Units.findOne().amount).to.equal(1032)
+        expect(EventModule.Events.findOne().for_id).to.equal(UnitModule.Units.findOne()._id)
+        done()
+
+    it "Take away from unit", (done) ->
+      event_doc =
+        amount: -103
+        for_type: 'unit'
+        for_id: unitIDs[0]
+        organization_id: "k"
+
+      organization_id = organizationIDs[0]
+
+      EMethods.userEvent.call {organization_id, event_doc}, (err, res) ->
+        expect(UnitModule.Units.findOne().amount).to.equal(1032-103)
+        expect(EventModule.Events.findOne().for_id).to.equal(UnitModule.Units.findOne()._id)
+        done()
+
+    it "Take away more then current unit amount",(done) ->
+      event_doc =
+        amount: -1030
+        for_type: 'unit'
+        for_id: unitIDs[0]
+        organization_id: "k"
+
+      organization_id = organizationIDs[0]
+
+      EMethods.userEvent.call {organization_id, event_doc}, (err, res) ->
+        expect(err).to.have.property('error','amountError')
+        expect(UnitModule.Units.findOne().amount).to.equal(1032-103)
+        done()
 
     it "Add to yield", ->
 
     it "Take away from yield", ->
 
+    it "Take away more then current yield amount", ->
+
     it "Add to inventory", ->
 
     it "Take away from inventory", ->
+
+    it "Take away more then current inventory amount", ->
 
 
 
@@ -171,6 +224,16 @@ createProduct = (done, ings) ->
     throw err if err?
     productIDs.push res
     done()
+
+subscribe = (done, subto) ->
+  callbacks =
+    onStop: (err) ->
+      throw err if err?
+    onReady: () ->
+      done()
+
+  Meteor.subscribe(subto, organizationIDs[0], callbacks)
+
 
 inviteUse = (done, email) ->
   invited_user_doc =
