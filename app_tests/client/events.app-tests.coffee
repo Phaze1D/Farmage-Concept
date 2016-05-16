@@ -27,7 +27,7 @@ inventoryIDS = []
 ingredients = []
 
 
-describe "Events Client Side Test", ->
+xdescribe "Events Client Side Test", ->
 
   before ->
     resetDatabase(null);
@@ -72,11 +72,9 @@ describe "Events Client Side Test", ->
         amount: 1032
         for_type: 'unit'
         for_id: unitIDs[0]
-        organization_id: "k"
+        organization_id: organizationIDs[0]
 
-      organization_id = organizationIDs[0]
-
-      EMethods.userEvent.call {organization_id, event_doc}, (err, res) ->
+      EMethods.userEvent.call {event_doc}, (err, res) ->
         expect(UnitModule.Units.findOne().amount).to.equal(1032)
         expect(EventModule.Events.findOne().for_id).to.equal(UnitModule.Units.findOne()._id)
         done()
@@ -86,11 +84,9 @@ describe "Events Client Side Test", ->
         amount: -103
         for_type: 'unit'
         for_id: unitIDs[0]
-        organization_id: "k"
+        organization_id: organizationIDs[0]
 
-      organization_id = organizationIDs[0]
-
-      EMethods.userEvent.call {organization_id, event_doc}, (err, res) ->
+      EMethods.userEvent.call {event_doc}, (err, res) ->
         expect(UnitModule.Units.findOne().amount).to.equal(1032-103)
         expect(EventModule.Events.findOne().for_id).to.equal(UnitModule.Units.findOne()._id)
         done()
@@ -100,11 +96,9 @@ describe "Events Client Side Test", ->
         amount: -1030
         for_type: 'unit'
         for_id: unitIDs[0]
-        organization_id: "k"
+        organization_id: organizationIDs[0]
 
-      organization_id = organizationIDs[0]
-
-      EMethods.userEvent.call {organization_id, event_doc}, (err, res) ->
+      EMethods.userEvent.call {event_doc}, (err, res) ->
         expect(err).to.have.property('error','amountError')
         expect(UnitModule.Units.findOne().amount).to.equal(1032-103)
         done()
@@ -115,11 +109,9 @@ describe "Events Client Side Test", ->
         amount: 1032
         for_type: 'yield'
         for_id: yieldIDs[0]
-        organization_id: "k"
+        organization_id: organizationIDs[0]
 
-      organization_id = organizationIDs[0]
-
-      EMethods.userEvent.call {organization_id, event_doc}, (err, res) ->
+      EMethods.userEvent.call {event_doc}, (err, res) ->
         expect(YieldModule.Yields.findOne().amount).to.equal(1032)
         expect(EventModule.Events.findOne(_id: res).for_id).to.equal(YieldModule.Yields.findOne()._id)
         done()
@@ -129,11 +121,9 @@ describe "Events Client Side Test", ->
         amount: -103
         for_type: 'yield'
         for_id: yieldIDs[0]
-        organization_id: "k"
+        organization_id: organizationIDs[0]
 
-      organization_id = organizationIDs[0]
-
-      EMethods.userEvent.call {organization_id, event_doc}, (err, res) ->
+      EMethods.userEvent.call {event_doc}, (err, res) ->
         expect(YieldModule.Yields.findOne().amount).to.equal(1032 - 103)
         expect(EventModule.Events.findOne(_id: res).for_id).to.equal(YieldModule.Yields.findOne()._id)
         done()
@@ -143,15 +133,19 @@ describe "Events Client Side Test", ->
         amount: -1033
         for_type: 'yield'
         for_id: yieldIDs[0]
-        organization_id: "k"
+        organization_id: organizationIDs[0]
 
-      organization_id = organizationIDs[0]
-
-      EMethods.userEvent.call {organization_id, event_doc}, (err, res) ->
+      EMethods.userEvent.call {event_doc}, (err, res) ->
         expect(err).to.have.property('error','amountError')
         done()
 
     it "Add to inventory", ->
+      event_doc =
+        amount: 1232
+        for_type: 'inventory'
+        for_id: inventoryIDS[0]
+        organization_id: organizationIDs[0]
+
 
     it "Take away from inventory", ->
 
@@ -203,9 +197,10 @@ createUnit = (done) ->
   unit_doc =
     name: faker.name.firstName()
     amount: 12
-    organization_id: "NONkjhO"
+    organization_id: organizationIDs[0]
 
-  organization_id = organizationIDs[0]
+  organization_id = () ->
+    console.log "hakcing"
 
   UMethods.insert.call {organization_id, unit_doc}, (err, res) ->
     throw err if err?
@@ -220,11 +215,10 @@ createYield = (done) ->
     measurement_unit: "kg"
     ingredient_name: ing
     unit_id: unitIDs[0]
-    organization_id: "nfo"
+    organization_id: organizationIDs[0]
 
-  organization_id = organizationIDs[0]
 
-  YMethods.insert.call {organization_id, yield_doc}, (err, res) ->
+  YMethods.insert.call {yield_doc}, (err, res) ->
     throw err if err?
     yieldIDs.push res
     done()
@@ -232,11 +226,10 @@ createYield = (done) ->
 createInventory = (done, pIndex) ->
   inventory_doc =
     product_id: productIDs[pIndex]
-    organization_id: "noo"
+    organization_id: organizationIDs[0]
 
-  organization_id = organizationIDs[0]
 
-  IMethods.insert.call {organization_id, inventory_doc}, (err,res) ->
+  IMethods.insert.call {inventory_doc}, (err,res) ->
     throw err if err?
     inventoryIDS.push res
     done()
@@ -257,10 +250,9 @@ createProduct = (done, ings) ->
     currency: 'mxn'
     tax_rate: 16
     ingredients: ingredientsL
-    organization_id: "nno"
+    organization_id: organizationIDs[0]
 
-  organization_id = organizationIDs[0]
-  PMethods.insert.call {organization_id, product_doc}, (err, res) ->
+  PMethods.insert.call {product_doc}, (err, res) ->
     throw err if err?
     productIDs.push res
     done()

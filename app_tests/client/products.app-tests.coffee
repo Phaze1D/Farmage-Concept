@@ -18,6 +18,8 @@ ProductModule = require '../../imports/api/collections/products/products.coffee'
 OMethods = require '../../imports/api/collections/organizations/methods.coffee'
 
 xdescribe 'Product Full App Test Client', () ->
+  before ->
+    resetDatabase(null);
 
   createUser = (done, email) ->
     doc =
@@ -108,7 +110,7 @@ xdescribe 'Product Full App Test Client', () ->
           amount: 123.123
           measurement_unit: "KG"
         ]
-        organization_id: "NONO"
+        organization_id: organizationID
 
       organization_id = organizationID
 
@@ -129,7 +131,7 @@ xdescribe 'Product Full App Test Client', () ->
           amount: 123.123
           measurement_unit: "KG"
         ]
-        organization_id: "NONO"
+        organization_id: organizationID
 
       organization_id = organizationID
 
@@ -149,7 +151,7 @@ xdescribe 'Product Full App Test Client', () ->
           amount: 123.123
           measurement_unit: "KG"
         ]
-        organization_id: "NONO"
+        organization_id: organizationID
 
       organization_id = organizationID
 
@@ -177,7 +179,7 @@ xdescribe 'Product Full App Test Client', () ->
           amount: 123.123
           measurement_unit: mu}
         ]
-        organization_id: "NONO"
+        organization_id: organizationID
 
       organization_id = organizationID
       insert.call {organization_id, product_doc}, (err, res) ->
@@ -211,7 +213,7 @@ xdescribe 'Product Full App Test Client', () ->
         unit_price: 12.21
         currency: "MXN"
         tax_rate: 10
-        organization_id: "NONO"
+        organization_id: organizationID
 
       organization_id = organizationID
 
@@ -233,7 +235,7 @@ xdescribe 'Product Full App Test Client', () ->
           amount: 123.123
           measurement_unit: "KG"
         ]
-        organization_id: "NONO"
+        organization_id: organizationID
 
       organization_id = organizationID
 

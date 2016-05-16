@@ -23,27 +23,21 @@ validateDuplicates = (ingredients) ->
 # insert
 module.exports.insert = new ValidatedMethod
   name: 'products.insert'
-  validate: ({organization_id, product_doc}) ->
+  validate: ({product_doc}) ->
     ProductModule.Products.simpleSchema().clean(product_doc)
     ProductModule.Products.simpleSchema().validate(product_doc)
 
-    new SimpleSchema(
-      organization_id:
-        type: String
-    ).validate({organization_id})
-
-  run: ({organization_id, product_doc}) ->
+  run: ({product_doc}) ->
     loggedIn(@userId)
 
     unless @isSimulation
-      hasPermission(@userId, organization_id, "inventories_manager")
+      hasPermission(@userId, product_doc.organization_id, "inventories_manager")
 
-    if ProductModule.Products.findOne( $and: [ { organization_id: organization_id }, {sku: product_doc.sku} ] )?
+    if ProductModule.Products.findOne( $and: [ { organization_id: product_doc.organization_id }, {sku: product_doc.sku} ] )?
       throw new Meteor.Error 'skuNotUnique', 'sku must be unqiue'
 
     validateDuplicates(product_doc.ingredients)
 
-    product_doc.organization_id = organization_id
     ProductModule.Products.insert product_doc
 
 

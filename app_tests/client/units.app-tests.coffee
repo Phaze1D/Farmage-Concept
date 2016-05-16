@@ -181,7 +181,7 @@ xdescribe 'Units Full App Test Client', () ->
       unit_doc =
         name: faker.company.companyName()
         amount: 12
-        organization_id: "NONkjhO"
+        organization_id: organizationID
 
       organization_id = organizationID
       userId = user2id
@@ -202,7 +202,7 @@ xdescribe 'Units Full App Test Client', () ->
       unit_doc =
         name: faker.company.companyName()
         amount: 12
-        organization_id: "NONkjhO"
+        organization_id: organizationID
 
       organization_id = organizationID
       userId = user2id
@@ -223,7 +223,7 @@ xdescribe 'Units Full App Test Client', () ->
       unit_doc =
         name: unit1N
         amount: 12
-        organization_id: "NONkjhO"
+        organization_id: organizationID
 
       organization_id = organizationID
 
@@ -254,7 +254,7 @@ xdescribe 'Units Full App Test Client', () ->
       unit_doc =
         name: unit1N
         amount: 12
-        organization_id: "NONkjhO"
+        organization_id: organizationID
 
       organization_id = organizationID
 
@@ -272,7 +272,7 @@ xdescribe 'Units Full App Test Client', () ->
       unit_doc =
         name: unit1N
         amount: 12
-        organization_id: "NONkjhO"
+        organization_id: oldOrgan
 
       organization_id = oldOrgan
 
@@ -435,7 +435,7 @@ xdescribe 'Units Full App Test Client', () ->
       unit_doc =
         name: sn2
         amount: 12
-        organization_id: "NONkjhO"
+        organization_id: oldOrgan
 
       organization_id = oldOrgan
 
@@ -464,7 +464,7 @@ xdescribe 'Units Full App Test Client', () ->
       unit_doc =
         name: faker.name.firstName()
         amount: 12
-        organization_id: "NONkjhO"
+        organization_id: oldOrgan
         unit_id: "nononon"
 
       organization_id = oldOrgan
@@ -478,7 +478,7 @@ xdescribe 'Units Full App Test Client', () ->
       unit_doc =
         name: faker.name.firstName()
         amount: 12
-        organization_id: "NONkjhO"
+        organization_id: oldOrgan
         unit_id: unit2id
 
       organization_id = oldOrgan
@@ -492,7 +492,7 @@ xdescribe 'Units Full App Test Client', () ->
       unit_doc =
         name: faker.name.firstName()
         amount: 12
-        organization_id: "NONkjhO"
+        organization_id: organizationID
         unit_id: unit2id
 
       organization_id = organizationID

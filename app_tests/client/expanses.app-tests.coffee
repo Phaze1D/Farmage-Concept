@@ -122,11 +122,9 @@ xdescribe "Expenses Full App Client", ->
       unit_doc =
         name: faker.company.companyName()
         amount: 12
-        organization_id: "NONkjhO"
+        organization_id: organizationIDs[0]
 
-      organization_id = organizationIDs[0]
-
-      UMethods.insert.call {organization_id, unit_doc}, (err, res) ->
+      UMethods.insert.call {unit_doc}, (err, res) ->
         unitIDs.push res
         done()
 
@@ -137,11 +135,9 @@ xdescribe "Expenses Full App Client", ->
         name: "Bottle"
         quantity: 1
         unit_id: unitIDs[0]
-        organization_id: "no"
+        organization_id: organizationIDs[0]
 
-      organization_id = organizationIDs[0]
-
-      insert.call {organization_id, expense_doc}, (err, res) ->
+      insert.call {expense_doc}, (err, res) ->
         expect(err).to.not.exist
         done()
 
@@ -156,11 +152,9 @@ xdescribe "Expenses Full App Client", ->
         quantity: 1
         provider_id: "NON"
         unit_id: unitIDs[0]
-        organization_id: "no"
+        organization_id: organizationIDs[0]
 
-      organization_id = organizationIDs[0]
-
-      insert.call {organization_id, expense_doc}, (err, res) ->
+      insert.call {expense_doc}, (err, res) ->
         expect(err).to.have.property('reason', 'provider does not belong')
         done()
 
@@ -169,13 +163,13 @@ xdescribe "Expenses Full App Client", ->
       createOrgan(done)
 
     it "Create provider", (done) ->
-      organization_id = organizationIDs[1]
+
       provider_doc =
         first_name: faker.name.firstName()
         last_name: faker.name.lastName()
-        organization_id: organization_id
+        organization_id: organizationIDs[1]
 
-      PMethods.insert.call {organization_id, provider_doc}, (err, res) ->
+      PMethods.insert.call {provider_doc}, (err, res) ->
         expect(err).to.not.exist
         providerIDs.push res
         done()
@@ -188,7 +182,7 @@ xdescribe "Expenses Full App Client", ->
         quantity: 1
         provider_id: providerIDs[0]
         unit_id: unitIDs[0]
-        organization_id: "no"
+        organization_id: organizationIDs[0]
 
       organization_id = organizationIDs[0]
 
@@ -216,7 +210,7 @@ xdescribe "Expenses Full App Client", ->
         quantity: 1
         provider_id: providerIDs[1]
         unit_id: unitIDs[0]
-        organization_id: "no"
+        organization_id: organizationIDs[0]
 
       organization_id = organizationIDs[0]
 
@@ -235,7 +229,7 @@ xdescribe "Expenses Full App Client", ->
         quantity: 1
         receipt_id: "NON"
         unit_id: unitIDs[0]
-        organization_id: "no"
+        organization_id: organizationIDs[0]
 
       organization_id = organizationIDs[0]
 
@@ -262,7 +256,7 @@ xdescribe "Expenses Full App Client", ->
         quantity: 1
         receipt_id: receiptIDs[0]
         unit_id: unitIDs[0]
-        organization_id: "no"
+        organization_id: organizationIDs[0]
 
       organization_id = organizationIDs[0]
 
@@ -289,7 +283,7 @@ xdescribe "Expenses Full App Client", ->
         quantity: 1
         receipt_id: receiptIDs[1]
         unit_id: unitIDs[0]
-        organization_id: "no"
+        organization_id: organizationIDs[0]
 
       organization_id = organizationIDs[0]
 
@@ -329,7 +323,7 @@ xdescribe "Expenses Full App Client", ->
       unit_doc =
         name: faker.company.companyName()
         amount: 12
-        organization_id: "NONkjhO"
+        organization_id: organizationIDs[1]
 
       organization_id = organizationIDs[1]
 
@@ -365,7 +359,7 @@ xdescribe "Expenses Full App Client", ->
       unit_doc =
         name: faker.company.companyName()
         amount: 12
-        organization_id: "NONkjhO"
+        organization_id: organizationIDs[0]
 
       organization_id = organizationIDs[0]
 

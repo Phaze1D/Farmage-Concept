@@ -18,24 +18,19 @@ ExpensesModule = require './expenses.coffee'
 # insert
 module.exports.insert = new ValidatedMethod
   name: 'expenses.insert'
-  validate: ({organization_id, expense_doc}) ->
+  validate: ({expense_doc}) ->
     ExpensesModule.Expenses.simpleSchema().clean(expense_doc)
     ExpensesModule.Expenses.simpleSchema().validate(expense_doc)
-    new SimpleSchema(
-      organization_id:
-        type: String
-    ).validate({organization_id})
 
-  run: ({organization_id, expense_doc}) ->
+  run: ({expense_doc}) ->
     loggedIn(@userId)
 
     unless @isSimulation
-      hasPermission(@userId, organization_id, "expenses_manager")
-      unitBelongsToOrgan(expense_doc.unit_id, organization_id)
-      providerBelongsToOrgan(expense_doc.provider_id, organization_id) if expense_doc.provider_id?
-      receiptBelongsToOrgan(expense_doc.receipt_id, organization_id) if expense_doc.receipt_id?
+      hasPermission(@userId, expense_doc.organization_id, "expenses_manager")
+      unitBelongsToOrgan(expense_doc.unit_id, expense_doc.organization_id)
+      providerBelongsToOrgan(expense_doc.provider_id, expense_doc.organization_id) if expense_doc.provider_id?
+      receiptBelongsToOrgan(expense_doc.receipt_id, expense_doc.organization_id) if expense_doc.receipt_id?
 
-    expense_doc.organization_id = organization_id
     ExpensesModule.Expenses.insert expense_doc
 
 

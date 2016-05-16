@@ -20,25 +20,20 @@ InventoryModule = require './inventories.coffee'
 
 module.exports.insert = new ValidatedMethod
   name: 'inventory.insert'
-  validate: ({organization_id, inventory_doc}) ->
+  validate: ({inventory_doc}) ->
     InventoryModule.Inventories.simpleSchema().clean(inventory_doc)
     InventoryModule.Inventories.simpleSchema().validate(inventory_doc)
-    new SimpleSchema(
-      organization_id:
-        type: String
-    ).validate({organization_id})
 
-  run: ({organization_id, inventory_doc}) ->
+  run: ({inventory_doc}) ->
     loggedIn(@userId)
 
     unless @isSimulation
-      hasPermission(@userId, organization_id, "inventories_manager")
-      productBelongsToOrgan(inventory_doc.product_id, organization_id)
+      hasPermission(@userId, inventory_doc.organization_id, "inventories_manager")
+      productBelongsToOrgan(inventory_doc.product_id, inventory_doc.organization_id)
 
     delete inventory_doc.amount
     delete inventory_doc.yield_objects
-
-    inventory_doc.organization_id = organization_id
+    
     InventoryModule.Inventories.insert inventory_doc
 
 # update

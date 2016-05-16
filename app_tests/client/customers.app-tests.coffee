@@ -44,25 +44,23 @@ xdescribe "Customer Full App Tests Client", ->
 
       expect(Meteor.user()).to.not.exist
 
-      organization_id = "NONONOOONOO"
       customer_doc =
         first_name: faker.name.firstName()
         last_name: faker.name.lastName()
 
-      insert.call {organization_id, customer_doc}, (err, res) ->
+      insert.call {customer_doc}, (err, res) ->
         expect(err).to.have.property('error','validation-error')
         done()
 
     it 'Insert not logged in', (done) ->
       expect(Meteor.user()).to.not.exist
 
-      organization_id = "NONONOOONOO"
       customer_doc =
         first_name: faker.name.firstName()
         last_name: faker.name.lastName()
-        organization_id: organization_id
+        organization_id: "bii"
 
-      insert.call {organization_id, customer_doc}, (err, res) ->
+      insert.call {customer_doc}, (err, res) ->
         expect(err).to.have.property('error','notLoggedIn')
         done()
 
@@ -81,13 +79,12 @@ xdescribe "Customer Full App Tests Client", ->
     it 'Insert organ id not auth', (done) ->
       expect(Meteor.user()).to.exist
 
-      organization_id = "NONONOOONOO"
       customer_doc =
         first_name: faker.name.firstName()
         last_name: faker.name.lastName()
-        organization_id: organization_id
+        organization_id: "nonon"
 
-      insert.call {organization_id, customer_doc}, (err, res) ->
+      insert.call {customer_doc}, (err, res) ->
         expect(err).to.have.property('error','notAuthorized')
         done()
 
@@ -116,13 +113,12 @@ xdescribe "Customer Full App Tests Client", ->
     it 'Insert customer ', (done) ->
       expect(Meteor.user()).to.exist
       expect(CustomerModule.Customers.find().count()).to.equal(0)
-      organization_id = organizationID
       customer_doc =
         first_name: faker.name.firstName()
         last_name: faker.name.lastName()
-        organization_id: organization_id
+        organization_id: organizationID
 
-      insert.call {organization_id, customer_doc}, (err, res) ->
+      insert.call {customer_doc}, (err, res) ->
         customerID = res
         expect(CustomerModule.Customers.find().count()).to.equal(1)
         expect(err).to.not.exist

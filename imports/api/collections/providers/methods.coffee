@@ -25,20 +25,14 @@ ProviderModule  = require './providers.coffee'
 # Insert Provider
 module.exports.insert = new ValidatedMethod
   name: 'providers.insert'
-  validate: ({organization_id, provider_doc}) ->
+  validate: ({provider_doc}) ->
     ProviderModule.Providers.simpleSchema().validate(provider_doc)
-    new SimpleSchema(
-      organization_id:
-        type: String
-    ).validate({organization_id})
-
-  run: ({organization_id, provider_doc}) ->
+  run: ({provider_doc}) ->
 
     loggedIn(@userId)
     unless @isSimulation
-      hasPermission(@userId, organization_id, "expenses_manager")
+      hasPermission(@userId, provider_doc.organization_id, "expenses_manager")
 
-    provider_doc.organization_id = organization_id
     ProviderModule.Providers.insert provider_doc
 
 

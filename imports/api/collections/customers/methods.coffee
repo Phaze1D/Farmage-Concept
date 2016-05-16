@@ -26,20 +26,15 @@ CustomerModule  = require './customers.coffee'
 # Insert Customer
 module.exports.insert = new ValidatedMethod
   name: 'customers.insert'
-  validate: ({organization_id, customer_doc}) ->
+  validate: ({customer_doc}) ->
     CustomerModule.Customers.simpleSchema().validate(customer_doc)
-    new SimpleSchema(
-      organization_id:
-        type: String
-    ).validate({organization_id})
 
-  run: ({organization_id, customer_doc}) ->
+  run: ({customer_doc}) ->
 
     loggedIn(@userId)
     unless @isSimulation
-      hasPermission(@userId, organization_id, "sells_manager")
-
-    customer_doc.organization_id = organization_id
+      hasPermission(@userId, customer_doc.organization_id, "sells_manager")
+      
     CustomerModule.Customers.insert customer_doc
 
 
@@ -60,7 +55,7 @@ module.exports.update = new ValidatedMethod
   run: ({organization_id, customer_id, customer_doc}) ->
 
     loggedIn(@userId)
-    
+
     unless @isSimulation
       hasPermission(@userId, organization_id, "sells_manager")
       customerBelongsToOrgan(customer_id, organization_id)

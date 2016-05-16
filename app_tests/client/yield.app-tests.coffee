@@ -21,7 +21,7 @@ OMethods = require '../../imports/api/collections/organizations/methods.coffee'
 } = require '../../imports/api/collections/yields/methods.coffee'
 
 
-xdescribe 'Yield Full App Test Client', () ->
+describe 'Yield Full App Test Client', () ->
 
   before( (done) ->
     Meteor.logout( (err) ->
@@ -153,7 +153,7 @@ xdescribe 'Yield Full App Test Client', () ->
       unit_doc =
         name: faker.company.companyName()
         amount: 12
-        organization_id: "NONkjhO"
+        organization_id: organizationIDs[1]
 
       organization_id = organizationIDs[1]
 
@@ -168,7 +168,7 @@ xdescribe 'Yield Full App Test Client', () ->
         measurement_unit: "KG"
         ingredient_name: "Eggs"
         unit_id: unit1d
-        organization_id: "non"
+        organization_id: organizationIDs[0]
 
       organization_id = organizationIDs[0]
 
@@ -183,7 +183,7 @@ xdescribe 'Yield Full App Test Client', () ->
         measurement_unit: "KG"
         ingredient_name: "Eggs"
         unit_id: unit1d
-        organization_id: "non"
+        organization_id: organizationIDs[1]
 
       organization_id = organizationIDs[1]
 

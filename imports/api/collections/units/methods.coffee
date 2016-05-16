@@ -17,27 +17,22 @@ UnitModule = require './units.coffee'
 # insert
 module.exports.insert = new ValidatedMethod
   name: 'units.insert'
-  validate: ({organization_id, unit_doc}) ->
+  validate: ({unit_doc}) ->
     UnitModule.Units.simpleSchema().clean(unit_doc)
     UnitModule.Units.simpleSchema().validate(unit_doc)
-    new SimpleSchema(
-      organization_id:
-        type: String
-    ).validate({organization_id})
 
-  run: ({organization_id, unit_doc}) ->
+  run: ({unit_doc}) ->
 
     loggedIn(@userId)
     unless @isSimulation
-      hasPermission(@userId, organization_id, "units_manager")
-      unitBelongsToOrgan(unit_doc.unit_id, organization_id) if unit_doc.unit_id?
+      hasPermission(@userId, unit_doc.organization_id, "units_manager")
+      unitBelongsToOrgan(unit_doc.unit_id, unit_doc.organization_id) if unit_doc.unit_id?
 
     delete unit_doc.amount # User cannot insert unit amount via this method (defaults to 0)
 
-    if UnitModule.Units.findOne( $and: [ { organization_id: organization_id }, {name: unit_doc.name} ] )?
+    if UnitModule.Units.findOne( $and: [ { organization_id: unit_doc.organization_id }, {name: unit_doc.name} ] )?
       throw new Meteor.Error 'nameNotUnique', 'name must be unqiue'
 
-    unit_doc.organization_id = organization_id
     UnitModule.Units.insert unit_doc
 
 

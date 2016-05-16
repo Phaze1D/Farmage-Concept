@@ -18,23 +18,18 @@ YieldModule = require './yields.coffee'
 # insert
 module.exports.insert = new ValidatedMethod
   name: "yields.insert"
-  validate: ({organization_id, yield_doc}) ->
+  validate: ({yield_doc}) ->
     YieldModule.Yields.simpleSchema().clean(yield_doc)
     YieldModule.Yields.simpleSchema().validate(yield_doc)
-    new SimpleSchema(
-      organization_id:
-        type: String
-    ).validate({organization_id})
 
-  run: ({organization_id, yield_doc}) ->
+  run: ({yield_doc}) ->
     loggedIn(@userId)
 
     unless @isSimulation
-      hasPermission(@userId, organization_id, "units_manager")
-      unitBelongsToOrgan(yield_doc.unit_id, organization_id)
+      hasPermission(@userId, yield_doc.organization_id, "units_manager")
+      unitBelongsToOrgan(yield_doc.unit_id, yield_doc.organization_id)
 
     delete yield_doc.amount
-    yield_doc.organization_id = organization_id
     YieldModule.Yields.insert yield_doc
 
 # update

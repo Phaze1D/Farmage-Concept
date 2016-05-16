@@ -32,32 +32,27 @@ collections.Yields = YieldModule.Yields
 
 module.exports.userEvent = new ValidatedMethod
   name: "events.userEvent"
-  validate: ({organization_id, event_doc}) ->
+  validate: ({event_doc}) ->
     EventModule.Events.simpleSchema().clean(event_doc)
     EventModule.Events.simpleSchema().validate(event_doc)
-    new SimpleSchema(
-      organization_id:
-        type: String
-    ).validate({organization_id})
 
-  run: ({organization_id, event_doc}) ->
+  run: ({event_doc}) ->
     mixins.loggedIn(@userId)
     unless @isSimulation
       switch event_doc.for_type
         when 'unit'
-          transcation organization_id, event_doc, @userId, "unitBelongsToOrgan", "Units", "units_manager"
+          transcation event_doc, @userId, "unitBelongsToOrgan", "Units", "units_manager"
         when 'yield'
-          transcation organization_id, event_doc, @userId, "yieldBelongsToOrgan", "Yields", "units_manager"
+          transcation event_doc, @userId, "yieldBelongsToOrgan", "Yields", "units_manager"
         when 'inventory'
-          transcation organization_id, event_doc, @userId, "inventoryBelongsToOrgan", "Inventories", "inventories_manager"
+          transcation event_doc, @userId, "inventoryBelongsToOrgan", "Inventories", "inventories_manager"
 
 
-transcation = (organization_id, event_doc, userId, belongsToM, collection, permission) ->
-  mixins.hasPermission(userId, organization_id, permission)
-  mixins[belongsToM](event_doc.for_id, organization_id)
+transcation = (event_doc, userId, belongsToM, collection, permission) ->
+  mixins.hasPermission(userId, event_doc.organization_id, permission)
+  mixins[belongsToM](event_doc.for_id, event_doc.organization_id)
 
   event_doc.is_user_event = true
-  event_doc.organization_id = organization_id
 
   type = collections[collection].findOne event_doc.for_id
   if type.amount + event_doc.amount < 0
@@ -110,7 +105,7 @@ module.exports.packageEvent = new ValidatedMethod
       product = mixins.productBelongsToOrgan(inventory.product_id, organization_id)
 
       pDictionary = convertToDictionary(product.ingredients, "ingredient_name")
-      sums = getSums(yield_objects, pDictionary)
+      sums = getSums(yield_objects, pDictionary, organization_id)
       checkAmounts(sums, product, amount)
       updateYields(yield_objects)
       updateInventory(inventory_id, amount)
@@ -132,7 +127,7 @@ convertToDictionary = (array, key) ->
     dic[object[key]] = object
 
 
-getSums = (yield_objects, pDictionary) ->
+getSums = (yield_objects, pDictionary, organization_id) ->
   sums = {}
   for yield_obj in yield_objects
     _yield = mixins.yieldBelongsToOrgan(yield_obj.yield_id, organization_id)
