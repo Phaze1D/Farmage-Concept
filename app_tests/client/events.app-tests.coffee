@@ -1,4 +1,5 @@
 faker = require 'faker'
+Big = require 'big.js'
 
 { chai, assert, expect } = require 'meteor/practicalmeteor:chai'
 { Meteor } = require 'meteor/meteor'
@@ -10,6 +11,8 @@ faker = require 'faker'
 UnitModule = require '../../imports/api/collections/units/units.coffee'
 YieldModule = require '../../imports/api/collections/yields/yields.coffee'
 EventModule = require '../../imports/api/collections/events/events.coffee'
+InventoryModule = require '../../imports/api/collections/inventories/inventories.coffee'
+ProductModule = require '../../imports/api/collections/products/products.coffee'
 
 EMethods = require '../../imports/api/collections/events/methods.coffee'
 OMethods = require '../../imports/api/collections/organizations/methods.coffee'
@@ -27,7 +30,7 @@ inventoryIDS = []
 ingredients = []
 
 
-xdescribe "Events Client Side Test", ->
+describe "Events Client Side Test", ->
 
   before ->
     resetDatabase(null);
@@ -58,8 +61,14 @@ xdescribe "Events Client Side Test", ->
     it "Subscribe to yields", (done) ->
       subscribe(done, 'yields')
 
+    it "Subscribe to inventory", (done) ->
+      subscribe(done, 'inventories')
+
     it "Subscribe to events", (done) ->
       subscribe(done, 'events')
+
+    it "Subscribe to products", (done) ->
+      subscribe(done, 'products')
 
 
 
@@ -106,13 +115,13 @@ xdescribe "Events Client Side Test", ->
     it "Add to yield",(done) ->
       expect(YieldModule.Yields.findOne().amount).to.equal(0)
       event_doc =
-        amount: 1032
+        amount: 10329
         for_type: 'yield'
         for_id: yieldIDs[0]
         organization_id: organizationIDs[0]
 
       EMethods.userEvent.call {event_doc}, (err, res) ->
-        expect(YieldModule.Yields.findOne().amount).to.equal(1032)
+        expect(YieldModule.Yields.findOne().amount).to.equal(10329)
         expect(EventModule.Events.findOne(_id: res).for_id).to.equal(YieldModule.Yields.findOne()._id)
         done()
 
@@ -124,13 +133,13 @@ xdescribe "Events Client Side Test", ->
         organization_id: organizationIDs[0]
 
       EMethods.userEvent.call {event_doc}, (err, res) ->
-        expect(YieldModule.Yields.findOne().amount).to.equal(1032 - 103)
+        expect(YieldModule.Yields.findOne().amount).to.equal(10329 - 103)
         expect(EventModule.Events.findOne(_id: res).for_id).to.equal(YieldModule.Yields.findOne()._id)
         done()
 
     it "Take away more then current yield amount", (done) ->
       event_doc =
-        amount: -1033
+        amount: -103343
         for_type: 'yield'
         for_id: yieldIDs[0]
         organization_id: organizationIDs[0]
@@ -139,22 +148,135 @@ xdescribe "Events Client Side Test", ->
         expect(err).to.have.property('error','amountError')
         done()
 
-    it "Add to inventory", ->
+    it "Add to inventory", (done) ->
       event_doc =
         amount: 1232
         for_type: 'inventory'
         for_id: inventoryIDS[0]
         organization_id: organizationIDs[0]
 
+      EMethods.userEvent.call {event_doc}, (err, res) ->
+        expect(InventoryModule.Inventories.findOne().amount).to.equal(1232)
+        expect(EventModule.Events.findOne(_id: res).for_id).to.equal(InventoryModule.Inventories.findOne()._id)
+        expect(err).to.not.exist
+        done()
 
-    it "Take away from inventory", ->
+    it "Fake amount update", (done) ->
+      organization_id = organizationIDs[0]
+      inventory_id = inventoryIDS[0]
 
-    it "Take away more then current inventory amount", ->
+      inventory_doc =
+        amount: 4999
+
+      IMethods.update.call {organization_id, inventory_id, inventory_doc}, (err, res) ->
+        expect(InventoryModule.Inventories.findOne().amount).to.equal(1232)
+        done()
 
 
+    it "Take away from inventory", (done) ->
+      event_doc =
+        amount: -1232
+        for_type: 'inventory'
+        for_id: inventoryIDS[0]
+        organization_id: organizationIDs[0]
+
+      EMethods.userEvent.call {event_doc}, (err, res) ->
+        expect(InventoryModule.Inventories.findOne().amount).to.equal(0)
+        expect(EventModule.Events.findOne(_id: res).for_id).to.equal(InventoryModule.Inventories.findOne()._id)
+        expect(err).to.not.exist
+        done()
+
+    it "Take away more then current inventory amount", (done) ->
+      event_doc =
+        amount: -232343
+        for_type: 'inventory'
+        for_id: inventoryIDS[0]
+        organization_id: organizationIDs[0]
+
+      EMethods.userEvent.call {event_doc}, (err, res) ->
+        expect(InventoryModule.Inventories.findOne().amount).to.equal(0)
+        expect(err).to.have.property('error', 'amountError')
+        done()
 
 
   describe "App Event Tests", ->
+    it "Single ingredient ", (done) ->
+      organization_id = organizationIDs[0]
+      inventory_id = inventoryIDS[0]
+
+      amount = 40
+      cr = 0.324
+      at = Number new Big(ProductModule.Products.findOne().ingredients[0].amount).times(amount * cr)
+      yao = Number new Big(YieldModule.Yields.findOne().amount).minus(at)
+      iao = InventoryModule.Inventories.findOne().amount + amount
+
+      yield_objects = [
+        yield_id: YieldModule.Yields.findOne()._id
+        amount_taken: at
+        conversation_rate: cr
+      ]
+
+      EMethods.packageEvent.call {organization_id, inventory_id, yield_objects, amount}, (err,res) ->
+        console.log err
+        console.log ProductModule.Products.findOne().ingredients[0].amount if err?
+        console.log "#{yao} -- #{YieldModule.Yields.findOne().amount}"
+
+        expect(err).to.not.exist
+        expect(YieldModule.Yields.findOne().amount).to.equal(Number yao.toFixed(10))
+        expect(InventoryModule.Inventories.findOne().amount).to.equal(iao)
+        expect(InventoryModule.Inventories.findOne().yield_objects.length).to.equal(1)
+        done()
+
+    it "Single ingredient multiple yield objects", (done) ->
+      organization_id = organizationIDs[0]
+      inventory_id = inventoryIDS[0]
+
+      console.log "#{YieldModule.Yields.findOne().amount} ++++ #{ProductModule.Products.findOne().ingredients[0].amount}"
+
+      yyaB = new Big(YieldModule.Yields.findOne().amount)
+      pIA = new Big(ProductModule.Products.findOne().ingredients[0].amount)
+
+      yao = Number(yyaB.minus pIA.times(40))
+      iao = InventoryModule.Inventories.findOne().amount + 40
+
+      yield_objects = [
+        {
+          yield_id: YieldModule.Yields.findOne()._id
+          amount_taken: Number(pIA.times(20))
+          conversation_rate: 1
+        },
+        {
+          yield_id: YieldModule.Yields.findOne()._id
+          amount_taken: Number(pIA.times(20))
+          conversation_rate: 1
+        }
+
+      ]
+
+      amount = 40
+
+      EMethods.packageEvent.call {organization_id, inventory_id, yield_objects, amount}, (err,res) ->
+        console.log "#{yao} -- #{YieldModule.Yields.findOne().amount}"
+        expect(err).to.not.exist
+        expect(YieldModule.Yields.findOne().amount).to.equal(yao)
+        expect(InventoryModule.Inventories.findOne().amount).to.equal(iao)
+        done()
+
+
+    it "Yield amount taken failed", ->
+
+    it "Same conversation_rate", ->
+
+    it "Different conversation_rate", ->
+
+    it "Single ingredient amount failed", ->
+
+    it "ingredient name mismatch", ->
+
+    it "Multiple ingredients", ->
+
+
+
 
 
 
@@ -239,7 +361,7 @@ createProduct = (done, ings) ->
   for ing in ings
     ing_doc =
       ingredient_name: ing
-      amount: (Random.fraction() * 100).toFixed(2)
+      amount: (Random.fraction() * 100)
       measurement_unit: "g"
     ingredientsL.push ing_doc
 

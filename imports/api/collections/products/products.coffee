@@ -42,6 +42,9 @@ IngredientSchema =
       decimal: true
       min: 0
       denyUpdate: true
+      autoValue: () ->
+        if @isSet
+          return Number(@value.toFixed(10))
 
     measurement_unit: # Trim and downcase
       type: String
@@ -84,6 +87,9 @@ ProductSchema =
       label: 'product.unit_price'
       decimal: true
       min: 0
+      autoValue: () ->
+        if @isSet
+          return parseFloat @value.toFixed(2)
 
     currency:
       type: String
@@ -96,6 +102,9 @@ ProductSchema =
       decimal: true
       max: 100
       min: 0
+      autoValue: () ->
+        if @isSet
+          return parseFloat @value.toFixed(5)
 
     ingredients: # this array cannot contain items that have the same ingredient_name
       type: [IngredientSchema]

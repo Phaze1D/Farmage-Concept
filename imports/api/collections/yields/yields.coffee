@@ -39,8 +39,12 @@ YieldSchema =
       label: 'yield.total'
       decimal: true
       optional: true
-      defaultValue: 0
       min: 0
+      autoValue: () ->
+        if @isSet
+          return Number(@value.toFixed(10))
+        else
+          return 0
 
     measurement_unit:
       type: String

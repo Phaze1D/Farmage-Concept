@@ -31,6 +31,9 @@ EventSchema =
       label: 'event.amount'
       decimal: true
       denyUpdate: true
+      autoValue: () ->
+        if @isSet
+          return Number(@value.toFixed(10))
 
     description:
       type: String

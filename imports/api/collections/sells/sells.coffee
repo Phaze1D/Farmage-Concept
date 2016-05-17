@@ -55,12 +55,18 @@ SellDetailsSchema =     # When removing SellDetails after a sell has been saved 
       label: 'unit_price'
       decimal: true
       min: 0
+      autoValue: () ->
+        if @isSet
+          return parseFloat @value.toFixed(2)
 
     tax_price:
       type: Number
       label: 'tax_price'
       decimal: true
       min: 0
+      autoValue: () ->
+        if @isSet
+          return parseFloat @value.toFixed(5)
 
     inventories:
       type: [InventoryAssociationSchema]
@@ -82,25 +88,38 @@ SellSchema =
       label: 'sub_total'
       decimal: true
       min: 0
+      autoValue: () ->
+        if @isSet
+          return parseFloat @value.toFixed(2)
 
     total_tax:
       type: Number
       label: 'total_tax'
       decimal: true
       min: 0
+      autoValue: () ->
+        if @isSet
+          return parseFloat @value.toFixed(2)
 
     discount:
       type: Number
       label: 'discount'
       decimal: true
-      defaultValue: 0
       min: 0
+      autoValue: () ->
+        if @isSet
+          return parseFloat @value.toFixed(2)
+        else
+          return 0
 
     total_price:
       type: Number
       label: 'total_price'
       decimal: true
       min: 0
+      autoValue: () ->
+        if @isSet
+          return parseFloat @value.toFixed(2)
 
     currency:
       type: String

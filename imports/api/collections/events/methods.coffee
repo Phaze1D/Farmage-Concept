@@ -1,3 +1,6 @@
+Big = require 'big.js'
+Big.DP = 10
+
 { Meteor } = require 'meteor/meteor'
 { ValidatedMethod }  = require  'meteor/mdg:validated-method'
 { SimpleSchema }  = require  'meteor/aldeed:simple-schema'
@@ -37,6 +40,7 @@ module.exports.userEvent = new ValidatedMethod
     EventModule.Events.simpleSchema().validate(event_doc)
 
   run: ({event_doc}) ->
+
     mixins.loggedIn(@userId)
     unless @isSimulation
       switch event_doc.for_type
@@ -59,9 +63,12 @@ transcation = (event_doc, userId, belongsToM, collection, permission) ->
     throw new Meteor.Error "amountError", "amount cannot be less then 0"
 
   # Trans
+  col = collections[collection].findOne(event_doc.for_id)
+  colA = new Big(col.amount)
+  na = Number colA.plus(event_doc.amount)
   collections[collection].update _id: event_doc.for_id,
-                                $inc:
-                                  amount: event_doc.amount
+                                $set:
+                                  amount: na
   EventModule.Events.insert event_doc
   # Trans
 
@@ -83,8 +90,7 @@ transcation = (event_doc, userId, belongsToM, collection, permission) ->
 module.exports.packageEvent = new ValidatedMethod
   name: "events.packageEvent"
   validate: ({organization_id, inventory_id, yield_objects, amount}) ->
-    unless InventoryModule.Inventories.simpleSchema().newContext().validateOne(yield_objects, 'yield_objects')
-      throw new Meteor.Error "validation-error", "yield objects not valid"
+    InventoryModule.Inventories.simpleSchema().validate({$set: yield_objects: yield_objects}, modifier: true)
 
     new SimpleSchema(
       organization_id:
@@ -107,8 +113,8 @@ module.exports.packageEvent = new ValidatedMethod
       pDictionary = convertToDictionary(product.ingredients, "ingredient_name")
       sums = getSums(yield_objects, pDictionary, organization_id)
       checkAmounts(sums, product, amount)
-      updateYields(yield_objects)
-      updateInventory(inventory_id, amount)
+      updateYields(yield_objects, inventory_id, organization_id)
+      updateInventory(inventory_id, amount, organization_id, yield_objects)
 
 
 
@@ -126,6 +132,7 @@ convertToDictionary = (array, key) ->
       throw new Meteor.Error "keyNull", "object key not found"
     dic[object[key]] = object
 
+  return dic
 
 getSums = (yield_objects, pDictionary, organization_id) ->
   sums = {}
@@ -139,9 +146,14 @@ getSums = (yield_objects, pDictionary, organization_id) ->
       throw new Meteor.Error "ingredientError", "this ingredient was not found in product.ingredients"
 
     if sums[_yield.ingredient_name]?
-      sums[_yield.ingredient_name] += (yield_obj.amount_taken / yield_obj.conversation_rate)
+      sum = new Big(sums[_yield.ingredient_name])
+      at = new Big(yield_obj.amount_taken)
+      cr = new Big(yield_obj.conversation_rate)
+      sums[_yield.ingredient_name] = Number(sum.plus at.div(cr))
     else
-      sums[_yield.ingredient_name] = (yield_obj.amount_taken / yield_obj.conversation_rate)
+      at = new Big(yield_obj.amount_taken)
+      cr = new Big(yield_obj.conversation_rate)
+      sums[_yield.ingredient_name] = Number(at.div(cr))
 
   return sums
 
@@ -151,11 +163,15 @@ checkAmounts = (sums, product, amount) ->
     unless sums[ing.ingredient_name]?
       throw new Meteor.Error "ingredientError", "this ingredient is missing"
 
-    if sums[ing.ingredient_name] / ing.amount isnt amount
+    sum = new Big(sums[ing.ingredient_name])
+    iA = new Big( ing.amount )
+    fixedB = sum.div(iA)
+    a = new Big(amount)
+    unless a.eq(fixedB)
       throw new Meteor.Error "ingredientError", "ingredient amount mismatch"
 
 
-updateYields = (yield_objects) ->
+updateYields = (yield_objects, inventory_id, organization_id) ->
   for yield_obj in yield_objects
     yevent_doc =
       amount: -(yield_obj.amount_taken)
@@ -163,20 +179,30 @@ updateYields = (yield_objects) ->
       is_user_event: false
       for_type: "yield"
       for_id: yield_obj.yield_id
+      organization_id: organization_id
 
     EventModule.Events.simpleSchema().validate(yevent_doc)
-    YieldModule.Yields.update {_id: yevent_doc.for_id}, {$inc: amount: yevent_doc.amount}
+    _yield = YieldModule.Yields.findOne(yevent_doc.for_id)
+    yA = new Big(_yield.amount)
+    na = Number(yA.minus(yield_obj.amount_taken))
+    YieldModule.Yields.update {_id: yevent_doc.for_id}, {$set: amount: na}
     EventModule.Events.insert yevent_doc
 
-
-updateInventory = (inventory_id, amount) ->
+# CAREFUL CAREFUL $inc COULD LEAD TO ERRORS
+updateInventory = (inventory_id, amount, organization_id, yield_objects) ->
   ievent_doc =
     amount: amount
-    description: "added to inventory #{inventory_id}"
+    description: "auto added to inventory #{inventory_id}"
     is_user_event: false
     for_type: "inventory"
     for_id: inventory_id
+    organization_id: organization_id
 
   EventModule.Events.simpleSchema().validate(ievent_doc)
-  InventoryModule.Inventories.update {_id: ievent_doc.for_id}, {$inc: amount: ievent_doc.amount}
+  InventoryModule.Inventories.update {_id: ievent_doc.for_id},
+                                      $inc:
+                                        amount: amount
+                                      $push:
+                                        yield_objects:
+                                          $each: yield_objects
   EventModule.Events.insert ievent_doc

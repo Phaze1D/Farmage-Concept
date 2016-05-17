@@ -21,7 +21,7 @@ OMethods = require '../../imports/api/collections/organizations/methods.coffee'
 } = require '../../imports/api/collections/yields/methods.coffee'
 
 
-describe 'Yield Full App Test Client', () ->
+xdescribe 'Yield Full App Test Client', () ->
 
   before( (done) ->
     Meteor.logout( (err) ->

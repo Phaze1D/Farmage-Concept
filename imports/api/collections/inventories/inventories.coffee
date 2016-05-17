@@ -29,13 +29,17 @@ YieldAssociationSchema =
   new SimpleSchema(
     yield_id:
       type: String
-      denyUpdate: true
       index: true
 
     amount_taken:  # amount with yield measurement_units
       type: Number
       decimal: true
       min: 0
+      exclusiveMin: true
+      autoValue: () ->
+        if @isSet
+          return Number(@value.toFixed(10))
+
 
     # Conversation rate (1 product ingredient = )
     conversation_rate:
@@ -43,6 +47,9 @@ YieldAssociationSchema =
       decimal: true
       min: 0
       exclusiveMin: true
+      autoValue: () ->
+        if @isSet
+          return Number(@value.toFixed(10))
   )
 
 #
@@ -61,7 +68,7 @@ InventorySchema =
       label: 'expiration_date'
       optional: true
 
-    yield_objects:
+    yield_objects: # Cannot be set during update
       type: [YieldAssociationSchema]
       optional: true
       defaultValue: []

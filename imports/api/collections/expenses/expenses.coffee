@@ -32,6 +32,9 @@ ExpenseSchema =
       label: 'price'
       decimal: true
       min: 0
+      autoValue: () ->
+        if @isSet
+          return parseFloat @value.toFixed(2)
 
     currency:
       type: String
