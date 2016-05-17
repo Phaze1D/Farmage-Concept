@@ -231,8 +231,6 @@ describe "Events Client Side Test", ->
       organization_id = organizationIDs[0]
       inventory_id = inventoryIDS[0]
 
-      console.log "#{YieldModule.Yields.findOne().amount} ++++ #{ProductModule.Products.findOne().ingredients[0].amount}"
-
       yyaB = new Big(YieldModule.Yields.findOne().amount)
       pIA = new Big(ProductModule.Products.findOne().ingredients[0].amount)
 
@@ -361,7 +359,7 @@ createProduct = (done, ings) ->
   for ing in ings
     ing_doc =
       ingredient_name: ing
-      amount: (Random.fraction() * 100)
+      amount: (Random.fraction() * 100).toFixed(2)
       measurement_unit: "g"
     ingredientsL.push ing_doc
 
