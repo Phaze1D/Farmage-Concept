@@ -41,22 +41,17 @@ ExpenseSchema =
       label: 'currency_ISO_4217'
       max: 3
 
-    name:
-      type: String
-      label: 'name'
-      max: 64
-
     description:
       type: String
       label: 'description'
-      max: 256
+      max: 512
       optional: true
 
     quantity:
       type: Number
       label: 'quantity'
       decimal: true
-      min: 1
+      optional: true
 
     receipt_id:
       type: String

@@ -77,7 +77,7 @@ transcation = (event_doc, userId, belongsToM, collection, permission) ->
 # ++++++++++++++++++++++++ App Events
 # moving yield to inventory (packaging event)
 ###
-  p.amount == sum(yo.amount_taken/yo.conversation_rate) / p.ingredient.amount when yo.ingredient is p.ingredient for all p.ingredients
+  i.amount == sum(yo.amount_taken/yo.conversation_rate) / p.ingredient.amount when yo.ingredient is p.ingredient for all p.ingredients
 
   Description
     yield amount taken divide by the yield conversation_rate
@@ -87,9 +87,10 @@ transcation = (event_doc, userId, belongsToM, collection, permission) ->
     This should be true for all the product's ingredients
 ###
 
-module.exports.packageEvent = new ValidatedMethod
-  name: "events.packageEvent"
+module.exports.pack = new ValidatedMethod
+  name: "events.pack"
   validate: ({organization_id, inventory_id, yield_objects, amount}) ->
+    InventoryModule.Inventories.simpleSchema().clean({yield_objects: yield_objects})
     InventoryModule.Inventories.simpleSchema().validate({$set: yield_objects: yield_objects}, modifier: true)
 
     new SimpleSchema(
@@ -100,6 +101,7 @@ module.exports.packageEvent = new ValidatedMethod
       amount:
         type: Number
         min: 0
+        exclusiveMin: true
     ).validate({organization_id, inventory_id, amount})
 
   run: ({organization_id, inventory_id, yield_objects, amount}) ->
@@ -111,16 +113,11 @@ module.exports.packageEvent = new ValidatedMethod
       product = mixins.productBelongsToOrgan(inventory.product_id, organization_id)
 
       pDictionary = convertToDictionary(product.ingredients, "ingredient_name")
+      yield_objects = unifySameYields(yield_objects)
       sums = getSums(yield_objects, pDictionary, organization_id)
       checkAmounts(sums, product, amount)
-      updateYields(yield_objects, inventory_id, organization_id)
-      updateInventory(inventory_id, amount, organization_id, yield_objects)
-
-
-
-
-# moving inventory to sell iteam
-# putting back sell item when sell has not been sold
+      takeFromYields(yield_objects, inventory_id, organization_id)
+      addToInventory(inventory, amount, organization_id, yield_objects)
 
 
 
@@ -133,6 +130,30 @@ convertToDictionary = (array, key) ->
     dic[object[key]] = object
 
   return dic
+
+
+unifySameYields = (yield_objects) ->
+  unifiedYields = []
+  dYs = {}
+
+  for yieldO in yield_objects
+    if dYs[yieldO.yield_id]? && dYs[yieldO.yield_id].conversation_rate is yieldO.conversation_rate
+      da = new Big(dYs[yieldO.yield_id].amount_taken)
+      na = da.plus yieldO.amount_taken
+      dYs[yieldO.yield_id].amount_taken = Number(na)
+
+    if dYs[yieldO.yield_id]? && dYs[yieldO.yield_id].conversation_rate isnt yieldO.conversation_rate
+      throw new Meteor.Error "conversationRateError", "conversation rate (#{dYs[yieldO.yield_id].conversation_rate}) is different
+                                                      from a previous conversation rate (#{yieldO.conversation_rate}) for yield #{yieldO.yield_id}"
+
+    unless dYs[yieldO.yield_id]?
+      dYs[yieldO.yield_id] = yieldO
+
+  for key, value of dYs
+    unifiedYields.push value
+
+  return unifiedYields
+
 
 getSums = (yield_objects, pDictionary, organization_id) ->
   sums = {}
@@ -164,14 +185,13 @@ checkAmounts = (sums, product, amount) ->
       throw new Meteor.Error "ingredientError", "this ingredient is missing"
 
     sum = new Big(sums[ing.ingredient_name])
-    iA = new Big( ing.amount )
-    fixedB = sum.div(iA)
+    fixedB = sum.div(ing.amount)
     a = new Big(amount)
     unless a.eq(fixedB)
       throw new Meteor.Error "ingredientError", "ingredient amount mismatch"
 
 
-updateYields = (yield_objects, inventory_id, organization_id) ->
+takeFromYields = (yield_objects, inventory_id, organization_id) ->
   for yield_obj in yield_objects
     yevent_doc =
       amount: -(yield_obj.amount_taken)
@@ -188,21 +208,22 @@ updateYields = (yield_objects, inventory_id, organization_id) ->
     YieldModule.Yields.update {_id: yevent_doc.for_id}, {$set: amount: na}
     EventModule.Events.insert yevent_doc
 
-# CAREFUL CAREFUL $inc COULD LEAD TO ERRORS
-updateInventory = (inventory_id, amount, organization_id, yield_objects) ->
+
+addToInventory = (inventory, amount, organization_id, yield_objects) ->
   ievent_doc =
     amount: amount
-    description: "auto added to inventory #{inventory_id}"
+    description: "auto added to inventory #{inventory._id}"
     is_user_event: false
     for_type: "inventory"
-    for_id: inventory_id
+    for_id: inventory._id
     organization_id: organization_id
 
   EventModule.Events.simpleSchema().validate(ievent_doc)
+  yield_objects.push object for object in inventory.yield_objects
+  yield_objects = unifySameYields yield_objects
   InventoryModule.Inventories.update {_id: ievent_doc.for_id},
                                       $inc:
                                         amount: amount
-                                      $push:
-                                        yield_objects:
-                                          $each: yield_objects
+                                      $set:
+                                        yield_objects: yield_objects
   EventModule.Events.insert ievent_doc

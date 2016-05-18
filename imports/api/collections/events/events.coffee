@@ -38,7 +38,7 @@ EventSchema =
     description:
       type: String
       label: 'description'
-      max: 256
+      max: 512
       optional: true
 
     is_user_event:

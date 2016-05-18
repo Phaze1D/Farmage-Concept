@@ -44,9 +44,9 @@ UnitSchema =
       type: String
       label: 'description'
       optional: true
-      max: 256
+      max: 512
 
-    amount: # Can only be updated/inserted with events
+    amount:
       type: Number
       label: 'amount'
       min: 0

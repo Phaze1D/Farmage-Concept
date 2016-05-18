@@ -28,6 +28,8 @@ unitIDs = []
 productIDs = []
 inventoryIDS = []
 ingredients = []
+conversation_rates = {}
+
 
 
 describe "Events Client Side Test", ->
@@ -216,7 +218,9 @@ describe "Events Client Side Test", ->
         conversation_rate: cr
       ]
 
-      EMethods.packageEvent.call {organization_id, inventory_id, yield_objects, amount}, (err,res) ->
+      conversation_rates[YieldModule.Yields.findOne()._id] = cr
+
+      EMethods.pack.call {organization_id, inventory_id, yield_objects, amount}, (err,res) ->
         console.log err
         console.log ProductModule.Products.findOne().ingredients[0].amount if err?
         console.log "#{yao} -- #{YieldModule.Yields.findOne().amount}"
@@ -227,7 +231,7 @@ describe "Events Client Side Test", ->
         expect(InventoryModule.Inventories.findOne().yield_objects.length).to.equal(1)
         done()
 
-    it "Single ingredient multiple yield objects", (done) ->
+    it "Single ingredient multiple yield objects conversation_rate error", (done) ->
       organization_id = organizationIDs[0]
       inventory_id = inventoryIDS[0]
 
@@ -253,31 +257,174 @@ describe "Events Client Side Test", ->
 
       amount = 40
 
-      EMethods.packageEvent.call {organization_id, inventory_id, yield_objects, amount}, (err,res) ->
-        console.log "#{yao} -- #{YieldModule.Yields.findOne().amount}"
+      EMethods.pack.call {organization_id, inventory_id, yield_objects, amount}, (err,res) ->
+        expect(err).to.have.property('error', 'conversationRateError')
+        done()
+
+    it "Create Yield with ing", (done) ->
+      createYieldI(done, ingredients[0])
+
+    # Possible error when running multiple (remove done)
+    it "Add to yield",(done) ->
+      expect(YieldModule.Yields.findOne(yieldIDs[1]).amount).to.equal(0)
+      event_doc =
+        amount: 10329
+        for_type: 'yield'
+        for_id: yieldIDs[1]
+        organization_id: organizationIDs[0]
+
+      EMethods.userEvent.call {event_doc}, (err, res) ->
+        expect(YieldModule.Yields.findOne(yieldIDs[1]).amount).to.equal(10329)
+        expect(EventModule.Events.findOne(_id: res).for_id).to.equal(YieldModule.Yields.findOne(yieldIDs[1])._id)
+        done()
+
+    it "Single ingredient multiple yield objects with same yield ids", (done) ->
+      organization_id = organizationIDs[0]
+      inventory_id = inventoryIDS[0]
+
+      amount = 40
+      cr = 1
+      at = Number new Big(ProductModule.Products.findOne().ingredients[0].amount).times(amount * cr).div(2)
+      yao = Number new Big(YieldModule.Yields.findOne(yieldIDs[1]).amount).minus(at).minus(at)
+      iao = InventoryModule.Inventories.findOne().amount + amount
+      yield_objects = [
+        {
+          yield_id: YieldModule.Yields.findOne(yieldIDs[1])._id
+          amount_taken: at
+          conversation_rate: cr
+        },
+        {
+          yield_id: YieldModule.Yields.findOne(yieldIDs[1])._id
+          amount_taken: at
+          conversation_rate: cr
+        }
+      ]
+
+      conversation_rates[YieldModule.Yields.findOne(yieldIDs[1])._id] = cr
+
+      EMethods.pack.call {organization_id, inventory_id, yield_objects, amount}, (err,res) ->
         expect(err).to.not.exist
-        expect(YieldModule.Yields.findOne().amount).to.equal(yao)
-        expect(InventoryModule.Inventories.findOne().amount).to.equal(iao)
+        expect(YieldModule.Yields.findOne(yieldIDs[1]).amount).to.equal(yao)
+        expect(InventoryModule.Inventories.findOne(inventory_id).yield_objects.length).to.equal(2)
+        expect(InventoryModule.Inventories.findOne(inventory_id).amount).to.equal(iao)
         done()
 
 
-    it "Yield amount taken failed", ->
+    it "Create Yield", (done) ->
+      createYield(done)
 
-    it "Same conversation_rate", ->
+    it "Add to yield",(done) ->
+      event_doc =
+        amount: 10329
+        for_type: 'yield'
+        for_id: yieldIDs[2]
+        organization_id: organizationIDs[0]
 
-    it "Different conversation_rate", ->
+      EMethods.userEvent.call {event_doc}, (err, res) ->
+        throw err if err?
+        done()
 
-    it "Single ingredient amount failed", ->
+    it "Create Yield", (done) ->
+      createYield(done)
 
-    it "ingredient name mismatch", ->
+    it "Add to yield",(done) ->
+      event_doc =
+        amount: 10329
+        for_type: 'yield'
+        for_id: yieldIDs[3]
+        organization_id: organizationIDs[0]
 
-    it "Multiple ingredients", ->
+      EMethods.userEvent.call {event_doc}, (err, res) ->
+        throw err if err?
+        done()
+
+    it "Create Product", (done) ->
+      ings = ingredients
+      createProduct(done, ings)
+
+    it "Create Inventory", (done) ->
+      createInventory(done, 1)
+
+    it "Multiple ingredients with unique yield_ids and ingredient", (done) ->
+      organization_id = organizationIDs[0]
+      inventory_id = inventoryIDS[1]
+      expect(InventoryModule.Inventories.findOne(inventory_id).amount).to.equal(0)
+
+      amount = 23
 
 
+      product = ProductModule.Products.findOne(productIDs[1])
+      yield_objects = []
+      pya = {}
+
+      for ing in product.ingredients
+        _yield = YieldModule.Yields.findOne(ingredient_name: ing.ingredient_name)
+        if _yield?
+          pya[_yield._id] = _yield.amount
+          cr = (Random.fraction() * 2).toFixed(10)
+          at = Number new Big(ing.amount).times(amount).times(cr)
+          yield_obj =
+            yield_id: _yield._id
+            amount_taken: at
+            conversation_rate: cr
+          yield_objects.push yield_obj
+          conversation_rates[_yield._id] = cr
+        else
+          throw new Meteor.Error "error", "error"
 
 
+      EMethods.pack.call {organization_id, inventory_id, yield_objects, amount}, (err,res) ->
+        throw err if err?
+        expect(err).to.not.exist
+        inven = InventoryModule.Inventories.findOne(inventory_id)
+        for yo in inven.yield_objects
+          yl = YieldModule.Yields.findOne(_id: yo.yield_id)
+          yl2 = new Big(pya[yo.yield_id]).minus yo.amount_taken
+          expect(yl.amount).to.equal(Number(yl2))
+
+        expect(inven.amount).to.equal(amount)
+        done()
 
 
+    it "Multiple ingredients with unique yield_ids but not ingredient", (done) ->
+      organization_id = organizationIDs[0]
+      inventory_id = inventoryIDS[1]
+      expect(InventoryModule.Inventories.findOne(inventory_id).amount).to.equal(23)
+
+      amount = 10
+      product = ProductModule.Products.findOne(productIDs[1])
+      yield_objects = []
+      pya = {}
+
+      for ing in product.ingredients
+        yields = YieldModule.Yields.find(ingredient_name: ing.ingredient_name)
+
+        yields.forEach (_yield) ->
+          if _yield?
+            pya[_yield._id] = _yield.amount
+            cr = conversation_rates[_yield._id]
+            at = Number new Big(ing.amount).times(amount).times(cr).div(yields.count())
+            yield_obj =
+              yield_id: _yield._id
+              amount_taken: at
+              conversation_rate: cr
+            yield_objects.push yield_obj
+          else
+            throw new Meteor.Error "error", "error"
+
+
+      EMethods.pack.call {organization_id, inventory_id, yield_objects, amount}, (err,res) ->
+        throw err if err?
+        expect(err).to.not.exist
+
+        for yo in yield_objects
+          yl = YieldModule.Yields.findOne(_id: yo.yield_id)
+          yl2 = new Big(pya[yo.yield_id]).minus yo.amount_taken
+          expect(yl.amount).to.equal(Number(yl2))
+
+        inven = InventoryModule.Inventories.findOne(inventory_id)
+        expect(inven.amount).to.equal(amount + 23)
+        done()
 
 
 # ++++++++++++++++++++++++ Setup Methods
@@ -343,6 +490,20 @@ createYield = (done) ->
     yieldIDs.push res
     done()
 
+createYieldI = (done, ing) ->
+  yield_doc =
+    amount: 2
+    measurement_unit: "kg"
+    ingredient_name: ing
+    unit_id: unitIDs[0]
+    organization_id: organizationIDs[0]
+
+
+  YMethods.insert.call {yield_doc}, (err, res) ->
+    throw err if err?
+    yieldIDs.push res
+    done()
+
 createInventory = (done, pIndex) ->
   inventory_doc =
     product_id: productIDs[pIndex]
@@ -359,7 +520,7 @@ createProduct = (done, ings) ->
   for ing in ings
     ing_doc =
       ingredient_name: ing
-      amount: (Random.fraction() * 100).toFixed(2)
+      amount: (Random.fraction() * 100)
       measurement_unit: "g"
     ingredientsL.push ing_doc
 
