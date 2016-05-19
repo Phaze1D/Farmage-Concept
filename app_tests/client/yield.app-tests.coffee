@@ -226,7 +226,6 @@ createIngredient = (done, i) ->
   ingredient_doc =
     name: faker.name.firstName()
     measurement_unit: 'kg'
-    cost: 23.34
     organization_id: organizationIDs[i]
 
   IMethods.insert.call {ingredient_doc}, (err, res) ->

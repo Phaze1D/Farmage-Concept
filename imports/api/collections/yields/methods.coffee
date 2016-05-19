@@ -30,7 +30,6 @@ module.exports.insert = new ValidatedMethod
       hasPermission(@userId, yield_doc.organization_id, "units_manager")
       unitBelongsToOrgan(yield_doc.unit_id, yield_doc.organization_id)
       ingredient = ingredientBelongsToOrgan(yield_doc.ingredient_id, yield_doc.organization_id)
-      yield_doc.ingredient_cost = ingredient.cost
 
     delete yield_doc.amount
     YieldModule.Yields.insert yield_doc

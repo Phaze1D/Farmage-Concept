@@ -51,16 +51,6 @@ YieldSchema =
       index: true
       denyUpdate: true
 
-    ingredient_cost:
-      type: Number
-      label: 'cost of single ingredient'
-      decimal: true
-      denyUpdate: true
-      optional: true
-      autoValue: () ->
-        if @isSet
-          return parseFloat @value.toFixed(2)
-
     unit_id:
       type: String
       index: true

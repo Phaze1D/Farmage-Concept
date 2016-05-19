@@ -36,15 +36,6 @@ IngredientSchema =
       max: 64
       denyUpdate: true
 
-    cost:
-      type: Number
-      label: 'price of single'
-      decimal: true
-      min: 0
-      autoValue: () ->
-        if @isSet
-          return parseFloat @value.toFixed(2)
-
   , CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 
 
