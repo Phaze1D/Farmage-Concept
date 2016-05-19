@@ -51,7 +51,7 @@ YieldSchema =
       index: true
       denyUpdate: true
 
-    ingredient_price:
+    ingredient_cost:
       type: Number
       label: 'cost of single ingredient'
       decimal: true

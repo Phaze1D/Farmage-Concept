@@ -36,7 +36,7 @@ IngredientSchema =
       max: 64
       denyUpdate: true
 
-    price:
+    cost:
       type: Number
       label: 'price of single'
       decimal: true

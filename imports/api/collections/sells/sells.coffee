@@ -131,7 +131,7 @@ SellSchema =
     status:         # Ordered, Canceled, Sent, Paid, Returned
       type: String
       label: 'status'
-      allowedValues: ['ordered', 'canceled', 'sent', 'paid', 'returned']
+      allowedValues: ['processing', 'ordered', 'canceled', 'sent', 'paid', 'returned']
 
     note:
       type: String
