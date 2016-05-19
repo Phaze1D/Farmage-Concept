@@ -28,7 +28,7 @@ class SellsCollection extends Mongo.Collection
     super(selector, callback)
 
 InventoryAssociationSchema =   # When removing inventory after it has been saved then insure the user that the inventory will be put back
-  new SimpleSchema(            # Cannot removing or update after status is 'canceled', 'sent', 'paid', 'returned'
+  new SimpleSchema(            # Cannot removing or update after status is 'sent', 'paid'
     quantity_taken:
       type: Number
       min: 0
@@ -39,7 +39,7 @@ InventoryAssociationSchema =   # When removing inventory after it has been saved
   )
 
 SellDetailsSchema =     # When removing SellDetails after a sell has been saved then insure the user that the inventory will be put back
-  new SimpleSchema([    # Cannot removing or update after status is 'canceled', 'sent', 'paid', 'returned'
+  new SimpleSchema([    # Cannot removing or update after status is 'sent', 'paid'
 
     product_id:
       type: String
@@ -73,11 +73,6 @@ SellDetailsSchema =     # When removing SellDetails after a sell has been saved 
       minCount: 1
       maxCount: 25
 
-    unit_id:
-      type: String
-      index: true
-      sparse: true
-      optional: true
   ])
 
 SellSchema =
@@ -125,6 +120,7 @@ SellSchema =
       type: String
       label: 'currency_ISO_4217'
       max: 3
+      optional: true
 
     sell_details:
       type: [SellDetailsSchema]
@@ -146,6 +142,8 @@ SellSchema =
     customer_id:
       type: String
       index: true
+      sparse: true
+      optional: true
 
     shipping_address:
       type: ContactExports.AddressSchema

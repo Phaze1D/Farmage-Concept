@@ -40,6 +40,7 @@ ExpenseSchema =
       type: String
       label: 'currency_ISO_4217'
       max: 3
+      optional: true
 
     description:
       type: String

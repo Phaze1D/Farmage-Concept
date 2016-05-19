@@ -46,23 +46,20 @@ YieldSchema =
         else
           return 0
 
-    measurement_unit:
+    ingredient_id:
       type: String
-      label: 'measurement_unit'
+      index: true
       denyUpdate: true
-      max: 64
-      autoValue: () ->
-        if @isSet
-          return @value.toLowerCase().replace(/\s+/g,' ').trim();
 
-    ingredient_name: # Single do not use pural
-      type: String
-      label: 'ingredient'
+    ingredient_price:
+      type: Number
+      label: 'cost of single ingredient'
+      decimal: true
       denyUpdate: true
-      max: 128
+      optional: true
       autoValue: () ->
         if @isSet
-          return @value.toLowerCase().replace(/\s+/g,' ').trim();
+          return parseFloat @value.toFixed(2)
 
     unit_id:
       type: String
@@ -88,7 +85,7 @@ Yields.helpers
     UnitModule.Units.findOne { _id: @unit_id }
 
   inventories: ->
-    InventoryModule.Inventories.find {'yield_objects.yield_id': @_id}
+    InventoryModule.Inventories.find {'yield_objects.yield_id': @_id} # possible error
 
   events: ->
     EventModule.Events.find { for_id: @_id}

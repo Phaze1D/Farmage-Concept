@@ -20,15 +20,16 @@ UMethods = require '../../imports/api/collections/units/methods.coffee'
 YMethods = require '../../imports/api/collections/yields/methods.coffee'
 PMethods = require '../../imports/api/collections/products/methods.coffee'
 IMethods = require '../../imports/api/collections/inventories/methods.coffee'
+InMethods = require '../../imports/api/collections/ingredients/methods.coffee'
+
 
 
 organizationIDs = []
 yieldIDs = []
 unitIDs = []
 productIDs = []
-inventoryIDS = []
-ingredients = []
-conversation_rates = {}
+inventoryIDs = []
+ingredientIDs = []
 
 
 
@@ -47,11 +48,14 @@ describe "Events Client Side Test", ->
     it "Create Unit", (done) ->
       createUnit(done)
 
+    it "Create Ingredient",(done) ->
+      createIngredient(done, 0)
+
     it "Create Yield", (done) ->
-      createYield(done)
+      createYield(done, 0)
 
     it "Create Product", (done) ->
-      ings = [ingredients[0]]
+      ings = [ingredientIDs[0]]
       createProduct(done, ings)
 
     it "Create Inventory", (done) ->
@@ -71,8 +75,6 @@ describe "Events Client Side Test", ->
 
     it "Subscribe to products", (done) ->
       subscribe(done, 'products')
-
-
 
 
   describe "User Event Tests", ->
@@ -154,7 +156,7 @@ describe "Events Client Side Test", ->
       event_doc =
         amount: 1232
         for_type: 'inventory'
-        for_id: inventoryIDS[0]
+        for_id: inventoryIDs[0]
         organization_id: organizationIDs[0]
 
       EMethods.userEvent.call {event_doc}, (err, res) ->
@@ -165,7 +167,7 @@ describe "Events Client Side Test", ->
 
     it "Fake amount update", (done) ->
       organization_id = organizationIDs[0]
-      inventory_id = inventoryIDS[0]
+      inventory_id = inventoryIDs[0]
 
       inventory_doc =
         amount: 4999
@@ -179,7 +181,7 @@ describe "Events Client Side Test", ->
       event_doc =
         amount: -1232
         for_type: 'inventory'
-        for_id: inventoryIDS[0]
+        for_id: inventoryIDs[0]
         organization_id: organizationIDs[0]
 
       EMethods.userEvent.call {event_doc}, (err, res) ->
@@ -192,7 +194,7 @@ describe "Events Client Side Test", ->
       event_doc =
         amount: -232343
         for_type: 'inventory'
-        for_id: inventoryIDS[0]
+        for_id: inventoryIDs[0]
         organization_id: organizationIDs[0]
 
       EMethods.userEvent.call {event_doc}, (err, res) ->
@@ -204,21 +206,18 @@ describe "Events Client Side Test", ->
   describe "App Event Tests", ->
     it "Single ingredient ", (done) ->
       organization_id = organizationIDs[0]
-      inventory_id = inventoryIDS[0]
+      inventory_id = inventoryIDs[0]
 
       amount = 40
-      cr = 0.324
-      at = Number new Big(ProductModule.Products.findOne().ingredients[0].amount).times(amount * cr)
+      at = Number new Big(ProductModule.Products.findOne().ingredients[0].amount).times(amount)
       yao = Number new Big(YieldModule.Yields.findOne().amount).minus(at)
       iao = InventoryModule.Inventories.findOne().amount + amount
 
       yield_objects = [
         yield_id: YieldModule.Yields.findOne()._id
         amount_taken: at
-        conversation_rate: cr
       ]
 
-      conversation_rates[YieldModule.Yields.findOne()._id] = cr
 
       EMethods.pack.call {organization_id, inventory_id, yield_objects, amount}, (err,res) ->
         console.log err
@@ -231,38 +230,10 @@ describe "Events Client Side Test", ->
         expect(InventoryModule.Inventories.findOne().yield_objects.length).to.equal(1)
         done()
 
-    it "Single ingredient multiple yield objects conversation_rate error", (done) ->
-      organization_id = organizationIDs[0]
-      inventory_id = inventoryIDS[0]
 
-      yyaB = new Big(YieldModule.Yields.findOne().amount)
-      pIA = new Big(ProductModule.Products.findOne().ingredients[0].amount)
-
-      yao = Number(yyaB.minus pIA.times(40))
-      iao = InventoryModule.Inventories.findOne().amount + 40
-
-      yield_objects = [
-        {
-          yield_id: YieldModule.Yields.findOne()._id
-          amount_taken: Number(pIA.times(20))
-          conversation_rate: 1
-        },
-        {
-          yield_id: YieldModule.Yields.findOne()._id
-          amount_taken: Number(pIA.times(20))
-          conversation_rate: 1
-        }
-
-      ]
-
-      amount = 40
-
-      EMethods.pack.call {organization_id, inventory_id, yield_objects, amount}, (err,res) ->
-        expect(err).to.have.property('error', 'conversationRateError')
-        done()
 
     it "Create Yield with ing", (done) ->
-      createYieldI(done, ingredients[0])
+      createYield(done, 0)
 
     # Possible error when running multiple (remove done)
     it "Add to yield",(done) ->
@@ -280,27 +251,22 @@ describe "Events Client Side Test", ->
 
     it "Single ingredient multiple yield objects with same yield ids", (done) ->
       organization_id = organizationIDs[0]
-      inventory_id = inventoryIDS[0]
+      inventory_id = inventoryIDs[0]
 
       amount = 40
-      cr = 1
-      at = Number new Big(ProductModule.Products.findOne().ingredients[0].amount).times(amount * cr).div(2)
+      at = Number new Big(ProductModule.Products.findOne().ingredients[0].amount).times(amount).div(2)
       yao = Number new Big(YieldModule.Yields.findOne(yieldIDs[1]).amount).minus(at).minus(at)
       iao = InventoryModule.Inventories.findOne().amount + amount
       yield_objects = [
         {
           yield_id: YieldModule.Yields.findOne(yieldIDs[1])._id
           amount_taken: at
-          conversation_rate: cr
         },
         {
           yield_id: YieldModule.Yields.findOne(yieldIDs[1])._id
           amount_taken: at
-          conversation_rate: cr
         }
       ]
-
-      conversation_rates[YieldModule.Yields.findOne(yieldIDs[1])._id] = cr
 
       EMethods.pack.call {organization_id, inventory_id, yield_objects, amount}, (err,res) ->
         expect(err).to.not.exist
@@ -309,9 +275,11 @@ describe "Events Client Side Test", ->
         expect(InventoryModule.Inventories.findOne(inventory_id).amount).to.equal(iao)
         done()
 
+    it "Create Ingredient",(done) ->
+      createIngredient(done, 0)
 
     it "Create Yield", (done) ->
-      createYield(done)
+      createYield(done, 1)
 
     it "Add to yield",(done) ->
       event_doc =
@@ -324,8 +292,11 @@ describe "Events Client Side Test", ->
         throw err if err?
         done()
 
+    it "Create Ingredient",(done) ->
+      createIngredient(done, 0)
+
     it "Create Yield", (done) ->
-      createYield(done)
+      createYield(done, 2)
 
     it "Add to yield",(done) ->
       event_doc =
@@ -339,7 +310,7 @@ describe "Events Client Side Test", ->
         done()
 
     it "Create Product", (done) ->
-      ings = ingredients
+      ings = ingredientIDs
       createProduct(done, ings)
 
     it "Create Inventory", (done) ->
@@ -347,28 +318,24 @@ describe "Events Client Side Test", ->
 
     it "Multiple ingredients with unique yield_ids and ingredient", (done) ->
       organization_id = organizationIDs[0]
-      inventory_id = inventoryIDS[1]
+      inventory_id = inventoryIDs[1]
       expect(InventoryModule.Inventories.findOne(inventory_id).amount).to.equal(0)
 
       amount = 23
-
 
       product = ProductModule.Products.findOne(productIDs[1])
       yield_objects = []
       pya = {}
 
       for ing in product.ingredients
-        _yield = YieldModule.Yields.findOne(ingredient_name: ing.ingredient_name)
+        _yield = YieldModule.Yields.findOne(ingredient_id: ing.ingredient_id)
         if _yield?
           pya[_yield._id] = _yield.amount
-          cr = (Random.fraction() * 2).toFixed(10)
-          at = Number new Big(ing.amount).times(amount).times(cr)
+          at = Number new Big(ing.amount).times(amount)
           yield_obj =
             yield_id: _yield._id
             amount_taken: at
-            conversation_rate: cr
           yield_objects.push yield_obj
-          conversation_rates[_yield._id] = cr
         else
           throw new Meteor.Error "error", "error"
 
@@ -388,7 +355,7 @@ describe "Events Client Side Test", ->
 
     it "Multiple ingredients with unique yield_ids but not ingredient", (done) ->
       organization_id = organizationIDs[0]
-      inventory_id = inventoryIDS[1]
+      inventory_id = inventoryIDs[1]
       expect(InventoryModule.Inventories.findOne(inventory_id).amount).to.equal(23)
 
       amount = 10
@@ -397,17 +364,15 @@ describe "Events Client Side Test", ->
       pya = {}
 
       for ing in product.ingredients
-        yields = YieldModule.Yields.find(ingredient_name: ing.ingredient_name)
+        yields = YieldModule.Yields.find(ingredient_id: ing.ingredient_id)
 
         yields.forEach (_yield) ->
           if _yield?
             pya[_yield._id] = _yield.amount
-            cr = conversation_rates[_yield._id]
-            at = Number new Big(ing.amount).times(amount).times(cr).div(yields.count())
+            at = Number new Big(ing.amount).times(amount).div(yields.count())
             yield_obj =
               yield_id: _yield._id
               amount_taken: at
-              conversation_rate: cr
             yield_objects.push yield_obj
           else
             throw new Meteor.Error "error", "error"
@@ -474,13 +439,10 @@ createUnit = (done) ->
     unitIDs.push res
     done()
 
-createYield = (done) ->
-  ing = faker.company.companyName()
-  ingredients.push ing
+createYield = (done, i) ->
   yield_doc =
     amount: 2
-    measurement_unit: "kg"
-    ingredient_name: ing
+    ingredient_id:  ingredientIDs[i]
     unit_id: unitIDs[0]
     organization_id: organizationIDs[0]
 
@@ -490,19 +452,6 @@ createYield = (done) ->
     yieldIDs.push res
     done()
 
-createYieldI = (done, ing) ->
-  yield_doc =
-    amount: 2
-    measurement_unit: "kg"
-    ingredient_name: ing
-    unit_id: unitIDs[0]
-    organization_id: organizationIDs[0]
-
-
-  YMethods.insert.call {yield_doc}, (err, res) ->
-    throw err if err?
-    yieldIDs.push res
-    done()
 
 createInventory = (done, pIndex) ->
   inventory_doc =
@@ -512,16 +461,27 @@ createInventory = (done, pIndex) ->
 
   IMethods.insert.call {inventory_doc}, (err,res) ->
     throw err if err?
-    inventoryIDS.push res
+    inventoryIDs.push res
+    done()
+
+createIngredient = (done, i) ->
+  ingredient_doc =
+    name: faker.name.firstName()
+    measurement_unit: 'kg'
+    price: 23.34
+    organization_id: organizationIDs[i]
+
+  InMethods.insert.call {ingredient_doc}, (err, res) ->
+    throw err if err?
+    ingredientIDs.push res
     done()
 
 createProduct = (done, ings) ->
   ingredientsL = []
   for ing in ings
     ing_doc =
-      ingredient_name: ing
+      ingredient_id: ing
       amount: (Random.fraction() * 100)
-      measurement_unit: "g"
     ingredientsL.push ing_doc
 
   product_doc =

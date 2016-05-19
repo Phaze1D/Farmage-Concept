@@ -16,42 +16,16 @@ ProductModule = require '../../imports/api/collections/products/products.coffee'
 
 { inviteUser } = require '../../imports/api/collections/users/methods.coffee'
 OMethods = require '../../imports/api/collections/organizations/methods.coffee'
+IMethods = require '../../imports/api/collections/ingredients/methods.coffee'
+
+
+organizationID = ""
+ingredientIDS = []
 
 xdescribe 'Product Full App Test Client', () ->
   before ->
     resetDatabase(null);
 
-  createUser = (done, email) ->
-    doc =
-      email: email
-      password: '12345678'
-      profile:
-        first_name: faker.name.firstName()
-        last_name: faker.name.lastName()
-
-    Accounts.createUser doc, (error) ->
-      done()
-
-  login = (done, email) ->
-    Meteor.loginWithPassword email, '12345678', (err) ->
-      done()
-
-  logout = (done) ->
-    Meteor.logout( (err) ->
-      done()
-    )
-
-  organizationID = ""
-
-  createOrgan = (done) ->
-    organ_doc =
-      name: faker.company.companyName()
-      email: faker.internet.email()
-
-    OMethods.insert.call organ_doc, (err, res) ->
-      organizationID = res
-      expect(err).to.not.exist
-      done()
 
   describe 'Product Insert', () ->
 
@@ -98,6 +72,9 @@ xdescribe 'Product Full App Test Client', () ->
 
       subHandler = Meteor.subscribe("products", organizationID, callbacks)
 
+    it "create ingredient", (done) ->
+      createIngredient(done)
+
     it 'SKU Validation Valid', (done) ->
       product_doc =
         name: "Cake"
@@ -106,9 +83,8 @@ xdescribe 'Product Full App Test Client', () ->
         currency: "MXN"
         tax_rate: 10
         ingredients: [
-          ingredient_name: faker.name.firstName()
+          ingredient_id: ingredientIDS[0]
           amount: 123.123
-          measurement_unit: "KG"
         ]
         organization_id: organizationID
 
@@ -127,9 +103,8 @@ xdescribe 'Product Full App Test Client', () ->
         currency: "MXN"
         tax_rate: 10
         ingredients: [
-          ingredient_name: faker.name.firstName()
+          ingredient_id: ingredientIDS[0]
           amount: 123.123
-          measurement_unit: "KG"
         ]
         organization_id: organizationID
 
@@ -147,9 +122,8 @@ xdescribe 'Product Full App Test Client', () ->
         currency: "MXN"
         tax_rate: 10
         ingredients: [
-          ingredient_name: faker.name.firstName()
+          ingredient_id: ingredientIDS[0]
           amount: 123.123
-          measurement_unit: "KG"
         ]
         organization_id: organizationID
 
@@ -175,16 +149,16 @@ xdescribe 'Product Full App Test Client', () ->
         currency: "MXN"
         tax_rate: 10
         ingredients: [
-          {ingredient_name: inmame
-          amount: 123.123
-          measurement_unit: mu}
+          {ingredient_id: ingredientIDS[0]
+          amount: 123.123},
+          {ingredient_id: ingredientIDS[0]
+          amount: 123.123}
         ]
         organization_id: organizationID
 
       organization_id = organizationID
       insert.call {organization_id, product_doc}, (err, res) ->
-        expect(ProductModule.Products.findOne(res).ingredients[0].ingredient_name).to.not.equal(inmame)
-        expect(ProductModule.Products.findOne(res).ingredients[0].measurement_unit).to.not.equal(mu)
+        expect(err).to.have.property('error', 'duplicateIngredients')
         done()
 
 
@@ -223,24 +197,46 @@ xdescribe 'Product Full App Test Client', () ->
         expect(err).to.have.property('error', 'skuNotUnique')
         done()
 
-    it 'Ingredient validation', (done) ->
-      product_doc =
-        name: "Cake"
-        sku: "NOTalid090"
-        unit_price: 12.21
-        currency: "MXN"
-        tax_rate: 10
-        ingredients: [
-          ingredient_name: faker.name.firstName()
-          amount: 123.123
-          measurement_unit: "KG"
-        ]
-        organization_id: organizationID
 
-      organization_id = organizationID
+createUser = (done, email) ->
+  doc =
+    email: email
+    password: '12345678'
+    profile:
+      first_name: faker.name.firstName()
+      last_name: faker.name.lastName()
 
-      product_id = ProductModule.Products.findOne()._id
+  Accounts.createUser doc, (error) ->
+    done()
 
-      update.call {organization_id, product_id, product_doc}, (err, res) ->
-        expect(err).to.have.property('reason', 'ingredients cannot be set during an update')
-        done()
+login = (done, email) ->
+  Meteor.loginWithPassword email, '12345678', (err) ->
+    done()
+
+logout = (done) ->
+  Meteor.logout( (err) ->
+    done()
+  )
+
+
+createIngredient = (done) ->
+  ingredient_doc =
+    name: faker.name.firstName()
+    measurement_unit: 'kg'
+    price: 23.34
+    organization_id: organizationID
+
+  IMethods.insert.call {ingredient_doc}, (err, res) ->
+    throw err if err?
+    ingredientIDS.push res
+    done()
+
+createOrgan = (done) ->
+  organ_doc =
+    name: faker.company.companyName()
+    email: faker.internet.email()
+
+  OMethods.insert.call organ_doc, (err, res) ->
+    organizationID = res
+    expect(err).to.not.exist
+    done()

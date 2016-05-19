@@ -9,16 +9,18 @@ ProductModule  = require './products.coffee'
   loggedIn
   hasPermission
   productBelongsToOrgan
+  ingredientBelongsToOrgan
 } = require '../../mixins/mixins.coffee'
 
 
-validateDuplicates = (ingredients) ->
+validateDuplicates = (ingredients, organization_id) ->
   ings = {}
   for ingredient in ingredients
-    if ings[ingredient.ingredient_name]?
+    ingredientBelongsToOrgan(ingredient.ingredient_id, organization_id)
+    if ings[ingredient.ingredient_id]?
       throw new Meteor.Error 'duplicateIngredients', "Can't have duplicate ingredients"
     else
-      ings[ingredient.ingredient_name] = ingredient.amount
+      ings[ingredient.ingredient_id] = ingredient.ingredient_id
 
 # insert
 module.exports.insert = new ValidatedMethod
@@ -32,11 +34,10 @@ module.exports.insert = new ValidatedMethod
 
     unless @isSimulation
       hasPermission(@userId, product_doc.organization_id, "inventories_manager")
+      validateDuplicates(product_doc.ingredients, product_doc.organization_id)
 
     if ProductModule.Products.findOne( $and: [ { organization_id: product_doc.organization_id }, {sku: product_doc.sku} ] )?
       throw new Meteor.Error 'skuNotUnique', 'sku must be unqiue'
-
-    validateDuplicates(product_doc.ingredients)
 
     ProductModule.Products.insert product_doc
 
@@ -65,6 +66,7 @@ module.exports.update = new ValidatedMethod
       throw new Meteor.Error 'skuNotUnique', 'sku must be unqiue'
 
     delete product_doc.organization_id # Organization ID can't be update
+    delete product_doc.ingredients
 
     ProductModule.Products.update product_id,
                             $set: product_doc

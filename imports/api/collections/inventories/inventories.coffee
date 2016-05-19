@@ -39,17 +39,6 @@ YieldAssociationSchema =
       autoValue: () ->
         if @isSet
           return Number(@value.toFixed(10))
-
-
-    # Conversation rate (1 product ingredient = )
-    conversation_rate:
-      type: Number
-      decimal: true
-      min: 0
-      exclusiveMin: true
-      autoValue: () ->
-        if @isSet
-          return Number(@value.toFixed(10))
   )
 
 #

@@ -111,11 +111,10 @@ module.exports.pack = new ValidatedMethod
       mixins.hasPermission(@userId, organization_id, "inventories_manager")
       inventory = mixins.inventoryBelongsToOrgan(inventory_id, organization_id)
       product = mixins.productBelongsToOrgan(inventory.product_id, organization_id)
-
-      pDictionary = convertToDictionary(product.ingredients, "ingredient_name")
+      pDictionary = convertToDictionary(product.ingredients, "ingredient_id")
       yield_objects = unifySameYields(yield_objects)
       sums = getSums(yield_objects, pDictionary, organization_id)
-      checkAmounts(sums, product, amount)
+      checkAmounts(sums, product, amount, organization_id)
       takeFromYields(yield_objects, inventory_id, organization_id)
       addToInventory(inventory, amount, organization_id, yield_objects)
 
@@ -137,16 +136,11 @@ unifySameYields = (yield_objects) ->
   dYs = {}
 
   for yieldO in yield_objects
-    if dYs[yieldO.yield_id]? && dYs[yieldO.yield_id].conversation_rate is yieldO.conversation_rate
+    if dYs[yieldO.yield_id]?
       da = new Big(dYs[yieldO.yield_id].amount_taken)
       na = da.plus yieldO.amount_taken
       dYs[yieldO.yield_id].amount_taken = Number(na)
-
-    if dYs[yieldO.yield_id]? && dYs[yieldO.yield_id].conversation_rate isnt yieldO.conversation_rate
-      throw new Meteor.Error "conversationRateError", "conversation rate (#{dYs[yieldO.yield_id].conversation_rate}) is different
-                                                      from a previous conversation rate (#{yieldO.conversation_rate}) for yield #{yieldO.yield_id}"
-
-    unless dYs[yieldO.yield_id]?
+    else
       dYs[yieldO.yield_id] = yieldO
 
   for key, value of dYs
@@ -159,35 +153,34 @@ getSums = (yield_objects, pDictionary, organization_id) ->
   sums = {}
   for yield_obj in yield_objects
     _yield = mixins.yieldBelongsToOrgan(yield_obj.yield_id, organization_id)
+    ingredient = mixins.ingredientBelongsToOrgan(_yield.ingredient_id, organization_id)
 
     if yield_obj.amount_taken > _yield.amount
       throw new Meteor.Error "amountTakenError", "amount taken from yield cannot be greater then current amount"
 
-    unless pDictionary[_yield.ingredient_name]?
+    unless pDictionary[_yield.ingredient_id]?
       throw new Meteor.Error "ingredientError", "this ingredient was not found in product.ingredients"
 
-    if sums[_yield.ingredient_name]?
-      sum = new Big(sums[_yield.ingredient_name])
+    if sums[ingredient.name]?
+      sum = new Big(sums[ingredient.name])
       at = new Big(yield_obj.amount_taken)
-      cr = new Big(yield_obj.conversation_rate)
-      sums[_yield.ingredient_name] = Number(sum.plus at.div(cr))
+      sums[ingredient.name] = Number sum.plus(at)
     else
-      at = new Big(yield_obj.amount_taken)
-      cr = new Big(yield_obj.conversation_rate)
-      sums[_yield.ingredient_name] = Number(at.div(cr))
+      sums[ingredient.name] = yield_obj.amount_taken
 
   return sums
 
 
-checkAmounts = (sums, product, amount) ->
+checkAmounts = (sums, product, amount, organization_id) ->
   for ing in product.ingredients
-    unless sums[ing.ingredient_name]?
+    ingredient = mixins.ingredientBelongsToOrgan(ing.ingredient_id, organization_id)
+    unless sums[ingredient.name]?
       throw new Meteor.Error "ingredientError", "this ingredient is missing"
 
-    sum = new Big(sums[ing.ingredient_name])
-    fixedB = sum.div(ing.amount)
-    a = new Big(amount)
-    unless a.eq(fixedB)
+    sum = new Big sums[ingredient.name]
+    fixedB = sum.div ing.amount
+    a = new Big amount
+    unless a.eq fixedB
       throw new Meteor.Error "ingredientError", "ingredient amount mismatch"
 
 

@@ -13,12 +13,18 @@ OrganizationModule = require '../../imports/api/collections/organizations/organi
 
 UMethods = require '../../imports/api/collections/units/methods.coffee'
 OMethods = require '../../imports/api/collections/organizations/methods.coffee'
+IMethods = require '../../imports/api/collections/ingredients/methods.coffee'
 
 { inviteUser } = require '../../imports/api/collections/users/methods.coffee'
 {
   insert
   update
 } = require '../../imports/api/collections/yields/methods.coffee'
+
+organizationIDs = []
+yieldIDS = []
+ingredientIDS = []
+subHandler = ""
 
 
 xdescribe 'Yield Full App Test Client', () ->
@@ -29,65 +35,6 @@ xdescribe 'Yield Full App Test Client', () ->
     )
   )
 
-  organizationIDs = []
-  yieldIDS = []
-  subHandler = ""
-
-  createUser = (done, email) ->
-    doc =
-      email: email
-      password: '12345678'
-      profile:
-        first_name: faker.name.firstName()
-        last_name: faker.name.lastName()
-
-    Accounts.createUser doc, (error) ->
-      expect(error).to.not.exist
-      done()
-
-
-  login = (done, email) ->
-    Meteor.loginWithPassword email, '12345678', (err) ->
-      done()
-
-  logout = (done) ->
-    Meteor.logout( (err) ->
-      done()
-    )
-
-  createOrgan = (done, organizationIDs) ->
-    organ_doc =
-      name: faker.company.companyName()
-      email: faker.internet.email()
-
-    OMethods.insert.call organ_doc, (err, res) ->
-      organizationIDs.push res
-      expect(err).to.not.exist
-      done()
-
-  inviteUse = (done, email) ->
-    invited_user_doc =
-      emails:
-        [
-          address: email
-        ]
-      profile:
-        first_name: faker.name.firstName()
-
-    organization_id = organizationID
-
-    permission =
-      owner: false
-      editor: false
-      expenses_manager: false
-      sells_manager: false
-      units_manager: false
-      inventories_manager: true
-      users_manager: false
-
-    inviteUser.call {invited_user_doc, organization_id, permission}, (err, res) ->
-      done()
-
 
   describe "Yield Insert", ->
     it "login", (done) ->
@@ -96,6 +43,9 @@ xdescribe 'Yield Full App Test Client', () ->
 
     it 'create organization', (done) ->
       createOrgan(done, organizationIDs)
+
+    it "create ingredient", (done) ->
+      createIngredient(done, 0)
 
     it 'Subscribe to ', (done) ->
       callbacks =
@@ -110,8 +60,7 @@ xdescribe 'Yield Full App Test Client', () ->
       yield_doc =
         name: faker.company.companyName()
         amount: 21.21
-        measurement_unit: "KG"
-        ingredient_name: "Eggs"
+        ingredient_id: ingredientIDS[0]
         organization_id: "nonn"
 
       organization_id = organizationIDs[0]
@@ -124,8 +73,7 @@ xdescribe 'Yield Full App Test Client', () ->
       yield_doc =
         name: faker.company.companyName()
         amount: 21.21
-        measurement_unit: "KG"
-        ingredient_name: "Eggs"
+        ingredient_id: ingredientIDS[0]
         unit_id: "andflskf"
         organization_id: "non"
 
@@ -165,8 +113,7 @@ xdescribe 'Yield Full App Test Client', () ->
       yield_doc =
         name: faker.company.companyName()
         amount: 21.21
-        measurement_unit: "KG"
-        ingredient_name: "Eggs"
+        ingredient_id: ingredientIDS[0]
         unit_id: unit1d
         organization_id: organizationIDs[0]
 
@@ -176,12 +123,14 @@ xdescribe 'Yield Full App Test Client', () ->
         expect(err).to.have.property('error', 'notAuthorized')
         done()
 
+    it "create ingredient", (done) ->
+      createIngredient(done, 1)
+
     it "Valid insert", (done) ->
       yield_doc =
         name: faker.company.companyName()
         amount: 21.21
-        measurement_unit: "KG"
-        ingredient_name: "Eggs"
+        ingredient_id: ingredientIDS[1]
         unit_id: unit1d
         organization_id: organizationIDs[1]
 
@@ -190,6 +139,7 @@ xdescribe 'Yield Full App Test Client', () ->
       insert.call {organization_id, yield_doc} , (err, res) ->
         expect(err).to.not.exist
         expect(YieldModule.Yields.findOne().amount).to.equal(0)
+        expect(YieldModule.Yields.findOne().ingredient_price).to.equal(23.34)
         yieldIDS.push res
         done()
 
@@ -236,3 +186,74 @@ xdescribe 'Yield Full App Test Client', () ->
         expect(YieldModule.Yields.findOne().name).to.not.equal(passname)
         expect(YieldModule.Yields.findOne().amount).to.equal(0)
         done()
+
+
+
+
+createUser = (done, email) ->
+  doc =
+    email: email
+    password: '12345678'
+    profile:
+      first_name: faker.name.firstName()
+      last_name: faker.name.lastName()
+
+  Accounts.createUser doc, (error) ->
+    expect(error).to.not.exist
+    done()
+
+
+login = (done, email) ->
+  Meteor.loginWithPassword email, '12345678', (err) ->
+    done()
+
+logout = (done) ->
+  Meteor.logout( (err) ->
+    done()
+  )
+
+createOrgan = (done) ->
+  organ_doc =
+    name: faker.company.companyName()
+    email: faker.internet.email()
+
+  OMethods.insert.call organ_doc, (err, res) ->
+    organizationIDs.push res
+    expect(err).to.not.exist
+    done()
+
+createIngredient = (done, i) ->
+  ingredient_doc =
+    name: faker.name.firstName()
+    measurement_unit: 'kg'
+    price: 23.34
+    organization_id: organizationIDs[i]
+
+  IMethods.insert.call {ingredient_doc}, (err, res) ->
+    throw err if err?
+    ingredientIDS.push res
+    done()
+
+
+inviteUse = (done, email) ->
+  invited_user_doc =
+    emails:
+      [
+        address: email
+      ]
+    profile:
+      first_name: faker.name.firstName()
+
+  organization_id = organizationID
+
+  permission =
+    owner: false
+    editor: false
+    expenses_manager: false
+    sells_manager: false
+    units_manager: false
+    inventories_manager: true
+    users_manager: false
+
+  inviteUser.call {invited_user_doc, organization_id, permission}, (err, res) ->
+    done()

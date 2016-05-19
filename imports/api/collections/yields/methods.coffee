@@ -11,6 +11,7 @@ YieldModule = require './yields.coffee'
   hasPermission
   unitBelongsToOrgan
   yieldBelongsToOrgan
+  ingredientBelongsToOrgan
 } = require '../../mixins/mixins.coffee'
 
 
@@ -28,6 +29,8 @@ module.exports.insert = new ValidatedMethod
     unless @isSimulation
       hasPermission(@userId, yield_doc.organization_id, "units_manager")
       unitBelongsToOrgan(yield_doc.unit_id, yield_doc.organization_id)
+      ingredient = ingredientBelongsToOrgan(yield_doc.ingredient_id, yield_doc.organization_id)
+      yield_doc.ingredient_price = ingredient.price
 
     delete yield_doc.amount
     YieldModule.Yields.insert yield_doc

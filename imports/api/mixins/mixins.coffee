@@ -7,6 +7,7 @@ YieldModule = require '../collections/yields/yields.coffee'
 ReceiptModule = require '../collections/receipts/receipts.coffee'
 ExpenseModule = require '../collections/expenses/expenses.coffee'
 InventoryModule = require '../collections/inventories/inventories.coffee'
+IngredientModule = require '../collections/ingredients/ingredients.coffee'
 
 module.exports.loggedIn = (user_id) ->
   unless user_id?
@@ -101,3 +102,11 @@ module.exports.inventoryBelongsToOrgan = (inventory_id, organization_id) ->
     throw new Meteor.Error 'notAuthorized', 'inventory does not belong'
 
   return inventory
+
+module.exports.ingredientBelongsToOrgan = (ingredient_id, organization_id) ->
+  ingredient = IngredientModule.Ingredients.findOne(_id: ingredient_id)
+
+  unless (ingredient? && ingredient.organization_id is organization_id)
+    throw new Meteor.Error 'notAuthorized', 'ingredient does not belong'
+
+  return ingredient

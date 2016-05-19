@@ -27,14 +27,6 @@ class ProductsCollection extends Mongo.Collection
 
 IngredientSchema =
   new SimpleSchema(
-    ingredient_name: # Single do not use pural
-      type: String
-      label: 'ingredient'
-      max: 128
-      denyUpdate: true
-      autoValue: () ->
-        if @isSet
-          return @value.toLowerCase().replace(/\s+/g,' ').trim();
 
     amount:
       type: Number
@@ -46,14 +38,11 @@ IngredientSchema =
         if @isSet
           return Number(@value.toFixed(10))
 
-    measurement_unit: # Trim and downcase
+    ingredient_id:
       type: String
-      label: 'measurement_unit'
-      max: 64
+      index: true
       denyUpdate: true
-      autoValue: () ->
-        if @isSet
-          return @value.toLowerCase().replace(/\s+/g,' ').trim();
+
   )
 
 
@@ -64,6 +53,11 @@ ProductSchema =
       label: 'product.name'
       index: true
       max: 64
+
+    measurement:
+      type: String
+      label: 'product.measurement'
+      optional: true
 
     description:
       type: String

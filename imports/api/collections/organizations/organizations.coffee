@@ -15,6 +15,7 @@ ReceiptModule = require '../receipts/receipts.coffee'
 SellModule = require '../sells/sells.coffee'
 UnitModule = require '../units/units.coffee'
 YieldModule = require '../yields/yields.coffee'
+IngredientModule = require '../ingredients/ingredients.coffee'
 
 
 class OrganizationsCollection extends Mongo.Collection
@@ -130,6 +131,8 @@ Organizations.helpers
     ExpenseModule.Expenses.find { organization_id: @_id }
   inventories: ->
     InventoryModule.Inventories.find { organization_id: @_id }
+  ingredients: ->
+    IngredientModule.Ingredients.find { organization_id: @_id }
   products: ->
     ProductModule.Products.find { organization_id: @_id }
   providers:->
