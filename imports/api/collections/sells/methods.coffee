@@ -109,22 +109,27 @@ order = module.exports.order = new ValidatedMethod
       mixins.hasPermission(@userId, organization_id, "sells_manager")
       sell = mixins.sellBelongsToOrgan(sell_id, organization_id)
       sDeD = validateDuplicates(sell.details, "product_id")
-      invByP = {}
-
-      for sinv in inventories
-        inventory = inventoryBelongsToOrgan(sinv.inventory_id, organization_id)
-        throw new Meteor.Error "productMismatch", "This sell does not include this product" if sDeD[inventory.product_id]
-        invByP[inventory.product_id] = [] unless invByP[inventory.product_id]?
-        invByP[inventory.product_id].push sinv
-
-
-      for detail in sell.details
-        throw new Meteor.Error "inventoryMissing", "You must mention from which inventory to take from" unless invByP[detail.product_id]?
-        validateDuplicates(invByP[detail.product_id], "inventory_id")
-        detail.inventories = invByP[detail.product_id]
+      invByP = inventoryCheck(inventories, organization_id, sDeD)
+      detailsCheck(sell, invByP)
 
       SellModule.Sells.update {_id: sell_id}, {$set: details: sell.details}
 
+
+detailsCheck = (sell, invByP) ->
+  for detail in sell.details
+    throw new Meteor.Error "inventoryMissing", "You must mention from which inventory to take from" unless invByP[detail.product_id]?
+    validateDuplicates(invByP[detail.product_id], "inventory_id")
+    detail.inventories = invByP[detail.product_id]
+
+
+inventoryCheck = (inventories, organization_id, sDeD) ->
+  invByP = {}
+  for sinv in inventories
+    inventory = inventoryBelongsToOrgan(sinv.inventory_id, organization_id)
+    throw new Meteor.Error "productMismatch", "This sell does not include this product" if sDeD[inventory.product_id]
+    invByP[inventory.product_id] = [] unless invByP[inventory.product_id]?
+    invByP[inventory.product_id].push sinv
+  return invByP
 
 
 ###
