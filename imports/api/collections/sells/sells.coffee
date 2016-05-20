@@ -38,9 +38,8 @@ InventoryAssociationSchema =   # When removing inventory after it has been saved
       index: true
   )
 
-SellDetailsSchema =     # When removing SellDetails after a sell has been saved then insure the user that the inventory will be put back
-  new SimpleSchema([    # Cannot removing or update after status is 'sent', 'paid'
-
+SellDetailsSchema = exports.SellDetailsSchema =    # When removing SellDetails after a sell has been saved then insure the user that the inventory will be put back
+  new SimpleSchema([                                # Cannot removing or update after status is 'sent', 'paid'
     product_id:
       type: String
       index: true
@@ -66,10 +65,11 @@ SellDetailsSchema =     # When removing SellDetails after a sell has been saved 
       min: 0
       autoValue: () ->
         if @isSet
-          return parseFloat @value.toFixed(5)
+          return parseFloat @value.toFixed(2)
 
     inventories:
       type: [InventoryAssociationSchema]
+      optional: true
       minCount: 1
       maxCount: 25
 
@@ -87,7 +87,7 @@ SellSchema =
         if @isSet
           return parseFloat @value.toFixed(2)
 
-    total_tax:
+    tax_total:
       type: Number
       label: 'total_tax'
       decimal: true
@@ -107,6 +107,10 @@ SellSchema =
         else
           return 0
 
+    discount_type:
+      type: Boolean
+
+
     total_price:
       type: Number
       label: 'total_price'
@@ -122,16 +126,16 @@ SellSchema =
       max: 3
       optional: true
 
-    sell_details:
+    details:
       type: [SellDetailsSchema]
       label: 'sell_details'
       minCount: 1
       maxCount: 100
 
-    status:         # Ordered, Canceled, Sent, Paid, Returned
+    status:
       type: String
       label: 'status'
-      allowedValues: ['processing', 'ordered', 'canceled', 'sent', 'paid', 'returned']
+      allowedValues: ['preorder', 'ordered', 'canceled', 'delivered', 'paid', 'returned']
 
     note:
       type: String

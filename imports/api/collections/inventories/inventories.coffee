@@ -26,12 +26,12 @@ class InventoriesCollection extends Mongo.Collection
 
 
 YieldAssociationSchema =
-  new SimpleSchema(
+  new SimpleSchema
     yield_id:
       type: String
       index: true
 
-    amount_taken:  # amount with yield measurement_units
+    amount_taken:
       type: Number
       decimal: true
       min: 0
@@ -39,9 +39,7 @@ YieldAssociationSchema =
       autoValue: () ->
         if @isSet
           return Number(@value.toFixed(10))
-  )
 
-#
 
 InventorySchema =
   new SimpleSchema([

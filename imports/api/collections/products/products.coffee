@@ -26,8 +26,7 @@ class ProductsCollection extends Mongo.Collection
     super(selector, callback)
 
 IngredientSchema =
-  new SimpleSchema(
-
+  new SimpleSchema
     amount:
       type: Number
       label: 'product.package_amount'
@@ -43,7 +42,6 @@ IngredientSchema =
       index: true
       denyUpdate: true
 
-  )
 
 
 ProductSchema =

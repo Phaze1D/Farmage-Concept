@@ -40,6 +40,7 @@ describe "Events Client Side Test", ->
 
   describe "Setup", ->
     it "Create User", (done) ->
+      
       createUser(done, faker.internet.email())
 
     it "Create Organization", (done) ->
