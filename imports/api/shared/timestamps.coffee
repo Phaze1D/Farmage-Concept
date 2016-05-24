@@ -7,7 +7,7 @@ exports.TimestampSchema = new SimpleSchema(
     label: "created_at"
     autoValue: () ->
       if @isInsert
-        return new Date();
+        return new Date()
       else if @isUpsert
         return $setOnInsert: new Date()
       else

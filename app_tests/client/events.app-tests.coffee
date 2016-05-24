@@ -33,14 +33,13 @@ ingredientIDs = []
 
 
 
-describe "Events Client Side Test", ->
+xdescribe "Events Client Side Test", ->
 
   before ->
     resetDatabase(null);
 
   describe "Setup", ->
     it "Create User", (done) ->
-      
       createUser(done, faker.internet.email())
 
     it "Create Organization", (done) ->

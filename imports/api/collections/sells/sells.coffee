@@ -48,6 +48,7 @@ SellDetailsSchema = exports.SellDetailsSchema =    # When removing SellDetails a
       type: Number
       label: 'quantity'
       min: 0
+      exclusiveMin: true
 
     unit_price:
       type: Number
@@ -71,7 +72,7 @@ SellDetailsSchema = exports.SellDetailsSchema =    # When removing SellDetails a
       type: [InventoryAssociationSchema]
       optional: true
       minCount: 1
-      maxCount: 25
+      maxCount: 15
 
   ])
 
@@ -101,6 +102,7 @@ SellSchema =
       label: 'discount'
       decimal: true
       min: 0
+      optional: true
       autoValue: () ->
         if @isSet
           return parseFloat @value.toFixed(2)
@@ -135,7 +137,26 @@ SellSchema =
     status:
       type: String
       label: 'status'
-      allowedValues: ['preorder', 'ordered', 'canceled', 'delivered', 'paid', 'returned']
+      allowedValues: ['preorder', 'ordered', 'canceled', 'sent', 'returned']
+
+    paid:
+      type: Boolean
+      defaultValue: false
+      optional: true
+
+    paid_date:
+      type: Date
+      optional: true
+      autoValue: () ->
+        @unset()
+        paid = @field('paid')
+        if paid.isSet && paid.value
+          return new Date()
+
+    payment_method:
+      type: String
+      optional: true
+      allowedValues: ['cash', 'card', 'check', 'transfer', 'deposit']
 
     note:
       type: String

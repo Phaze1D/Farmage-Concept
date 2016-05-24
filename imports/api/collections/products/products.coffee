@@ -87,6 +87,7 @@ ProductSchema =
       type: String
       label: 'currency_ISO_4217'
       max: 3
+      optional: true
 
     tax_rate:
       type: Number
