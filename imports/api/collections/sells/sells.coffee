@@ -69,7 +69,7 @@ SellDetailsSchema = exports.SellDetailsSchema =
       type: [InventoryAssociationSchema]
       optional: true
       defaultValue: []
-      minCount: 1
+      minCount: 0
       maxCount: 15
 
   ])

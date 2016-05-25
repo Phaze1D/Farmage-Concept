@@ -106,13 +106,44 @@ module.exports.updateSell = new ValidatedMethod
 module.exports.addItems = new ValidatedMethod
   name: 'sells.addItems'
   validate: ({organization_id, sell_id, inventories}) ->
+    SellModule.SellDetailsSchema.simpleSchema().validate({$set: inventories: inventories}, modifier: true)
+    new SimpleSchema(
+      organization_id:
+        type: String
+      sell_id:
+        type: String
+    ).validate({organization_id, sell_id})
 
   run: ({organization_id, sell_id, inventories}) ->
+    mixins.loggedIn @userId
+
+    unless @isSimulation
+      mixins.hasPermission @userId, organization_id, 'sells_manager'
+      sell = mixins.sellBelongsToOrgan sell_id, organization_id
+      if sell.paid
+        throw new Meteor.Error 'itemError', 'Cannot add items after sell has been paid'
+
+      validateDuplicates(inventories, 'inventory_id')
+      invsByProduct = checkInventories(inventories, organization_id)
+
+      addToDetailInventories(sell, invsByProduct)
+      setQuantities(sell)
+      setupSell(sell)
+
+      SellModule.Sells.update sell_id,
+                              $set: sell
 
 
 module.exports.putBackItems = new ValidatedMethod
   name: 'sells.putBackItems'
   validate: ({organization_id, sell_id, inventories}) ->
+
+    new SimpleSchema(
+      organization_id:
+        type: String
+      sell_id:
+        type: String
+    ).validate({organization_id, sell_id})
 
   run: ({organization_id, sell_id, inventories}) ->
 
@@ -220,3 +251,42 @@ modifyUnPaid = (sell_doc, organization_id) ->
 
 removeZeroDetail = (sell_doc) ->
   sell_doc.details = (detail for detail in sell_doc.details when detail.quantity isnt 0)
+
+
+setQuantities = (sell) ->
+  for detail in sell.details
+    for inv in detail.inventories
+      detail.quantity += inv.quantity_taken
+
+addToDetailInventories = (sell, invsByProduct) ->
+  for detail in sell.details
+    dinvByIDs = validateDuplicates(detail.inventories, 'inventory_id')
+
+    for inv in invsByProduct[detail.product_id]
+      if dinvByIDs[inv.inventory_id]?
+        dinvByIDs[inv.inventory_id].quantity_taken += inv.quantity_taken
+      else
+        detail.inventories.push inv
+
+    delete invsByProduct[detail.product_id]
+
+  addProductWithInventories(sell, invsByProduct)
+
+addProductWithInventories = (sell, invsByProduct) ->
+  for key, value of invsByProduct
+    deta =
+      product_id: key
+      inventories: value
+    sell.details.push deta
+
+
+checkInventories = (inventories, organization_id) ->
+  invsByProduct = {}
+  for inv in inventories
+    inventory = mixins.inventoryBelongsToOrgan inv.inventory_id, organization_id
+    if inv.quantity_taken > inventory.amount
+      throw new Meteor.Error 'quantityError', "inventory #{inventory._id} only has #{inventory.amount}"
+
+    invsByProduct[inventory.product_id] = [] unless invsByProduct[inventory.product_id]?
+    invsByProduct[inventory.product_id].push inv
+  invsByProduct
