@@ -11,99 +11,72 @@ SellModule = require './sells.coffee'
 mixins = require '../../mixins/mixins.coffee'
 
 
-
-validateDuplicates = (array, key) ->
-  dic = {}
-  for object in array
-    unless object[key]?
-      throw new Meteor.Error "keyNull", "object key not found"
-
-    if dic[object[key]]?
-      throw new Meteor.Error "duplicateError", "key #{key} with value #{object[key]} already exists"
-
-    dic[object[key]] = object
-
-  return dic
+###
+  create a sell
+  update items (if sell has not been paid)
+  update sell
+  delete a sell (if items have not been scanned and has not been paid)
+###
 
 
 ###
-Preorder - Does not take from inventories
-         - Auto delete if sell_details is 0
-         - Can delete
-  Params
-    sell_doc (without inventories)
+What can be updated after sell has been paid
 
+InventoryAssociationSchema =
+    quantity_taken: no
+    inventory_id: no
+
+SellDetailsSchema =
+    product_id: no
+    quantity: no
+    unit_price: no
+    tax_price: no
+    inventories: no (inventories cannot be update in updateSell)
+
+SellSchema =
+    sub_total: no
+    tax_total: no
+    discount: no
+    discount_type: no
+    total_price: no
+    currency: no
+    details: no
+    status: yes
+    paid: no
+    paid_date: no
+    payment_method: no
+    receipt_id: yes
+    note: yes
+    customer_id: no
+    shipping_address: yes
+    telephone: yes
+    organization_id: never
 ###
-preorder = module.exports.preorder = new ValidatedMethod
-  name: 'sells.preorder'
-  validate: ({sell_doc, isOrder}) ->
+
+
+module.exports.insert = new ValidatedMethod
+  name: 'sells.insert'
+  validate: ({sell_doc}) ->
     SellModule.Sells.simpleSchema().validate(sell_doc)
-    new SimpleSchema(
-      isOrder:
-        type: Boolean
-    ).validate({isOrder})
-
-  run: ({sell_doc, isOrder}) ->
-    mixins.loggedIn(@userId)
+  run: ({sell_doc}) ->
+    mixins.loggedIn @userId
 
     unless @isSimulation
-      mixins.hasPermission(@userId, sell_doc.organization_id, "sells_manager")
-      mixins.customerBelongsToOrgan(sell_doc.customer_id, sell_doc.organization_id) if sell_doc.customer_id?
-      validateDuplicates(sell_doc.details, "product_id")
-      setupSell(sell_doc)
-      sell_doc.status = "preorder"
-      delete sell_doc.paid
-      delete sell_doc.paid_date
-      delete sell_doc.payment_method
+      mixins.hasPermission @userId, sell_doc.organization_id, 'sells_manager'
+      mixins.customerBelongsToOrgan sell_doc.customer_id, sell_doc.organization_id
+      validateDuplicates sell_doc.details, 'product_id'
+      setupSell sell_doc
+      removeZeroDetail sell_doc
+      removePaidFields sell_doc
+      removeInventoriesFields sell_doc
 
-    inventories = []
-    for detail in sell_doc.details
-      inventories.push(inv) for inv in detail.inventories
-      delete detail.inventories
-
-    sell_id = SellModule.Sells.insert sell_doc
-    organization_id = sell_doc.organization_id
-
-    if isOrder
-      order.call({organization_id, sell_id, inventories})
-
-    sell_id
+    SellModule.Sells.insert sell_doc
 
 
-setupSell = (sell_doc) ->
-  sell_doc.tax_total = 0
-  sell_doc.sub_total = 0
-  for detail in sell_doc.details
-    product = mixins.productBelongsToOrgan(detail.product_id, sell_doc.organization_id)
-    detail.unit_price = product.unit_price
-    detail.tax_price = (product.unit_price * detail.quantity) * (product.tax_rate/100)
-    sell_doc.tax_total += detail.tax_price
-    sell_doc.sub_total += detail.unit_price * detail.quantity
-
-  sell_doc.total_price = sell_doc.tax_total + sell_doc.sub_total
-
-  if sell_doc.discount_type
-    sell_doc.total_price -= sell_doc.total_price * sell_doc.discount
-  else
-    sell_doc.total_price -= sell_doc.discount
-
-
-
-
-
-###
-Order - Takes from inventories when saved
-      - Puts back inventories when removed
-      - Auto deletes if sell_details is 0
-      - Can delete
-  Params
-    sell_id (of a preorder, optional)
-    inventories_array
-###
-order = module.exports.order = new ValidatedMethod
-  name: 'sells.order'
-  validate: ({organization_id, sell_id, inventories}) ->
-    SellModule.SellDetailsSchema.validate({$set: inventories: inventories}, modifier: true)
+module.exports.updateSell = new ValidatedMethod
+  name: 'sells.updateSell'
+  validate: ({organization_id, sell_id, sell_doc}) ->
+    SellModule.Sells.simpleSchema().validate({$set: sell_doc}, modifier: true)
     new SimpleSchema(
       organization_id:
         type: String
@@ -111,64 +84,48 @@ order = module.exports.order = new ValidatedMethod
         type: String
     ).validate({organization_id, sell_id})
 
-  run: ({organization_id, sell_id, inventories}) ->
-    mixins.loggedIn(@userId)
+  run: ({organization_id, sell_id, sell_doc}) ->
+    mixins.loggedIn @userId
 
     unless @isSimulation
-      mixins.hasPermission(@userId, organization_id, "sells_manager")
-      sell = mixins.sellBelongsToOrgan(sell_id, organization_id)
-      sellByProduct = validateDuplicates(sell.details, "product_id")
-      invByProduct = inventoryCheck(inventories, organization_id, sellByProduct)
-      detailsCheck(sell, invByProduct)
-      removeFromInventories(sell)
+      mixins.hasPermission @userId, organization_id, 'sells_manager'
+      sell = mixins.sellBelongsToOrgan sell_id, organization_id
+      delete sell_doc.organization_id
 
-      SellModule.Sells.update {_id: sell_id}, $set:
-                                                details: sell.details
-                                                status: 'ordered'
+      if sell.paid
+        modifyPaid sell_doc, organization_id
+      else
+        modifyUnPaid sell_doc, organization_id
+        return deleteSell.call organization_id, sell_id if sell_doc.total_price is 0
 
 
-#
-module.exports.putBack = new ValidatedMethod
-  name: 'sells.putBack'
+      SellModule.Sells.update sell_id,
+                              $set: sell_doc
+
+
+module.exports.addItems = new ValidatedMethod
+  name: 'sells.addItems'
   validate: ({organization_id, sell_id, inventories}) ->
 
   run: ({organization_id, sell_id, inventories}) ->
-    # if it hasnt been paided yet user can put a product back to its inventory
-    # Remember to put back and update the sell doc eg total_price, sell_detail.quantity ...
 
 
-module.exports.paid = new ValidatedMethod
-  name: 'sells.paid'
-  validate: ({organization_id, sell_id, payment_method}) ->
-    SellModule.Sells.simpleSchema().validate({$set: payment_method: payment_method}, modifier: true)
+module.exports.putBackItems = new ValidatedMethod
+  name: 'sells.putBackItems'
+  validate: ({organization_id, sell_id, inventories}) ->
 
-    new SimpleSchema(
-      organization_id:
-        type: String
-      sell_id:
-        type: String
-    ).validate({organization_id, sell_id})
-
-  run: ({organization_id, sell_id}) ->
+  run: ({organization_id, sell_id, inventories}) ->
 
 
-module.exports.statusUpdate = new ValidatedMethod
-  name: 'sells.statusUpdate'
-  validate: ({organization_id, sell_id, status}) ->
-    SellModule.Sells.simpleSchema().validate({$set: status: status}, modifier: true)
+module.exports.pay = new ValidatedMethod
+  name: 'sells.pay'
+  validate: () ->
 
-    new SimpleSchema(
-      organization_id:
-        type: String
-      sell_id:
-        type: String
-    ).validate({organization_id, sell_id, status})
-
-  run: ({organization_id, sell_id, status}) ->
+  run: () ->
 
 
-module.exports.preorderDelete = new ValidatedMethod
-  name: 'sells.preorderDelete'
+deleteSell = module.exports.deleteSell = new ValidatedMethod
+  name: 'sells.deleteSell'
   validate: ({organization_id, sell_id}) ->
     new SimpleSchema(
       organization_id:
@@ -176,122 +133,90 @@ module.exports.preorderDelete = new ValidatedMethod
       sell_id:
         type: String
     ).validate({organization_id, sell_id})
-
   run: ({organization_id, sell_id}) ->
     mixins.loggedIn @userId
 
     unless @isSimulation
-      mixins.hasPermission(@userId, organization_id, "sells_manager")
-      sell = mixins.sellBelongsToOrgan(sell_id, organization_id)
+      mixins.hasPermission @userId, organization_id, 'sells_manager'
+      sell = mixins.sellBelongsToOrgan sell_id, organization_id
 
-      unless(sell.status is 'preorder' && !sell.paid)
-        throw new Meteor.Error "preorderDelete", "only unpaid preorders can be deleted"
+      if sell.paid
+        throw new Meteor.Error 'deleteError', 'Cannot delete a sell that is already paid'
 
-      SellModule.Sells.remove sell_id
+      for detail in sell.details
+        if detail.inventories? && detail.inventories.length > 0
+          throw new Meteor.Error 'deleteError', 'Please put back all items first before deleting'
 
-
-
-
-
-
+    SellModule.Sells.remove sell_id
 
 
 
 
 
+removePaidFields = (sell_doc) ->
+  delete sell_doc.paid
+  delete sell_doc.paid_date
+  delete sell_doc.payment_method
 
+setupSell = (sell_doc) ->
+  resetSell sell_doc
 
+  for detail in sell_doc.details
+    product = mixins.productBelongsToOrgan detail.product_id, sell_doc.organization_id
+    detail.unit_price = product.unit_price
+    detail.tax_rate = product.tax_rate
+    sell_doc.sub_total += detail.unit_price * detail.quantity
+    sell_doc.tax_total += (detail.unit_price * detail.quantity) * (detail.tax_rate/100)
 
+  calculateTotal(sell_doc)
 
-removeFromInventories = (sell) ->
-  for detail in sell.details
-    for inv in detail.inventories
-      ievent_doc =
-        amount: -inv.quantity_taken
-        description: "auto remove from inventory #{inv.inventory_id} cause sell #{sell._id}"
-        is_user_event: false
-        for_type: "inventory"
-        for_id: inv.inventory_id
-        organization_id: sell.organization_id
+calculateTotal = (sell_doc) ->
+  sell_doc.total_price = sell_doc.sub_total + sell_doc.tax_total
 
-      InventoryModule.Inventories.update {_id: ievent_doc.for_id},
-                                          $inc:
-                                            amount: ievent_doc.amount
-      EventModule.Events.insert ievent_doc
+  if sell_doc.discount_type
+    sell_doc.total_price = sell_doc.total_price - (sell_doc.total_price * sell_doc.discount)
+  else
+    sell_doc.total_price = sell_doc.total_price - sell_doc.discount if sell_doc.total_price > 0
 
+resetSell = (sell_doc) ->
+  sell_doc.sub_total = 0
+  sell_doc.tax_total = 0
+  sell_doc.total_price = 0
 
-inventoryCheck = (inventories, organization_id, sellByProduct) ->
-  invByP = {}
-  for sinv in inventories
-    inventory = mixins.inventoryBelongsToOrgan(sinv.inventory_id, organization_id)
+validateDuplicates = (array, key) ->
+  dic = {}
+  for object in array
+    unless object[key]?
+      throw new Meteor.Error 'keyNull', 'key not found'
+    if dic[object[key]]?
+      throw new Meteor.Error 'duplicateError', "key #{object[key]} already exist"
+    dic[object[key]] = object
+  dic
 
-    unless sellByProduct[inventory.product_id]?
-      throw new Meteor.Error "productMismatch", "This sell does not include this product"
+removeInventoriesFields = (sell_doc) ->
+  delete detail.inventories for detail in sell_doc.details
 
-    if sinv.quantity_taken > inventory.amount
-      throw new Meteor.Error "stockError", "Inventory #{inventory._id} does not have enough"
+modifyPaid = (sell_doc, organization_id) ->
+  delete sell_doc.sub_total
+  delete sell_doc.tax_total
+  delete sell_doc.discount
+  delete sell_doc.discount_type
+  delete sell_doc.total_price
+  delete sell_doc.currency
+  delete sell_doc.details
+  delete sell_doc.paid
+  delete sell_doc.paid_date
+  delete sell_doc.payment_method
+  delete sell_doc.customer_id
 
-    unless invByP[inventory.product_id]?
-      invByP[inventory.product_id] = []
+modifyUnPaid = (sell_doc, organization_id) ->
+  mixins.customerBelongsToOrgan sell_doc.customer_id, organization_id if sell_doc.customer_id?
+  removePaidFields sell_doc
+  if sell_doc.details?
+    validateDuplicates sell_doc.details, 'product_id'
+    setupSell sell_doc
+    removeZeroDetail sell_doc
+    removeInventoriesFields sell_doc
 
-    invByP[inventory.product_id].push sinv
-
-  return invByP
-
-detailsCheck = (sell, invByP) ->
-  for detail in sell.details
-    unless invByP[detail.product_id]?
-      throw new Meteor.Error "inventoryMissing", "You must mention from which inventory to take from"
-
-    validateDuplicates(invByP[detail.product_id], "inventory_id")
-
-    quantitySum = 0
-    for inv in invByP[detail.product_id]
-      quantitySum += inv.quantity_taken
-
-    unless quantitySum == detail.quantity
-      throw new Meteor.Error "quantityMismatch", "detail quantity does not match inventory taken quantity"
-
-    detail.inventories = invByP[detail.product_id]
-
-
-
-
-
-
-###
-Canceled - Cannot take from inventories
-         - Cannot remove sell_details
-         - Ask user if they would like to return items to inventories
-         - Cannot delete
-  Params
-    sell_id (of order)
-    putBack (boolean to determine putBack inventories)
-
-###
-
-
-
-
-
-###
-Delivered & Paid - Just status updates
-            - Cannot take from inventories
-            - Cannot delete
-            - Cannot remove sell_details
-  Params
-    sell_id (of order)
-    status (Delivered or Paid)
-
-Returned - Cannot take from inventories
-         - Cannot remove sell_details
-         - Ask user if they would like to return items to inventories
-         - Cannot delete
-  Params
-    sell_id (of order)
-    putBack (boolean to determine putBack inventories)
-###
-
-###
-  PutBack Method
-###
+removeZeroDetail = (sell_doc) ->
+  sell_doc.details = (detail for detail in sell_doc.details when detail.quantity isnt 0)

@@ -176,6 +176,13 @@ describe "Sells Client Side Test", ->
         tax_price: 324.2342
         inventories: inventories
         },
+        {
+        product_id: productIDs[1]
+        quantity: 2
+        unit_price: 342.34
+        tax_price: 324.2342
+        inventories: inventories
+        }
       ]
 
       sell_doc =
@@ -203,16 +210,111 @@ describe "Sells Client Side Test", ->
           tax_price = (product.unit_price * detail.quantity) * (product.tax_rate/100)
           expect(detail.tax_price).to.equal Number(tax_price.toFixed(2))
 
-        expect(sell.sub_total).to.equal(product.unit_price * 2)
-        expect(sell.tax_total).to.equal Number tax_price.toFixed(2)
+        expect(sell.sub_total).to.equal(product.unit_price * 4)
+        expect(sell.tax_total).to.equal Number((tax_price*2).toFixed(2))
         expect(sell.total_price).to.equal(sell.sub_total + sell.tax_total - 10)
 
         done()
 
   describe "Preorder to Order Tests", ->
+    it "product missing", (done) ->
+      inventories = [
+        {
+        quantity_taken: 100
+        inventory_id: inventoryIDs[3]
+        }
+      ]
+
+      organization_id = organizationIDs[0]
+      sell_id = SellModule.Sells.findOne()._id
+
+      SMethods.order.call {organization_id, sell_id, inventories}, (err, res) ->
+        expect(err).to.have.property('error', 'productMismatch')
+        done()
+
+    it "inventory missing", (done) ->
+        inventories = [
+          {
+          quantity_taken: 2
+          inventory_id: inventoryIDs[1]
+          }
+        ]
+
+        organization_id = organizationIDs[0]
+        sell_id = SellModule.Sells.findOne()._id
+
+        SMethods.order.call {organization_id, sell_id, inventories}, (err, res) ->
+          expect(err).to.have.property('error', 'inventoryMissing')
+          done()
+
+    it "quantityMismatch error", (done) ->
+        inventories = [
+          {
+          quantity_taken: 2
+          inventory_id: inventoryIDs[1]
+          },
+          {
+          quantity_taken: 1
+          inventory_id: inventoryIDs[0]
+          }
+        ]
+
+        organization_id = organizationIDs[0]
+        sell_id = SellModule.Sells.findOne()._id
 
 
-  describe "Order Create Test", ->
+        SMethods.order.call {organization_id, sell_id, inventories}, (err, res) ->
+          expect(err).to.have.property('error', 'quantityMismatch')
+          done()
+
+    it "happy", (done) ->
+        inventories = [
+          {
+          quantity_taken: 1
+          inventory_id: inventoryIDs[1]
+          },
+          {
+          quantity_taken: 1
+          inventory_id: inventoryIDs[0]
+          },
+          {
+          quantity_taken: 2
+          inventory_id: inventoryIDs[2]
+          }
+        ]
+
+        organization_id = organizationIDs[0]
+        sell_id = SellModule.Sells.findOne()._id
+
+        SMethods.order.call {organization_id, sell_id, inventories}, (err, res) ->
+          expect(err).to.not.exist
+          done()
+
+    it "double order check", (done) ->
+      inventories = [
+        {
+        quantity_taken: 1
+        inventory_id: inventoryIDs[1]
+        },
+        {
+        quantity_taken: 1
+        inventory_id: inventoryIDs[0]
+        },
+        {
+        quantity_taken: 2
+        inventory_id: inventoryIDs[2]
+        }
+      ]
+
+      organization_id = organizationIDs[0]
+      sell_id = SellModule.Sells.findOne()._id
+
+      SMethods.order.call {organization_id, sell_id, inventories}, (err, res) ->
+        expect(err).to.have.property('error', 'orderError')
+        done()
+
+
+  xdescribe "Order Create Test", ->
 
     it "stock overflow", (done) ->
       inventories = [
@@ -369,6 +471,7 @@ describe "Sells Client Side Test", ->
       isOrder = true
 
       SMethods.preorder.call {sell_doc, isOrder}, (err, res) ->
+        expect(err).to.not.exist
         expect(InventoryModule.Inventories.findOne(inventoryIDs[0]).amount).to.equal(preA - 2)
         expect(EventModule.Events.findOne $and: [ for_id: inventoryIDs[0], amount: -2]).to.exist
         done()

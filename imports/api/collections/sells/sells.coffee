@@ -27,19 +27,19 @@ class SellsCollection extends Mongo.Collection
     ###
     super(selector, callback)
 
-InventoryAssociationSchema =   # When removing inventory after it has been saved then insure the user that the inventory will be put back
-  new SimpleSchema(            # Cannot removing or update after status is 'sent', 'paid'
+InventoryAssociationSchema =
+  new SimpleSchema(
     quantity_taken:
       type: Number
-      min: 0
+      min: 1
 
     inventory_id:
       type: String
       index: true
   )
 
-SellDetailsSchema = exports.SellDetailsSchema =    # When removing SellDetails after a sell has been saved then insure the user that the inventory will be put back
-  new SimpleSchema([                                # Cannot removing or update after status is 'sent', 'paid'
+SellDetailsSchema = exports.SellDetailsSchema =
+  new SimpleSchema([
     product_id:
       type: String
       index: true
@@ -48,7 +48,6 @@ SellDetailsSchema = exports.SellDetailsSchema =    # When removing SellDetails a
       type: Number
       label: 'quantity'
       min: 0
-      exclusiveMin: true
 
     unit_price:
       type: Number
@@ -59,18 +58,17 @@ SellDetailsSchema = exports.SellDetailsSchema =    # When removing SellDetails a
         if @isSet
           return parseFloat @value.toFixed(2)
 
-    tax_price:
+    tax_rate:
       type: Number
-      label: 'tax_price'
+      label: 'tax_rate'
       decimal: true
       min: 0
-      autoValue: () ->
-        if @isSet
-          return parseFloat @value.toFixed(2)
+      max: 100
 
     inventories:
       type: [InventoryAssociationSchema]
       optional: true
+      defaultValue: []
       minCount: 1
       maxCount: 15
 
@@ -137,7 +135,11 @@ SellSchema =
     status:
       type: String
       label: 'status'
-      allowedValues: ['preorder', 'ordered', 'canceled', 'sent', 'returned']
+      max: 32
+      index: true
+      autoValue: () ->
+        if @isSet
+          return @value.toLowerCase().replace(/\s+/g,' ').trim();
 
     paid:
       type: Boolean
@@ -156,7 +158,12 @@ SellSchema =
     payment_method:
       type: String
       optional: true
-      allowedValues: ['cash', 'card', 'check', 'transfer', 'deposit']
+
+    receipt_id:
+      type: String
+      optional: true
+      index: true
+      sparse: true
 
     note:
       type: String
