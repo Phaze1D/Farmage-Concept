@@ -39,6 +39,7 @@ module.exports.update = new ValidatedMethod
   name: "yields.update"
   validate: ({organization_id, yield_id, yield_doc}) ->
     YieldModule.Yields.simpleSchema().clean(yield_doc)
+
     YieldModule.Yields.simpleSchema().validate({$set: yield_doc}, modifier: true)
     new SimpleSchema(
       organization_id:
@@ -54,8 +55,7 @@ module.exports.update = new ValidatedMethod
       yieldBelongsToOrgan(yield_id, organization_id)
 
     delete yield_doc.amount
-    delete yield_doc.ingredient_name
-    delete yield_doc.measurement_unit
+    delete yield_doc.ingredient_id
     delete yield_doc.unit_id
     delete yield_doc.organization_id
 

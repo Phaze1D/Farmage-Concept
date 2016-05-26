@@ -53,6 +53,7 @@ SellDetailsSchema = exports.SellDetailsSchema =
       type: Number
       label: 'unit_price'
       decimal: true
+      optional: true
       min: 0
       autoValue: () ->
         if @isSet
@@ -62,6 +63,7 @@ SellDetailsSchema = exports.SellDetailsSchema =
       type: Number
       label: 'tax_rate'
       decimal: true
+      optional: true
       min: 0
       max: 100
 
@@ -81,19 +83,21 @@ SellSchema =
       type: Number
       label: 'sub_total'
       decimal: true
+      optional: true
       min: 0
       autoValue: () ->
         if @isSet
-          return parseFloat @value.toFixed(2)
+          return Number @value.toFixed(2)
 
     tax_total:
       type: Number
       label: 'total_tax'
       decimal: true
+      optional: true
       min: 0
       autoValue: () ->
         if @isSet
-          return parseFloat @value.toFixed(2)
+          return Number @value.toFixed(2)
 
     discount:
       type: Number
@@ -103,12 +107,15 @@ SellSchema =
       optional: true
       autoValue: () ->
         if @isSet
-          return parseFloat @value.toFixed(2)
-        else
+          return Number @value.toFixed(2)
+        else if @isInsert
           return 0
+
 
     discount_type:
       type: Boolean
+      optional: true
+      defaultValue: true
 
 
     total_price:
@@ -116,9 +123,10 @@ SellSchema =
       label: 'total_price'
       decimal: true
       min: 0
+      optional: true
       autoValue: () ->
         if @isSet
-          return parseFloat @value.toFixed(2)
+          return Number @value.toFixed(2)
 
     currency:
       type: String

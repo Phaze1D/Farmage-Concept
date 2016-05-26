@@ -139,7 +139,6 @@ xdescribe 'Yield Full App Test Client', () ->
       insert.call {organization_id, yield_doc} , (err, res) ->
         expect(err).to.not.exist
         expect(YieldModule.Yields.findOne().amount).to.equal(0)
-        expect(YieldModule.Yields.findOne().ingredient_price).to.equal(23.34)
         yieldIDS.push res
         done()
 
@@ -163,7 +162,6 @@ xdescribe 'Yield Full App Test Client', () ->
     it "Valid yield id but not in organization", (done) ->
       yield_doc =
         name: faker.company.companyName()
-        amount: 21.21
 
       organization_id = organizationIDs[0]
       yield_id = yieldIDS[0]

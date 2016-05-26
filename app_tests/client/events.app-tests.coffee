@@ -117,6 +117,8 @@ xdescribe "Events Client Side Test", ->
         done()
 
     it "Add to yield",(done) ->
+      YieldModule.Yields.find().forEach (doc) ->
+        console.log doc
       expect(YieldModule.Yields.findOne().amount).to.equal(0)
       event_doc =
         amount: 10329

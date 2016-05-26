@@ -68,7 +68,7 @@ ProductSchema =
       label: 'SKU'
       index: true
       max: 64
-      custom: () ->
+      autoValue: () ->
         if @isSet
           if /\s/g.test(@value)
             throw new Meteor.Error "regExError", "Cannot contain whitespaces"
@@ -99,7 +99,7 @@ ProductSchema =
         if @isSet
           return parseFloat @value.toFixed(5)
 
-    ingredients: # this array cannot contain items that have the same ingredient_name
+    ingredients:
       type: [IngredientSchema]
       label: 'ingredients'
       denyUpdate: true

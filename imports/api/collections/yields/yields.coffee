@@ -43,7 +43,7 @@ YieldSchema =
       autoValue: () ->
         if @isSet
           return Number(@value.toFixed(10))
-        else
+        else if @isInsert
           return 0
 
     ingredient_id:

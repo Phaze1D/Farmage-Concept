@@ -57,25 +57,26 @@ SellSchema =
 module.exports.insert = new ValidatedMethod
   name: 'sells.insert'
   validate: ({sell_doc}) ->
+    SellModule.Sells.simpleSchema().clean(sell_doc)
     SellModule.Sells.simpleSchema().validate(sell_doc)
   run: ({sell_doc}) ->
     mixins.loggedIn @userId
 
     unless @isSimulation
       mixins.hasPermission @userId, sell_doc.organization_id, 'sells_manager'
-      mixins.customerBelongsToOrgan sell_doc.customer_id, sell_doc.organization_id
+      mixins.customerBelongsToOrgan sell_doc.customer_id, sell_doc.organization_id if sell_doc.customer_id?
       validateDuplicates sell_doc.details, 'product_id'
       setupSell sell_doc
       removeZeroDetail sell_doc
       removePaidFields sell_doc
       removeInventoriesFields sell_doc
-
     SellModule.Sells.insert sell_doc
 
 
 module.exports.updateSell = new ValidatedMethod
   name: 'sells.updateSell'
   validate: ({organization_id, sell_id, sell_doc}) ->
+    SellModule.Sells.simpleSchema().clean(sell_doc)
     SellModule.Sells.simpleSchema().validate({$set: sell_doc}, modifier: true)
     new SimpleSchema(
       organization_id:
@@ -90,6 +91,12 @@ module.exports.updateSell = new ValidatedMethod
     unless @isSimulation
       mixins.hasPermission @userId, organization_id, 'sells_manager'
       sell = mixins.sellBelongsToOrgan sell_id, organization_id
+
+      unless sell_doc.discount?
+        sell_doc.discount = sell.discount
+      unless sell_doc.discount_type?
+        sell_doc.discount_type = sell.discount_type
+
       delete sell_doc.organization_id
 
       if sell.paid
@@ -106,7 +113,7 @@ module.exports.updateSell = new ValidatedMethod
 module.exports.addItems = new ValidatedMethod
   name: 'sells.addItems'
   validate: ({organization_id, sell_id, inventories}) ->
-    SellModule.SellDetailsSchema.simpleSchema().validate({$set: inventories: inventories}, modifier: true)
+    SellModule.SellDetailsSchema.validate({$set: inventories: inventories}, modifier: true)
     new SimpleSchema(
       organization_id:
         type: String
@@ -124,20 +131,22 @@ module.exports.addItems = new ValidatedMethod
         throw new Meteor.Error 'itemError', 'Cannot add items after sell has been paid'
 
       validateDuplicates(inventories, 'inventory_id')
-      invsByProduct = checkInventories(inventories, organization_id)
-
+      invsByProduct = checkAddInventories(inventories, organization_id)
       addToDetailInventories(sell, invsByProduct)
       setQuantities(sell)
       setupSell(sell)
-
+      updateInventories(inventories, -1, sell)
+      removeUnauthUpdateFields(sell)
+      SellModule.Sells.simpleSchema().clean(sell)
       SellModule.Sells.update sell_id,
                               $set: sell
+
 
 
 module.exports.putBackItems = new ValidatedMethod
   name: 'sells.putBackItems'
   validate: ({organization_id, sell_id, inventories}) ->
-
+    SellModule.SellDetailsSchema.validate({$set: inventories: inventories}, modifier: true)
     new SimpleSchema(
       organization_id:
         type: String
@@ -146,13 +155,62 @@ module.exports.putBackItems = new ValidatedMethod
     ).validate({organization_id, sell_id})
 
   run: ({organization_id, sell_id, inventories}) ->
+    mixins.loggedIn @userId
+
+    unless @isSimulation
+      mixins.hasPermission @userId, organization_id, 'sells_manager'
+      sell = mixins.sellBelongsToOrgan sell_id, organization_id
+      if sell.paid
+        throw new Meteor.Error 'itemError', 'Cannot remove items after sell has been paid'
+
+      validateDuplicates(inventories, 'inventory_id')
+      invsByProduct = checkPutBackInventories(inventories, organization_id)
+      putBackInventories(sell, invsByProduct)
+      setQuantities(sell)
+      setupSell(sell)
+      updateInventories(inventories, 1, sell)
+      removeUnauthUpdateFields(sell)
+
+      SellModule.Sells.simpleSchema().clean(sell)
+      SellModule.Sells.update sell_id,
+                              $set: sell
+
 
 
 module.exports.pay = new ValidatedMethod
   name: 'sells.pay'
-  validate: () ->
+  validate: ({organization_id, sell_id, payment_method}) ->
+    SellModule.Sells.simpleSchema().validate({$set: payment_method: payment_method}, modifier: true)
+    new SimpleSchema(
+      organization_id:
+        type: String
+      sell_id:
+        type: String
+    ).validate({organization_id, sell_id})
+  run: ({organization_id, sell_id, payment_method}) ->
+    mixins.loggedIn @userId
 
-  run: () ->
+    unless @isSimulation
+      mixins.hasPermission @userId, organization_id, 'sells_manager'
+      sell = mixins.sellBelongsToOrgan sell_id, organization_id
+      if sell.paid
+        throw new Meteor.Error 'payError', 'sell has already been paid'
+
+      for detail in sell.details
+        unless detail.inventories? & detail.inventories.length > 0
+          throw new Meteor.Error 'payError', 'Cannot paid sell that has no physical items'
+
+        sum = detail.inventories.reduce (a, b) -> a + b
+        unless sum is detail.quantity
+          throw new Meteor.Error 'detailMismatch', 'Detail quantity and inventories quantities dont match'
+
+
+
+    SellModule.Sells.update sell_id,
+                            $set:
+                              paid: true
+                              payment_method: payment_method
+
 
 
 deleteSell = module.exports.deleteSell = new ValidatedMethod
@@ -183,6 +241,11 @@ deleteSell = module.exports.deleteSell = new ValidatedMethod
 
 
 
+removeUnauthUpdateFields = (sell_doc) ->
+  delete sell_doc._id
+  delete sell_doc.organization_id
+  delete sell_doc.created_user_id
+  delete sell_doc.createdAt
 
 removePaidFields = (sell_doc) ->
   delete sell_doc.paid
@@ -203,11 +266,11 @@ setupSell = (sell_doc) ->
 
 calculateTotal = (sell_doc) ->
   sell_doc.total_price = sell_doc.sub_total + sell_doc.tax_total
-
+  sell_doc.discount = 0 unless sell_doc.discount?
   if sell_doc.discount_type
-    sell_doc.total_price = sell_doc.total_price - (sell_doc.total_price * sell_doc.discount)
-  else
-    sell_doc.total_price = sell_doc.total_price - sell_doc.discount if sell_doc.total_price > 0
+    sell_doc.total_price = sell_doc.total_price - (sell_doc.total_price * sell_doc.discount/100)
+  else if sell_doc.total_price > sell_doc.discount
+      sell_doc.total_price = sell_doc.total_price - sell_doc.discount
 
 resetSell = (sell_doc) ->
   sell_doc.sub_total = 0
@@ -255,8 +318,12 @@ removeZeroDetail = (sell_doc) ->
 
 setQuantities = (sell) ->
   for detail in sell.details
+    detail.quantity = 0
+    detail.inventories = (dinv for dinv in detail.inventories when dinv.quantity_taken isnt 0)
     for inv in detail.inventories
       detail.quantity += inv.quantity_taken
+
+
 
 addToDetailInventories = (sell, invsByProduct) ->
   for detail in sell.details
@@ -280,7 +347,7 @@ addProductWithInventories = (sell, invsByProduct) ->
     sell.details.push deta
 
 
-checkInventories = (inventories, organization_id) ->
+checkAddInventories = (inventories, organization_id) ->
   invsByProduct = {}
   for inv in inventories
     inventory = mixins.inventoryBelongsToOrgan inv.inventory_id, organization_id
@@ -290,3 +357,46 @@ checkInventories = (inventories, organization_id) ->
     invsByProduct[inventory.product_id] = [] unless invsByProduct[inventory.product_id]?
     invsByProduct[inventory.product_id].push inv
   invsByProduct
+
+checkPutBackInventories = (inventories, organization_id) ->
+  invsByProduct = {}
+  for inv in inventories
+    inventory = mixins.inventoryBelongsToOrgan inv.inventory_id, organization_id
+    invsByProduct[inventory.product_id] = [] unless invsByProduct[inventory.product_id]?
+    invsByProduct[inventory.product_id].push inv
+  invsByProduct
+
+putBackInventories = (sell, invsByProduct) ->
+  for detail in sell.details
+    dinvByIDs = validateDuplicates(detail.inventories, 'inventory_id')
+
+    for inv in invsByProduct[detail.product_id]
+      unless dinvByIDs[inv.inventory_id]?
+        throw new Meteor.Error 'putBackError', 'Cannot remove item that has not been added'
+
+      if dinvByIDs[inv.inventory_id].quantity_taken < inv.quantity_taken
+        throw new Meteor.Error 'putBackError', "Cannot remove more then #{dinvByIDs[inv.inventory_id].quantity_taken}"
+
+      dinvByIDs[inv.inventory_id].quantity_taken -= inv.quantity_taken
+
+    delete invsByProduct[detail.product_id]
+
+  unless Object.keys(invsByProduct).length is 0
+    throw new Meteor.Error 'putBackError', 'Cannot remove item that has not been added'
+
+
+updateInventories = (inventories, sign, sell) ->
+  for inv in inventories
+    ievent_doc =
+      amount: inv.quantity_taken * sign
+      description: "put back to inventory #{inv.inventory_id} from sell #{sell._id} "
+      is_user_event: false
+      for_type: "inventory"
+      for_id: inv.inventory_id
+      organization_id: sell.organization_id
+
+    EventModule.Events.simpleSchema().validate(ievent_doc)
+    InventoryModule.Inventories.update {_id: ievent_doc.for_id},
+                                        $inc:
+                                          amount: ievent_doc.amount
+    EventModule.Events.insert ievent_doc
