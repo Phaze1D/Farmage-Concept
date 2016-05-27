@@ -73,8 +73,8 @@ module.exports.insert = new ValidatedMethod
     SellModule.Sells.insert sell_doc
 
 
-module.exports.updateSell = new ValidatedMethod
-  name: 'sells.updateSell'
+module.exports.update = new ValidatedMethod
+  name: 'sells.update'
   validate: ({organization_id, sell_id, sell_doc}) ->
     SellModule.Sells.simpleSchema().clean(sell_doc)
     SellModule.Sells.simpleSchema().validate({$set: sell_doc}, modifier: true)
@@ -91,23 +91,18 @@ module.exports.updateSell = new ValidatedMethod
     unless @isSimulation
       mixins.hasPermission @userId, organization_id, 'sells_manager'
       sell = mixins.sellBelongsToOrgan sell_id, organization_id
-
-      unless sell_doc.discount?
-        sell_doc.discount = sell.discount
-      unless sell_doc.discount_type?
-        sell_doc.discount_type = sell.discount_type
-
-      delete sell_doc.organization_id
+      setDiscount(sell, sell_doc)
+      sell_doc.organization_id = organization_id
 
       if sell.paid
         modifyPaid sell_doc, organization_id
       else
-        modifyUnPaid sell_doc, organization_id
-        return deleteSell.call organization_id, sell_id if sell_doc.total_price is 0
+        modifyUnPaid sell_doc, organization_id, sell
 
-
+      removeUnauthUpdateFields sell_doc
       SellModule.Sells.update sell_id,
                               $set: sell_doc
+
 
 
 module.exports.addItems = new ValidatedMethod
@@ -168,6 +163,7 @@ module.exports.putBackItems = new ValidatedMethod
       putBackInventories(sell, invsByProduct)
       setQuantities(sell)
       setupSell(sell)
+      removeZeroDetail(sell)
       updateInventories(inventories, 1, sell)
       removeUnauthUpdateFields(sell)
 
@@ -193,6 +189,7 @@ module.exports.pay = new ValidatedMethod
     unless @isSimulation
       mixins.hasPermission @userId, organization_id, 'sells_manager'
       sell = mixins.sellBelongsToOrgan sell_id, organization_id
+
       if sell.paid
         throw new Meteor.Error 'payError', 'sell has already been paid'
 
@@ -200,16 +197,20 @@ module.exports.pay = new ValidatedMethod
         unless detail.inventories? & detail.inventories.length > 0
           throw new Meteor.Error 'payError', 'Cannot paid sell that has no physical items'
 
-        sum = detail.inventories.reduce (a, b) -> a + b
+        sum = 0
+        sum += inv.quantity_taken for inv in detail.inventories
+
         unless sum is detail.quantity
           throw new Meteor.Error 'detailMismatch', 'Detail quantity and inventories quantities dont match'
 
+      setupSell(sell)
+      removeUnauthUpdateFields(sell)
+      sell.paid = true
+      sell.payment_method = payment_method
 
 
     SellModule.Sells.update sell_id,
-                            $set:
-                              paid: true
-                              payment_method: payment_method
+                            $set: sell
 
 
 
@@ -240,6 +241,13 @@ deleteSell = module.exports.deleteSell = new ValidatedMethod
 
 
 
+
+
+setDiscount = (sell, sell_doc) ->
+  unless sell_doc.discount?
+    sell_doc.discount = sell.discount
+  unless sell_doc.discount_type?
+    sell_doc.discount_type = sell.discount_type
 
 removeUnauthUpdateFields = (sell_doc) ->
   delete sell_doc._id
@@ -288,7 +296,7 @@ validateDuplicates = (array, key) ->
   dic
 
 removeInventoriesFields = (sell_doc) ->
-  delete detail.inventories for detail in sell_doc.details
+  detail.inventories = [] for detail in sell_doc.details
 
 modifyPaid = (sell_doc, organization_id) ->
   delete sell_doc.sub_total
@@ -303,18 +311,26 @@ modifyPaid = (sell_doc, organization_id) ->
   delete sell_doc.payment_method
   delete sell_doc.customer_id
 
-modifyUnPaid = (sell_doc, organization_id) ->
+modifyUnPaid = (sell_doc, organization_id, sell) ->
   mixins.customerBelongsToOrgan sell_doc.customer_id, organization_id if sell_doc.customer_id?
   removePaidFields sell_doc
   if sell_doc.details?
-    validateDuplicates sell_doc.details, 'product_id'
+    removeInventoriesFields sell_doc
+    addSavedDetails sell_doc, sell
     setupSell sell_doc
     removeZeroDetail sell_doc
-    removeInventoriesFields sell_doc
+
+addSavedDetails = (sell_doc, savedSell) ->
+  sdD = validateDuplicates sell_doc.details, 'product_id'
+
+  for detail in savedSell.details
+    if sdD[detail.product_id]?
+      sdD[detail.product_id].inventories = detail.inventories
+    else
+      sell_doc.details.push detail
 
 removeZeroDetail = (sell_doc) ->
-  sell_doc.details = (detail for detail in sell_doc.details when detail.quantity isnt 0)
-
+  sell_doc.details = (detail for detail in sell_doc.details when detail.quantity isnt 0 || detail.inventories.length > 0)
 
 setQuantities = (sell) ->
   for detail in sell.details
@@ -323,17 +339,16 @@ setQuantities = (sell) ->
     for inv in detail.inventories
       detail.quantity += inv.quantity_taken
 
-
-
 addToDetailInventories = (sell, invsByProduct) ->
   for detail in sell.details
     dinvByIDs = validateDuplicates(detail.inventories, 'inventory_id')
 
-    for inv in invsByProduct[detail.product_id]
-      if dinvByIDs[inv.inventory_id]?
-        dinvByIDs[inv.inventory_id].quantity_taken += inv.quantity_taken
-      else
-        detail.inventories.push inv
+    if invsByProduct[detail.product_id]?
+      for inv in invsByProduct[detail.product_id]
+        if dinvByIDs[inv.inventory_id]?
+          dinvByIDs[inv.inventory_id].quantity_taken += inv.quantity_taken
+        else
+          detail.inventories.push inv
 
     delete invsByProduct[detail.product_id]
 
@@ -345,7 +360,6 @@ addProductWithInventories = (sell, invsByProduct) ->
       product_id: key
       inventories: value
     sell.details.push deta
-
 
 checkAddInventories = (inventories, organization_id) ->
   invsByProduct = {}
@@ -370,20 +384,20 @@ putBackInventories = (sell, invsByProduct) ->
   for detail in sell.details
     dinvByIDs = validateDuplicates(detail.inventories, 'inventory_id')
 
-    for inv in invsByProduct[detail.product_id]
-      unless dinvByIDs[inv.inventory_id]?
-        throw new Meteor.Error 'putBackError', 'Cannot remove item that has not been added'
+    if invsByProduct[detail.product_id]?
+      for inv in invsByProduct[detail.product_id]
+        unless dinvByIDs[inv.inventory_id]? # if inventory does not exist
+          throw new Meteor.Error 'putBackError', 'Cannot remove item that has not been added'
 
-      if dinvByIDs[inv.inventory_id].quantity_taken < inv.quantity_taken
-        throw new Meteor.Error 'putBackError', "Cannot remove more then #{dinvByIDs[inv.inventory_id].quantity_taken}"
+        if dinvByIDs[inv.inventory_id].quantity_taken < inv.quantity_taken
+          throw new Meteor.Error 'putBackError', "Cannot remove more then #{dinvByIDs[inv.inventory_id].quantity_taken}"
 
-      dinvByIDs[inv.inventory_id].quantity_taken -= inv.quantity_taken
+        dinvByIDs[inv.inventory_id].quantity_taken -= inv.quantity_taken
 
-    delete invsByProduct[detail.product_id]
+      delete invsByProduct[detail.product_id]
 
-  unless Object.keys(invsByProduct).length is 0
+  unless Object.keys(invsByProduct).length is 0 # if product does not exist
     throw new Meteor.Error 'putBackError', 'Cannot remove item that has not been added'
-
 
 updateInventories = (inventories, sign, sell) ->
   for inv in inventories

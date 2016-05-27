@@ -175,7 +175,6 @@ describe "Sells Client Side Test", ->
 
       SMethods.insert.call {sell_doc}, (err, res) ->
         sell = SellModule.Sells.findOne(res)
-        console.log sell
         expect(sell.paid).to.equal(false)
         expect(sell.details[0].inventories.length).to.equal(0)
         sellIDs.push res
@@ -199,6 +198,7 @@ describe "Sells Client Side Test", ->
 
     it "Check new details", (done) ->
       expect(SellModule.Sells.findOne(sellIDs[1]).details[0].quantity).to.equal(12)
+      old = InventoryModule.Inventories.findOne(inventoryIDs[0]).amount
       inventories = [
         {
           inventory_id: inventoryIDs[0]
@@ -215,25 +215,465 @@ describe "Sells Client Side Test", ->
 
       SMethods.addItems.call {organization_id, sell_id, inventories}, (err, res) ->
         sell = SellModule.Sells.findOne(sellIDs[1])
-        console.log sell
         expect(de.quantity).to.equal(1) for de in sell.details
+        expect(old).to.equal(InventoryModule.Inventories.findOne(inventoryIDs[0]).amount + 1)
+        expect(EventModule.Events.findOne({for_id: inventoryIDs[0]}, sort: {createdAt: -1}).amount).to.equal(-1)
+        done()
+
+    it "Negative quantities", (done) ->
+      inventories = [
+        {
+          inventory_id: inventoryIDs[0]
+          quantity_taken: 1
+        },
+        {
+          inventory_id: inventoryIDs[2]
+          quantity_taken: -1
+        }
+      ]
+
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[1]
+
+      SMethods.addItems.call {organization_id, sell_id, inventories}, (err, res) ->
+        expect(err).to.have.property('error', 'validation-error')
+        done()
+
+  describe "Put Back", ->
+    it "Check 0 details", (done) ->
+      old = InventoryModule.Inventories.findOne(inventoryIDs[2]).amount
+      expect(SellModule.Sells.findOne(sellIDs[1]).details.length).to.equal(2)
+      inventories = [
+        {
+          inventory_id: inventoryIDs[2]
+          quantity_taken: 1
+        }
+      ]
+
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[1]
+
+      SMethods.putBackItems.call {organization_id, sell_id, inventories}, (err, res) ->
+        sell = SellModule.Sells.findOne(sellIDs[1])
+        expect(sell.details.length).to.equal(1)
+        expect(old).to.equal( InventoryModule.Inventories.findOne(inventoryIDs[2]).amount - 1)
+        done()
+
+    it "Over taking", (done) ->
+      inventories = [
+        {
+          inventory_id: inventoryIDs[0]
+          quantity_taken: 4
+        }
+      ]
+
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[1]
+
+      SMethods.putBackItems.call {organization_id, sell_id, inventories}, (err, res) ->
+        expect(err).to.have.property('error', 'putBackError')
+        done()
+
+    it "Remove non existing product in sell", (done) ->
+      inventories = [
+        {
+          inventory_id: inventoryIDs[4]
+          quantity_taken: 4
+        }
+      ]
+
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[1]
+
+      SMethods.putBackItems.call {organization_id, sell_id, inventories}, (err, res) ->
+        expect(err).to.have.property('error', 'putBackError')
+        done()
+
+    it "Remove non existing inventory in sell", (done) ->
+      inventories = [
+        {
+          inventory_id: inventoryIDs[1]
+          quantity_taken: 4
+        }
+      ]
+
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[1]
+
+      SMethods.putBackItems.call {organization_id, sell_id, inventories}, (err, res) ->
+        expect(err).to.have.property('error', 'putBackError')
+        done()
+
+  describe "Update Un paid", ->
+    it "Update details with new product", (done) ->
+      expect(SellModule.Sells.findOne(sellIDs[1]).details.length).to.equal(1)
+
+      details = [
+        product_id: productIDs[2]
+        unit_price: 131
+        quantity: 23
+      ]
+
+      sell_doc =
+        details: details
+
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[1]
+
+      SMethods.update.call {organization_id, sell_id, sell_doc}, (err, res) ->
+        expect(err).to.not.exist
+        expect(SellModule.Sells.findOne(sellIDs[1]).details.length).to.equal(2)
+        done()
+
+    it "Update removing detail without inventories", (done) ->
+      expect(SellModule.Sells.findOne(sellIDs[1]).details.length).to.equal(2)
+      details = [
+        product_id: productIDs[2]
+        unit_price: 131
+        quantity: 0
+      ]
+
+      sell_doc =
+        details: details
+
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[1]
+
+      SMethods.update.call {organization_id, sell_id, sell_doc}, (err, res) ->
+        expect(err).to.not.exist
+        expect(SellModule.Sells.findOne(sellIDs[1]).details.length).to.equal(1)
+        done()
+
+    it "Update detail with inventories to 0", (done) ->
+      details = [
+        product_id: productIDs[0]
+        unit_price: 131
+        quantity: 0
+      ]
+
+      sell_doc =
+        details: details
+
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[1]
+
+      SMethods.update.call {organization_id, sell_id, sell_doc}, (err, res) ->
+        expect(err).to.not.exist
+        sell = SellModule.Sells.findOne(sellIDs[1])
+        expect(sell.details.length).to.equal(1)
+        expect(sell.details[0].quantity).to.equal(0)
+        done()
+
+  describe "Delete un paid", ->
+    it "Delete with inventories", (done) ->
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[1]
+
+      SMethods.deleteSell.call {organization_id, sell_id}, (err, res) ->
+        expect(err).to.have.property('error', 'deleteError')
+        done()
+
+    it "Remove inventory", (done) ->
+      inventories = [
+        {
+          inventory_id: inventoryIDs[0]
+          quantity_taken: 1
+        }
+      ]
+
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[1]
+
+      SMethods.putBackItems.call {organization_id, sell_id, inventories}, (err, res) ->
+        expect(err).to.not.exist
+        done()
+
+    it "update detail", (done) ->
+        details = [
+          product_id: productIDs[2]
+          unit_price: 131
+          quantity: 23
+        ]
+
+        sell_doc =
+          details: details
+
+        organization_id = organizationIDs[0]
+        sell_id = sellIDs[1]
+
+        SMethods.update.call {organization_id, sell_id, sell_doc}, (err, res) ->
+          expect(err).to.not.exist
+          expect(SellModule.Sells.findOne(sellIDs[1]).details.length).to.equal(1)
+          done()
+
+    it "Delete without inventories", (done) ->
+      expect(SellModule.Sells.find().count()).to.equal(2)
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[1]
+
+      SMethods.deleteSell.call {organization_id, sell_id}, (err, res) ->
+        expect(SellModule.Sells.find().count()).to.equal(1)
+        expect(err).to.not.exist
+        done()
+
+  describe "Pay", ->
+    it "No physical Items", (done) ->
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[0]
+
+      SMethods.pay.call {organization_id, sell_id}, (err, res) ->
+        expect(err).to.have.property('reason', 'Cannot paid sell that has no physical items')
+        done()
+
+    it "Add physical items", (done) ->
+      inventories = [
+        {
+          inventory_id: inventoryIDs[0]
+          quantity_taken: 1
+        },
+        {
+          inventory_id: inventoryIDs[1]
+          quantity_taken: 1
+        }
+      ]
+
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[0]
+
+      SMethods.addItems.call {organization_id, sell_id, inventories}, (err, res) ->
+        expect(err).to.not.exist
+        done()
+
+    it "Update sell", (done) ->
+      details = [
+        product_id: productIDs[0]
+        unit_price: 131
+        quantity: 0
+      ]
+
+      sell_doc =
+        details: details
+
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[0]
+
+      SMethods.update.call {organization_id, sell_id, sell_doc}, (err, res) ->
+        expect(err).to.not.exist
+        done()
+
+    it "No physical Items", (done) ->
+      expect(SellModule.Sells.findOne().details.length).to.equal(1)
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[0]
+
+      SMethods.pay.call {organization_id, sell_id}, (err, res) ->
+        expect(err).to.have.property('error', 'detailMismatch')
+        done()
+
+    it "Add physical items", (done) ->
+      inventories = [
+        {
+          inventory_id: inventoryIDs[0]
+          quantity_taken: 1
+        },
+        {
+          inventory_id: inventoryIDs[1]
+          quantity_taken: 1
+        }
+      ]
+
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[0]
+
+      SMethods.addItems.call {organization_id, sell_id, inventories}, (err, res) ->
+        expect(err).to.not.exist
+        done()
+
+    it "pay", (done) ->
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[0]
+
+      SMethods.pay.call {organization_id, sell_id}, (err, res) ->
+        expect(err).to.not.exist
+        expect( SellModule.Sells.findOne().paid ).to.equal(true)
+        done()
+
+    it "pay double", (done) ->
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[0]
+
+      SMethods.pay.call {organization_id, sell_id}, (err, res) ->
+        expect(err).to.have.property('reason', 'sell has already been paid')
+        done()
+
+  describe "Update paid", ->
+    it "Add physical items", (done) ->
+      inventories = [
+        {
+          inventory_id: inventoryIDs[0]
+          quantity_taken: 1
+        },
+        {
+          inventory_id: inventoryIDs[1]
+          quantity_taken: 1
+        }
+      ]
+
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[0]
+
+      SMethods.addItems.call {organization_id, sell_id, inventories}, (err, res) ->
+        expect(err).to.exist
+        expect(err).to.have.property('error', 'itemError')
+        done()
+
+    it "Remove physical items", (done) ->
+      inventories = [
+        {
+          inventory_id: inventoryIDs[0]
+          quantity_taken: 1
+        },
+        {
+          inventory_id: inventoryIDs[1]
+          quantity_taken: 1
+        }
+      ]
+
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[0]
+
+      SMethods.putBackItems.call {organization_id, sell_id, inventories}, (err, res) ->
+        expect(err).to.exist
+        expect(err).to.have.property('error', 'itemError')
+        done()
+
+    it "Update detail with inventories to 0", (done) ->
+      details = [
+        product_id: productIDs[0]
+        unit_price: 131
+        quantity: 0
+      ]
+
+      sell_doc =
+        details: details
+        status: 'nono'
+
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[0]
+
+      SMethods.update.call {organization_id, sell_id, sell_doc}, (err, res) ->
+        expect(err).to.not.exist
+        sell = SellModule.Sells.findOne(sellIDs[0])
+        expect(sell.details.length).to.equal(1)
+        expect(sell.details[0].quantity).to.equal(4)
+        expect(sell.status).to.equal('nono')
+        done()
+
+  describe "Delete paid", ->
+    it "Delete paid", (done) ->
+      expect(SellModule.Sells.find().count()).to.equal(1)
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[0]
+
+      SMethods.deleteSell.call {organization_id, sell_id}, (err, res) ->
+        expect(SellModule.Sells.find().count()).to.equal(1)
+        expect(err).to.exist
+        expect(err).to.have.property('error', 'deleteError')
         done()
 
 
-  describe "Put Back", ->
+  describe "Extra", (done) ->
+    it "insert", (done) ->
+      details = [
+        {
+          product_id: productIDs[0]
+          quantity: 32
+        },
+        {
+          product_id: productIDs[1]
+          quantity: 12
+        },
+        {
+          product_id: productIDs[2]
+          quantity: 13
+        },
+        {
+          product_id: productIDs[3]
+          quantity: 13
+        },
 
-  describe "Update Un paid", ->
+      ]
 
-  describe "Delete un paid", ->
+      sell_doc =
+        details: details
+        status: 'preorder'
+        total_price: 0
+        organization_id: organizationIDs[0]
 
-  describe "Pay", ->
+      SMethods.insert.call {sell_doc}, (err, res) ->
+        expect(err).to.not.exist
+        sellIDs.push res
+        done()
 
-  describe "Update paid", ->
+    it "Add inventories", (done) ->
+      inventories = [
+        {
+          inventory_id: inventoryIDs[0]
+          quantity_taken: 20
+        },
+        {
+          inventory_id: inventoryIDs[1]
+          quantity_taken: 20
+        },
+        {
+          inventory_id: inventoryIDs[2]
+          quantity_taken: 12
+        },
+        {
+          inventory_id: inventoryIDs[3]
+          quantity_taken: 5
+        },
+        {
+          inventory_id: inventoryIDs[4]
+          quantity_taken: 23
+        }
+      ]
 
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[2]
 
+      SMethods.addItems.call {organization_id, sell_id, inventories}, (err, res) ->
+        expect(err).to.not.exist
+        done()
 
+    it "pay", (done) ->
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[2]
 
+      SMethods.pay.call {organization_id, sell_id}, (err, res) ->
+        expect(err).to.exist
+        done()
 
+    it "Update", (done)->
+
+      details = [
+        product_id: productIDs[3]
+        unit_price: 131
+        quantity: 0
+      ]
+
+      sell_doc =
+        details: details
+
+      organization_id = organizationIDs[0]
+      sell_id = sellIDs[2]
+
+      SMethods.update.call {organization_id, sell_id, sell_doc}, (err, res) ->
+        expect(err).to.not.exist
+        sell = SellModule.Sells.findOne(sellIDs[2])
+        console.log sell
+        expect(sell.details.length).to.equal(3)
+        done()
 
 
 # ++++++++++++++++++++++++ Setup Methods

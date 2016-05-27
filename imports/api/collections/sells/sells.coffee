@@ -137,7 +137,7 @@ SellSchema =
     details:
       type: [SellDetailsSchema]
       label: 'sell_details'
-      minCount: 1
+      minCount: 0
       maxCount: 100
 
     status:
