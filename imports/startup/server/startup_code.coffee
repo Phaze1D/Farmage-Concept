@@ -18,7 +18,9 @@ Accounts.emailTemplates.siteName = 'SA Units'
 Accounts.emailTemplates.from = 'SA Units <steadypathapp@gmail.com>'
 Accounts.emailTemplates.enrollAccount.subject = (user) ->
   'Invited to new SA Unit Organization'
+
 Accounts.emailTemplates.enrollAccount.text = (user, url) ->
   ''
+
 Accounts.emailTemplates.enrollAccount.html = (user, url, organization) ->
   SSR.render('enrollmentInvite', { user: user, organization: organization, url: url })
