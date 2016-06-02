@@ -28,6 +28,7 @@ UserProfileSchema = exports.UserProfileSchema =
       type: String
       label: 'first_name'
       max: 64
+      optional: true
 
     last_name:
       type: String
@@ -84,6 +85,7 @@ UserSchema =
 
     profile:
       type: UserProfileSchema
+      optional: true
 
     services:
         type: Object

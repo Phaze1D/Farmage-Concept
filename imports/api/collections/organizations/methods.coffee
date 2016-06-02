@@ -27,11 +27,11 @@ ContactModule = require '../../shared/contact_info.coffee'
 # Insert (For unique names it will pass on the client side but fail on the server)
 module.exports.insert = new ValidatedMethod
   name: 'organization.insert'
-  validate: (organization_doc) ->
+  validate: ({organization_doc}) ->
     OrganizationModule.Organizations.simpleSchema().clean(organization_doc)
     OrganizationModule.Organizations.simpleSchema().validate(organization_doc)
 
-  run: (organization_doc) ->
+  run: ({organization_doc}) ->
     loggedIn(@userId)
     OrganizationModule.Organizations.insert organization_doc
 
@@ -51,7 +51,7 @@ module.exports.update = new ValidatedMethod
   run: ({organization_id, updated_organization_doc}) ->
 
     loggedIn(@userId)
-    
+
     unless @isSimulation
       hasPermission(@userId, organization_id, 'owner')
 
