@@ -12,6 +12,8 @@ Template.MainLayout.onCreated ->
   @logout = ->
     Meteor.logout (err) ->
       console.log err
+      unless err?
+        FlowRouter.go 'root'
 
 
 

@@ -12,6 +12,8 @@ Template.Login.onCreated ->
   @login = (email, password) ->
     Meteor.loginWithPassword email, password, (err) =>
       console.log err
+      unless err?
+        FlowRouter.go 'home'
 
   @signup = (email, password) ->
     Accounts.createUser {email, password}, (err) =>
