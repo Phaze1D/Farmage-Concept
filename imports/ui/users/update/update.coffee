@@ -9,14 +9,15 @@ require './update.html'
 
 
 Template.UserUpdate.onCreated ->
-  
+
   @updateProfile = (profile_doc) ->
     UMethods.updateProfile.call {profile_doc}, (err,res) ->
       console.log err
-      console.log Meteor.user()
+
 
 
 Template.UserUpdate.events
+
   'click .js-update-b': (event, instance) ->
     $form = instance.$('.js-update-form')
     profile_doc =

@@ -33,3 +33,5 @@ edgee:slingshot
 kadira:flow-router
 blaze-html-templates
 kadira:blaze-layout
+meteorhacks:subs-manager
+reactive-dict

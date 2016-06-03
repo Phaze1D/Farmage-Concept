@@ -1,5 +1,15 @@
 <template name="MainLayout">
-  <div class="">
+  <div class="menu">
     <a href="javascript:void(0)" class="js-logout">Logout</a>
+    <a href="/user/update">Profile</a>
+    <a href="/organizations">Organizations</a>
+  </div>
+  <br>
+  <div class="main">
+    {{#if ready}}
+        {{> Template.dynamic template=main}}
+    {{else}}
+        Loading.....
+    {{/if}}
   </div>
 </template>

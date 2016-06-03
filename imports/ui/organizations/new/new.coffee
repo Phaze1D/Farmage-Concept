@@ -11,6 +11,7 @@ Template.OrganizationsNew.onCreated ->
   @insert = (organization_doc) ->
     OMethods.insert.call {organization_doc}, (err, res) ->
       console.log err
+      FlowRouter.go 'organizations.index' unless err?
 
 
 

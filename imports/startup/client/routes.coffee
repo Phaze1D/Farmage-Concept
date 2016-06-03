@@ -2,32 +2,36 @@
 { BlazeLayout } = require 'meteor/kadira:blaze-layout'
 
 require '../../ui/app/root/root.html'
-
 require '../../ui/app/main_layout/main_layout.coffee'
 
 require '../../ui/users/login/login.coffee'
 require '../../ui/users/update/update.coffee'
 
 require '../../ui/organizations/new/new.coffee'
+require '../../ui/organizations/index/index.coffee'
+require '../../ui/organizations/show/show.coffee'
+
+
+
 
 loggedIn = () ->
   if Meteor.userId()?
-    FlowRouter.go 'home'
+    FlowRouter.go 'home' if FlowRouter.current().route.name is 'root'
   else
     FlowRouter.go 'root'
 
+# Globaly Triggers
+FlowRouter.triggers.enter([loggedIn]);
 
 
 FlowRouter.route '/',
   name: 'root'
-  triggersEnter: [loggedIn]
   action: () ->
     BlazeLayout.render 'Root'
 
 
 FlowRouter.route '/home',
   name: 'home'
-  triggersEnter: [loggedIn]
   action: () ->
     BlazeLayout.render 'MainLayout'
 
@@ -39,9 +43,9 @@ users = FlowRouter.group
   name: 'users'
 
 users.route '/update',
-  name: 'update'
+  name: 'user.update'
   action: () ->
-    BlazeLayout.render 'UserUpdate'
+    BlazeLayout.render 'MainLayout', main: "UserUpdate"
 
 
 
@@ -50,7 +54,17 @@ organizations = FlowRouter.group
   prefix: '/organizations'
   name: 'organizations'
 
+organizations.route '/',
+  name: 'organizations.index'
+  action: () ->
+    BlazeLayout.render 'MainLayout', main: "OrganizationsIndex"
+
 organizations.route '/new',
   name: 'organizations.new'
   action: () ->
-    BlazeLayout.render 'OrganizationsNew'
+    BlazeLayout.render 'MainLayout', main: "OrganizationsNew"
+
+organizations.route '/:id',
+  name: 'organization.show'
+  action: () ->
+    BlazeLayout.render 'MainLayout', main: "OrganizationShow"

@@ -42,7 +42,7 @@ module.exports.update = new ValidatedMethod
   name: 'organizations.update'
   validate: ({organization_id, updated_organization_doc}) ->
     OrganizationModule.Organizations.simpleSchema().clean(updated_organization_doc)
-    OrganizationModule.Organizations.simpleSchema().validate(updated_organization_doc)
+    OrganizationModule.Organizations.simpleSchema().validate({$set: updated_organization_doc}, modifier: true)
     new SimpleSchema(
       organization_id:
         type: String
@@ -55,9 +55,6 @@ module.exports.update = new ValidatedMethod
     unless @isSimulation
       hasPermission(@userId, organization_id, 'owner')
 
+    delete updated_organization_doc.ousers
     OrganizationModule.Organizations.update _id: organization_id,
-                                            $set:
-                                              name: updated_organization_doc.name
-                                              email: updated_organization_doc.email
-                                              addresses: updated_organization_doc.addresses
-                                              telephones: updated_organization_doc.telephones
+                                            $set: updated_organization_doc

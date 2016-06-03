@@ -18,6 +18,8 @@ Template.Login.onCreated ->
   @signup = (email, password) ->
     Accounts.createUser {email, password}, (err) =>
       console.log err
+      unless err?
+        FlowRouter.go 'home'
 
 
 
