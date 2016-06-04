@@ -37,7 +37,7 @@ module.exports.insert = new ValidatedMethod
 
 
 
-# Update Name and/ or Email
+# Update
 module.exports.update = new ValidatedMethod
   name: 'organizations.update'
   validate: ({organization_id, updated_organization_doc}) ->

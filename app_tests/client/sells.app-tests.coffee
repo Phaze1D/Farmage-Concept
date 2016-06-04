@@ -306,6 +306,7 @@ describe "Sells Client Side Test", ->
 
   describe "Update Un paid", ->
     it "Update details with new product", (done) ->
+      console.log SellModule.Sells.findOne(sellIDs[1])
       expect(SellModule.Sells.findOne(sellIDs[1]).details.length).to.equal(1)
 
       details = [
@@ -322,6 +323,7 @@ describe "Sells Client Side Test", ->
 
       SMethods.update.call {organization_id, sell_id, sell_doc}, (err, res) ->
         expect(err).to.not.exist
+        console.log SellModule.Sells.findOne(sellIDs[1])
         expect(SellModule.Sells.findOne(sellIDs[1]).details.length).to.equal(2)
         done()
 
@@ -710,11 +712,11 @@ logout = (done) ->
   )
 
 createOrgan = (done) ->
-  organ_doc =
+  organization_doc =
     name: faker.company.companyName()
     email: faker.internet.email()
 
-  OMethods.insert.call organ_doc, (err, res) ->
+  OMethods.insert.call {organization_doc}, (err, res) ->
     throw err if err?
     organizationIDs.push res
     done()

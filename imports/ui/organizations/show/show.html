@@ -29,7 +29,7 @@
         Telephones
         <button type="button" class="js-telephone-add">Add</button> <br>
         {{#each telephone in organization.telephones}}
-
+          {{telephone.number}} <br>
         {{/each}}
       </div>
     {{/if}}
@@ -37,33 +37,14 @@
 
   <br>
 
+
+
   {{#if showAddressF}}
-    <div class="popup">
-      <div class="js-address-form">
-        <label for="name">Name</label>
-        <input type="text" name="name" value="" placeholder="optional">
-        <br>
-        <label for="street">Street</label>
-        <input type="text" name="street" value="">
-        <br>
-        <label for="street2">Street 2</label>
-        <input type="text" name="street2" value="" placeholder="optional">
-        <br>
-        <label for="city">City</label>
-        <input type="text" name="city" value="">
-        <br>
-        <label for="state">State</label>
-        <input type="text" name="state" value="">
-        <br>
-        <label for="zip_code">Zip Code</label>
-        <input type="text" name="zip_code" value="">
-        <br>
-        <label for="country">Country</label>
-        <input type="text" name="country" value="" placeholder="optional">
-        <br>
-        <button type="button" class="js-create-b">Create</button>
-        <button type="button" class="js-cancel-b">Cancel</button>
-      </div>
-    </div>
+    {{> Address addAddress}}
   {{/if}}
+  {{#if showTelephoneF}}
+    {{> Telephone addTelephone}}
+  {{/if}}
+
+
 </template>
