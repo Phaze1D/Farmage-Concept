@@ -19,7 +19,7 @@ describe 'User Full App Tests Server', () ->
   describe 'User sign up flow', () ->
 
     it 'Testing user organizations association', () ->
-      
+
       Meteor.users.find().forEach (doc) ->
         doc.organizations().forEach (doc2) ->
           id_array = ( user.user_id for user in doc2.ousers )
@@ -35,17 +35,6 @@ describe 'User Full App Tests Server', () ->
             if user.user_id is doc._id
               count++
           expect(count).to.be.at.most(1)
-
-    it 'User simple schema failed validations', () ->
-      doc =
-        email: faker.internet.email()
-        password: '12345678'
-
-      expect(()->
-        Accounts.createUser(doc)
-      ).to.Throw('validation-error')
-
-      return
 
 
     it 'User simple schema success validations', () ->

@@ -40,6 +40,7 @@ module.exports.insert = new ValidatedMethod
 module.exports.update = new ValidatedMethod
   name: 'providers.update'
   validate: ({organization_id, provider_id, provider_doc}) ->
+    ProviderModule.Providers.simpleSchema().clean({$set: provider_doc}, {isModifier: true})
     ProviderModule.Providers.simpleSchema().validate({$set: provider_doc}, modifier: true)
 
     new SimpleSchema(

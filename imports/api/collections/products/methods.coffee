@@ -46,7 +46,7 @@ module.exports.insert = new ValidatedMethod
 module.exports.update = new ValidatedMethod
   name: 'products.update'
   validate: ({organization_id, product_id, product_doc}) ->
-    ProductModule.Products.simpleSchema().clean(product_doc)
+    ProductModule.Products.simpleSchema().clean({$set: product_doc}, {isModifier: true})
     ProductModule.Products.simpleSchema().validate({$set: product_doc}, modifier: true)
     new SimpleSchema(
       organization_id:

@@ -16,15 +16,12 @@ require '../../contact_info/telephone.coffee'
 
 Template.OrganizationShow.onCreated ->
   @organization = new ReactiveVar
-  @states = new ReactiveDict
-  @states.setDefault
-    showAddressF: false
-    showTelephoneF: false
+
 
   @autorun =>
     @organization.set(OC.Organizations.findOne(_id: FlowRouter.getParam 'id'))
 
-  @addAddress = (address_doc) =>
+  @addAddress = (address_doc, callBack) =>
     addresses = @organization.get().addresses.slice()
     addresses.push address_doc
 
@@ -32,11 +29,9 @@ Template.OrganizationShow.onCreated ->
     updated_organization_doc =
       addresses: addresses
 
-    OMethods.update.call {organization_id, updated_organization_doc}, (err, res) =>
-      console.log err
-      @states.set 'showAddressF',false unless err?
+    OMethods.update.call {organization_id, updated_organization_doc}, callBack
 
-  @addTelephone = (telephone_doc) =>
+  @addTelephone = (telephone_doc, callBack) =>
     telephones = @organization.get().telephones.slice()
     telephones.push telephone_doc
 
@@ -44,16 +39,12 @@ Template.OrganizationShow.onCreated ->
     updated_organization_doc =
       telephones: telephones
 
-    OMethods.update.call {organization_id, updated_organization_doc}, (err, res) =>
-      console.log err
-      @states.set 'showTelephoneF',false unless err?
+    OMethods.update.call {organization_id, updated_organization_doc}, callBack
 
 
 Template.OrganizationShow.onRendered ->
-  console.log "OR"
 
 Template.OrganizationShow.onDestroyed ->
-  console.log "OD"
 
 
 Template.OrganizationShow.helpers
@@ -63,33 +54,16 @@ Template.OrganizationShow.helpers
   permission: ->
     Template.instance().organization.get().hasUser(Meteor.userId()).permission
 
-  showAddressF: ->
-    Template.instance().states.get 'showAddressF'
 
-  showTelephoneF: ->
-    Template.instance().states.get 'showTelephoneF'
-
-  addAddress: ->
+  addressInfo: ->
     ret =
       addAddress: Template.instance().addAddress
+      addresses: Template.instance().organization.get().addresses
 
-  addTelephone: ->
+  telephoneInfo: ->
     ret =
       addTelephone: Template.instance().addTelephone
-
+      telephones: Template.instance().organization.get().telephones
 
 
 Template.OrganizationShow.events
-  'click .js-address-add': (event, instance) ->
-    instance.states.set 'showAddressF', true
-    instance.states.set 'showTelephoneF', false
-
-
-  'click .js-telephone-add': (event, instance) ->
-    instance.states.set 'showTelephoneF', true
-    instance.states.set 'showAddressF', false
-
-
-  'click .js-cancel-b': (event, instance) ->
-    instance.states.set 'showAddressF', false
-    instance.states.set 'showTelephoneF', false

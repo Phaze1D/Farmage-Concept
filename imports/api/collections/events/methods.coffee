@@ -90,7 +90,7 @@ transcation = (event_doc, userId, belongsToM, collection, permission) ->
 module.exports.pack = new ValidatedMethod
   name: "events.pack"
   validate: ({organization_id, inventory_id, yield_objects, amount}) ->
-    InventoryModule.Inventories.simpleSchema().clean({yield_objects: yield_objects})
+    InventoryModule.Inventories.simpleSchema().clean({$set: yield_objects: yield_objects}, {isModifier: true})
     InventoryModule.Inventories.simpleSchema().validate({$set: yield_objects: yield_objects}, modifier: true)
 
     new SimpleSchema(

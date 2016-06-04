@@ -34,7 +34,7 @@ module.exports.insert = new ValidatedMethod
     loggedIn(@userId)
     unless @isSimulation
       hasPermission(@userId, customer_doc.organization_id, "sells_manager")
-      
+
     CustomerModule.Customers.insert customer_doc
 
 
@@ -42,6 +42,7 @@ module.exports.insert = new ValidatedMethod
 module.exports.update = new ValidatedMethod
   name: 'customers.update'
   validate: ({organization_id, customer_id, customer_doc}) ->
+    CustomerModule.Customers.simpleSchema().clean({$set: updated_organization_doc}, {isModifier: true})
     CustomerModule.Customers.simpleSchema().validate({$set: customer_doc}, modifier: true)
 
     new SimpleSchema(

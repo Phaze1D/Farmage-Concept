@@ -35,7 +35,7 @@ module.exports.insert = new ValidatedMethod
 module.exports.update = new ValidatedMethod
   name: 'ingredient.update'
   validate: ({organization_id, ingredient_id, ingredient_doc}) ->
-    IngredientModule.Ingredients.simpleSchema().clean(ingredient_doc)
+    IngredientModule.Ingredients.simpleSchema().clean({$set: ingredient_doc}, {isModifier: true})
     IngredientModule.Ingredients.simpleSchema().validate({$set: ingredient_doc}, modifier: true)
 
     new SimpleSchema(

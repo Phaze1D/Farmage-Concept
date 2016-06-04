@@ -13,38 +13,19 @@
         {{/if}}
       </div>
 
-      <br>
+      <h4>Contact Info</h4>
 
-      <div class="">
-        Addresses
-        <button type="button" class="js-address-add">Add</button> <br>
-        {{#each address in organization.addresses}}
-          {{address.street}} <br>
-        {{/each}}
-      </div>
+      {{> Address addressInfo}}
 
       <br>
 
-      <div class="">
-        Telephones
-        <button type="button" class="js-telephone-add">Add</button> <br>
-        {{#each telephone in organization.telephones}}
-          {{telephone.number}} <br>
-        {{/each}}
-      </div>
+      {{> Telephone telephoneInfo}}
     {{/if}}
   </div>
 
   <br>
 
 
-
-  {{#if showAddressF}}
-    {{> Address addAddress}}
-  {{/if}}
-  {{#if showTelephoneF}}
-    {{> Telephone addTelephone}}
-  {{/if}}
 
 
 </template>

@@ -40,7 +40,7 @@ module.exports.insert = new ValidatedMethod
 module.exports.update = new ValidatedMethod
   name: 'units.update'
   validate: ({organization_id, unit_id, unit_doc}) ->
-    UnitModule.Units.simpleSchema().clean(unit_doc)
+    UnitModule.Units.simpleSchema().clean({$set: unit_doc}, {isModifier: true})
     UnitModule.Units.simpleSchema().validate({$set: unit_doc}, modifier: true)
     new SimpleSchema(
       organization_id:
