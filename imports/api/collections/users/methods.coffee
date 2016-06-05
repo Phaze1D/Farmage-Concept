@@ -151,11 +151,11 @@ module.exports.removeFromOrganization = new ValidatedMethod
 module.exports.updateProfile = new ValidatedMethod
   name: 'users.updateProfile'
   validate: ({profile_doc}) ->
-    UsersModule.UserProfileSchema.validate(profile_doc)
+    Meteor.users.simpleSchema().clean({$set: profile_doc}, {isModifier: true})
+    Meteor.users.simpleSchema().validate({$set: profile_doc}, modifier: true)
 
   run: ({profile_doc}) ->
     loggedIn(@userId)
     profile_doc.user_avatar_url = "" # This needs to change cannot trust user
     Meteor.users.update @userId,
-                        $set:
-                          profile: profile_doc
+                        $set: profile_doc

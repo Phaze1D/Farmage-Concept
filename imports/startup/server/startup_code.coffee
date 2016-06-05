@@ -6,6 +6,7 @@
 
 # User Accounts
 Accounts.validateNewUser (user) ->
+  Meteor.users.simpleSchema().clean(user)
   Meteor.users.simpleSchema().validate(user)
   return true
 

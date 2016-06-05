@@ -13,9 +13,6 @@ require './main_layout.html'
 Template.MainLayout.onCreated ->
   @ready = new ReactiveVar
 
-  @test = =>
-    console.log @
-
   @subCallback = =>
     callbacks =
       onStop: (err) ->
@@ -41,7 +38,6 @@ Template.MainLayout.onRendered ->
 Template.MainLayout.helpers
   ready: () ->
     Template.instance().ready.get()
-
 
 
 
