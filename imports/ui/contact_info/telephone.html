@@ -4,19 +4,30 @@
     Telephones
     <button type="button" class="js-telephone-add">Add</button> <br>
     {{#each telephone in telephones}}
-      {{telephone.number}} <button type="button" class="js-telephone-remove">Remove</button> <br>
+
+      <div class="js-telephone" data-index={{@index}}>
+        {{telephone.number}}
+        <button type="button" class="js-telephone-update">Update</button>
+        <button type="button" class="js-telephone-remove">Remove</button>
+        <br>
+      </div>
+
     {{/each}}
   </div>
   <br>
   {{#if showForm}}
     <div class="js-telephone-form">
       <label for="name">Name</label>
-      <input type="text" name="name" value="" placeholder="optional">
+      <input type="text" name="name" value="{{uTelephone.name}}" placeholder="optional">
       <br>
       <label for="street">Number</label>
-      <input type="text" name="number" value="">
+      <input type="text" name="number" value="{{uTelephone.number}}">
       <br>
-      <button type="button" class="js-telephone-create">Create</button>
+      {{#if uTelephone}}
+        <button type="button" class="js-telephone-save">Save</button>
+      {{else}}
+        <button type="button" class="js-telephone-create">Create</button>
+      {{/if}}
       <button type="button" class="js-telephone-cancel">Cancel</button>
     </div>
   {{/if}}

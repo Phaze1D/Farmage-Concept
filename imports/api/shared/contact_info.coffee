@@ -26,16 +26,19 @@ AddressSchema = exports.AddressSchema =
     city:
       type: String
       label: "city"
+      optional: true
       max: 64
 
     state:
       type: String
       label: "state"
+      optional: true
       max: 64
 
     zip_code:
       type: String
       label: "zip_code"
+      optional: true
       max: 32
 
     country:

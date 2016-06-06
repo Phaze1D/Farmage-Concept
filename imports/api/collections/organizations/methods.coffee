@@ -24,7 +24,7 @@ ContactModule = require '../../shared/contact_info.coffee'
 ###
 
 
-# Insert (For unique names it will pass on the client side but fail on the server)
+# Insert 
 module.exports.insert = new ValidatedMethod
   name: 'organization.insert'
   validate: ({organization_doc}) ->

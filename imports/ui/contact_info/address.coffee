@@ -12,10 +12,15 @@ require './address.html'
 
 Template.Address.onCreated ->
   @state = new ReactiveVar(false)
+  @uAddress = new ReactiveVar(-1)
 
   @autorun =>
     new SimpleSchema(
       addAddress:
+        type: Function
+      updateAddress:
+        type: Function
+      removeAddress:
         type: Function
       addresses:
         type: [AddressSchema]
@@ -26,19 +31,36 @@ Template.Address.onCreated ->
     console.log err
     @state.set(false) unless err?
 
+
 Template.Address.helpers
   showForm: () ->
     Template.instance().state.get()
+
+  uAddress: () ->
+    index = if Template.instance().uAddress.get() >= 0 then Template.instance().uAddress.get() else -1
+    Template.instance().data.addresses[index] if index >= 0
+
 
 
 
 Template.Address.events
 
   'click .js-address-add': (event, instance) ->
+    instance.uAddress.set(-1)
     instance.state.set(true)
 
   'click .js-address-cancel': (event, instance) ->
     instance.state.set(false)
+
+  'click .js-address-update': (event, instance) ->
+    instance.uAddress.set($(event.target).closest('.js-address').attr('data-index') )
+    instance.state.set(true)
+
+  'click .js-address-remove': (event, instance) ->
+    index = $(event.target).closest('.js-address').attr('data-index')
+    instance.uAddress.set(-1)
+    instance.state.set(false)
+    instance.data.removeAddress(index, instance.callBack)
 
   'click .js-address-create': (event, instance) ->
     $form = instance.$('.js-address-form')
@@ -52,3 +74,17 @@ Template.Address.events
       country: $form.find('[name=country]').val()
 
     instance.data.addAddress(address_doc, instance.callBack)
+
+  'click .js-address-save': (event, instance) ->
+    $form = instance.$('.js-address-form')
+    index = instance.uAddress.get()
+    address_doc =
+      name: $form.find('[name=name]').val()
+      street: $form.find('[name=street]').val()
+      street2: $form.find('[name=street2]').val()
+      city: $form.find('[name=city]').val()
+      state: $form.find('[name=state]').val()
+      zip_code: $form.find('[name=zip_code]').val()
+      country: $form.find('[name=country]').val()
+
+    instance.data.updateAddress(address_doc, index, instance.callBack)

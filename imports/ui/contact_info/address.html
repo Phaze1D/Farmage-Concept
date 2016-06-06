@@ -3,7 +3,12 @@
     Addresses
     <button type="button" class="js-address-add">Add</button> <br>
     {{#each address in addresses}}
-      {{address.street}} <button type="button" class="js-address-remove">Remove</button> <br>
+      <div class="js-address" data-index="{{@index}}">
+        {{address.street}}
+        <button type="button" class="js-address-update">Update</button>
+        <button type="button" class="js-address-remove">Remove</button>
+        <br>
+      </div>
     {{/each}}
   </div>
   <br>
@@ -11,27 +16,31 @@
   {{#if showForm}}
     <div class="js-address-form">
       <label for="name">Name</label>
-      <input type="text" name="name" value="" placeholder="optional">
+      <input type="text" name="name" value="{{uAddress.name}}" >
       <br>
       <label for="street">Street</label>
-      <input type="text" name="street" value="">
+      <input type="text" name="street" value="{{uAddress.street}}">
       <br>
       <label for="street2">Street 2</label>
-      <input type="text" name="street2" value="" placeholder="optional">
+      <input type="text" name="street2" value="{{uAddress.street2}}" >
       <br>
       <label for="city">City</label>
-      <input type="text" name="city" value="">
+      <input type="text" name="city" value="{{uAddress.city}}">
       <br>
       <label for="state">State</label>
-      <input type="text" name="state" value="">
+      <input type="text" name="state" value="{{uAddress.state}}">
       <br>
       <label for="zip_code">Zip Code</label>
-      <input type="text" name="zip_code" value="">
+      <input type="text" name="zip_code" value="{{uAddress.zip_code}}">
       <br>
       <label for="country">Country</label>
-      <input type="text" name="country" value="" placeholder="optional">
+      <input type="text" name="country" value="{{uAddress.country}}" >
       <br>
-      <button type="button" class="js-address-create">Create</button>
+      {{#if uAddress}}
+        <button type="button" class="js-address-save">Save</button>
+      {{else}}
+        <button type="button" class="js-address-create">Create</button>
+      {{/if}}
       <button type="button" class="js-address-cancel">Cancel</button>
     </div>
   {{/if}}
