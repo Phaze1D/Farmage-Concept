@@ -21,10 +21,11 @@ Template.MainLayout.onCreated ->
 
 
   @logout = ->
-    Meteor.logout (err) ->
+    Meteor.logout( (err) ->
       console.log err
-      unless err?
-        FlowRouter.go 'root'
+      FlowRouter.go 'root' unless err?
+    )
+
 
   @autorun =>
     handler = Meteor.subscribe("organizations", @subCallback)
