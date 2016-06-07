@@ -11,8 +11,10 @@ require './address.html'
 
 
 Template.Address.onCreated ->
+  @err = new ReactiveVar
   @state = new ReactiveVar(false)
   @uAddress = new ReactiveVar(-1)
+
 
   @autorun =>
     new SimpleSchema(
@@ -26,9 +28,9 @@ Template.Address.onCreated ->
         type: [AddressSchema]
     ).validate(@data)
 
-
   @callBack = (err,res) =>
     console.log err
+    @err.set(err)
     @state.set(false) unless err?
 
 

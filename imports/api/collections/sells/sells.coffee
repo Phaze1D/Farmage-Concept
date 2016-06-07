@@ -182,8 +182,7 @@ SellSchema =
     customer_id:
       type: String
       index: true
-      sparse: true
-      optional: true
+
 
     shipping_address:
       type: ContactExports.AddressSchema

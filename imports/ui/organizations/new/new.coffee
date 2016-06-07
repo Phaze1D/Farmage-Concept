@@ -1,16 +1,20 @@
 { Meteor } = require 'meteor/meteor'
 { Template } = require 'meteor/templating'
 { FlowRouter } = require 'meteor/kadira:flow-router'
+{ ReactiveVar } = require 'meteor/reactive-var'
+
 
 OMethods = require '../../../api/collections/organizations/methods.coffee'
 
 require './new.html'
 
 Template.OrganizationsNew.onCreated ->
+  @err = new ReactiveVar
 
-  @insert = (organization_doc) ->
-    OMethods.insert.call {organization_doc}, (err, res) ->
+  @insert = (organization_doc) =>
+    OMethods.insert.call {organization_doc}, (err, res) =>
       console.log err
+      @err.set err
       FlowRouter.go 'organizations.index' unless err?
 
 

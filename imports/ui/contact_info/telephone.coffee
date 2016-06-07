@@ -7,9 +7,11 @@
 { ReactiveVar } = require 'meteor/reactive-var'
 
 
+
 require './telephone.html'
 
 Template.Telephone.onCreated ->
+  @err = new ReactiveVar
   @state = new ReactiveVar(false)
   @uTelephone = new ReactiveVar(-1)
 
@@ -27,7 +29,9 @@ Template.Telephone.onCreated ->
 
   @callBack = (err,res) =>
     console.log err
+    @err.set(err)
     @state.set(false) unless err?
+
 
 Template.Telephone.helpers
   showForm: () ->

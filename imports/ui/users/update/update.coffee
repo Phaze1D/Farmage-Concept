@@ -2,6 +2,8 @@
 { Template } = require 'meteor/templating'
 { Accounts } = require 'meteor/accounts-base'
 { FlowRouter } = require 'meteor/kadira:flow-router'
+{ ReactiveVar } = require 'meteor/reactive-var'
+
 
 UMethods = require '../../../api/collections/users/methods.coffee'
 
@@ -9,10 +11,13 @@ require './update.html'
 
 
 Template.UserUpdate.onCreated ->
+  @err = new ReactiveVar
+
 
   @updateName = (profile_doc) ->
-    UMethods.updateProfile.call {profile_doc}, (err,res) ->
+    UMethods.updateProfile.call {profile_doc}, (err,res) =>
       console.log err
+      @err.set(err)
 
 
   @addAddress = (address_doc, callBack) =>

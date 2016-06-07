@@ -2,6 +2,8 @@
 { Template } = require 'meteor/templating'
 { Accounts } = require 'meteor/accounts-base'
 { FlowRouter } = require 'meteor/kadira:flow-router'
+{ ReactiveVar } = require 'meteor/reactive-var'
+
 
 
 
@@ -9,11 +11,15 @@ require './login.html'
 
 
 Template.Login.onCreated ->
+  @err = new ReactiveVar
+
   @login = (email, password) ->
     Meteor.loginWithPassword email, password, (err) =>
       console.log err
+      @err.set err
       unless err?
-        Meteor.logoutOtherClients( (er) ->
+        Meteor.logoutOtherClients( (er) =>
+          @err.set err
           FlowRouter.go 'home' unless er?
         )
 
@@ -21,8 +27,9 @@ Template.Login.onCreated ->
   @signup = (email, password) ->
     Accounts.createUser {email, password}, (err) =>
       console.log err
-      unless err?
-        FlowRouter.go 'home'
+      @err.set err
+      FlowRouter.go 'home' unless err?
+
 
 
 

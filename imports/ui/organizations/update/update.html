@@ -1,0 +1,24 @@
+<template name="OrganizationUpdate">
+  <div class="">
+    {{#if organization}}
+      {{#if permission.owner}}
+        <div class="">
+          <a href="/organizations/{{organization._id}}">{{organization.name}}</a>
+
+          <br>
+          {{#if organization.email}}
+            Email: {{organization.email}}
+          {{/if}}
+        </div>
+
+        <h4>Contact Info</h4>
+
+        {{> Address addressInfo}}
+
+        <br>
+
+        {{> Telephone telephoneInfo}}
+      {{/if}}
+    {{/if}}
+  </div>
+</template>
