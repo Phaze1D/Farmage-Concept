@@ -11,6 +11,17 @@ require './organization_menu.html'
 
 require '../../organizations/organization.coffee'
 require '../../customers/customers.coffee'
+require '../../events/events.coffee'
+require '../../expenses/expenses.coffee'
+require '../../ingredients/ingredients.coffee'
+require '../../inventories/inventories.coffee'
+require '../../products/products.coffee'
+require '../../providers/providers.coffee'
+require '../../receipts/receipts.coffee'
+require '../../sells/sells.coffee'
+require '../../units/units.coffee'
+require '../../ousers/ousers.coffee'
+require '../../yields/yields.coffee'
 
 
 Template.OrganizationMenu.onCreated ->
@@ -31,28 +42,30 @@ Template.OrganizationMenu.helpers
   subView: ->
     routeName = FlowRouter.getRouteName()
 
-    if /organization/i.test(routeName)
-      'OrganizationT'
+    return 'OrganizationT'  if /organization/i.test(routeName)
+    return 'CustomersT'     if /customers/i.test(routeName)
+    return 'EventsT'        if /events/i.test(routeName)
+    return 'ExpensesT'      if /expenses/i.test(routeName)
+    return 'IngredientsT'   if /ingredients/i.test(routeName)
+    return 'InventoriesT'   if /inventories/i.test(routeName)
+    return 'ProductsT'      if /products/i.test(routeName)
+    return 'ProvidersT'     if /providers/i.test(routeName)
+    return 'ReceiptsT'      if /receipts/i.test(routeName)
+    return 'SellsT'         if /sells/i.test(routeName)
+    return 'UnitsT'         if /units/i.test(routeName)
+    return 'OUsersT'        if /ousers/i.test(routeName)
+    return 'YieldsT'        if /yields/i.test(routeName)
 
-    else if /customers/i.test(routeName)
-      'CustomersT'
 
   subViewData: ->
     routeName = FlowRouter.getRouteName()
-    if /index/i.test(routeName)
-      index: true
-    else if /new/i.test(routeName)
-      new: true
-    else if /update/i.test(routeName)
-      ret =
-        update:
-          id: FlowRouter.getParam 'child_id'
-    else if /show/i.test(routeName)
-      ret =
-        show:
-          id: FlowRouter.getParam 'child_id'
-    else
-      {}
+    return index: true  if /index/i.test(routeName)
+    return new: true    if /new/i.test(routeName)
+    return update: true if /update/i.test(routeName)
+    return show: true   if /show/i.test(routeName)
+
+    {}
+
 
 
 Template.OrganizationMenu.events

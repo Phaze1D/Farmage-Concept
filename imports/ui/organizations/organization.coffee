@@ -5,6 +5,9 @@
 { SimpleSchema } = require 'meteor/aldeed:simple-schema'
 { ReactiveVar } = require 'meteor/reactive-var'
 
+{ SubSchema } = require '../app/sub_schema.coffee'
+
+
 OrganizationModule = require '../../api/collections/organizations/organizations.coffee'
 
 require './show/show.coffee'
@@ -14,23 +17,7 @@ require './organization.html'
 
 Template.OrganizationT.onCreated ->
   @autorun =>
-    new SimpleSchema(
-      'show':
-        type: Object
-        optional: true
-      'show.id':
-        type: String
-        optional: true
-
-      'update':
-        type: Object
-        optional: true
-      'update.id':
-        type: String
-        optional: true
-
-
-    ).validate(@data)
+    SubSchema.validate(@data)
 
 
 Template.OrganizationT.helpers

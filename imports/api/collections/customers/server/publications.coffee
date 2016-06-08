@@ -19,13 +19,10 @@ Meteor.publish "customers", (organization_id, parent, parent_id) ->
   ).validate({organization_id, parent, parent_id})
 
   organization = OrganizationModule.Organizations.findOne(organization_id)
-  parent_id = organization._id if parent_id?
-  
-  parentDoc = null
-  if parent is "organization"
-    parentDoc = organization
-  else if parent is 'user' && organization.hasUser(parent_id)
-    parentDoc = Meteor.users.findOne(parent_id)
+
+  parentDoc = organization                        if parent is "organization" || !parent?
+  parentDoc = Meteor.users.findOne(parent_id)     if parent is 'user' && organization.hasUser(parent_id)
+
 
   # Missing permissions and pagenation
   if @userId? && organization? && organization.hasUser(@userId) && parentDoc?

@@ -99,12 +99,12 @@ customers.route '/new',
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-customers.route '/show',
+customers.route '/:child_id/show',
   name: 'customers.show'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-customers.route '/update',
+customers.route '/:child_id/update',
   name: 'customers.update'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
@@ -125,7 +125,7 @@ events.route '/index',
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-events.route '/show',
+events.route '/:child_id/show',
   name: 'events.show'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
@@ -151,12 +151,12 @@ expenses.route '/new',
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-expenses.route '/show',
+expenses.route '/:child_id/show',
   name: 'expenses.show'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-expenses.route '/update',
+expenses.route '/:child_id/update',
   name: 'expenses.update'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
@@ -182,12 +182,12 @@ ingredients.route '/new',
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-ingredients.route '/show',
+ingredients.route '/:child_id/show',
   name: 'ingredients.show'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-ingredients.route '/update',
+ingredients.route '/:child_id/update',
   name: 'ingredients.update'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
@@ -213,12 +213,12 @@ inventories.route '/new',
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-inventories.route '/show',
+inventories.route '/:child_id/show',
   name: 'inventories.show'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-inventories.route '/update',
+inventories.route '/:child_id/update',
   name: 'inventories.update'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
@@ -244,12 +244,12 @@ products.route '/new',
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-products.route '/show',
+products.route '/:child_id/show',
   name: 'products.show'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-products.route '/update',
+products.route '/:child_id/update',
   name: 'products.update'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
@@ -275,12 +275,12 @@ providers.route '/new',
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-providers.route '/show',
+providers.route '/:child_id/show',
   name: 'providers.show'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-providers.route '/update',
+providers.route '/:child_id/update',
   name: 'providers.update'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
@@ -307,12 +307,12 @@ receipts.route '/new',
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-receipts.route '/show',
+receipts.route '/:child_id/show',
   name: 'receipts.show'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-receipts.route '/update',
+receipts.route '/:child_id/update',
   name: 'receipts.update'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
@@ -338,12 +338,12 @@ sells.route '/new',
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-sells.route '/show',
+sells.route '/:child_id/show',
   name: 'sells.show'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-sells.route '/update',
+sells.route '/:child_id/update',
   name: 'sells.update'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
@@ -369,12 +369,12 @@ units.route '/new',
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-units.route '/show',
+units.route '/:child_id/show',
   name: 'units.show'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-units.route '/update',
+units.route '/:child_id/update',
   name: 'units.update'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
@@ -401,7 +401,7 @@ ousers.route '/new',
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-ousers.route '/show',
+ousers.route '/:child_id/show',
   name: 'ousers.show'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
@@ -427,12 +427,12 @@ yields.route '/new',
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-yields.route '/show',
+yields.route '/:child_id/show',
   name: 'yields.show'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
-yields.route '/update',
+yields.route '/:child_id/update',
   name: 'yields.update'
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'

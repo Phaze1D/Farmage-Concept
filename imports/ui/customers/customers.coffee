@@ -4,7 +4,8 @@
 { FlowRouter } = require 'meteor/kadira:flow-router'
 { SimpleSchema } = require 'meteor/aldeed:simple-schema'
 { ReactiveVar } = require 'meteor/reactive-var'
-{ ReactiveDict } = require 'meteor/reactive-dict'
+
+{ SubSchema } = require '../app/sub_schema.coffee'
 
 OrganizationModule = require '../../api/collections/organizations/organizations.coffee'
 CustomerModule = require '../../api/collections/customers/customers.coffee'
@@ -23,28 +24,7 @@ Template.CustomersT.onCreated ->
     onReady: () ->
 
   @autorun =>
-    new SimpleSchema(
-      index:
-        type: Boolean
-        optional: true
-        defaultValue: false
-      new:
-        type: Boolean
-        optional: true
-        defaultValue: false
-
-      'show':
-        type: Object
-        optional: true
-      'show.id':
-        type: String
-
-      'update':
-        type: Object
-        optional: true
-      'update.id':
-        type: String
-    ).validate(@data)
+    SubSchema.validate(@data)
 
     organ_id = FlowRouter.getParam('organization_id')
     parent = FlowRouter.getQueryParam('parent')
@@ -63,12 +43,7 @@ Template.CustomersT.helpers
 
   cView: () ->
     data = Template.instance().data
-    if data.show?
-
-    else if data.update?
-
-    else if data.new?
-      return 'CustomersNew'
-    else
-
-      return 'CustomersIndex'
+    return 'CustomersShow'    if data.show?
+    return 'CustomersUpdate'  if data.update?
+    return 'CustomersNew'     if data.new?
+    return 'CustomersIndex'
