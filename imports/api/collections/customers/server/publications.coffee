@@ -9,8 +9,6 @@ Meteor.publish "customers", (organization_id, parent, parent_id) ->
       type: String
     parent:
       type: String
-      allowedValues: ['organization', 'user']
-      defaultValue: 'organization'
       optional: true
     parent_id:
       type: String
