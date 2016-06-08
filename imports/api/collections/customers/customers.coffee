@@ -1,6 +1,5 @@
 { Mongo } = require 'meteor/mongo'
 { SimpleSchema } = require 'meteor/aldeed:simple-schema'
-{ Meteor } = require 'meteor/meteor'
 
 { ContactSchema } = require '../../shared/contact_info.coffee'
 { TimestampSchema } = require '../../shared/timestamps.coffee'

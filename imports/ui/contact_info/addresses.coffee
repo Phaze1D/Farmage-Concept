@@ -7,7 +7,7 @@
 { ReactiveVar } = require 'meteor/reactive-var'
 
 
-require './address.html'
+require './addresses.html'
 
 
 Template.Address.onCreated ->

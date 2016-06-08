@@ -5,7 +5,6 @@
 { ContactSchema } = require '../../shared/contact_info.coffee'
 { TimestampSchema } = require '../../shared/timestamps.coffee'
 
-CustomerModule = require '../customers/customers.coffee'
 EventModule = require '../events/events.coffee'
 ExpenseModule = require '../expenses/expenses.coffee'
 InventoryModule = require '../inventories/inventories.coffee'
@@ -16,6 +15,8 @@ SellModule = require '../sells/sells.coffee'
 UnitModule = require '../units/units.coffee'
 YieldModule = require '../yields/yields.coffee'
 IngredientModule = require '../ingredients/ingredients.coffee'
+CustomerModule  = require '../customers/customers.coffee'
+
 
 
 class OrganizationsCollection extends Mongo.Collection
@@ -123,10 +124,10 @@ Organizations.deny
     yes
 
 Organizations.helpers
-  customers: ->
-    CustomerModule.Customers.find { organization_id: @_id }
   events: ->
     EventModule.Events.find { organization_id: @_id }
+  customers: ->
+    CustomerModule.Customers.find { organization_id: @_id }
   expenses: ->
     ExpenseModule.Expenses.find { organization_id: @_id }
   inventories: ->

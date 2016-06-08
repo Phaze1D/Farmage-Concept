@@ -12,13 +12,7 @@ require './show.html'
 
 
 Template.OrganizationShow.onCreated ->
-  @organization = new ReactiveVar
-
-
-  @autorun =>
-    organ = OC.Organizations.findOne(_id: FlowRouter.getParam 'id')
-    @organization.set(organ)
-    
+  
 
 Template.OrganizationShow.onRendered ->
 
@@ -27,10 +21,11 @@ Template.OrganizationShow.onDestroyed ->
 
 Template.OrganizationShow.helpers
   organization: ->
-    Template.instance().organization.get()
+    OC.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
 
   permission: ->
-    Template.instance().organization.get().hasUser(Meteor.userId()).permission
+    organ = OC.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
+    organ.hasUser(Meteor.userId()).permission if organ?
 
 
 

@@ -4,7 +4,7 @@
 { SimpleSchema }  = require  'meteor/aldeed:simple-schema'
 { DDPRateLimiter }  = require  'meteor/ddp-rate-limiter'
 
-CustomerModule  = require './customers.coffee'
+# CustomerModule  = require './customers.coffee'
 
 
 {

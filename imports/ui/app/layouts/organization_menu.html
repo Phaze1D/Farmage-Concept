@@ -1,0 +1,32 @@
+<template name="OrganizationMenu">
+
+<!--  Make sure to check that parent_id belongs to organization -->
+
+  <div class="">
+    {{#if organization}}
+      <div class="">
+        <a href="/organizations/{{organization._id}}/customers">Customers</a>
+        <a href="#">Events</a>
+        <a href="#">Expenses</a>
+        <a href="#">Ingredients</a>
+        <a href="#">Inventories</a>
+        <a href="#">Products</a>
+        <a href="#">Providers</a>
+        <a href="#">Receipts</a>
+        <a href="#">Sells</a>
+        <a href="#">Units</a>
+        <a href="#">Users</a>
+        <a href="#">Yields</a>
+      </div>
+
+      <br>
+
+      {{> Template.dynamic template=subView data=subViewData}}
+
+    {{/if}}
+  </div>
+
+
+
+
+</template>

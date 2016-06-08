@@ -7,18 +7,16 @@
 { Organizations } = require '../../../api/collections/organizations/organizations.coffee'
 
 
-require './main_layout.html'
+require './main_menu.html'
 
 
-Template.MainLayout.onCreated ->
+Template.MainMenu.onCreated ->
   @ready = new ReactiveVar
 
-  @subCallback = =>
-    callbacks =
-      onStop: (err) ->
-        console.log err
-      onReady: () ->
-
+  @subCallback =
+    onStop: (err) ->
+      console.log "sub stop #{err}"
+    onReady: () ->
 
   @logout = ->
     Meteor.logout( (err) ->
@@ -31,17 +29,17 @@ Template.MainLayout.onCreated ->
     handler = Meteor.subscribe("organizations", @subCallback)
     @ready.set handler.ready()
 
-Template.MainLayout.onRendered ->
+Template.MainMenu.onRendered ->
   @autorun =>
     console.log "MR"
 
 
-Template.MainLayout.helpers
+Template.MainMenu.helpers
   ready: () ->
     Template.instance().ready.get()
 
 
 
-Template.MainLayout.events
+Template.MainMenu.events
   'click .js-logout': (event, instance) ->
     instance.logout()

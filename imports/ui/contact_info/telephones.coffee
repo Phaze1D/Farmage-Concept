@@ -8,7 +8,7 @@
 
 
 
-require './telephone.html'
+require './telephones.html'
 
 Template.Telephone.onCreated ->
   @err = new ReactiveVar

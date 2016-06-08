@@ -7,7 +7,7 @@ ContactModule = require '../../shared/contact_info.coffee'
 { BelongsOrganizationSchema } = require '../../shared/belong_organization.coffee'
 { CreateByUserSchema } = require '../../shared/created_by_user.coffee'
 
-
+OrganizationModule = require '../organizations/organizations.coffee'
 CustomerModule = require '../customers/customers.coffee'
 EventModule = require '../events/events.coffee'
 ExpenseModule = require '../expenses/expenses.coffee'
@@ -18,7 +18,6 @@ ReceiptModule = require '../receipts/receipts.coffee'
 SellModule = require '../sells/sells.coffee'
 UnitModule = require '../units/units.coffee'
 YieldModule = require '../yields/yields.coffee'
-OrganizationModule = require '../organizations/organizations.coffee'
 
 
 UserProfileSchema = exports.UserProfileSchema =

@@ -15,7 +15,7 @@ Template.OrganizationUpdate.onCreated ->
   @organization = new ReactiveVar
 
   @autorun =>
-    organ = OC.Organizations.findOne(_id: FlowRouter.getParam 'id')
+    organ = OC.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
     @organization.set(organ)
 
   @addAddress = (address_doc, callBack) =>

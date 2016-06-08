@@ -1,0 +1,14 @@
+<template name="CustomersIndex">
+
+  <div class="">
+    <a href="/organizations/{{organization._id}}/customers/new">Create</a>
+  </div>
+
+  <br>
+
+  CustomersIndex
+  {{#each customer in customers}}
+    {{customer.first_name}}
+  {{/each}}
+
+</template>
