@@ -41,7 +41,7 @@ Template.CustomersT.helpers
   organization: () ->
     OrganizationModule.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
 
-  cView: () ->
+  sView: () ->
     data = Template.instance().data
     return 'CustomersShow'    if data.show?
     return 'CustomersUpdate'  if data.update?

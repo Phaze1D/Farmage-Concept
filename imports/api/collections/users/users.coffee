@@ -114,7 +114,7 @@ Meteor.users.helpers
     InventoryModule.Inventories.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
   products: ->
     ProductModule.Products.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
-  providers:->
+  providers: ->
     ProviderModule.Providers.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
   receipts: ->
     ReceiptModule.Receipts.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1

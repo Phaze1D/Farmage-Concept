@@ -1,29 +1,20 @@
 { Meteor } = require 'meteor/meteor'
-{ SimpleSchema } = require 'meteor/aldeed:simple-schema'
-OrganizationModule = require '../../organizations/organizations.coffee'
-
+{ publicationInfo } = require '../../../mixins/server/publications_mixin.coffee'
 
 Meteor.publish "customers", (organization_id, parent, parent_id) ->
-  new SimpleSchema(
-    organization_id:
-      type: String
-    parent:
-      type: String
-      optional: true
-    parent_id:
-      type: String
-      optional: true
 
-  ).validate({organization_id, parent, parent_id})
+  info = publicationInfo organization_id, parent, parent_id
+  organization = info.organization
+  parentDoc = info.parentDoc
 
-  organization = OrganizationModule.Organizations.findOne(organization_id)
+  unless(organization? && organization.hasUser(@userId)?)
+    throw new Meteor.Error 'notAuthorized', 'not authorized'
 
-  parentDoc = organization                        if parent is "organization" || !parent?
-  parentDoc = Meteor.users.findOne(parent_id)     if parent is 'user' && organization.hasUser(parent_id)
-
+  unless parentDoc?
+    throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   # Missing permissions and pagenation
-  if @userId? && organization? && organization.hasUser(@userId) && parentDoc?
+  if @userId?
     return parentDoc.customers()
   else
     @ready();

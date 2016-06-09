@@ -1,3 +1,15 @@
 <template name="EventsT">
 
+  {{#if ready}}
+
+    <br>
+
+    {{> Template.dynamic template=sView}}
+
+
+
+  {{else}}
+    Loading.....
+  {{/if}}
+
 </template>

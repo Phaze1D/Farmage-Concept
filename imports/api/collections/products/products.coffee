@@ -6,8 +6,10 @@
 { CreateByUserSchema } = require '../../shared/created_by_user.coffee'
 { BelongsOrganizationSchema } = require '../../shared/belong_organization.coffee'
 
-InventoryModule = require '../products/products.coffee'
 OrganizationModule = require '../organizations/organizations.coffee'
+InventoryModule = require '../products/products.coffee'
+IngredientModule = require '../ingredients/ingredients.coffee'
+SellModule = require '../sells/sells.coffee'
 
 
 class ProductsCollection extends Mongo.Collection
@@ -125,8 +127,15 @@ Products.deny
     yes
 
 Products.helpers
+  ingredients: ->
+    id_array = ( ingredient.ingredient_id for ingredient in @ingredients )
+    IngredientModule.Ingredients.find { _id: $in: id_array }
+
+  sells: ->
+    SellModule.Sells.find 'details.product_id': @_id
+
   inventories: ->
-    InventoryModule.Inventories.find { product_id: @_id}
+    InventoryModule.Inventories.find product_id: @_id
 
   organization: ->
     OrganizationModule.Organizations.findOne { _id: @organization_id }

@@ -40,7 +40,7 @@ Template.EventsT.helpers
   organization: () ->
     OrganizationModule.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
 
-  cView: () ->
+  sView: () ->
     data = Template.instance().data
     return 'EventsShow'    if data.show?
     return 'EventsUpdate'  if data.update?

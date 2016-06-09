@@ -64,7 +64,7 @@ Customers.deny
 
 
 Customers.helpers
-  sells: ->  # This may not be necessary could use the route for this
+  sells: ->  
     SellModule.Sells.find {customer_id: @_id},  sort: created_at: -1
 
   organization: ->

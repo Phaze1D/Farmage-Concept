@@ -58,7 +58,7 @@ Providers.deny
     yes
 
 Providers.helpers
-    expanses: ->
+    expenses: ->
       ExpenseModule.Expenses.find { provider_id: @_id}
 
     organization: ->

@@ -136,15 +136,15 @@ Organizations.helpers
     IngredientModule.Ingredients.find { organization_id: @_id }
   products: ->
     ProductModule.Products.find { organization_id: @_id }
-  providers:->
+  providers: ->
     ProviderModule.Providers.find { organization_id: @_id }
   receipts: ->
     ReceiptModule.Receipts.find { organization_id: @_id }
   sells: ->
     SellModule.Sells.find { organization_id: @_id }
   units: ->
-    UnitModule.Units.find { organization_id: @_id }
-  users: ->
+    UnitModule.Units.find {$and: [organization_id: @_id, unit_id: null] } # make sure only parents
+  o_users: ->
     id_array = ( user.user_id for user in @ousers )
     Meteor.users.find { _id: $in: id_array }
   yields: ->

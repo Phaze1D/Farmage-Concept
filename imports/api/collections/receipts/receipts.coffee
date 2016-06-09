@@ -43,7 +43,7 @@ Receipts.deny
     yes
 
 Receipts.helpers
-  expanses: ->
+  expenses: ->
     ExpenseModule.Expenses.find { receipt_id: @_id}
 
   organization: ->

@@ -75,17 +75,14 @@ Units.deny
 
 Units.helpers
 
-  parent: ->
+  unit: ->
     Units.findOne { _id: @unit_id }
 
-  children: ->
+  units: ->
     Units.find { unit_id: @_id }
 
   yields: ->
     YieldModule.Yields.find { unit_id: @_id }
-
-  sells: ->
-    SellModule.Sells.find { 'sell_details.unit_id': @_id} # Possible error
 
   events: ->
     EventModule.Events.find { for_id: @_id }

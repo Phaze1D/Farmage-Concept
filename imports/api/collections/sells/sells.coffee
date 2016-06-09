@@ -210,15 +210,16 @@ Sells.helpers
   customer: ->
     CustomerModule.Customers.findOne { _id: @customer_id }
 
-  sell_detail_unit: (sell_detail) ->
-    unless sell_detail.unit_id?
-      UnitModule.Units.findOne { _id: sell_detail.unit_id }
+  products: ->
+    id_array = (detail.product_id for detail in @details)
+    ProductModule.Products.findOne { _id: $in: id_array}
 
-  sell_detail_product: (sell_detail) ->
-    ProductModule.Products.findOne { _id: sell_detail.product_id }
+  inventories: ->
+    id_array = []
+    for detail in @details
+      for inventory in detail.inventories
+        id_array.push inventory.inventory_id
 
-  sell_detail_inventories: (sell_detail) ->
-    id_array = ( inventory_item.inventory_id for inventory_item in sell_detail.inventories )
     InventoryModule.Inventories.find { _id: $in: id_array }
 
   organization: ->

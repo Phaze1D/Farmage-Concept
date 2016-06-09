@@ -63,7 +63,6 @@ Template.OrganizationMenu.helpers
     return new: true    if /new/i.test(routeName)
     return update: true if /update/i.test(routeName)
     return show: true   if /show/i.test(routeName)
-
     {}
 
 
