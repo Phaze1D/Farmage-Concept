@@ -1,5 +1,13 @@
 <template name="Root">
   <div class="">
-    {{> Login}}
+    {{#if login}}
+      {{> Login}}
+      <br>
+      <button type="button" class="js-show-signup">Sign Up</button>
+    {{else}}
+      {{> Signup}}
+      <br>
+      <button type="button" class="js-show-login">Login</button>
+    {{/if}}
   </div>
 </template>

@@ -6,7 +6,6 @@ require '../../ui/app/layouts/main_menu.coffee'
 require '../../ui/app/layouts/organization_menu.coffee'
 require '../../ui/app/errors/error.coffee'
 
-require '../../ui/users/login/login.coffee'
 require '../../ui/users/update/update.coffee'
 
 require '../../ui/organizations/new/new.coffee'

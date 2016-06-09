@@ -1,0 +1,22 @@
+<template name="Signup">
+  <div class="">
+    <form class="js-signup-form">
+      <label for="email">Email</label>
+      <input type="text" name="email" value="">
+
+      <label for="password">Password</label>
+      <input type="password" name="password" value="" autocomplete="off">
+
+      <label for="first_name">First Name</label>
+      <input type="text" name="first_name" value="">
+
+      <label for="last_name">Last Name</label>
+      <input type="text" name="last_name" value="">
+
+      <input type="submit" class="js-signup-b" value="Signup">
+    </form>
+  </div>
+
+
+  {{> ErrorT displayError}}
+</template>
