@@ -20,8 +20,9 @@ Template.OrganizationsNew.onCreated ->
 
 
 Template.OrganizationsNew.events
-  'click .js-save-b': (event, instance) ->
-    $form = instance.$('.js-new-form')
+  'submit .js-organization-form-new': (event, instance) ->
+    event.preventDefault()
+    $form = instance.$('.js-organization-form-new')
     organization_doc =
       name: $form.find('[name=company_name]').val()
     instance.insert organization_doc

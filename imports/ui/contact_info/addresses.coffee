@@ -42,7 +42,9 @@ Template.Address.helpers
     index = if Template.instance().uAddress.get() >= 0 then Template.instance().uAddress.get() else -1
     Template.instance().data.addresses[index] if index >= 0
 
-
+  form: () ->
+    return type: 'update', button: 'Save' if Template.instance().uAddress.get() >= 0
+    return type: 'new', button: 'Create'
 
 
 Template.Address.events
@@ -64,8 +66,9 @@ Template.Address.events
     instance.state.set(false)
     instance.data.removeAddress(index, instance.callBack)
 
-  'click .js-address-create': (event, instance) ->
-    $form = instance.$('.js-address-form')
+  'submit .js-address-form-new': (event, instance) ->
+    event.preventDefault()
+    $form = instance.$('.js-address-form-new')
     address_doc =
       name: $form.find('[name=name]').val()
       street: $form.find('[name=street]').val()
@@ -77,8 +80,9 @@ Template.Address.events
 
     instance.data.addAddress(address_doc, instance.callBack)
 
-  'click .js-address-save': (event, instance) ->
-    $form = instance.$('.js-address-form')
+  'submit .js-address-form-update': (event, instance) ->
+    event.preventDefault()
+    $form = instance.$('.js-address-form-update')
     index = instance.uAddress.get()
     address_doc =
       name: $form.find('[name=name]').val()

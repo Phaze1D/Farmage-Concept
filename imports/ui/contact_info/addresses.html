@@ -14,7 +14,7 @@
   <br>
 
   {{#if showForm}}
-    <div class="js-address-form">
+    <form class="js-address-form-{{form.type}}">
       <label for="name">Name</label>
       <input type="text" name="name" value="{{uAddress.name}}" >
       <br>
@@ -36,13 +36,9 @@
       <label for="country">Country</label>
       <input type="text" name="country" value="{{uAddress.country}}" >
       <br>
-      {{#if uAddress}}
-        <button type="button" class="js-address-save">Save</button>
-      {{else}}
-        <button type="button" class="js-address-create">Create</button>
-      {{/if}}
+      <input type="submit" class="js-address-{{form.type}}-s" value="{{form.button}}">
       <button type="button" class="js-address-cancel">Cancel</button>
-    </div>
+    </form>
   {{/if}}
 
 

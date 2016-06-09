@@ -1,7 +1,7 @@
 <template name="UserUpdate">
   <div class="">
     {{#with currentUser}}
-      <div class="js-update-form">
+      <form class="js-update-form">
         {{#each currentUser.emails}}
           <label for="email">Email</label>
           <input type="text" name="name" value="{{address}}" disabled="true">
@@ -12,11 +12,9 @@
 
         <label for="last_name">Last Name</label>
         <input type="text" name="last_name" value="{{profile.last_name}}">
-      </div>
+        <input type="submit" class="js-update-b" value="Save">
+      </form>
 
-      <div class="">
-        <button type="button" class="js-update-b">Save</button>
-      </div>
 
       <h4>Contact Info</h4>
 

@@ -41,6 +41,9 @@ Template.Telephone.helpers
     index = if Template.instance().uTelephone.get() >= 0 then Template.instance().uTelephone.get() else -1
     Template.instance().data.telephones[index] if index >= 0
 
+  form: () ->
+    return type: 'update', button: 'Save' if Template.instance().uTelephone.get() >= 0
+    return type: 'new', button: 'Create'
 
 Template.Telephone.events
 
@@ -61,16 +64,18 @@ Template.Telephone.events
     instance.state.set(false)
     instance.data.removeTelephone(index, instance.callBack)
 
-  'click .js-telephone-create': (event, instance) ->
-    $form = instance.$('.js-telephone-form')
+  'submit .js-telephone-form-new': (event, instance) ->
+    event.preventDefault()
+    $form = instance.$('.js-telephone-form-new')
     telephone_doc =
       name: $form.find('[name=name]').val()
       number: $form.find('[name=number]').val()
 
     instance.data.addTelephone(telephone_doc, instance.callBack)
 
-  'click .js-telephone-save': (event, instance) ->
-    $form = instance.$('.js-telephone-form')
+  'submit .js-telephone-form-update': (event, instance) ->
+    event.preventDefault()
+    $form = instance.$('.js-telephone-form-update')
     index = instance.uTelephone.get()
     telephone_doc =
       name: $form.find('[name=name]').val()

@@ -16,20 +16,17 @@
   </div>
   <br>
   {{#if showForm}}
-    <div class="js-telephone-form">
+    <form class="js-telephone-form-{{form.type}}">
       <label for="name">Name</label>
       <input type="text" name="name" value="{{uTelephone.name}}" placeholder="optional">
       <br>
       <label for="street">Number</label>
       <input type="text" name="number" value="{{uTelephone.number}}">
       <br>
-      {{#if uTelephone}}
-        <button type="button" class="js-telephone-save">Save</button>
-      {{else}}
-        <button type="button" class="js-telephone-create">Create</button>
-      {{/if}}
+
+      <input type="submit" class="js-telephone-{{form.type}}-s" value="{{form.button}}">
       <button type="button" class="js-telephone-cancel">Cancel</button>
-    </div>
+    </form>
   {{/if}}
 
   {{> ErrorT displayError}}

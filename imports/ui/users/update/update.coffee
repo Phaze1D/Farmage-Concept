@@ -88,7 +88,8 @@ Template.UserUpdate.helpers
 
 Template.UserUpdate.events
 
-  'click .js-update-b': (event, instance) ->
+  'submit .js-update-form': (event, instance) ->
+    event.preventDefault()
     $form = instance.$('.js-update-form')
     profile_doc =
       'profile.first_name': $form.find('[name=first_name]').val()
