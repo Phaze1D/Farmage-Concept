@@ -1,0 +1,31 @@
+<template name="OUsersIndex">
+  <div class="">
+    <a href="/organizations/{{organization._id}}/ousers/new">Invite User</a>
+  </div>
+
+  <br>
+
+  <h4>Organization's Users</h4>
+
+  {{#each ouser in ousers}}
+    <div class="">
+      {{#each email in ouser.emails}}
+        {{email.address}}
+      {{/each}}
+      <br>
+      {{#with hasUser ouser}}
+        {{#with permission}}
+          Owner: {{owner}} <br>
+          Editor: {{editor}} <br>
+          Expenses Manager: {{expenses_manager}} <br>
+          Sells Manager: {{sells_manager}} <br>
+          Unit Manager: {{units_manager}} <br>
+          Inventories Manager: {{inventories_manager}} <br>
+          User Manager: {{users_manager}} <br>
+
+        {{/with}}
+      {{/with}}
+    </div>
+    <br>
+  {{/each}}
+</template>

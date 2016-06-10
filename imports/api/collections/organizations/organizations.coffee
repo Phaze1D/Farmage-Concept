@@ -146,7 +146,9 @@ Organizations.helpers
     UnitModule.Units.find {$and: [organization_id: @_id, unit_id: null] } # make sure only parents
   o_users: ->
     id_array = ( user.user_id for user in @ousers )
-    Meteor.users.find { _id: $in: id_array }
+    Meteor.users.find { _id: $in: id_array }, fields:
+                                                services: 0
+                                                resume: 0
   yields: ->
     YieldModule.Yields.find { organization_id: @_id }
 

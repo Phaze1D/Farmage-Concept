@@ -6,18 +6,21 @@
 { ReactiveVar } = require 'meteor/reactive-var'
 
 OrganizationModule = require '../../../api/collections/organizations/organizations.coffee'
-EventModule = require '../../../api/collections/events/events.coffee'
 
 require './index.html'
 
-Template.EventsIndex.onCreated ->
+Template.OUsersIndex.onCreated ->
 
 
 
-
-Template.EventsIndex.helpers
-  events: () ->
-    EventModule.Events.find()
+Template.OUsersIndex.helpers
+  ousers: () ->
+    organization = OrganizationModule.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
+    organization.o_users()
 
   organization: () ->
     OrganizationModule.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
+
+  hasUser: (user) ->
+    organization = OrganizationModule.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
+    organization.hasUser(user._id)

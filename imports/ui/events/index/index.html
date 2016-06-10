@@ -1,0 +1,12 @@
+<template name="EventsIndex">
+
+  <h4>Events</h4>
+
+  {{#each event in events}}
+    <div class="">
+      {{event.for_type}} {{event.for_id}} ( Amount: {{event.amount}} )
+    </div>
+    <br>
+  {{/each}}
+
+</template>

@@ -9,7 +9,8 @@
 
 OrganizationModule = require '../../api/collections/organizations/organizations.coffee'
 
-
+require './index/index.coffee'
+require './new/new.coffee'
 require './ingredients.html'
 
 Template.IngredientsT.onCreated ->

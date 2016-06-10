@@ -1,0 +1,17 @@
+<template name="IngredientsIndex">
+  <div class="">
+    <a href="/organizations/{{organization._id}}/ingredients/new">Create</a>
+  </div>
+
+  <br>
+
+  <h4>Ingredients</h4>
+
+  {{#each ingredient in ingredients}}
+    <div class="">
+      {{ingredient.name}} {{ingredient.measurement_unit}}
+    </div>
+    <br>
+  {{/each}}
+
+</template>

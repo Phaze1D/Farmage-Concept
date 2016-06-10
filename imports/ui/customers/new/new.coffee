@@ -6,6 +6,7 @@
 { ReactiveVar } = require 'meteor/reactive-var'
 { ReactiveDict } = require 'meteor/reactive-dict'
 
+ContactModule = require '../../../api/shared/contact_info.coffee'
 CustomerModule = require '../../../api/collections/customers/customers.coffee'
 CMethods = require '../../../api/collections/customers/methods.coffee'
 
@@ -24,16 +25,26 @@ Template.CustomersNew.onCreated ->
       FlowRouter.go('customers.index', params ) unless err?
 
   @addAddress = (address_doc, callBack) =>
-    adds = @addresses.get()
-    adds.push address_doc
-    @addresses.set(adds)
-    callBack()
+    try
+      ContactModule.AddressSchema.clean(address_doc)
+      ContactModule.AddressSchema.validate(address_doc)
+      adds = @addresses.get()
+      adds.push address_doc
+      @addresses.set(adds)
+      callBack()
+    catch error
+      callBack(error)
 
   @updateAddress = (address_doc, index, callBack) =>
-    adds = @addresses.get()
-    adds[index] = address_doc
-    @addresses.set(adds)
-    callBack()
+    try
+      ContactModule.AddressSchema.clean(address_doc)
+      ContactModule.AddressSchema.validate(address_doc)
+      adds = @addresses.get()
+      adds[index] = address_doc
+      @addresses.set(adds)
+      callBack()
+    catch error
+      callBack(error)
 
   @removeAddress = (index, callBack) =>
     adds= (address for address, i in @addresses.get() when i isnt Number index )
@@ -41,16 +52,26 @@ Template.CustomersNew.onCreated ->
     callBack()
 
   @addTelephone = (telephone_doc, callBack) =>
-    tels = @telephones.get()
-    tels.push telephone_doc
-    @telephones.set(tels)
-    callBack()
+    try
+      ContactModule.TelephoneSchema.clean(telephone_doc)
+      ContactModule.TelephoneSchema.validate(telephone_doc)
+      tels = @telephones.get()
+      tels.push telephone_doc
+      @telephones.set(tels)
+      callBack()
+    catch error
+      callBack(error)
 
   @updateTelephone = (telephone_doc, index, callBack) =>
-    tels = @telephones.get()
-    tels[index] = telephone_doc
-    @telephones.set(tels)
-    callBack()
+    try
+      ContactModule.TelephoneSchema.clean(telephone_doc)
+      ContactModule.TelephoneSchema.validate(telephone_doc)
+      tels = @telephones.get()
+      tels[index] = telephone_doc
+      @telephones.set(tels)
+      callBack()
+    catch error
+      callBack(error)
 
   @removeTelephone = (index, callBack) =>
     tels = (telephone for telephone, i in @telephones.get() when i isnt Number index )
