@@ -28,7 +28,7 @@ inventoryIDs = []
 ingredientIDs = []
 
 
-describe "Sells Client Side Test", ->
+xdescribe "Sells Client Side Test", ->
   before ->
     resetDatabase(null);
 

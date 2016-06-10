@@ -53,7 +53,7 @@ UnitSchema =
       optional: true
       defaultValue: 0
 
-    unit_id:
+    unit_id: # Parent Id
       type: String
       index: true
       sparse: true

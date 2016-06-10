@@ -1,0 +1,19 @@
+<template name="ProvidersIndex">
+
+  <div class="">
+    <a href="/organizations/{{organization._id}}/providers/new">Create</a>
+  </div>
+
+  <br>
+
+  <h4>Providers</h4>
+
+  {{#each provider in providers}}
+    <div class="">
+      {{provider.first_name}}
+      {{provider.last_name}}
+    </div>
+    <br>
+  {{/each}}
+
+</template>

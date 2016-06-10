@@ -4,7 +4,7 @@
 { SimpleSchema }  = require  'meteor/aldeed:simple-schema'
 { DDPRateLimiter }  = require  'meteor/ddp-rate-limiter'
 
-# CustomerModule  = require './customers.coffee'
+CustomerModule  = require './customers.coffee'
 
 
 {
@@ -27,14 +27,13 @@
 module.exports.insert = new ValidatedMethod
   name: 'customers.insert'
   validate: ({customer_doc}) ->
+    CustomerModule.Customers.simpleSchema().clean(customer_doc)
     CustomerModule.Customers.simpleSchema().validate(customer_doc)
 
   run: ({customer_doc}) ->
 
     loggedIn(@userId)
-    unless @isSimulation
-      hasPermission(@userId, customer_doc.organization_id, "sells_manager")
-
+    hasPermission(@userId, customer_doc.organization_id, "sells_manager")
     CustomerModule.Customers.insert customer_doc
 
 

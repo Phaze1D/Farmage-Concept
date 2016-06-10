@@ -1,0 +1,18 @@
+<template name="UnitsIndex">
+
+  <div class="">
+    <a href="/organizations/{{organization._id}}/units/new">Create</a>
+  </div>
+
+  <br>
+
+  <h4>Units</h4>
+
+  {{#each unit in units}}
+    <div class="">
+      {{unit.name}} ( Amount: {{unit.amount}} )
+    </div>
+    <br>
+  {{/each}}
+
+</template>

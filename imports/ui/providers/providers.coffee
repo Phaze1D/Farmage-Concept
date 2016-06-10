@@ -9,8 +9,10 @@
 
 OrganizationModule = require '../../api/collections/organizations/organizations.coffee'
 
-
+require './new/new.coffee'
+require './index/index.coffee'
 require './providers.html'
+
 
 Template.ProvidersT.onCreated ->
   @ready = new ReactiveVar(false)

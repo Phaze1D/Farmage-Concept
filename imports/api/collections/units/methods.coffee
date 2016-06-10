@@ -56,6 +56,7 @@ module.exports.update = new ValidatedMethod
       hasPermission(@userId, organization_id, "units_manager")
       unitBelongsToOrgan(unit_id, organization_id)
       unitBelongsToOrgan(unit_doc.unit_id, organization_id) if unit_doc.unit_id?
+      loopProblem(unit_id, unit_doc.unit_id, organization_id)
 
     delete unit_doc.organization_id # Organization ID can't be update
     delete unit_doc.amount # User cannot update unit amount via this method
@@ -63,8 +64,14 @@ module.exports.update = new ValidatedMethod
     if UnitModule.Units.findOne( $and: [{_id: {$ne: unit_id }}, { organization_id: organization_id }, {name: unit_doc.name}] )?
       throw new Meteor.Error 'nameNotUnique', 'name must be unqiue'
 
-    if unit_id is unit_doc.unit_id
-      throw new Meteor.Error 'loopError', 'cannot be parent of itself'
 
     UnitModule.Units.update unit_id,
                             $set: unit_doc
+
+
+loopProblem = (child_id, parent_id, organization_id) ->
+  current_id = parent_id
+  while current_id?
+    unit = unitBelongsToOrgan(current_id, organization_id)
+    throw new Meteor.Error 'loopError', 'cannot be parent of itself' if child_id is current_id
+    current_id = unit.unit_id

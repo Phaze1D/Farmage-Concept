@@ -6,22 +6,22 @@
 { ReactiveVar } = require 'meteor/reactive-var'
 { ReactiveDict } = require 'meteor/reactive-dict'
 
-CustomerModule = require '../../../api/collections/customers/customers.coffee'
-CMethods = require '../../../api/collections/customers/methods.coffee'
+ProviderModule = require '../../../api/collections/providers/providers.coffee'
+PMethods = require '../../../api/collections/providers/methods.coffee'
 
 require './new.html'
 
-Template.CustomersNew.onCreated ->
+Template.ProvidersNew.onCreated ->
   @addresses = new ReactiveVar([])
   @telephones = new ReactiveVar([])
 
-  @insert = (customer_doc) =>
-    customer_doc.organization_id = FlowRouter.getParam('organization_id')
-    CMethods.insert.call {customer_doc}, (err, res) ->
+  @insert = (provider_doc) =>
+    provider_doc.organization_id = FlowRouter.getParam('organization_id')
+    PMethods.insert.call {provider_doc}, (err, res) ->
       console.log err
       params =
-        organization_id: customer_doc.organization_id
-      FlowRouter.go('customers.index', params ) unless err?
+        organization_id: provider_doc.organization_id
+      FlowRouter.go('providers.index', params ) unless err?
 
   @addAddress = (address_doc, callBack) =>
     adds = @addresses.get()
@@ -59,7 +59,7 @@ Template.CustomersNew.onCreated ->
 
 
 
-Template.CustomersNew.helpers
+Template.ProvidersNew.helpers
   addressInfo: ->
     ret =
       addAddress: Template.instance().addAddress
@@ -75,11 +75,11 @@ Template.CustomersNew.helpers
       telephones: Template.instance().telephones.get()
 
 
-Template.CustomersNew.events
-  'submit .js-customer-form-new': (event, instance) ->
+Template.ProvidersNew.events
+  'submit .js-provider-form-new': (event, instance) ->
     event.preventDefault()
-    $form = instance.$('.js-customer-form-new')
-    customer_doc =
+    $form = instance.$('.js-provider-form-new')
+    provider_doc =
       first_name: $form.find('[name=first_name]').val()
       last_name: $form.find('[name=last_name]').val()
       company: $form.find('[name=company]').val()
@@ -87,4 +87,4 @@ Template.CustomersNew.events
       addresses: instance.addresses.get()
       telephones: instance.telephones.get()
 
-    instance.insert customer_doc
+    instance.insert provider_doc
