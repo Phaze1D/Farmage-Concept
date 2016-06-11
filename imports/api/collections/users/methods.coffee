@@ -49,6 +49,7 @@ addUserToOrganization = (user_id, organization, permission) ->
 module.exports.inviteUser = new ValidatedMethod
   name: 'users.inviteUser'
   validate: ({invited_user_doc, organization_id, permission}) ->
+    Meteor.users.simpleSchema().clean(invited_user_doc)
     Meteor.users.simpleSchema().validate(invited_user_doc)
     OrganizationModule.PermissionSchema.validate(permission)
     new SimpleSchema(
@@ -64,8 +65,6 @@ module.exports.inviteUser = new ValidatedMethod
 
     unless @isSimulation
       organization = hasPermission(@userId, organization_id, "owner")
-
-    unless @isSimulation
       invited_user = Accounts.findUserByEmail invited_user_doc.emails[0].address
       if invited_user?
         addUserToOrganization(invited_user._id, organization, permission)

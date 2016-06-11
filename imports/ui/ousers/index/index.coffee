@@ -15,8 +15,7 @@ Template.OUsersIndex.onCreated ->
 
 Template.OUsersIndex.helpers
   ousers: () ->
-    organization = OrganizationModule.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
-    organization.o_users()
+    Meteor.users.find()
 
   organization: () ->
     OrganizationModule.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
