@@ -1,0 +1,18 @@
+<template name="InventoriesIndex">
+
+  <div class="">
+    <a href="/organizations/{{organization._id}}/inventories/new">Create</a>
+  </div>
+
+  <br>
+
+  <h4>Inventories</h4>
+
+  {{#each inventory in inventories}}
+    <div class="">
+      {{inventory._id}} (Price: {{inventory.price}})
+    </div>
+    <br>
+  {{/each}}
+
+</template>

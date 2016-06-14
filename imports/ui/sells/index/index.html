@@ -1,0 +1,18 @@
+<template name="SellsIndex">
+
+  <div class="">
+    <a href="/organizations/{{organization._id}}/sells/new">Create</a>
+  </div>
+
+  <br>
+
+  <h4>Sells</h4>
+
+  {{#each sell in sells}}
+    <div class="">
+      {{sell.name}} {{sell.unit_price}}
+    </div>
+    <br>
+  {{/each}}
+
+</template>
