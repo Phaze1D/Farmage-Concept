@@ -6,20 +6,18 @@
 { ReactiveVar } = require 'meteor/reactive-var'
 
 OrganizationModule = require '../../../api/collections/organizations/organizations.coffee'
+ProductModule = require '../../../api/collections/products/products.coffee'
 
 require './index.html'
 
-Template.OUsersIndex.onCreated ->
-  
+Template.ProductsIndex.onCreated ->
 
-Template.OUsersIndex.helpers
-  ousers: () ->
-    organ = OrganizationModule.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
-    organ.o_users()
+
+
+
+Template.ProductsIndex.helpers
+  products: () ->
+    ProductModule.Products.find()
 
   organization: () ->
     OrganizationModule.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
-
-  hasUser: (user) ->
-    organization = OrganizationModule.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
-    organization.hasUser(user._id)

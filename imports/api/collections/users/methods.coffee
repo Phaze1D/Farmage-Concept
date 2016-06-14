@@ -98,7 +98,6 @@ module.exports.updatePermission = new ValidatedMethod
       organization = hasPermission(@userId, organization_id, "users_manager")
       userBelongsToOrgan(update_user_id, organization_id)
 
-    unless @isSimulation
       uuser = organization.hasUser(update_user_id)
       cuser = organization.hasUser(@userId)
 
@@ -134,8 +133,6 @@ module.exports.removeFromOrganization = new ValidatedMethod
     unless @isSimulation
       hasPermission(@userId, organization_id, "owner")
       userBelongsToOrgan(update_user_id, organization_id)
-
-    unless @isSimulation
       # Pervents owners from removing themselves
       if update_user_id is @userId
         throw new Meteor.Error 'notAuthorized', 'an owner cannot remove themselves'

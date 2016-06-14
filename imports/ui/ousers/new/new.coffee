@@ -19,7 +19,11 @@ Template.OUsersNew.onCreated ->
       console.log err
       params =
         organization_id: organization_id
-      FlowRouter.go('ousers.index', params) unless err?
+      queryp =
+        parent: 'organization'
+        parent_id: organization_id
+      FlowRouter.go('ousers.index', params, queryp) unless err?
+
 
 Template.OUsersNew.helpers
 

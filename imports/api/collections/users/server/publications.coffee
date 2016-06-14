@@ -14,9 +14,9 @@ Meteor.publish "ousers", (organization_id, parent, parent_id) ->
   unless parentDoc?
     throw new Meteor.Error 'notAuthorized', 'not authorized'
 
+
   # Missing permissions and pagenation
   if @userId? && parentDoc?
-    return parentDoc.o_users() # does not return update
-    # Meteor.users.find() does
+    return parentDoc.o_users()
   else
     @ready();

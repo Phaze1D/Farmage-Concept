@@ -1,0 +1,18 @@
+<template name="ProductsIndex">
+
+  <div class="">
+    <a href="/organizations/{{organization._id}}/products/new">Create</a>
+  </div>
+
+  <br>
+
+  <h4>Products</h4>
+
+  {{#each product in products}}
+    <div class="">
+      {{product.name}} {{product.unit_price}}
+    </div>
+    <br>
+  {{/each}}
+
+</template>

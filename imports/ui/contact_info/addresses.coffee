@@ -61,7 +61,7 @@ Template.Address.events
     instance.state.set(true)
 
   'click .js-address-remove': (event, instance) ->
-    index = $(event.target).closest('.js-address').attr('data-index')
+    index = instance.$(event.target).closest('.js-address').attr('data-index')
     instance.uAddress.set(-1)
     instance.state.set(false)
     instance.data.removeAddress(index, instance.callBack)

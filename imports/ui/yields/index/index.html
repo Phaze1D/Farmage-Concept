@@ -1,0 +1,18 @@
+<template name="YieldsIndex">
+
+  <div class="">
+    <a href="/organizations/{{organization._id}}/yields/new">Create</a>
+  </div>
+
+  <br>
+
+  <h4>Yields</h4>
+
+  {{#each yield in yields}}
+    <div class="">
+      {{yield._id}} (Amount: {{yield.amount}})
+    </div>
+    <br>
+  {{/each}}
+
+</template>

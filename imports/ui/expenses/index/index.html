@@ -1,0 +1,18 @@
+<template name="ExpensesIndex">
+
+  <div class="">
+    <a href="/organizations/{{organization._id}}/expenses/new">Create</a>
+  </div>
+
+  <br>
+
+  <h4>Expenses</h4>
+
+  {{#each expense in expenses}}
+    <div class="">
+      {{expense._id}} (Price: {{expense.price}})
+    </div>
+    <br>
+  {{/each}}
+
+</template>
