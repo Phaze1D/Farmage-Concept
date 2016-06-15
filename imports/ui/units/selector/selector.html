@@ -1,0 +1,26 @@
+<template name="UnitsSelector">
+
+  {{#if ready}}
+  <div class="">
+
+    <div class="">
+      <a href="">Add New</a>
+    </div>
+
+    <div class="">
+      {{#each unit in units}}
+        <br>
+        <div class="js-unit-select" data-id="{{unit._id}}">
+          {{unit.name}}
+          {{unit.measurement_unit}}
+          {{unit._id}}
+        </div>
+
+      {{/each}}
+    </div>
+  </div>
+
+  {{else}}
+    Loading ......
+  {{/if}}
+</template>

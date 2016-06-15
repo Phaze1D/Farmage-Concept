@@ -5,7 +5,7 @@
 { SimpleSchema } = require 'meteor/aldeed:simple-schema'
 { ReactiveVar } = require 'meteor/reactive-var'
 
-{ SubSchema } = require '../app/sub_schema.coffee'
+{ SubSchema } = require '../../api/shared/sub_schema.coffee'
 
 OrganizationModule = require '../../api/collections/organizations/organizations.coffee'
 

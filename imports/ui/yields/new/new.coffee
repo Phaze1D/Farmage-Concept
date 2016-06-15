@@ -4,16 +4,24 @@
 { FlowRouter } = require 'meteor/kadira:flow-router'
 { SimpleSchema } = require 'meteor/aldeed:simple-schema'
 { ReactiveVar } = require 'meteor/reactive-var'
+{ ReactiveDict } = require 'meteor/reactive-dict'
 
 OrganizationModule = require '../../../api/collections/organizations/organizations.coffee'
+IngredientModule = require '../../../api/collections/ingredients/ingredients.coffee'
+UnitModule = require '../../../api/collections/units/units.coffee'
 YMethods = require '../../../api/collections/yields/methods.coffee'
 EMethods = require '../../../api/collections/events/methods.coffee'
 
+require '../../ingredients/selector/selector.coffee'
+require '../../units/selector/selector.coffee'
 
 require './new.html'
 
 
 Template.YieldsNew.onCreated ->
+  @selector = new ReactiveVar(null)
+  @ingredient = new ReactiveVar
+  @unit = new ReactiveVar
 
   @insert = (yield_doc) =>
     amount = yield_doc.amount
@@ -41,8 +49,34 @@ Template.YieldsNew.onCreated ->
       FlowRouter.go('yields.index', params ) unless err?
 
 
-Template.YieldsNew.helpers
+  @selectIngredient = (ingredient_id) =>
+    @ingredient.set(IngredientModule.Ingredients.findOne(ingredient_id))
+    @selector.set(null)
 
+  @selectUnit = (unit_id) =>
+    @unit.set(UnitModule.Units.findOne(unit_id))
+    @selector.set(null)
+
+
+
+Template.YieldsNew.helpers
+  showSelector: ->
+    Template.instance().selector.get()?
+
+  selector: ->
+    Template.instance().selector.get()
+
+  selectorData: ->
+    if Template.instance().selector.get() is 'IngredientsSelector'
+      return select: Template.instance().selectIngredient
+    if Template.instance().selector.get() is 'UnitsSelector'
+      return select: Template.instance().selectUnit
+
+  ingredient: ->
+    Template.instance().ingredient.get()
+
+  unit: ->
+    Template.instance().unit.get()
 
 Template.YieldsNew.events
   'submit .js-yield-form-new': (event, instance) ->
@@ -54,3 +88,15 @@ Template.YieldsNew.events
       ingredient_id: $form.find('[name=ingredient_id]').val()
       unit_id: $form.find('[name=unit_id]').val()
     instance.insert yield_doc
+
+  'focusin .js-input-units': (event, instance) ->
+    instance.selector.set('UnitsSelector')
+
+  'focusin .js-input-ingredients': (event, instance) ->
+    instance.selector.set('IngredientsSelector')
+
+  'mousedown .top': (event, instance) ->
+    container = instance.$('.js-selector')
+    instance.selector.set(null) if  !container.is(event.target) &&
+                                    container.has(event.target).length is 0 &&
+                                    instance.selector.get()?

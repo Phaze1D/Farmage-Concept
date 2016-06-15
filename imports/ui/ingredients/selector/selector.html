@@ -1,0 +1,26 @@
+<template name="IngredientsSelector">
+
+  {{#if ready}}
+  <div class="">
+
+    <div class="">
+      <a href="#">Add New</a>
+    </div>
+
+    <div class="">
+      {{#each ingredient in ingredients}}
+        <br>
+        <div class="js-ingredient-select" data-id="{{ingredient._id}}">
+          {{ingredient.name}}
+          {{ingredient.measurement_unit}}
+          {{ingredient._id}}
+        </div>
+
+      {{/each}}
+    </div>
+  </div>
+
+  {{else}}
+    Loading ......
+  {{/if}}
+</template>
