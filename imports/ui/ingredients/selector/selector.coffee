@@ -38,6 +38,7 @@ Template.IngredientsSelector.helpers
 
   ingredients:  ->
     organization = Organizations.findOne(FlowRouter.getParam('organization_id'))
+    return false if organization.ingredients().count() <= 0
     organization.ingredients()
 
 

@@ -21,13 +21,14 @@
 
       </form>
     </div>
-
     <br>
     <div class="js-selector">
-      {{#if showSelector}}
-        {{> Template.dynamic template=selector data=selectorData}}
-      {{/if}}
+      {{#with selector}}
+        {{> Template.dynamic template=title data=select }}
+      {{/with}}
     </div>
+
+
 </div>
 
 </template>

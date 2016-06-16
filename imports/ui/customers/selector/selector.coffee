@@ -12,12 +12,12 @@
 require './selector.html'
 
 
-Template.UnitsSelector.onCreated ->
+Template.CustomersSelector.onCreated ->
   @ready = new ReactiveVar
 
   @subCallback =
     onStop: (err) ->
-      console.log "selector unit stop #{err}"
+      console.log "selector ing stop #{err}"
     onReady: () ->
 
   @autorun =>
@@ -27,25 +27,22 @@ Template.UnitsSelector.onCreated ->
     ).validate(@data)
 
     organ_id = FlowRouter.getParam('organization_id')
-    handler = Meteor.subscribe 'units', organ_id, 'organization', organ_id, @subCallback
+    handler = Meteor.subscribe 'customers', organ_id, 'organization', organ_id, @subCallback
     @ready.set handler.ready()
 
 
 
-Template.UnitsSelector.helpers
+Template.CustomersSelector.helpers
   ready: ->
     Template.instance().ready.get()
 
-  units:  ->
+  customers:  ->
     organization = Organizations.findOne(FlowRouter.getParam('organization_id'))
-    return false if organization.units().count() <= 0
-    organization.units()
-
-  organization: ->
-    Organizations.findOne(FlowRouter.getParam('organization_id'))
+    return false if organization.customers().count() <= 0
+    organization.customers()
 
 
-Template.UnitsSelector.events
-  'click .js-unit-select': (event, instance) ->
+Template.CustomersSelector.events
+  'click .js-customer-select': (event, instance) ->
     id = $(event.target).attr 'data-id'
     instance.data.select id

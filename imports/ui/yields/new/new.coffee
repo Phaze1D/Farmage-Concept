@@ -19,7 +19,7 @@ require './new.html'
 
 
 Template.YieldsNew.onCreated ->
-  @selector = new ReactiveVar(null)
+  @selector = new ReactiveDict
   @ingredient = new ReactiveVar
   @unit = new ReactiveVar
 
@@ -51,26 +51,21 @@ Template.YieldsNew.onCreated ->
 
   @selectIngredient = (ingredient_id) =>
     @ingredient.set(IngredientModule.Ingredients.findOne(ingredient_id))
-    @selector.set(null)
+    @selector.set('title', null)
 
   @selectUnit = (unit_id) =>
     @unit.set(UnitModule.Units.findOne(unit_id))
-    @selector.set(null)
+    @selector.set('title', null)
 
 
 
 Template.YieldsNew.helpers
-  showSelector: ->
-    Template.instance().selector.get()?
-
   selector: ->
-    Template.instance().selector.get()
-
-  selectorData: ->
-    if Template.instance().selector.get() is 'IngredientsSelector'
-      return select: Template.instance().selectIngredient
-    if Template.instance().selector.get() is 'UnitsSelector'
-      return select: Template.instance().selectUnit
+    instance = Template.instance()
+    ret =
+      title: instance.selector.get('title')
+      select:
+        select: instance[instance.selector.get('select')]
 
   ingredient: ->
     Template.instance().ingredient.get()
@@ -90,13 +85,17 @@ Template.YieldsNew.events
     instance.insert yield_doc
 
   'focusin .js-input-units': (event, instance) ->
-    instance.selector.set('UnitsSelector')
+    instance.selector.set 'title', 'UnitsSelector'
+    instance.selector.set 'select', 'selectUnit'
+    instance.unit.set null
 
   'focusin .js-input-ingredients': (event, instance) ->
-    instance.selector.set('IngredientsSelector')
+    instance.selector.set 'title','IngredientsSelector'
+    instance.selector.set 'select', 'selectIngredient'
+    instance.ingredient.set null
 
   'mousedown .top': (event, instance) ->
     container = instance.$('.js-selector')
-    instance.selector.set(null) if  !container.is(event.target) &&
+    instance.selector.set('title', null) if  !container.is(event.target) &&
                                     container.has(event.target).length is 0 &&
-                                    instance.selector.get()?
+                                    instance.selector.get('title')?

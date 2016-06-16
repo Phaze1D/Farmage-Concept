@@ -12,12 +12,12 @@
 require './selector.html'
 
 
-Template.UnitsSelector.onCreated ->
+Template.YieldsSelector.onCreated ->
   @ready = new ReactiveVar
 
   @subCallback =
     onStop: (err) ->
-      console.log "selector unit stop #{err}"
+      console.log "selector ing stop #{err}"
     onReady: () ->
 
   @autorun =>
@@ -27,25 +27,22 @@ Template.UnitsSelector.onCreated ->
     ).validate(@data)
 
     organ_id = FlowRouter.getParam('organization_id')
-    handler = Meteor.subscribe 'units', organ_id, 'organization', organ_id, @subCallback
+    handler = Meteor.subscribe 'yields', organ_id, 'organization', organ_id, @subCallback
     @ready.set handler.ready()
 
 
 
-Template.UnitsSelector.helpers
+Template.YieldsSelector.helpers
   ready: ->
     Template.instance().ready.get()
 
-  units:  ->
+  yields:  ->
     organization = Organizations.findOne(FlowRouter.getParam('organization_id'))
-    return false if organization.units().count() <= 0
-    organization.units()
-
-  organization: ->
-    Organizations.findOne(FlowRouter.getParam('organization_id'))
+    return false if organization.yields().count() <= 0
+    organization.yields()
 
 
-Template.UnitsSelector.events
-  'click .js-unit-select': (event, instance) ->
+Template.YieldsSelector.events
+  'click .js-yield-select': (event, instance) ->
     id = $(event.target).attr 'data-id'
     instance.data.select id

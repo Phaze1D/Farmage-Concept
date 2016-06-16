@@ -167,11 +167,9 @@ SellSchema =
       type: String
       optional: true
 
-    receipt_id:
+    receipt_url:
       type: String
       optional: true
-      index: true
-      sparse: true
 
     note:
       type: String

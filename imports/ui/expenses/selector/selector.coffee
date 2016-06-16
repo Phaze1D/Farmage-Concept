@@ -12,12 +12,12 @@
 require './selector.html'
 
 
-Template.UnitsSelector.onCreated ->
+Template.ExpensesSelector.onCreated ->
   @ready = new ReactiveVar
 
   @subCallback =
     onStop: (err) ->
-      console.log "selector unit stop #{err}"
+      console.log "selector ing stop #{err}"
     onReady: () ->
 
   @autorun =>
@@ -27,25 +27,22 @@ Template.UnitsSelector.onCreated ->
     ).validate(@data)
 
     organ_id = FlowRouter.getParam('organization_id')
-    handler = Meteor.subscribe 'units', organ_id, 'organization', organ_id, @subCallback
+    handler = Meteor.subscribe 'expenses', organ_id, 'organization', organ_id, @subCallback
     @ready.set handler.ready()
 
 
 
-Template.UnitsSelector.helpers
+Template.ExpensesSelector.helpers
   ready: ->
     Template.instance().ready.get()
 
-  units:  ->
+  expenses:  ->
     organization = Organizations.findOne(FlowRouter.getParam('organization_id'))
-    return false if organization.units().count() <= 0
-    organization.units()
-
-  organization: ->
-    Organizations.findOne(FlowRouter.getParam('organization_id'))
+    return false if organization.expenses().count() <= 0
+    organization.expenses()
 
 
-Template.UnitsSelector.events
-  'click .js-unit-select': (event, instance) ->
+Template.ExpensesSelector.events
+  'click .js-expense-select': (event, instance) ->
     id = $(event.target).attr 'data-id'
     instance.data.select id

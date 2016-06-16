@@ -1,0 +1,33 @@
+<template name="SellsSelector">
+
+  {{#if ready}}
+  <div class="">
+
+    <div class="">
+      <form class="js-search-sells">
+        <input type="text" name="name" value="" placeholder="search">
+      </form>
+    </div>
+
+    <div class="">
+      {{#each sell in sells}}
+        <br>
+        <div class="js-sell-select" data-id="{{sell._id}}">
+          {{sell.name}}
+          {{sell.measurement_unit}}
+          {{sell._id}}
+        </div>
+      {{/each}}
+    </div>
+
+    <div class="">
+      {{#unless sells}}
+        No Sells
+      {{/unless}}
+    </div>
+  </div>
+
+  {{else}}
+    Loading ......
+  {{/if}}
+</template>

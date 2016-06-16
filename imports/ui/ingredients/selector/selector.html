@@ -17,8 +17,13 @@
           {{ingredient.measurement_unit}}
           {{ingredient._id}}
         </div>
-
       {{/each}}
+    </div>
+
+    <div class="">
+      {{#unless ingredients}}
+        No Ingredients
+      {{/unless}}
     </div>
   </div>
 

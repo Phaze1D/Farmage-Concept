@@ -3,13 +3,11 @@
 
 UnitModule = require '../../units/units.coffee'
 ProviderModule = require '../../providers/providers.coffee'
-ReceiptModule = require '../../receipts/receipts.coffee'
 
 
 collections = {}
 collections.unit = UnitModule.Units
 collections.provider = ProviderModule.Providers
-collections.receipt = ReceiptModule.Receipts
 
 
 Meteor.publish "expenses", (organization_id, parent, parent_id) ->

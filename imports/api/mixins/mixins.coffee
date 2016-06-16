@@ -4,7 +4,6 @@ ProductModule = require '../collections/products/products.coffee'
 CustomerModule = require '../collections/customers/customers.coffee'
 UnitModule = require '../collections/units/units.coffee'
 YieldModule = require '../collections/yields/yields.coffee'
-ReceiptModule = require '../collections/receipts/receipts.coffee'
 ExpenseModule = require '../collections/expenses/expenses.coffee'
 InventoryModule = require '../collections/inventories/inventories.coffee'
 IngredientModule = require '../collections/ingredients/ingredients.coffee'
@@ -78,14 +77,6 @@ module.exports.yieldBelongsToOrgan = (yield_id, organization_id) ->
 
   return _yield
 
-
-module.exports.receiptBelongsToOrgan = (receipt_id, organization_id) ->
-  receipt = ReceiptModule.Receipts.findOne(_id: receipt_id)
-
-  unless (receipt? && receipt.organization_id is organization_id)
-    throw new Meteor.Error 'notAuthorized', 'receipt does not belong'
-
-  return receipt
 
 module.exports.expenseBelongsToOrgan = (expense_id, organization_id) ->
   expense = ExpenseModule.Expenses.findOne(_id: expense_id)

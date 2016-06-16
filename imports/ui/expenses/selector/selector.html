@@ -1,0 +1,33 @@
+<template name="ExpensesSelector">
+
+  {{#if ready}}
+  <div class="">
+
+    <div class="">
+      <form class="js-search-expenses">
+        <input type="text" name="name" value="" placeholder="search">
+      </form>
+    </div>
+
+    <div class="">
+      {{#each expense in expenses}}
+        <br>
+        <div class="js-expense-select" data-id="{{expense._id}}">
+          {{expense.name}}
+          {{expense.measurement_unit}}
+          {{expense._id}}
+        </div>
+      {{/each}}
+    </div>
+
+    <div class="">
+      {{#unless expenses}}
+        No Expenses
+      {{/unless}}
+    </div>
+  </div>
+
+  {{else}}
+    Loading ......
+  {{/if}}
+</template>

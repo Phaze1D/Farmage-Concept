@@ -285,38 +285,6 @@ providers.route '/:child_id/update',
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
 
-
-# Receipts Group
-receipts = organizations.group
-  prefix: '/:organization_id/receipts'
-  name: 'receipts'
-
-receipts.route '/',
-  name: 'receipts'
-  action: () ->
-    BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
-
-receipts.route '/index',
-  name: 'receipts.index'
-  action: () ->
-    BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
-
-receipts.route '/new',
-  name: 'receipts.new'
-  action: () ->
-    BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
-
-receipts.route '/:child_id/show',
-  name: 'receipts.show'
-  action: () ->
-    BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
-
-receipts.route '/:child_id/update',
-  name: 'receipts.update'
-  action: () ->
-    BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
-
-
 # Sells Group
 sells = organizations.group
   prefix: '/:organization_id/sells'

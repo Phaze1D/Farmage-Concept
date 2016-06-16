@@ -6,7 +6,6 @@
 { BelongsOrganizationSchema } = require '../../shared/belong_organization.coffee'
 
 OrganizationModule = require '../organizations/organizations.coffee'
-ReceiptModule = require '../receipts/receipts.coffee'
 ProviderModule = require '../providers/providers.coffee'
 UnitModule = require '../units/units.coffee'
 
@@ -48,17 +47,9 @@ ExpenseSchema =
       max: 512
       optional: true
 
-    quantity:
-      type: Number
-      label: 'quantity'
-      decimal: true
-      optional: true
-
-    receipt_id:
+    receipt_url:
       type: String
       optional: true
-      index: true
-      sparse: true
 
     provider_id:
       type: String
@@ -84,10 +75,6 @@ Expenses.deny
     yes
 
 Expenses.helpers
-  receipt: ->
-    unless @receipts_id?
-       return ReceiptModule.Receipts.findOne { _id: @receipts_id}
-
   provider: ->
     unless @provider_id?
       return ProviderModule.Providers.findOne { _id: @provider_id}

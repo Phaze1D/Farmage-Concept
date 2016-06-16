@@ -1,0 +1,33 @@
+<template name="CustomersSelector">
+
+  {{#if ready}}
+  <div class="">
+
+    <div class="">
+      <form class="js-search-customers">
+        <input type="text" name="name" value="" placeholder="search">
+      </form>
+    </div>
+
+    <div class="">
+      {{#each customer in customers}}
+        <br>
+        <div class="js-customer-select" data-id="{{customer._id}}">
+          {{customer.name}}
+          {{customer.measurement_unit}}
+          {{customer._id}}
+        </div>
+      {{/each}}
+    </div>
+
+    <div class="">
+      {{#unless customers}}
+        No Customers
+      {{/unless}}
+    </div>
+  </div>
+
+  {{else}}
+    Loading ......
+  {{/if}}
+</template>

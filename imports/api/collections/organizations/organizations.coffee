@@ -10,7 +10,6 @@ ExpenseModule = require '../expenses/expenses.coffee'
 InventoryModule = require '../inventories/inventories.coffee'
 ProductModule = require '../products/products.coffee'
 ProviderModule = require '../providers/providers.coffee'
-ReceiptModule = require '../receipts/receipts.coffee'
 SellModule = require '../sells/sells.coffee'
 UnitModule = require '../units/units.coffee'
 YieldModule = require '../yields/yields.coffee'
@@ -138,12 +137,10 @@ Organizations.helpers
     ProductModule.Products.find { organization_id: @_id }
   providers: ->
     ProviderModule.Providers.find { organization_id: @_id }
-  receipts: ->
-    ReceiptModule.Receipts.find { organization_id: @_id }
   sells: ->
     SellModule.Sells.find { organization_id: @_id }
   units: ->
-    UnitModule.Units.find {$and: [organization_id: @_id, unit_id: null] } # make sure only parents
+    UnitModule.Units.find { organization_id: @_id } # make sure only parents
   o_users: ->
     id_array = ( user.user_id for user in @ousers )
     Meteor.users.find { _id: $in: id_array }

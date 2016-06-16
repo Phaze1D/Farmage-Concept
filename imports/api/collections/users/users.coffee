@@ -14,7 +14,6 @@ ExpenseModule = require '../expenses/expenses.coffee'
 InventoryModule = require '../inventories/inventories.coffee'
 ProductModule = require '../products/products.coffee'
 ProviderModule = require '../providers/providers.coffee'
-ReceiptModule = require '../receipts/receipts.coffee'
 SellModule = require '../sells/sells.coffee'
 UnitModule = require '../units/units.coffee'
 YieldModule = require '../yields/yields.coffee'
@@ -116,8 +115,6 @@ Meteor.users.helpers
     ProductModule.Products.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
   providers: ->
     ProviderModule.Providers.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
-  receipts: ->
-    ReceiptModule.Receipts.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
   sells: ->
     SellModule.Sells.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
   units: ->

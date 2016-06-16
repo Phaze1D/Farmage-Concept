@@ -4,21 +4,21 @@
 { FlowRouter } = require 'meteor/kadira:flow-router'
 { SimpleSchema } = require 'meteor/aldeed:simple-schema'
 { ReactiveVar } = require 'meteor/reactive-var'
+{ ReactiveDict } = require 'meteor/reactive-dict'
+
 
 OrganizationModule = require '../../../api/collections/organizations/organizations.coffee'
 ProductModule = require '../../../api/collections/products/products.coffee'
+IngredientModule = require '../../../api/collections/ingredients/ingredients.coffee'
 PMethods = require '../../../api/collections/products/methods.coffee'
 
-
+require '../../ingredients/selector/selector.coffee'
 require './new.html'
 
 
 Template.ProductsNew.onCreated ->
-  @ingredients = new ReactiveVar
-  @showInput = new ReactiveVar(false)
-
-  @autorun =>
-    @ingredients.set([])
+  @selector = new ReactiveDict
+  @ingredients = new ReactiveVar([])
 
   @insert = (product_doc) =>
     product_doc.organization_id = FlowRouter.getParam('organization_id')
@@ -29,37 +29,33 @@ Template.ProductsNew.onCreated ->
       FlowRouter.go('products.index', params ) unless err?
 
 
-  @addIngredient = (ingredient_doc) =>
-    ingrs = @ingredients.get()
-    ingrs.push ingredient_doc
-    @ingredients.set(ingrs)
-
   @removeIngredient = (index) =>
     ings = (ingredient for ingredient, i in @ingredients.get() when i isnt Number index )
     @ingredients.set(ings)
 
+  @selectIngredient = (ingredient_id) =>
+    @selector.set('title', null)
+    return for ingredient in @ingredients.get() when ingredient._id is ingredient_id
+    ings = @ingredients.get()
+    ings.push IngredientModule.Ingredients.findOne ingredient_id
+    @ingredients.set ings
 
 
 Template.ProductsNew.helpers
-  showInput: ->
-    Template.instance().showInput.get()
+  selector: ->
+    instance = Template.instance()
+    ret =
+      title: instance.selector.get('title')
+      select:
+        select: instance[instance.selector.get('select')]
 
   ingredients: ->
     Template.instance().ingredients.get()
 
 Template.ProductsNew.events
   'click .js-add-ingredient': (event, instance) ->
-    instance.showInput.set(true)
-
-  'click .js-cancel-ingredient': (event, instance) ->
-    instance.showInput.set(false)
-
-  'click .js-save-ingredient': (event, instance) ->
-    instance.showInput.set(false)
-    ingredient_doc =
-      ingredient_id: instance.$('[name=ingredient_id]').val()
-      amount: instance.$('[name=amount]').val()
-    instance.addIngredient(ingredient_doc)
+    instance.selector.set 'title', 'IngredientsSelector'
+    instance.selector.set 'select', 'selectIngredient'
 
   'click .js-remove-ingredient': (event, instance) ->
     index =  instance.$(event.target).closest('.js-ingredient').attr('data-index')
@@ -78,3 +74,9 @@ Template.ProductsNew.events
       tax_rate: $form.find('[name=tax_rate]').val()
       ingredients: instance.ingredients.get()
     instance.insert product_doc
+
+  'mousedown .top': (event, instance) ->
+    container = instance.$('.js-selector')
+    instance.selector.set('title', null) if  !container.is(event.target) &&
+                                    container.has(event.target).length is 0 &&
+                                    instance.selector.get('title')?

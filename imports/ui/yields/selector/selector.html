@@ -1,0 +1,33 @@
+<template name="YieldsSelector">
+
+  {{#if ready}}
+  <div class="">
+
+    <div class="">
+      <form class="js-search-yields">
+        <input type="text" name="name" value="" placeholder="search">
+      </form>
+    </div>
+
+    <div class="">
+      {{#each yield in yields}}
+        <br>
+        <div class="js-yield-select" data-id="{{yield._id}}">
+          {{yield.name}}
+          {{yield.measurement_unit}}
+          {{yield._id}}
+        </div>
+      {{/each}}
+    </div>
+
+    <div class="">
+      {{#unless yields}}
+        No Yields
+      {{/unless}}
+    </div>
+  </div>
+
+  {{else}}
+    Loading ......
+  {{/if}}
+</template>

@@ -4,14 +4,22 @@
 { FlowRouter } = require 'meteor/kadira:flow-router'
 { SimpleSchema } = require 'meteor/aldeed:simple-schema'
 { ReactiveVar } = require 'meteor/reactive-var'
+{ ReactiveDict } = require 'meteor/reactive-dict'
+
 
 OrganizationModule = require '../../../api/collections/organizations/organizations.coffee'
+UnitModule = require '../../../api/collections/units/units.coffee'
+ProviderModule = require '../../../api/collections/providers/providers.coffee'
 EMethods = require '../../../api/collections/expenses/methods.coffee'
 
-
+require '../../providers/selector/selector.coffee'
+require '../../units/selector/selector.coffee'
 require './new.html'
 
 Template.ExpensesNew.onCreated ->
+  @selector = new ReactiveDict
+  @unit = new ReactiveVar
+  @provider = new ReactiveVar
 
   @insert = (expense_doc) =>
     expense_doc.organization_id = FlowRouter.getParam('organization_id')
@@ -21,8 +29,28 @@ Template.ExpensesNew.onCreated ->
         organization_id: expense_doc.organization_id
       FlowRouter.go('expenses.index', params ) unless err?
 
-Template.ExpensesNew.helpers
+  @selectProvider = (provider_id) =>
+    @provider.set(ProviderModule.Providers.findOne(provider_id))
+    @selector.set('title', null)
 
+  @selectUnit = (unit_id) =>
+    @unit.set(UnitModule.Units.findOne(unit_id))
+    @selector.set('title', null)
+
+
+Template.ExpensesNew.helpers
+  selector: ->
+    instance = Template.instance()
+    ret =
+      title: instance.selector.get('title')
+      select:
+        select: instance[instance.selector.get('select')]
+
+  provider: ->
+    Template.instance().provider.get()
+
+  unit: ->
+    Template.instance().unit.get()
 
 
 Template.ExpensesNew.events
@@ -38,3 +66,19 @@ Template.ExpensesNew.events
       provider_id: $form.find('[name=provider_id]').val()
       unit_id: $form.find('[name=unit_id]').val()
     instance.insert expense_doc
+
+  'focusin .js-input-units': (event, instance) ->
+    instance.selector.set 'title', 'UnitsSelector'
+    instance.selector.set 'select', 'selectUnit'
+    instance.unit.set null
+
+  'focusin .js-input-providers': (event, instance) ->
+    instance.selector.set 'title', 'ProvidersSelector'
+    instance.selector.set 'select', 'selectProvider'
+    instance.provider.set null
+
+  'mousedown .top': (event, instance) ->
+    container = instance.$('.js-selector')
+    instance.selector.set('title', null) if  !container.is(event.target) &&
+                                    container.has(event.target).length is 0 &&
+                                    instance.selector.get('title')?

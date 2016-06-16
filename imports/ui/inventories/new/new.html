@@ -1,37 +1,41 @@
 <template name="InventoriesNew">
-  <div class="">
-    <form class="js-inventories-form-new">
-      <label for="amount">Amount</label>
-      <input type="number" name="amount" value="" min="0">
-      <br>
-      <label for="expiration_date">Expiration Date</label>
-      <input type="date" name="expiration_date" value="">
-      <br>
-      <label for="product_id">Product</label>
-      <input type="text" name="product_id" value="">
-      <br>
-      <label for="yield_objects">Yields</label>
-      {{#if showAdd}}
+  <div class="top">
+    <div class="">
+      <form class="js-inventories-form-new">
+        <label for="amount">Amount</label>
+        <input type="number" name="amount" value="" min="0">
         <br>
-        <label for="yield_id">Yield ID</label>
-        <input type="text" name="yield_id" value="">
-        <label for="amount_taken">Amount Taken</label>
-        <input type="number" name="amount_taken" value="" min="0">
-        <button type="button" class="js-yield-insert">Add</button>
-        <button type="button" class="js-yield-cancel">Cancel</button>
-      {{else}}
-        <button type="button" class="js-yields-add">Add</button>
-      {{/if}}
+        <label for="expiration_date">Expiration Date</label>
+        <input type="date" name="expiration_date" value="">
+        <br>
+        <label for="product_id">Product</label>
+        <input type="text" class="js-input-products" name="product_id" value="{{product._id}}">
+        {{product.name}} {{product.price}} {{product._id}}
+        <br>
+        <label for="yield_objects">Yields</label>
+        <button type="button" class="js-yield-add">Add</button>
 
-      {{#each yield in yields}}
+
+        {{#each yield in yields}}
+          <br>
+          <div class="js-yield" data-index="{{@index}}">
+            {{yield._id}} (Amount: {{yield.amount}})
+            <label for="amount_taken">Amount Taken</label>
+            <input type="number" name="amount_taken" value="" min="0" max="{{yield.amount}}">
+            <button type="button" class="js-yield-remove">Remove</button>
+          </div>
+        {{/each}}
         <br>
-        <div class="js-yield" data-index="{{@index}}">
-          {{yield.yield_id}} {{yield.amount_taken}}
-          <button type="button" class="js-yield-remove">Remove</button>
-        </div>
-      {{/each}}
-      <br>
-      <input type="submit" name="name" value="Save">
-    </form>
+        <br>
+        <input type="submit" name="name" value="Save">
+      </form>
+    </div>
+
+    <br>
+    <div class="js-selector">
+      {{#with selector}}
+        {{> Template.dynamic template=title data=select }}
+      {{/with}}
+    </div>
   </div>
 </template>
