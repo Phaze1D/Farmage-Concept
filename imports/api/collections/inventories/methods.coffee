@@ -4,6 +4,7 @@
 { DDPRateLimiter }  = require  'meteor/ddp-rate-limiter'
 
 InventoryModule = require './inventories.coffee'
+EventModule = require '../events/events.coffee'
 
 {
   loggedIn
@@ -64,3 +65,25 @@ module.exports.update = new ValidatedMethod
     delete inventory_doc.organization_id
 
     InventoryModule.Inventories.update inventory_id, {$set: inventory_doc}
+
+
+module.exports.delete = new ValidatedMethod
+  name: 'inventory.delete'
+  validate: ({organization_id, inventory_id}) ->
+    new SimpleSchema(
+      organization_id:
+        type: String
+      inventory_id:
+        type: String
+    ).validate({organization_id, inventory_id})
+
+  run: ({organization_id, inventory_id}) ->
+    loggedIn(@userId)
+
+    unless @isSimulation
+      hasPermission(@userId, organization_id, "inventories_manager")
+      inventoryBelongsToOrgan(inventory_id, organization_id)
+      if EventModule.Events.findOne({for_id: inventory_id})?
+        throw new Meteor.Error 'deleteError', 'cannot delete an inventory with connections'
+
+    InventoryModule.Inventories.remove inventory_id

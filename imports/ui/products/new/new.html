@@ -37,7 +37,7 @@
           <div class="js-ingredient" data-index="{{@index}}">
             {{name}} {{measurement_unit}}
             <label for="amount">Amount</label>
-            <input type="number" name="amount_{{_id}}" value="" min="0">
+            <input type="number" name="amount_{{_id}}" value="" min="0" step="any">
             <button type="button" class="js-remove-ingredient">Remove</button>
           </div>
         {{/each}}

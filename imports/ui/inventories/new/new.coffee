@@ -5,6 +5,8 @@
 { SimpleSchema } = require 'meteor/aldeed:simple-schema'
 { ReactiveVar } = require 'meteor/reactive-var'
 { ReactiveDict } = require 'meteor/reactive-dict'
+Big = require 'big.js'
+
 
 
 OrganizationModule = require '../../../api/collections/organizations/organizations.coffee'
@@ -60,7 +62,8 @@ Template.InventoriesNew.onCreated ->
     i = 0
     prev = 0
     for key, value of @proIngDict.all()
-      value.cAmount = if sums[key]? then sums[key]/value.ingredient.amount else 0
+      sum = new Big(sums[key])
+      value.cAmount = if sums[key]? then Number sum.div(value.ingredient.amount) else 0
       @proIngDict.set(key, value)
 
       unless value.cAmount is @invAmount.get()
@@ -70,8 +73,32 @@ Template.InventoriesNew.onCreated ->
       i++
 
   @insert = (inventory_doc) =>
-    
+    yield_objects = inventory_doc.yield_objects
+    amount = inventory_doc.amount
+    delete inventory_doc.amount
+    delete inventory_doc.yield_objects
+    inventory_doc.organization_id = FlowRouter.getParam('organization_id')
 
+    IMethods.insert.call {inventory_doc}, (err, res) =>
+      console.log err
+      if amount > 0 && res?
+        @packEvent(amount, yield_objects, res, inventory_doc.organization_id)
+      else
+        params =
+          organization_id: inventory_doc.organization_id
+        FlowRouter.go('inventories.index', params ) if amount <= 0 && !err?
+
+  @packEvent = (amount, yield_objects, inventory_id, organization_id) =>
+    EMethods.pack.call {organization_id, inventory_id, yield_objects, amount}, (err, res) =>
+      console.log err
+      @deleteEvent(organization_id, inventory_id) if err?
+      params =
+        organization_id: organization_id
+      FlowRouter.go('inventories.index', params ) unless err?
+
+  @deleteEvent = (organization_id, inventory_id) =>
+    IMethods.delete.call {organization_id, inventory_id}, (err, res) =>
+      console.log err
 
 Template.InventoriesNew.helpers
   selector: ->
@@ -135,10 +162,10 @@ Template.InventoriesNew.events
     event.preventDefault()
     $form = instance.$(event.target)
     yield_objects = []
-    for _yield in @yields.get()
+    for _yield in instance.yields.get()
       yield_objects.push {yield_id: _yield.yield_id, amount_taken: _yield.amount_taken}
     inventory_doc =
-      amount: $form.find('[name=amount]').val()
+      amount: Number( $form.find('[name=amount]').val())
       expiration_date: $form.find('[name=expiration_date]').val()
       yield_objects: yield_objects
       product_id: $form.find('[name=product_id]').val()
