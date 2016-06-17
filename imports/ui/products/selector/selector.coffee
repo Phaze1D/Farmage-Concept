@@ -17,7 +17,7 @@ Template.ProductsSelector.onCreated ->
 
   @subCallback =
     onStop: (err) ->
-      console.log "selector ing stop #{err}"
+      console.log "selector prod stop #{err}"
     onReady: () ->
 
   @autorun =>

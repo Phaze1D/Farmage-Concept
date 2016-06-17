@@ -12,6 +12,7 @@ UnitModule = require '../../../api/collections/units/units.coffee'
 UMethods = require '../../../api/collections/units/methods.coffee'
 EMethods = require '../../../api/collections/events/methods.coffee'
 
+require '../selector/selector.coffee'
 require './new.html'
 
 Template.UnitsNew.onCreated ->
@@ -47,8 +48,9 @@ Template.UnitsNew.onCreated ->
       FlowRouter.go('units.index', params ) unless err?
 
   @selectParent = (unit_id) =>
-    @selector.set('title', null)
     @parent.set UnitModule.Units.findOne unit_id
+    @selector.set('title', null)
+
 
 
 Template.UnitsNew.helpers

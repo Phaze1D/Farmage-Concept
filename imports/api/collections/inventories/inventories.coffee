@@ -55,7 +55,7 @@ InventorySchema =
       label: 'expiration_date'
       optional: true
 
-    yield_objects: # Cannot be set during update
+    yield_objects: # Should be able to update if adding
       type: [YieldAssociationSchema]
       optional: true
       defaultValue: []

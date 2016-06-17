@@ -34,6 +34,7 @@ IngredientSchema =
       label: 'product.package_amount'
       decimal: true
       min: 0
+      exclusiveMin: true
       denyUpdate: true
       autoValue: () ->
         if @isSet

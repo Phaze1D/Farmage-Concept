@@ -34,11 +34,12 @@ Template.ProductsNew.onCreated ->
     @ingredients.set(ings)
 
   @selectIngredient = (ingredient_id) =>
-    @selector.set('title', null)
     return for ingredient in @ingredients.get() when ingredient._id is ingredient_id
     ings = @ingredients.get()
     ings.push IngredientModule.Ingredients.findOne ingredient_id
     @ingredients.set ings
+    @selector.set('title', null)
+
 
 
 Template.ProductsNew.helpers
@@ -64,6 +65,12 @@ Template.ProductsNew.events
   'submit .js-product-form-new': (event, instance) ->
     event.preventDefault()
     $form = instance.$('.js-product-form-new')
+    ingredients = []
+    for ing in instance.ingredients.get()
+      ingredient_doc =
+        ingredient_id: ing._id
+        amount: $form.find("[name=amount_#{ing._id}]").val()
+      ingredients.push ingredient_doc
     product_doc =
       name: $form.find('[name=name]').val()
       measurement: $form.find('[name=measurement]').val()
@@ -72,7 +79,7 @@ Template.ProductsNew.events
       unit_price: $form.find('[name=unit_price]').val()
       currency: $form.find('[name=currency]').val()
       tax_rate: $form.find('[name=tax_rate]').val()
-      ingredients: instance.ingredients.get()
+      ingredients: ingredients
     instance.insert product_doc
 
   'mousedown .top': (event, instance) ->

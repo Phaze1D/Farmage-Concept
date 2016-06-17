@@ -4,9 +4,6 @@
 { FlowRouter } = require 'meteor/kadira:flow-router'
 { ReactiveVar } = require 'meteor/reactive-var'
 
-
-
-
 require './login.html'
 
 
@@ -27,7 +24,6 @@ Template.Login.onCreated ->
 Template.Login.events
   'submit .js-login-form': (event, instance) ->
     event.preventDefault()
-    console.log "nonds"
     $form = instance.$('.js-login-form')
     email = $form.find('[name=email]').val()
     password = $form.find('[name=password]').val()

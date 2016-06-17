@@ -12,6 +12,9 @@ InventoryModule = require '../../../api/collections/inventories/inventories.coff
 ProductModule = require '../../../api/collections/products/products.coffee'
 YieldModule = require '../../../api/collections/yields/yields.coffee'
 
+IMethods = require '../../../api/collections/inventories/methods.coffee'
+EMethods = require '../../../api/collections/events/methods.coffee'
+
 require '../../products/selector/selector.coffee'
 require '../../yields/selector/selector.coffee'
 require './new.html'
@@ -21,24 +24,53 @@ Template.InventoriesNew.onCreated ->
   @selector = new ReactiveDict
   @yields = new ReactiveVar([])
   @product = new ReactiveVar
+  @proIngDict = new ReactiveDict
+  @invAmount = new ReactiveVar(0)
 
   @removeYield = (index) =>
     ylds = (_yield for _yield, i in @yields.get() when i isnt Number index )
     @yields.set ylds
+    @checkAmount()
 
 
   @selectYield = (yield_id) =>
-    @selector.set('title', null)
-    return for _yield in @yields.get() when _yield._id is yield_id
-
+    return for _yield in @yields.get() when _yield.yield_id is yield_id
     ylds = @yields.get()
-    ylds.push YieldModule.Yields.findOne yield_id
-    @yields.set ylds
+    yld = YieldModule.Yields.findOne yield_id
+    if @proIngDict.get(yld.ingredient_id)?
+      ylds.push {yield_id: yld._id, yield: yld, amount_taken: 0}
+      @yields.set ylds
+    @selector.set('title', null)
 
 
   @selectProduct = (product_id) =>
-    @selector.set('title', null)
     @product.set ProductModule.Products.findOne product_id
+    @proIngDict.set(ing.ingredient_id, {ingredient: ing, cAmount: 0}) for ing in @product.get().ingredients
+    @selector.set 'title', null
+
+
+  @checkAmount = =>
+    sums = {}
+    for _yield in @yields.get()
+      if sums[_yield.yield.ingredient_id]?
+        sums[_yield.yield.ingredient_id] += _yield.amount_taken
+      else
+        sums[_yield.yield.ingredient_id] = _yield.amount_taken
+
+    i = 0
+    prev = 0
+    for key, value of @proIngDict.all()
+      value.cAmount = if sums[key]? then sums[key]/value.ingredient.amount else 0
+      @proIngDict.set(key, value)
+
+      unless value.cAmount is @invAmount.get()
+        console.warn "Warn users ingredient amounts not matching"
+      unless value.cAmount % 1 is 0
+        console.warn "Warn user that ingredient product amount has to be an integer"
+      i++
+
+  @insert = (inventory_doc) =>
+    
 
 
 Template.InventoriesNew.helpers
@@ -55,9 +87,13 @@ Template.InventoriesNew.helpers
   product: ->
     Template.instance().product.get()
 
+  invAmount: ->
+    Template.instance().invAmount.get()
+
+  ingAmount: (ingredient_id) ->
+    Template.instance().proIngDict.get(ingredient_id).cAmount
 
 Template.InventoriesNew.events
-
 
   'click .js-yield-remove': (event, instance) ->
     index =  instance.$(event.target).closest('.js-yield').attr('data-index')
@@ -78,3 +114,32 @@ Template.InventoriesNew.events
     instance.selector.set('title', null) if  !container.is(event.target) &&
                                     container.has(event.target).length is 0 &&
                                     instance.selector.get('title')?
+
+
+  'change .js-at-input': (event, instance) ->
+    $input = $(event.target)
+    for _yield in instance.yields.get()
+      if _yield.yield_id is $input.attr('data-id')
+        _yield.amount_taken = Number($input.val())
+
+    instance.yields.set instance.yields.get()
+    instance.checkAmount()
+
+
+  'change .js-iamount-input': (event, instance) ->
+    $input = $(event.target)
+    instance.invAmount.set Number($input.val())
+
+
+  'submit .js-inventories-form-new': (event, instance) ->
+    event.preventDefault()
+    $form = instance.$(event.target)
+    yield_objects = []
+    for _yield in @yields.get()
+      yield_objects.push {yield_id: _yield.yield_id, amount_taken: _yield.amount_taken}
+    inventory_doc =
+      amount: $form.find('[name=amount]').val()
+      expiration_date: $form.find('[name=expiration_date]').val()
+      yield_objects: yield_objects
+      product_id: $form.find('[name=product_id]').val()
+    instance.insert inventory_doc
