@@ -11,6 +11,11 @@
   {{#each product in products}}
     <div class="">
       {{product.name}} {{product.unit_price}}
+      <br>
+      Ingredients
+      {{#each product.ingredients}}
+        {{ingredient_id}} (Amount: {{amount}})
+      {{/each}}
     </div>
     <br>
   {{/each}}

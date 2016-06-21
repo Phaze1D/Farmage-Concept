@@ -11,6 +11,11 @@
   {{#each inventory in inventories}}
     <div class="">
       {{inventory._id}} (Amount: {{inventory.amount}})
+      <br>
+      Yields
+      {{#each inventory.yield_objects}}
+        {{yield_id}} (AT: {{amount_taken}})
+      {{/each}}
     </div>
     <br>
   {{/each}}

@@ -62,8 +62,7 @@ Template.InventoriesNew.onCreated ->
     i = 0
     prev = 0
     for key, value of @proIngDict.all()
-      sum = new Big(sums[key])
-      value.cAmount = if sums[key]? then Number sum.div(value.ingredient.amount) else 0
+      value.cAmount = if sums[key]? then Number new Big(sums[key]).div(value.ingredient.amount) else 0
       @proIngDict.set(key, value)
 
       unless value.cAmount is @invAmount.get()

@@ -30,18 +30,38 @@
             shipping_address:
             telephone: -->
         <label for="details">Sell Details</label>
-        <button type="button" class="js-add-product">Add Product</button>
+        <button type="button" class="js-add-detail">Add Product</button>
+        <br>
+        {{#each pdetails}}
+          <div class="js-pdetail" data-productid="{{product._id}}">
+            Name: {{product.name}}, Unit Price: ${{product.unit_price}}, Tax Rate: {{product.tax_rate}}, Quantity:
+            <input type="number" class="js-quantity" name="detail_quantity" value="{{detail.quantity}}" min="0" data-productid="{{product._id}}">
+            <button type="button" class="js-add-inventory">Add Inventory</button>
+            <button type="button" class="js-remove-detail">Remove Product</button>
+
+            {{#each inventories detail}}
+              <div class="js-inventory" data-inid="{{inventory._id}}">
+                ID: {{inventory._id}}, Current Amount: {{inventory.amount}}, Quantity Taken:
+                <input type="number" class="js-quantity-taken" name="quantity_taken" value="{{quantity_taken}}" min="0" max="{{inventory.amount}}">
+                <button type="button" class="js-remove-inventory">Remove Inventory</button>
+              </div>
+            {{/each}}
+          </div>
+          <br>
+        {{/each}}
+
         <br>
         <div class="js-selector">
-          {{#if selector}}
+          {{#if selector.detail}}
             <label>By Product</label>
             {{> ProductsSelector pselect }}
             <br>
+          {{/if}}
+          {{#if selector.inventory}}
             <label>By Inventory</label>
             {{> InventoriesSelector iselect }}
           {{/if}}
         </div>
-
 
         <br>
         <br>
@@ -76,10 +96,19 @@
         <br>
         <br>
         <label for="customer_id">Customer</label>
-        <input type="text" name="customer_id" value="">
+        <input type="text" class="js-add-customer" name="customer_id" value="{{customer._id}}">
+        {{customer.first_name}}
+        <div class="js-selector">
+          {{#if selector.customer}}
+            <label>Customers</label>
+            {{> CustomersSelector cselect}}
+          {{/if}}
+        </div>
         <br>
         <br>
+        <!--  Make sure to add customer's first address and telephone if the press added shipping-->
         <label for="">Shipping Address</label>
+        <button type="button" class="js-add-shipping">Add Shipping</button>
         <br>
         <label for="street">Street</label>
         <input type="text" name="street" value="">
@@ -101,7 +130,12 @@
         <br>
         <br>
         <label for="number">Telephone</label>
+        <button type="button" class="js-add-telephone">Add Telephone</button>
+        <br>
         <input type="text" name="number" value="">
+        <br>
+        <br>
+        <input type="submit" name="name" value="Save">
       </form>
     </div>
   </div>
