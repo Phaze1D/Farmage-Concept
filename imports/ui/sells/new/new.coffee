@@ -136,8 +136,9 @@ Template.SellsNew.events
       product_id = $(event.target).closest('.js-pdetail').attr('data-productid')
       inventory_id = $(event.target).closest('.js-inventory').attr('data-inid')
       pdetail = instance.pdetails.get(product_id)
-      console.log instance.pdetails.all()
       delete pdetail.detail.inventories[inventory_id]
+      pdetail.detail.quantity = 0
+      pdetail.detail.quantity += value.quantity_taken for key, value of pdetail.detail.inventories
       instance.pdetails.set(pdetail.product._id, pdetail)
 
   'mousedown .top': (event, instance) ->
