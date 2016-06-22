@@ -15,7 +15,7 @@ OMethods = require '../../imports/api/collections/organizations/methods.coffee'
 unitIDs = []
 organizationIDs = []
 
-describe "Unit loop test", ->
+xdescribe "Unit loop test", ->
   before ->
     resetDatabase(null)
 

@@ -32,18 +32,18 @@
         <label for="details">Sell Details</label>
         <button type="button" class="js-add-detail">Add Product</button>
         <br>
-        {{#each pdetails}}
-          <div class="js-pdetail" data-productid="{{product._id}}">
-            Name: {{product.name}}, Unit Price: ${{product.unit_price}}, Tax Rate: {{product.tax_rate}}, Quantity:
-            <input type="number" class="js-quantity" name="detail_quantity" value="{{detail.quantity}}" min="0" data-productid="{{product._id}}">
-            <button type="button" class="js-add-inventory">Add Inventory</button>
+        {{#each pdetail in pdetails}}
+          <div class="js-pdetail" data-id="{{pdetail.product._id}}">
+            Name: {{pdetail.product.name}}, Unit Price: ${{pdetail.product.unit_price}}, Tax Rate: {{pdetail.product.tax_rate}}, Quantity:
+            <input type="number" class="js-quantity" name="detail_quantity" value="{{pdetail.quantity}}" min="0" data-productid="{{pdetail.product._id}}">
+            <button type="button" class="js-add-inventory">Add Physical Product</button>
             <button type="button" class="js-remove-detail">Remove Product</button>
 
-            {{#each inventories detail}}
-              <div class="js-inventory" data-inid="{{inventory._id}}">
+            {{#each inventories pdetail}}
+              <div class="js-inventory" data-id="{{inventory._id}}">
                 ID: {{inventory._id}}, Current Amount: {{inventory.amount}}, Quantity Taken:
-                <input type="number" class="js-quantity-taken" name="quantity_taken" value="{{quantity_taken}}" min="0" max="{{inventory.amount}}">
-                <button type="button" class="js-remove-inventory">Remove Inventory</button>
+                <input type="number" class="js-quantity-taken" name="quantity_taken" value="{{quantity_taken}}" min="0">
+                <button type="button" class="js-remove-inventory">Remove Physical Product</button>
               </div>
             {{/each}}
           </div>
@@ -62,15 +62,21 @@
             {{> InventoriesSelector iselect }}
           {{/if}}
         </div>
-
+        <br>
+        <br>
+        Sub Total: ${{totals.sub_total}}
+        <br>
+        Tax Total: ${{totals.tax_total}}
+        <br>
+        Total: ${{totals.total_price}}
         <br>
         <br>
         <label for="discount">Discount</label>
-        <input type="number" name="discount" value="" min="0">
+        <input type="number" class="js-discount-input" name="discount" value="" min="0" step="any">
         <label for="discount_type">Discount Type</label>
-        <select class="" name="discount_type">
-          <option value="true">%</option>
-          <option value="false">$</option>
+        <select class="js-discount-type-select" name="discount_type">
+          <option value="1">%</option>
+          <option value="0">$</option>
         </select>
         <br>
         <label for="currency">Currency</label>
@@ -84,12 +90,12 @@
         <input type="text" name="status" value="">
         <br>
         <label for="paid">Paid</label>
-        <select class="" name="paid">
-          <option value="false">No</option>
-          <option value="true">Yes</option>
+        <select class="js-paid-select" name="paid">
+          <option value="1">No</option>
+          <option value="0">Yes</option>
         </select>
         <label for="payment_method">Payment Method</label>
-        <input type="text" name="payment_method" value="">
+        <input class="js-payment-method-input" type="text" name="payment_method" value="">
         <br>
         <label for="note">Notes</label>
         <textarea name="note" rows="8" cols="40"></textarea>
@@ -109,9 +115,10 @@
         <!--  Make sure to add customer's first address and telephone if the press added shipping-->
         <label for="">Shipping Address</label>
         <button type="button" class="js-add-shipping">Add Shipping</button>
+        {{#if ship}}
         <br>
         <label for="street">Street</label>
-        <input type="text" name="street" value="">
+        <input type="text" name="street" value="{{address.street}}">
         <br>
         <label for="street2">Street 2</label>
         <input type="text" name="street2" value="" >
@@ -127,12 +134,16 @@
         <br>
         <label for="country">Country</label>
         <input type="text" name="country" value="">
+        {{/if}}
         <br>
         <br>
+
         <label for="number">Telephone</label>
         <button type="button" class="js-add-telephone">Add Telephone</button>
+        {{#if tele}}
         <br>
         <input type="text" name="number" value="">
+        {{/if}}
         <br>
         <br>
         <input type="submit" name="name" value="Save">

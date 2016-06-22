@@ -67,9 +67,9 @@ module.exports.insert = new ValidatedMethod
       mixins.customerBelongsToOrgan sell_doc.customer_id, sell_doc.organization_id if sell_doc.customer_id?
       validateDuplicates sell_doc.details, 'product_id'
       setupSell sell_doc
+      removeInventoriesFields sell_doc
       removeZeroDetail sell_doc
       removePaidFields sell_doc
-      removeInventoriesFields sell_doc
     SellModule.Sells.insert sell_doc
 
 
@@ -132,7 +132,7 @@ module.exports.addItems = new ValidatedMethod
       setupSell(sell)
       updateInventories(inventories, -1, sell)
       removeUnauthUpdateFields(sell)
-      SellModule.Sells.simpleSchema().clean(sell)
+      SellModule.Sells.simpleSchema().clean({$set: sell}, {isModifier: true})
       SellModule.Sells.update sell_id,
                               $set: sell
 
@@ -166,8 +166,7 @@ module.exports.putBackItems = new ValidatedMethod
       removeZeroDetail(sell)
       updateInventories(inventories, 1, sell)
       removeUnauthUpdateFields(sell)
-
-      SellModule.Sells.simpleSchema().clean(sell)
+      SellModule.Sells.simpleSchema().clean({$set: sell}, {isModifier: true})
       SellModule.Sells.update sell_id,
                               $set: sell
 
@@ -214,8 +213,8 @@ module.exports.pay = new ValidatedMethod
 
 
 
-deleteSell = module.exports.deleteSell = new ValidatedMethod
-  name: 'sells.deleteSell'
+remove = module.exports.remove = new ValidatedMethod
+  name: 'sells.remove'
   validate: ({organization_id, sell_id}) ->
     new SimpleSchema(
       organization_id:
@@ -279,6 +278,8 @@ calculateTotal = (sell_doc) ->
     sell_doc.total_price = sell_doc.total_price - (sell_doc.total_price * sell_doc.discount/100)
   else if sell_doc.total_price > sell_doc.discount
       sell_doc.total_price = sell_doc.total_price - sell_doc.discount
+  else if sell_doc.total_price < sell_doc.discount
+    sell_doc.total_price = 0
 
 resetSell = (sell_doc) ->
   sell_doc.sub_total = 0

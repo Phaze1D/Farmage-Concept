@@ -13,7 +13,6 @@ OrganizationModule = require '../../imports/api/collections/organizations/organi
 
 UMethods = require '../../imports/api/collections/units/methods.coffee'
 PMethods = require '../../imports/api/collections/providers/methods.coffee'
-RMethods = require '../../imports/api/collections/receipts/methods.coffee'
 OMethods = require '../../imports/api/collections/organizations/methods.coffee'
 
 { inviteUser } = require '../../imports/api/collections/users/methods.coffee'

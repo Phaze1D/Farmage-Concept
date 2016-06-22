@@ -16,26 +16,26 @@
           <label>Ingredients</label>
           <br>
           {{#each ingredients}}
-          <br>
-            ID: {{ingredient_id}} Amount per Product: {{amount}} Current Inventory Amount: {{ingAmount ingredient_id}}
+            <br>
+            <div class="js-ingredient" data-id={{ingredient_id}}>
+              ID: {{ingredient_id}} Amount per Product: {{amount}} Current Inventory Amount: {{camount ingredient_id}}
+              <button type="button" class="js-yield-add">Add Yield</button>
+              {{#each yields ingredient_id}}
+                <br>
+                <div class="js-yield" data-id="{{yield._id}}">
+                  {{yield._id}} (Amount: {{yield.amount}})
+                  <label>Amount Taken</label>
+                  <input type="number" step="any" class="js-at-input" value="{{amount_taken}}" min="0" max="{{yield.amount}}">
+                  <button type="button" class="js-yield-remove">Remove</button>
+                </div>
+              {{/each}}
+            </div>
           {{/each}}
-          <br>
-          <br>
-          <label for="yield_objects">Yields</label>
-          <button type="button" class="js-yield-add">Add</button>
         {{/with}}
 
 
 
-        {{#each yields}}
-          <br>
-          <div class="js-yield" data-index="{{@index}}">
-            {{yield_id}} (Amount: {{yield.amount}})
-            <label for="amount_taken_{{yield_id}}">Amount Taken</label>
-            <input type="number" step="any" class="js-at-input" name="amount_taken_{{yield_id}}" data-id="{{yield_id}}" value="{{amount_taken}}" min="0" max="{{amount}}">
-            <button type="button" class="js-yield-remove">Remove</button>
-          </div>
-        {{/each}}
+
         <br>
         <br>
         <input type="submit" name="name" value="Save">

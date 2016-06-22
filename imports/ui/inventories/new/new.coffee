@@ -7,7 +7,9 @@
 { ReactiveDict } = require 'meteor/reactive-dict'
 Big = require 'big.js'
 
-
+# NOT finished need to change
+# Add yield be ingredient connect iamount to the min amount of the ingredients
+# Remove yield when input is 0
 
 OrganizationModule = require '../../../api/collections/organizations/organizations.coffee'
 InventoryModule = require '../../../api/collections/inventories/inventories.coffee'
@@ -24,52 +26,50 @@ require './new.html'
 
 Template.InventoriesNew.onCreated ->
   @selector = new ReactiveDict
-  @yields = new ReactiveVar([])
+  @ingyields = new ReactiveDict
   @product = new ReactiveVar
-  @proIngDict = new ReactiveDict
   @invAmount = new ReactiveVar(0)
 
-  @removeYield = (index) =>
-    ylds = (_yield for _yield, i in @yields.get() when i isnt Number index )
-    @yields.set ylds
-    @checkAmount()
 
 
   @selectYield = (yield_id) =>
-    return for _yield in @yields.get() when _yield.yield_id is yield_id
-    ylds = @yields.get()
-    yld = YieldModule.Yields.findOne yield_id
-    if @proIngDict.get(yld.ingredient_id)?
-      ylds.push {yield_id: yld._id, yield: yld, amount_taken: 0}
-      @yields.set ylds
+    _yield = YieldModule.Yields.findOne(yield_id)
+
+    for ping in @product.get().ingredients
+      if ping.ingredient_id is _yield.ingredient_id
+        ying = @ingyields.get(_yield.ingredient_id)
+        ying = camount: 0, yields: {} unless ying?
+        ying.yields[yield_id] =
+          yield: _yield
+          amount_taken: 0
+        @ingyields.set(_yield.ingredient_id, ying)
+        @checkCAmount(_yield.ingredient_id)
     @selector.set('title', null)
 
 
+
   @selectProduct = (product_id) =>
-    @product.set ProductModule.Products.findOne product_id
-    @proIngDict.set(ing.ingredient_id, {ingredient: ing, cAmount: 0}) for ing in @product.get().ingredients
-    @selector.set 'title', null
+    @product.set ProductModule.Products.findOne(product_id)
+    @selector.set('title', null)
 
 
-  @checkAmount = =>
-    sums = {}
-    for _yield in @yields.get()
-      if sums[_yield.yield.ingredient_id]?
-        sums[_yield.yield.ingredient_id] += _yield.amount_taken
-      else
-        sums[_yield.yield.ingredient_id] = _yield.amount_taken
+  @checkCAmount = (ingredient_id) =>
+    sum = 0
+    for key, value of @ingyields.get(ingredient_id).yields
+      sum += value.amount_taken
 
-    i = 0
-    prev = 0
-    for key, value of @proIngDict.all()
-      value.cAmount = if sums[key]? then Number new Big(sums[key]).div(value.ingredient.amount) else 0
-      @proIngDict.set(key, value)
+    for ping in @product.get().ingredients
+      if ping.ingredient_id is ingredient_id
+        camount = new Big(sum).div(ping.amount)
+        ying = @ingyields.get(ingredient_id)
+        ying.camount = Number camount
+        @ingyields.set(ingredient_id, ying)
 
-      unless value.cAmount is @invAmount.get()
-        console.warn "Warn users ingredient amounts not matching"
-      unless value.cAmount % 1 is 0
-        console.warn "Warn user that ingredient product amount has to be an integer"
-      i++
+    min = null
+    for key, value of @ingyields.all()
+      if !min? || min.camount > value.camount
+        min = value
+    @invAmount.set(min.camount) if min?
 
   @insert = (inventory_doc) =>
     yield_objects = inventory_doc.yield_objects
@@ -80,12 +80,12 @@ Template.InventoriesNew.onCreated ->
 
     IMethods.insert.call {inventory_doc}, (err, res) =>
       console.log err
-      if amount > 0 && res?
+      if (amount > 0 || yield_objects.length > 0) && res?
         @packEvent(amount, yield_objects, res, inventory_doc.organization_id)
       else
         params =
           organization_id: inventory_doc.organization_id
-        FlowRouter.go('inventories.index', params ) if amount <= 0 && !err?
+        FlowRouter.go('inventories.index', params ) unless err?
 
   @packEvent = (amount, yield_objects, inventory_id, organization_id) =>
     EMethods.pack.call {organization_id, inventory_id, yield_objects, amount}, (err, res) =>
@@ -99,6 +99,7 @@ Template.InventoriesNew.onCreated ->
     IMethods.delete.call {organization_id, inventory_id}, (err, res) =>
       console.log err
 
+
 Template.InventoriesNew.helpers
   selector: ->
     instance = Template.instance()
@@ -107,8 +108,10 @@ Template.InventoriesNew.helpers
       select:
         select: instance[instance.selector.get('select')]
 
-  yields: ->
-    Template.instance().yields.get()
+  yields: (ingredient_id) ->
+    ying = Template.instance().ingyields.get(ingredient_id)
+    (value for key, value of ying.yields) if ying?
+
 
   product: ->
     Template.instance().product.get()
@@ -116,14 +119,20 @@ Template.InventoriesNew.helpers
   invAmount: ->
     Template.instance().invAmount.get()
 
-  ingAmount: (ingredient_id) ->
-    Template.instance().proIngDict.get(ingredient_id).cAmount
+  camount: (ingredient_id) ->
+    ying = Template.instance().ingyields.get(ingredient_id)
+    ying.camount if ying?
+
 
 Template.InventoriesNew.events
 
   'click .js-yield-remove': (event, instance) ->
-    index =  instance.$(event.target).closest('.js-yield').attr('data-index')
-    instance.removeYield index
+    ingredient_id = instance.$(event.target).closest('.js-ingredient').attr('data-id')
+    yield_id = instance.$(event.target).closest('.js-yield').attr('data-id')
+    ying = instance.ingyields.get(ingredient_id)
+    delete ying.yields[yield_id]
+    instance.ingyields.set(ingredient_id, ying)
+    instance.checkCAmount ingredient_id
 
   'click .js-yield-add': (event, instance) ->
     instance.selector.set 'title', 'YieldsSelector'
@@ -143,13 +152,13 @@ Template.InventoriesNew.events
 
 
   'change .js-at-input': (event, instance) ->
-    $input = $(event.target)
-    for _yield in instance.yields.get()
-      if _yield.yield_id is $input.attr('data-id')
-        _yield.amount_taken = Number($input.val())
+    ingredient_id = instance.$(event.target).closest('.js-ingredient').attr('data-id')
+    yield_id = instance.$(event.target).closest('.js-yield').attr('data-id')
+    ying = instance.ingyields.get(ingredient_id)
+    ying.yields[yield_id].amount_taken = Number ($(event.target).val())
+    instance.ingyields.set(ingredient_id, ying)
+    instance.checkCAmount ingredient_id
 
-    instance.yields.set instance.yields.get()
-    instance.checkAmount()
 
 
   'change .js-iamount-input': (event, instance) ->
@@ -161,8 +170,10 @@ Template.InventoriesNew.events
     event.preventDefault()
     $form = instance.$(event.target)
     yield_objects = []
-    for _yield in instance.yields.get()
-      yield_objects.push {yield_id: _yield.yield_id, amount_taken: _yield.amount_taken}
+    for key, ying of instance.ingyields.all()
+      for key, value of ying.yields
+        yield_objects.push(yield_id: value.yield._id, amount_taken: value.amount_taken )
+
     inventory_doc =
       amount: Number( $form.find('[name=amount]').val())
       expiration_date: $form.find('[name=expiration_date]').val()

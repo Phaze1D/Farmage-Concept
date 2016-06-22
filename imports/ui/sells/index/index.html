@@ -8,9 +8,19 @@
 
   <h4>Sells</h4>
 
-  {{#each sell in sells}}
+  {{#each sells}}
     <div class="">
-      {{sell.name}} {{sell.unit_price}}
+      {{#each details}}
+        Product ID: {{product_id}} Quantity: {{quantity}}
+        {{#each inventories}}
+          <br>
+          Inventory ID: {{inventory_id}} Quantity Taken: {{quantity_taken}}
+        {{/each}}
+        <br>
+      {{/each}}
+      Sub Total: {{sub_total}} Tax Total: {{tax_total}} Total: {{total_price}}
+
+
     </div>
     <br>
   {{/each}}

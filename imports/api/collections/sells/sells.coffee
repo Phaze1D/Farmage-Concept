@@ -143,7 +143,7 @@ SellSchema =
     status:
       type: String
       label: 'status'
-      max: 32
+      max: 24
       index: true
       autoValue: () ->
         if @isSet

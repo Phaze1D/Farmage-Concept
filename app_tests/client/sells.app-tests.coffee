@@ -28,7 +28,7 @@ inventoryIDs = []
 ingredientIDs = []
 
 
-xdescribe "Sells Client Side Test", ->
+describe "Sells Client Side Test", ->
   before ->
     resetDatabase(null);
 
@@ -387,6 +387,7 @@ xdescribe "Sells Client Side Test", ->
       sell_id = sellIDs[1]
 
       SMethods.putBackItems.call {organization_id, sell_id, inventories}, (err, res) ->
+        console.log err
         expect(err).to.not.exist
         done()
 
@@ -404,6 +405,7 @@ xdescribe "Sells Client Side Test", ->
         sell_id = sellIDs[1]
 
         SMethods.update.call {organization_id, sell_id, sell_doc}, (err, res) ->
+          console.log err
           expect(err).to.not.exist
           expect(SellModule.Sells.findOne(sellIDs[1]).details.length).to.equal(1)
           done()
