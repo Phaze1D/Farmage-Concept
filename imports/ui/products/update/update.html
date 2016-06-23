@@ -1,0 +1,59 @@
+<template name="ProductsUpdate">
+  <div class="top">
+    <div class="">
+      <form class="js-product-form-new">
+        <label for="name">Name</label>
+        <input type="text" name="name" value="">
+        <br>
+        <label for="measurement">Measurement</label>
+        <input type="text" name="measurement" value="">
+        <br>
+        <label for="description">Description</label>
+        <textarea name="description" rows="8" cols="40"></textarea>
+        <br>
+        <label for="sku">SKU</label>
+        <input type="text" name="sku" value="">
+        <br>
+        <label for="unit_price">Price</label>
+        <input type="text" name="unit_price" value="">
+        <br>
+        <label for="currency">Currency</label>
+        <select class="" name="currency">
+          <option value="">None</option>
+          <option value="MXN">MXN</option>
+          <option value="USD">USD</option>
+        </select>
+        <br>
+        <label for="tax_rate">Tax Rate</label>
+        <input type="text" name="tax_rate" value="">
+        <br>
+
+        <label for="ingredients">Ingredients</label>
+        <button type="button" class="js-add-ingredient">Add</button>
+
+        <br>
+        {{#each ingredients}}
+          <br>
+          <div class="js-ingredient" data-index="{{@index}}">
+            {{name}} {{measurement_unit}}
+            <label for="amount">Amount</label>
+            <input type="number" name="amount_{{_id}}" value="" min="0" step="any">
+            <button type="button" class="js-remove-ingredient">Remove</button>
+          </div>
+        {{/each}}
+
+        <br>
+        <input type="submit" name="name" value="Save">
+      </form>
+    </div>
+
+    <br>
+    <div class="js-selector">
+      {{#with selector}}
+        {{> Template.dynamic template=title data=select }}
+      {{/with}}
+    </div>
+
+  </div>
+
+</template>

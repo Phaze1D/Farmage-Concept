@@ -1,0 +1,2 @@
+
+require './update.html'

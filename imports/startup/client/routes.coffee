@@ -378,6 +378,11 @@ ousers.route '/:child_id/show',
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
+ousers.route '/:child_id/update',
+  name: 'ousers.update'
+  action: () ->
+    BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
+
 
 # Yields Group
 yields = organizations.group

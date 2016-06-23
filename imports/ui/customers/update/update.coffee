@@ -12,3 +12,6 @@ CustomerModule = require '../../../api/collections/customers/customers.coffee'
 
 
 require './update.html'
+
+Template.CustomersUpdate.onCreated ->
+  

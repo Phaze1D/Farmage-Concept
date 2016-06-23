@@ -10,7 +10,9 @@
 
   {{#each yield in yields}}
     <div class="">
-      {{yield._id}} (Amount: {{yield.amount}})
+      <a href="/organizations/{{organization._id}}/yields/{{yield._id}}/show">
+        {{yield._id}} (Amount: {{yield.amount}})
+      </a>
     </div>
     <br>
   {{/each}}

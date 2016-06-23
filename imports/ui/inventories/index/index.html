@@ -10,12 +10,14 @@
 
   {{#each inventory in inventories}}
     <div class="">
-      {{inventory._id}} (Amount: {{inventory.amount}})
-      <br>
-      Yields
-      {{#each inventory.yield_objects}}
-        {{yield_id}} (AT: {{amount_taken}})
-      {{/each}}
+      <a href="/organizations/{{organization._id}}/inventories/{{inventory._id}}/show">
+        {{inventory._id}} (Amount: {{inventory.amount}})
+        <br>
+        Yields
+        {{#each inventory.yield_objects}}
+          {{yield_id}} (AT: {{amount_taken}})
+        {{/each}}
+      </a>
     </div>
     <br>
   {{/each}}

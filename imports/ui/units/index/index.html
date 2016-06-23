@@ -10,7 +10,10 @@
 
   {{#each unit in units}}
     <div class="">
-      {{unit.name}} ( Amount: {{unit.amount}} )
+      <a href="/organizations/{{organization._id}}/units/{{unit._id}}/show">
+        {{unit.name}} ( Amount: {{unit.amount}} )
+      </a>
+
     </div>
     <br>
   {{/each}}

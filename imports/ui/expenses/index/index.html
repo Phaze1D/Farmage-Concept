@@ -10,7 +10,10 @@
 
   {{#each expense in expenses}}
     <div class="">
-      {{expense._id}} (Price: {{expense.price}})
+      <a href="/organizations/{{organization._id}}/expenses/{{expense._id}}/show">
+        {{expense._id}} (Price: {{expense.price}})
+      </a>
+
     </div>
     <br>
   {{/each}}

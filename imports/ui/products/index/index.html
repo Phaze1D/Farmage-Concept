@@ -10,12 +10,15 @@
 
   {{#each product in products}}
     <div class="">
-      {{product.name}} {{product.unit_price}}
-      <br>
-      Ingredients
-      {{#each product.ingredients}}
-        {{ingredient_id}} (Amount: {{amount}})
-      {{/each}}
+      <a href="/organizations/{{organization._id}}/products/{{product._id}}/show">
+        {{product.name}} {{product.unit_price}}
+
+        <br>
+        Ingredients
+        {{#each product.ingredients}}
+          {{ingredient_id}} (Amount: {{amount}})
+        {{/each}}
+      </a>
     </div>
     <br>
   {{/each}}

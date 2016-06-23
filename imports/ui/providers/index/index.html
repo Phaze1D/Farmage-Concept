@@ -10,8 +10,10 @@
 
   {{#each provider in providers}}
     <div class="">
-      {{provider.first_name}}
-      {{provider.last_name}}
+      <a href="/organizations/{{organization._id}}/providers/{{provider._id}}/show">
+        {{provider.first_name}}
+        {{provider.last_name}}
+      </a>
     </div>
     <br>
   {{/each}}

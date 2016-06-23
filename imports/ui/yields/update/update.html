@@ -1,0 +1,32 @@
+<template name="YieldsUpdate">
+  <div class="top">
+    <div class="">
+      <form class="js-yield-form-new">
+        <label for="name">Name</label>
+        <input type="text" name="name" value="">
+        <br>
+        <label for="amount">Amount</label>
+        <input type="number" name="amount" value="" min="0" step="any">
+        <br>
+        <label for="ingredient_id">Ingredient</label>
+        <input type="text" class="js-input-ingredients" name="ingredient_id" value="{{ingredient._id}}">
+        {{ingredient.name}}
+        {{ingredient.measurement_unit}}
+        <br>
+        <label for="unit_id">Unit</label>
+        <input type="text" class="js-input-units" name="unit_id" value="{{unit._id}}">
+        {{unit.name}}
+        <br>
+        <input type="submit" name="name" value="Save">
+
+      </form>
+    </div>
+    <br>
+    <div class="js-selector">
+      {{#with selector}}
+        {{> Template.dynamic template=title data=select }}
+      {{/with}}
+    </div>
+  </div>
+
+</template>

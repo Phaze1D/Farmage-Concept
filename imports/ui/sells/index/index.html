@@ -10,15 +10,17 @@
 
   {{#each sells}}
     <div class="">
-      {{#each details}}
-        Product ID: {{product_id}} Quantity: {{quantity}}
-        {{#each inventories}}
+      <a href="/organizations/{{organization._id}}/sells/{{_id}}/show">
+        {{#each details}}
+          Product ID: {{product_id}} Quantity: {{quantity}}
+          {{#each inventories}}
+            <br>
+            Inventory ID: {{inventory_id}} Quantity Taken: {{quantity_taken}}
+          {{/each}}
           <br>
-          Inventory ID: {{inventory_id}} Quantity Taken: {{quantity_taken}}
         {{/each}}
-        <br>
-      {{/each}}
-      Sub Total: {{sub_total}} Tax Total: {{tax_total}} Total: {{total_price}}
+        Sub Total: {{sub_total}} Tax Total: {{tax_total}} Total: {{total_price}}
+      </a>
 
 
     </div>

@@ -9,9 +9,11 @@
 
   {{#each ouser in ousers}}
     <div class="">
-      {{#each email in ouser.emails}}
-        {{email.address}}
-      {{/each}}
+      <a href="/organizations/{{organization._id}}/ousers/{{ouser._id}}/show">
+        {{#each email in ouser.emails}}
+          {{email.address}}
+        {{/each}}
+      </a>
       <br>
       {{#with hasUser ouser}}
         {{#with permission}}

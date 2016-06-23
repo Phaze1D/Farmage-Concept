@@ -1,0 +1,41 @@
+<template name="ExpensesUpdate">
+  <div class="top">
+    <div class="">
+      <form class="js-expenses-form-new">
+        <label for="price">Price</label>
+        <input type="text" name="price" value="">
+        <br>
+        <label for="currency">Currency</label>
+        <select class="" name="currency">
+          <option value="">None</option>
+          <option value="MXN">MXN</option>
+          <option value="USD">USD</option>
+        </select>
+        <br>
+        <label for="description">Description</label>
+        <textarea name="description" rows="8" cols="40"></textarea>
+        <br>
+        <label for="receipt_url">Receipt</label>
+        <input type="text" name="receipt_url" value="">
+        <br>
+        <label for="provider_id">Provider</label>
+        <input type="text" class="js-input-providers" name="provider_id" value="{{provider._id}}">
+        {{provider.first_name}}
+        <br>
+        <label for="unit_id">Unit</label>
+        <input type="text" class="js-input-units" name="unit_id" value="{{unit._id}}">
+        {{unit.name}}
+        <br>
+        <input type="submit" name="name" value="Save">
+      </form>
+    </div>
+
+    <br>
+    <div class="js-selector">
+      {{#with selector}}
+        {{> Template.dynamic template=title data=select }}
+      {{/with}}
+    </div>
+  </div>
+
+</template>

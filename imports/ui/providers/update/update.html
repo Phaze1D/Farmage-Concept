@@ -1,0 +1,35 @@
+<template name="ProvidersUpdate">
+  <div class="">
+    <form id="provider-form-new" class="js-provider-form-new">
+      <label for="first_name">First Name</label>
+      <input type="text" name="first_name" value="">
+      <br>
+      <label for="last_name">Last Name</label>
+      <input type="text" name="last_name" value="">
+      <br>
+      <label for="email">Email</label>
+      <input type="text" name="email" value="" placeholder="optional">
+      <br>
+      <label for="date_of_birth">Date Of Birth</label>
+      <input type="date" name="date_of_birth" value="">
+      <br>
+      <label for="notes">Notes</label>
+      <textarea name="notes" rows="8" cols="40"></textarea>
+      <br>
+      <label for="company">Company Name</label>
+      <input type="text" name="company" value="">
+    </form>
+    <br>
+    <!-- <div class="">
+      {{> Address addressInfo }}
+    </div>
+    <br>
+    <div class="">
+      {{> Telephone telephoneInfo }}
+    </div> -->
+  </div>
+
+  <br>
+  <input type="submit" name="name" value="Save" form="provider-form-new">
+
+</template>
