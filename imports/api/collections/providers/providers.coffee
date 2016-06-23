@@ -27,22 +27,32 @@ class ProvidersCollection extends Mongo.Collection
 
 ProviderSchema =
   new SimpleSchema([
-      first_name:
-        type: String
-        label: "first_name"
-        max: 64
+    first_name:
+      type: String
+      label: "first_name"
+      max: 64
 
-      last_name:
-        type: String
-        label: "last_name"
-        optional: true
-        max: 64
+    last_name:
+      type: String
+      label: "last_name"
+      optional: true
+      max: 64
 
-      company:
-        type: String
-        label: "company"
-        optional: true
-        max: 64
+    date_of_birth:
+      type: Date
+      label: 'date_of_birth'
+      optional: true
+
+    notes:
+      type: String
+      label: 'notes'
+      optional: true
+
+    company:
+      type: String
+      label: "company"
+      optional: true
+      max: 64
 
   , ContactSchema, CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 

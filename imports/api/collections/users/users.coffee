@@ -21,7 +21,6 @@ YieldModule = require '../yields/yields.coffee'
 
 UserProfileSchema = exports.UserProfileSchema =
   new SimpleSchema([
-
     first_name:
       type: String
       label: 'first_name'
@@ -32,6 +31,16 @@ UserProfileSchema = exports.UserProfileSchema =
       type: String
       label: 'last_name'
       max: 64
+      optional: true
+
+    date_of_birth:
+      type: Date
+      label: 'date_of_birth'
+      optional: true
+
+    notes:
+      type: String
+      label: 'notes'
       optional: true
 
     user_avatar_url:
