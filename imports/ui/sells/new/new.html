@@ -89,13 +89,6 @@
         <label for="status">Status</label>
         <input type="text" name="status" value="">
         <br>
-        <label for="paid">Paid</label>
-        <select class="js-paid-select" name="paid">
-          <option value="1">No</option>
-          <option value="0">Yes</option>
-        </select>
-        <label for="payment_method">Payment Method</label>
-        <input class="js-payment-method-input" type="text" name="payment_method" value="">
         <br>
         <label for="note">Notes</label>
         <textarea name="note" rows="8" cols="40"></textarea>
@@ -147,6 +140,9 @@
         <br>
         <br>
         <input type="submit" name="name" value="Save">
+
+        <button type="button" class="js-pay-button {{canPay}}" >Pay</button>
+
       </form>
     </div>
   </div>

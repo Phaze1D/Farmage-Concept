@@ -132,7 +132,7 @@ module.exports.addItems = new ValidatedMethod
       setupSell(sell)
       updateInventories(inventories, -1, sell)
       removeUnauthUpdateFields(sell)
-      SellModule.Sells.simpleSchema().clean({$set: sell}, {isModifier: true})
+      SellModule.Sells.simpleSchema().clean(sell)
       SellModule.Sells.update sell_id,
                               $set: sell
 
@@ -166,7 +166,7 @@ module.exports.putBackItems = new ValidatedMethod
       removeZeroDetail(sell)
       updateInventories(inventories, 1, sell)
       removeUnauthUpdateFields(sell)
-      SellModule.Sells.simpleSchema().clean({$set: sell}, {isModifier: true})
+      SellModule.Sells.simpleSchema().clean(sell)
       SellModule.Sells.update sell_id,
                               $set: sell
 
@@ -207,7 +207,7 @@ module.exports.pay = new ValidatedMethod
       sell.paid = true
       sell.payment_method = payment_method
 
-
+    SellModule.Sells.simpleSchema().clean(sell)
     SellModule.Sells.update sell_id,
                             $set: sell
 

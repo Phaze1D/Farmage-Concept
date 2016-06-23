@@ -10,10 +10,12 @@
 
   {{#each customer in customers}}
     <div class="">
-      {{customer.first_name}}
-      {{customer.last_name}}
+      <a href="/organizations/{{organization._id}}/customers/{{customer._id}}/show">
+        {{customer.first_name}}
+        {{customer.last_name}}
+      </a>
     </div>
-    <br>   
+    <br>
   {{/each}}
 
 </template>

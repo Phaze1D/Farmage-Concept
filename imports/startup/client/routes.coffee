@@ -315,6 +315,11 @@ sells.route '/:child_id/update',
   action: () ->
     BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
 
+sells.route '/:child_id/pay',
+  name: 'sells.update.pay'
+  action: () ->
+    BlazeLayout.render 'MainMenu', main: 'OrganizationMenu'
+
 
 # Units Group
 units = organizations.group

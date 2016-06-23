@@ -26,7 +26,7 @@ Template.SellsNew.onCreated ->
   @pdetails = new ReactiveDict
   @totals = new ReactiveDict(sub_total: '0.00', tax_total: '0.00', total_price: '0.00', discount: '0', discount_type: "true")
   @contact = new ReactiveDict
-  @paid = new ReactiveDict
+  @pay = new ReactiveVar(false)
 
 
   @selectProduct = (product_id) =>
@@ -78,6 +78,7 @@ Template.SellsNew.onCreated ->
     for key, value of @pdetails.all()
       sub_total += value.product.unit_price * value.quantity
       tax_total += (value.product.unit_price * value.quantity) * (value.product.tax_rate/100)
+
     total_price = sub_total + tax_total
     discount = @totals.get('discount')
     discount_type = @totals.get('discount_type')
@@ -115,10 +116,14 @@ Template.SellsNew.onCreated ->
       if err?
         @remove(organization_id, sell_id)
       else
-        # go to pay update route if @paid.get('paid') and !err?
         params =
+          child_id: sell_id
           organization_id: organization_id
-        FlowRouter.go('sells.index', params )
+        if @pay.get()
+          FlowRouter.go('sells.update.pay', params)
+        else
+          delete params.child_id
+          FlowRouter.go('sells.index', params )
 
   @remove = (organization_id, sell_id) =>
     SMethods.remove.call {organization_id, sell_id}, (err, res) ->
@@ -131,6 +136,12 @@ Template.SellsNew.helpers
 
   inventories: (pdetail) ->
     (value for key, value of pdetail.inventories)
+
+  canPay: ->
+    pdetails = Template.instance().pdetails.all()
+    disable = false
+    disable = true for key, value of pdetails when _.isEmpty(value.inventories)
+    'disabled' if disable || _.isEmpty(pdetails)
 
   customer: ->
     Template.instance().customer.get()
@@ -211,13 +222,13 @@ Template.SellsNew.events
     delete pdetail.inventories[inventory_id]
     pdetail.quantity = 0
     pdetail.quantity += value.quantity_taken for key, value of pdetail.inventories
+    pdetail.quantity = if pdetail.quantity > 0 then pdetail.quantity else 1
     instance.pdetails.set(pdetail.product._id, pdetail)
     instance.setTotals()
 
   'change .js-discount-input': (event, instance) ->
     value = instance.$(event.target).val()
     instance.totals.set 'discount', Number(value)
-
     instance.$(event.target).val(value)
     instance.setTotals()
 
@@ -226,11 +237,13 @@ Template.SellsNew.events
     instance.totals.set 'discount_type', value
     instance.setTotals()
 
-  'change .js-paid-select': (event, instance) ->
-    value = Number instance.$(event.target).val()
-    payment_method = instance.$('.js-payment-method-input').val()
-    instance.paid.set('paid', value)
-    instance.paid.set('payment_method', payment_method)
+
+  'click .js-pay-button': (event, instance) ->
+    instance.pay.set(true)
+    if instance.$(event.target).hasClass('disabled')
+      console.warn "Warn users every detail must have a scanned physical item"
+    else
+      instance.$('.js-sells-form-new').submit()
 
   'submit .js-sells-form-new': (event, instance) ->
     event.preventDefault()

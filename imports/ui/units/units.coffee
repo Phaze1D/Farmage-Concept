@@ -12,6 +12,9 @@ OrganizationModule = require '../../api/collections/organizations/organizations.
 
 require './index/index.coffee'
 require './new/new.coffee'
+require './update/update.coffee'
+require './show/show.coffee'
+
 require './units.html'
 
 Template.UnitsT.onCreated ->

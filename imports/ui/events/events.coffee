@@ -10,6 +10,8 @@
 OrganizationModule = require '../../api/collections/organizations/organizations.coffee'
 
 require './index/index.coffee'
+require './show/show.coffee'
+
 
 require './events.html'
 

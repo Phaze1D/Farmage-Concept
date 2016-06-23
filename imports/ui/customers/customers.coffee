@@ -12,6 +12,8 @@ CustomerModule = require '../../api/collections/customers/customers.coffee'
 
 require './index/index.coffee'
 require './new/new.coffee'
+require './update/update.coffee'
+require './show/show.coffee'
 
 require './customers.html'
 

@@ -11,6 +11,9 @@ OrganizationModule = require '../../api/collections/organizations/organizations.
 
 require './index/index.coffee'
 require './new/new.coffee'
+require './update/update.coffee'
+require './show/show.coffee'
+
 require './sells.html'
 
 Template.SellsT.onCreated ->
@@ -41,7 +44,9 @@ Template.SellsT.helpers
 
   sView: () ->
     data = Template.instance().data
-    return 'SellsShow'    if data.show?
-    return 'SellsUpdate'  if data.update?
-    return 'SellsNew'     if data.new?
+    return 'SellsShow'      if data.show?
+    return 'SellsNew'       if data.new?
+    if data.update?
+      return 'SellsUpdate'  if FlowRouter.getRouteName() is 'sells.update'
+      return 'SellsPay'     if FlowRouter.getRouteName() is 'sells.update.pay'
     return 'SellsIndex'

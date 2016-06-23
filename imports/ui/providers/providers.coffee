@@ -11,6 +11,9 @@ OrganizationModule = require '../../api/collections/organizations/organizations.
 
 require './new/new.coffee'
 require './index/index.coffee'
+require './update/update.coffee'
+require './show/show.coffee'
+
 require './providers.html'
 
 
