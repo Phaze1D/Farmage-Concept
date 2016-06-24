@@ -1,35 +1,37 @@
 <template name="CustomersUpdate">
+  {{#with customer}}
   <div class="">
-    <form id="customer-form-new" class="js-customer-form-new">
+    <form id="customer-form-update" class="js-customer-form-update">
       <label for="first_name">First Name</label>
-      <input type="text" name="first_name" value="">
+      <input type="text" name="first_name" value="{{first_name}}">
       <br>
       <label for="last_name">Last Name</label>
-      <input type="text" name="last_name" value="">
-      <br>
-      <label for="date_of_birth">Date Of Birth</label>
-      <input type="date" name="date_of_birth" value="">
-      <br>
-      <label for="notes">Notes</label>
-      <textarea name="notes" rows="8" cols="40"></textarea>
+      <input type="text" name="last_name" value="{{last_name}}">
       <br>
       <label for="email">Email</label>
-      <input type="text" name="email" value="" placeholder="optional">
+      <input type="text" name="email" value="{{email}}" placeholder="optional">
+      <br>
+      <label for="date_of_birth">Date Of Birth</label>
+      <input type="date" name="date_of_birth" value="{{date_of_birth}}">
+      <br>
+      <label for="notes">Notes</label>
+      <textarea name="notes" rows="8" cols="40">{{notes}}</textarea>
       <br>
       <label for="company">Company Name</label>
-      <input type="text" name="company" value="">
+      <input type="text" name="company" value="{{company}}">
     </form>
     <br>
     <div class="">
-      <!-- {{> Address addressInfo }} -->
+      {{> Address addressInfo }}
     </div>
     <br>
     <div class="">
-      <!-- {{> Telephone telephoneInfo }} -->
+      {{> Telephone telephoneInfo }}
     </div>
 
     <br>
-    <input type="submit" name="name" value="Save" form="customer-form-new">
-
+    <input type="submit" name="name" value="Save" form="customer-form-update">
   </div>
+
+  {{/with}}
 </template>

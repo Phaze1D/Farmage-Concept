@@ -1,22 +1,24 @@
 <template name="ExpensesUpdate">
+  {{#if Template.subscriptionsReady}}
   <div class="top">
     <div class="">
-      <form class="js-expenses-form-new">
+      {{#with expense}}
+      <form class="js-expenses-form-update">
         <label for="price">Price</label>
-        <input type="text" name="price" value="">
+        <input type="text" name="price" value="{{price}}">
         <br>
         <label for="currency">Currency</label>
         <select class="" name="currency">
-          <option value="">None</option>
+          <option value="{{currency}}">{{currency}}</option>
           <option value="MXN">MXN</option>
           <option value="USD">USD</option>
         </select>
         <br>
         <label for="description">Description</label>
-        <textarea name="description" rows="8" cols="40"></textarea>
+        <textarea name="description" rows="8" cols="40">{{description}}</textarea>
         <br>
         <label for="receipt_url">Receipt</label>
-        <input type="text" name="receipt_url" value="">
+        <input type="text" name="receipt_url" value="{{receipt_url}}">
         <br>
         <label for="provider_id">Provider</label>
         <input type="text" class="js-input-providers" name="provider_id" value="{{provider._id}}">
@@ -28,6 +30,7 @@
         <br>
         <input type="submit" name="name" value="Save">
       </form>
+      {{/with}}
     </div>
 
     <br>
@@ -37,5 +40,7 @@
       {{/with}}
     </div>
   </div>
-
+  {{else}}
+    Loading....
+  {{/if}}
 </template>

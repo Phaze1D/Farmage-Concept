@@ -106,7 +106,7 @@ Template.CustomersNew.events
       company: $form.find('[name=company]').val()
       email: $form.find('[name=email]').val()
       notes: $form.find('[name=notes]').val()
-      date_of_birth: $form.find('name=date_of_birth').val()
+      date_of_birth: $form.find('[name=date_of_birth]').val()
       addresses: instance.addresses.get()
       telephones: instance.telephones.get()
 

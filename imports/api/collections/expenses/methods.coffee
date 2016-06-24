@@ -29,7 +29,6 @@ module.exports.insert = new ValidatedMethod
       hasPermission(@userId, expense_doc.organization_id, "expenses_manager")
       unitBelongsToOrgan(expense_doc.unit_id, expense_doc.organization_id)
       providerBelongsToOrgan(expense_doc.provider_id, expense_doc.organization_id) if expense_doc.provider_id?
-      receiptBelongsToOrgan(expense_doc.receipt_id, expense_doc.organization_id) if expense_doc.receipt_id?
 
     ExpensesModule.Expenses.insert expense_doc
 
@@ -55,7 +54,6 @@ module.exports.update = new ValidatedMethod
       expenseBelongsToOrgan(expense_id, organization_id)
       unitBelongsToOrgan(expense_doc.unit_id, organization_id) if expense_doc.unit_id?
       providerBelongsToOrgan(expense_doc.provider_id, organization_id) if expense_doc.provider_id?
-      receiptBelongsToOrgan(expense_doc.receipt_id, organization_id) if expense_doc.receipt_id?
 
     # Check if u need to delete unit id if unit id is set to null
     delete expense_doc.organization_id

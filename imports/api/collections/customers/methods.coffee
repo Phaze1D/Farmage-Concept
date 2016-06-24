@@ -41,7 +41,7 @@ module.exports.insert = new ValidatedMethod
 module.exports.update = new ValidatedMethod
   name: 'customers.update'
   validate: ({organization_id, customer_id, customer_doc}) ->
-    CustomerModule.Customers.simpleSchema().clean({$set: updated_organization_doc}, {isModifier: true})
+    CustomerModule.Customers.simpleSchema().clean({$set: customer_doc}, {isModifier: true})
     CustomerModule.Customers.simpleSchema().validate({$set: customer_doc}, modifier: true)
 
     new SimpleSchema(
@@ -55,11 +55,8 @@ module.exports.update = new ValidatedMethod
   run: ({organization_id, customer_id, customer_doc}) ->
 
     loggedIn(@userId)
-
-    unless @isSimulation
-      hasPermission(@userId, organization_id, "sells_manager")
-      customerBelongsToOrgan(customer_id, organization_id)
-
+    hasPermission(@userId, organization_id, "sells_manager")
+    customerBelongsToOrgan(customer_id, organization_id)
     delete customer_doc.organization_id
     CustomerModule.Customers.update customer_id,
                                     $set: customer_doc

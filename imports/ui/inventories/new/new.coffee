@@ -9,7 +9,7 @@ Big = require 'big.js'
 
 # NOT finished need to change
 # Add yield be ingredient connect iamount to the min amount of the ingredients
-# Remove yield when input is 0
+
 
 OrganizationModule = require '../../../api/collections/organizations/organizations.coffee'
 InventoryModule = require '../../../api/collections/inventories/inventories.coffee'
@@ -155,7 +155,11 @@ Template.InventoriesNew.events
     ingredient_id = instance.$(event.target).closest('.js-ingredient').attr('data-id')
     yield_id = instance.$(event.target).closest('.js-yield').attr('data-id')
     ying = instance.ingyields.get(ingredient_id)
-    ying.yields[yield_id].amount_taken = Number ($(event.target).val())
+    value = Number instance.$(event.target).val()
+    if value > 0
+      ying.yields[yield_id].amount_taken = value
+    else
+      delete ying.yields[yield_id]
     instance.ingyields.set(ingredient_id, ying)
     instance.checkCAmount ingredient_id
 

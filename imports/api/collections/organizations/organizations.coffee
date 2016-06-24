@@ -6,7 +6,6 @@
 { TimestampSchema } = require '../../shared/timestamps.coffee'
 
 EventModule = require '../events/events.coffee'
-ExpenseModule = require '../expenses/expenses.coffee'
 InventoryModule = require '../inventories/inventories.coffee'
 ProductModule = require '../products/products.coffee'
 ProviderModule = require '../providers/providers.coffee'
@@ -15,6 +14,7 @@ UnitModule = require '../units/units.coffee'
 YieldModule = require '../yields/yields.coffee'
 IngredientModule = require '../ingredients/ingredients.coffee'
 CustomerModule  = require '../customers/customers.coffee'
+ExpenseModule = require '../expenses/expenses.coffee'
 
 
 
