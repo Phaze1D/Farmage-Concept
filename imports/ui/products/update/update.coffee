@@ -18,13 +18,15 @@ require './update.html'
 
 Template.ProductsUpdate.onCreated ->
   @product = new ReactiveVar
-  @ingredients = new ReactiveVar([])
+
 
   @autorun =>
-    @product.set ProductModule.Products.findOne FlowRouter.getParam('child_id')
-    console.log @product.get().ingredients()
+    organization_id = FlowRouter.getParam 'organization_id'
+    product_id = FlowRouter.getParam 'child_id'
+    @product.set ProductModule.Products.findOne product_id
+    @subscribe 'product.ingredients', organization_id, product_id
 
-    
+
   @update = (product_doc) =>
     organization_id = FlowRouter.getParam('organization_id')
     product_id = @product.get()._id
@@ -32,8 +34,9 @@ Template.ProductsUpdate.onCreated ->
     PMethods.update.call {organization_id, product_id, product_doc}, (err, res) ->
       console.log err
       params =
-        organization_id: product_doc.organization_id
-      FlowRouter.go('products.index', params ) unless err?
+        organization_id: organization_id
+        child_id: product_id
+      FlowRouter.go('products.show', params ) unless err?
 
 
 
@@ -42,7 +45,15 @@ Template.ProductsUpdate.helpers
     Template.instance().product.get()
 
   ingredients: ->
-    Template.instance().ingredients.get()
+    ingredients = []
+    product = Template.instance().product.get()
+    for pingredient in product.pingredients
+      ingredients.push
+        amount: pingredient.amount
+        ingredient: IngredientModule.Ingredients.findOne(pingredient.ingredient_id)
+    ingredients
+
+
 
 Template.ProductsUpdate.events
 

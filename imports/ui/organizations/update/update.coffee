@@ -80,7 +80,6 @@ Template.OrganizationUpdate.helpers
 
 
   addressInfo: ->
-    console.log 'organaddr'
     ret =
       addAddress: Template.instance().addAddress
       updateAddress: Template.instance().updateAddress

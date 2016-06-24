@@ -10,7 +10,7 @@ OrganizationModule = require '../../../api/collections/organizations/organizatio
 require './index.html'
 
 Template.OUsersIndex.onCreated ->
-  
+
 
 Template.OUsersIndex.helpers
   ousers: () ->
@@ -23,3 +23,6 @@ Template.OUsersIndex.helpers
   hasUser: (user) ->
     organization = OrganizationModule.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
     organization.hasUser(user._id)
+
+  booleanString: (bol) ->
+    if bol then 'true' else 'false'

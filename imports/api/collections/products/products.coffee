@@ -129,7 +129,7 @@ Products.deny
 
 Products.helpers
   ingredients: ->
-    id_array = ( ingredient.ingredient_id for ingredient in @ingredients )
+    id_array = ( pingredient.ingredient_id for pingredient in @pingredients )
     IngredientModule.Ingredients.find { _id: $in: id_array }
 
   sells: ->

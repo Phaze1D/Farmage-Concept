@@ -38,7 +38,8 @@ Template.OUsersNew.events
         address: $form.find('[name=email]').val()
       ]
       profile:
-        first_name: 'test'
+        first_name: $form.find('[name=first_name]').val()
+        last_name: $form.find('[name=last_name]').val()
     permission =
       owner: $form.find('[name=owner]').prop('checked')
       editor: $form.find('[name=editor]').prop('checked')

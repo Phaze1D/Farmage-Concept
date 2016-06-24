@@ -1,53 +1,54 @@
 <template name="ProductsUpdate">
-  <div class="top">
-    <div class="">
-      {{#with product}}
-      <form class="js-product-form-update">
-        <label for="name">Name</label>
-        <input type="text" name="name" value="{{name}}">
-        <br>
-        <label for="measurement">Measurement</label>
-        <input type="text" name="measurement" value="{{measurement}}">
-        <br>
-        <label for="description">Description</label>
-        <textarea name="description" rows="8" cols="40"></textarea>
-        <br>
-        <label for="sku">SKU</label>
-        <input type="text" name="sku" value="{{sku}}">
-        <br>
-        <label for="unit_price">Price</label>
-        <input type="text" name="unit_price" value="{{unit_price}}">
-        <br>
-        <label for="currency">Currency</label>
-        <select class="" name="currency">
-          <option value="{{currency}}">{{currency}}</option>
-          <option value="MXN">MXN</option>
-          <option value="USD">USD</option>
-        </select>
-        <br>
-        <label for="tax_rate">Tax Rate</label>
-        <input type="text" name="tax_rate" value="{{tax_rate}}">
-        <br>
-
-        <label for="ingredients">Ingredients</label>
-
-        <br>
-        {{#each ingredients}}
+  {{#if Template.subscriptionsReady}}
+    <div class="top">
+      <div class="">
+        {{#with product}}
+        <form class="js-product-form-update">
+          <label for="name">Name</label>
+          <input type="text" name="name" value="{{name}}">
           <br>
-          <div class="js-ingredient" data-index="{{@index}}">
-            {{name}} {{measurement_unit}}
-            <label for="amount">Amount</label>
-            {{amount}}
-          </div>
-        {{/each}}
+          <label for="measurement">Measurement</label>
+          <input type="text" name="measurement" value="{{measurement}}">
+          <br>
+          <label for="description">Description</label>
+          <textarea name="description" rows="8" cols="40"></textarea>
+          <br>
+          <label for="sku">SKU</label>
+          <input type="text" name="sku" value="{{sku}}">
+          <br>
+          <label for="unit_price">Price</label>
+          <input type="text" name="unit_price" value="{{unit_price}}">
+          <br>
+          <label for="currency">Currency</label>
+          <select class="" name="currency">
+            <option value="{{currency}}">{{currency}}</option>
+            <option value="MXN">MXN</option>
+            <option value="USD">USD</option>
+          </select>
+          <br>
+          <label for="tax_rate">Tax Rate</label>
+          <input type="text" name="tax_rate" value="{{tax_rate}}">
+          <br>
 
-        <br>
-        <input type="submit" name="name" value="Save">
-      </form>
-      {{/with}}
+          <label for="ingredients">Ingredients</label>
+
+          <br>
+          {{#each ingredients}}
+            <br>
+            <div class="js-ingredient" data-index="{{@index}}">
+              {{ingredient.name}} {{ingredient.measurement_unit}}
+              <label for="amount">Amount</label>
+              {{amount}}
+            </div>
+          {{/each}}
+
+          <br>
+          <input type="submit" name="name" value="Save">
+        </form>
+        {{/with}}
+      </div>
+
+      <br>
     </div>
-
-    <br>
-  </div>
-
+  {{/if}}
 </template>
