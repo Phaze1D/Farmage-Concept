@@ -13,6 +13,7 @@ EventModule = require '../events/events.coffee'
 ExpenseModule = require '../expenses/expenses.coffee'
 InventoryModule = require '../inventories/inventories.coffee'
 ProductModule = require '../products/products.coffee'
+IngredientModule = require '../ingredients/ingredients.coffee'
 ProviderModule = require '../providers/providers.coffee'
 SellModule = require '../sells/sells.coffee'
 UnitModule = require '../units/units.coffee'
@@ -120,6 +121,8 @@ Meteor.users.helpers
     ExpenseModule.Expenses.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
   inventories: ->
     InventoryModule.Inventories.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
+  ingredients: ->
+    IngredientModule.Ingredients.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
   products: ->
     ProductModule.Products.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: created_at: -1
   providers: ->

@@ -5,16 +5,17 @@
 { ContactSchema } = require '../../shared/contact_info.coffee'
 { TimestampSchema } = require '../../shared/timestamps.coffee'
 
+ExpenseModule = require '../expenses/expenses.coffee'
 EventModule = require '../events/events.coffee'
 InventoryModule = require '../inventories/inventories.coffee'
-ProductModule = require '../products/products.coffee'
 ProviderModule = require '../providers/providers.coffee'
 SellModule = require '../sells/sells.coffee'
 UnitModule = require '../units/units.coffee'
 YieldModule = require '../yields/yields.coffee'
 IngredientModule = require '../ingredients/ingredients.coffee'
 CustomerModule  = require '../customers/customers.coffee'
-ExpenseModule = require '../expenses/expenses.coffee'
+ProductModule = require '../products/products.coffee'
+
 
 
 

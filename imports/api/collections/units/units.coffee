@@ -13,6 +13,7 @@ SellModule = require '../sells/sells.coffee'
 ExpenseModule = require '../expenses/expenses.coffee'
 
 
+
 class UnitsCollection extends Mongo.Collection
   insert: (doc, callback) ->
     super(doc, callback)

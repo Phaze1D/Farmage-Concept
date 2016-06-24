@@ -26,8 +26,6 @@ Meteor.publish "expenses", (organization_id, parent, parent_id) ->
     unless(parentDoc? && parentDoc.organization_id is organization._id)
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
-
-
   if @userId? && parentDoc?
     return parentDoc.expenses()
   else
@@ -42,8 +40,8 @@ Meteor.publish 'expense.parents', (organization_id, expense_id) ->
 
   if @userId? && expense?
     return [
-      ProviderModule.Providers.find(expense.provider_id),
-      UnitModule.Units.find(expense.unit_id)
+      expense.provider(),
+      expense.unit()
     ]
   else
     @ready()

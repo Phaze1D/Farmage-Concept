@@ -28,8 +28,8 @@ Template.ExpensesUpdate.onCreated ->
     @expense.set ExpenseModule.Expenses.findOne FlowRouter.getParam('child_id')
     if @expense.get()?
       @subscribe 'expense.parents', organ_id, @expense.get()._id
-      @unit.set UnitModule.Units.findOne @expense.get().unit_id
-      @provider.set ProviderModule.Providers.findOne @expense.get().provider_id
+      @unit.set @expense.get().unit().fetch()[0]
+      @provider.set @expense.get().provider().fetch()[0]
 
 
   @update = (expense_doc) =>

@@ -79,7 +79,7 @@ Template.ProductsNew.events
       unit_price: $form.find('[name=unit_price]').val()
       currency: $form.find('[name=currency]').val()
       tax_rate: $form.find('[name=tax_rate]').val()
-      ingredients: ingredients
+      pingredients: ingredients
     instance.insert product_doc
 
   'mousedown .top': (event, instance) ->

@@ -7,7 +7,7 @@
 { BelongsOrganizationSchema } = require '../../shared/belong_organization.coffee'
 
 OrganizationModule = require '../organizations/organizations.coffee'
-InventoryModule = require '../products/products.coffee'
+InventoryModule = require '../inventories/inventories.coffee'
 IngredientModule = require '../ingredients/ingredients.coffee'
 SellModule = require '../sells/sells.coffee'
 
@@ -102,7 +102,7 @@ ProductSchema =
         if @isSet
           return parseFloat @value.toFixed(5)
 
-    ingredients:
+    pingredients:
       type: [IngredientSchema]
       label: 'ingredients'
       denyUpdate: true

@@ -76,20 +76,20 @@ Expenses.deny
 
 Expenses.helpers
   provider: ->
-    unless @provider_id?
-      return ProviderModule.Providers.findOne { _id: @provider_id}
+    if @provider_id?
+      return ProviderModule.Providers.find @provider_id
 
   unit: ->
-    UnitModule.Units.findOne { _id: @unit_id}
+    UnitModule.Units.find @unit_id
 
   organization: ->
-    OrganizationModule.Organizations.findOne { _id: @organization_id }
+    OrganizationModule.Organizations.findOne @organization_id
 
   created_by: ->
-    Meteor.users.findOne { _id: @created_user_id}
+    Meteor.users.findOne @created_user_id
 
   updated_by: ->
-    Meteor.users.findOne { _id: @updated_user_id}
+    Meteor.users.findOne @updated_user_id
 
 # Expense depends on receipts_id. If receipt is deleted then receipts_id will be null
 # Expense depends on provider_id. If provider is deleted then provider_id will be null

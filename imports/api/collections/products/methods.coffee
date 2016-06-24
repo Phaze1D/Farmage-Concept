@@ -34,7 +34,7 @@ module.exports.insert = new ValidatedMethod
 
     unless @isSimulation
       hasPermission(@userId, product_doc.organization_id, "inventories_manager")
-      validateDuplicates(product_doc.ingredients, product_doc.organization_id)
+      validateDuplicates(product_doc.pingredients, product_doc.organization_id)
 
     if ProductModule.Products.findOne( $and: [ { organization_id: product_doc.organization_id }, {sku: product_doc.sku} ] )?
       throw new Meteor.Error 'skuNotUnique', 'sku must be unqiue'
@@ -66,7 +66,7 @@ module.exports.update = new ValidatedMethod
       throw new Meteor.Error 'skuNotUnique', 'sku must be unqiue'
 
     delete product_doc.organization_id # Organization ID can't be update
-    delete product_doc.ingredients
+    delete product_doc.pingredients
 
     ProductModule.Products.update product_id,
                             $set: product_doc
