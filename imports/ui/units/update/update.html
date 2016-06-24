@@ -1,30 +1,43 @@
 <template name="UnitsUpdate">
-  <div class="top">
-    <div class="">
-      <form class="js-unit-new">
-        <label for="name">Name</label>
-        <input type="text" name="name" value="">
-        <br>
-        <label for="description">Description</label>
-        <textarea name="description" rows="8" cols="40"></textarea>
-        <br>
-        <label for="amount">Amount</label>
-        <input type="number" name="amount" value="" min=0>
-        <br>
-        <label for="unit_id">Unit Parent ID</label>
-        <input type="text" class="js-input-parent" name="unit_id" value="{{parent._id}}" placeholder="optional">
-        {{parent.name}}
-        <br>
-        <input type="submit" name="name" value="Save">
-      </form>
-    </div>
+  {{#if Template.subscriptionsReady}}
+    <div class="top">
+      <div class="">
+        {{#with unit}}
+        <form class="js-unit-update">
+          <label for="name">Name</label>
+          <input type="text" name="name" value="{{name}}">
+          <br>
+          <label for="description">Description</label>
+          <textarea name="description" rows="8" cols="40">{{description}}</textarea>
+          <br>
+          <label for="amount">Amount</label>
+          <input type="number" name="amount" value="{{amounts.uamount}}" min=0 disabled="true">
+          {{#if change}}
+            <label for="event_amount">Change Amount</label>
+            <input type="number" name="amount" class="js-eamount-input" value="{{amounts.eamount}}" min="-{{amount}}">
+            <label for="event_description">Change Description</label>
+            <textarea name="event_description" rows="8" cols="40"></textarea>
+            <button type="button" class="js-apply-event">Apply</button>
+            <button type="button" class="js-cancel-event">Cancel</button>
+          {{else}}
+            <button type="button" class="js-change-button">Change</button>
+          {{/if}}
+          <br>
+          <label for="unit_id">Unit Parent ID</label>
+          <input type="text" class="js-input-parent" name="unit_id" value="{{parent._id}}" placeholder="optional">
+          {{parent.name}}
+          <br>
+          <input type="submit" name="name" value="Save">
+        </form>
+        {{/with}}
+      </div>
 
-    <br>
-    <div class="js-selector">
-      {{#with selector}}
-        {{> Template.dynamic template=title data=select }}
-      {{/with}}
+      <br>
+      <div class="js-selector">
+        {{#with selector}}
+          {{> Template.dynamic template=title data=select }}
+        {{/with}}
+      </div>
     </div>
-  </div>
-
+  {{/if}}
 </template>

@@ -77,7 +77,7 @@ Units.deny
 Units.helpers
 
   unit: ->
-    Units.findOne { _id: @unit_id }
+    Units.find @unit_id
 
   units: ->
     Units.find { unit_id: @_id }

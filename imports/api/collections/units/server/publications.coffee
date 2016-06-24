@@ -7,7 +7,7 @@ UnitModule = require '../../units/units.coffee'
 collections = {}
 collections.unit = UnitModule.Units
 
-
+# Missing permissions and pagenation
 Meteor.publish "units", (organization_id, parent, parent_id) ->
 
   info = publicationInfo organization_id, parent, parent_id
@@ -22,8 +22,17 @@ Meteor.publish "units", (organization_id, parent, parent_id) ->
     unless(parentDoc? && parentDoc.organization_id is organization._id)
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
-  # Missing permissions and pagenation
   if @userId?
     return parentDoc.units()
   else
     @ready();
+
+# Missing permissions and pagenation
+Meteor.publish 'unit.parent', (organization_id, unit_id) ->
+  info = publicationInfo organization_id, 'unit', unit_id
+  unit = UnitModule.Units.findOne unit_id
+
+  if @userId? && unit?
+    return unit.unit()
+  else
+    @ready()
