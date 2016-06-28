@@ -40,14 +40,18 @@ Template.InventoriesUpdate.onCreated ->
       @amounts.set 'inamount', inventory.amount
       @amounts.set 'chamount', 0
       if @subscriptionsReady()
-        for yield_item in inventory.yield_objects
-          _yield = YieldModule.Yields.findOne yield_item.yield_id
-          ying = camount: 0, yields: {}
-          ying.yields[_yield._id] =
-            yield: _yield
-            amount_taken: yield_item.amount_taken
-            min: yield_item.amount_taken
-          @ingyields.set(_yield.ingredient_id, ying)
+        @intialYield()
+
+
+  @intialYield = () =>
+    for yield_item in @inventory.get().yield_objects
+      _yield = YieldModule.Yields.findOne yield_item.yield_id
+      ying = camount: 0, yields: {}
+      ying.yields[_yield._id] =
+        yield: _yield
+        amount_taken: yield_item.amount_taken
+        min: yield_item.amount_taken
+      @ingyields.set(_yield.ingredient_id, ying)
 
 
   @selectYield = (yield_id) =>
@@ -67,11 +71,10 @@ Template.InventoriesUpdate.onCreated ->
     @selector.set('title', null)
 
 
-
   @checkCAmount = (ingredient_id) =>
     sum = 0
     for key, value of @ingyields.get(ingredient_id).yields
-      sum += value.amount_taken
+      sum += (value.amount_taken - value.min)
 
     for ping in @product.get().pingredients
       if ping.ingredient_id is ingredient_id
@@ -84,7 +87,11 @@ Template.InventoriesUpdate.onCreated ->
     for key, value of @ingyields.all()
       if !min? || min.camount > value.camount
         min = value
-    @invAmount.set(min.camount) if min?
+
+    if min?
+      @amounts.set 'chamount', min.camount
+      @amounts.set 'inamount', @inventory.get().amount + min.camount
+
 
   @insert = (inventory_doc) =>
     yield_objects = inventory_doc.yield_objects
@@ -96,7 +103,6 @@ Template.InventoriesUpdate.onCreated ->
     IMethods.insert.call {inventory_doc}, (err, res) =>
       console.log err
       if res?
-        console.log @event.get()
         if yield_objects.length > 0
           @packEvent(amount, yield_objects, res, inventory_doc.organization_id)
         else if @event.get()? && @event.get().amount >
@@ -106,6 +112,7 @@ Template.InventoriesUpdate.onCreated ->
             organization_id: inventory_doc.organization_id
           FlowRouter.go('inventories.index', params ) unless err?
 
+
   @packEvent = (amount, yield_objects, inventory_id, organization_id) =>
     EMethods.pack.call {organization_id, inventory_id, yield_objects, amount}, (err, res) =>
       console.log err
@@ -113,6 +120,7 @@ Template.InventoriesUpdate.onCreated ->
       params =
         organization_id: organization_id
       FlowRouter.go('inventories.index', params ) unless err?
+
 
   @userEvent = (inventory_id) =>
     event_doc = @event.get()
@@ -126,6 +134,7 @@ Template.InventoriesUpdate.onCreated ->
       params =
         organization_id: event_doc.organization_id
       FlowRouter.go('inventories.index', params ) unless err?
+
 
   @delete = (organization_id, inventory_id) =>
     IMethods.delete.call {organization_id, inventory_id}, (err, res) =>
@@ -148,8 +157,9 @@ Template.InventoriesUpdate.helpers
     (value for key, value of ying.yields) if ying?
 
   packing: ->
-    Template.instance().change.get('packing') &&
-    Template.instance().product.get()?
+    true
+    # Template.instance().change.get('packing') &&
+    # Template.instance().product.get()?
 
   manually: ->
     Template.instance().change.get('manually') &&

@@ -82,7 +82,6 @@ Template.InventoriesNew.onCreated ->
     IMethods.insert.call {inventory_doc}, (err, res) =>
       console.log err
       if res?
-        console.log @event.get()
         if yield_objects.length > 0
           @packEvent(amount, yield_objects, res, inventory_doc.organization_id)
         else if @event.get()? && @event.get().amount >
@@ -194,7 +193,7 @@ Template.InventoriesNew.events
     instance.change.set('manually', false)
     instance.event.set null
     instance.invAmount.set 0
-    instance.change.set('packing', true)
+    instance.change.set('packing', true) if instance.product.get()?
 
   'change .js-mamount-input': (event, instance) ->
     value = Number instance.$(event.target).val()

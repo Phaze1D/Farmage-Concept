@@ -41,7 +41,7 @@
                 <div class="js-yield" data-id="{{yield._id}}">
                   {{yield._id}} (Amount: {{yield.amount}})
                   <label>Amount Taken</label>
-                  <input type="number" step="any" class="js-at-input" value="{{amount_taken}}" min="0" max="{{yield.amount}}">
+                  <input type="number" step="any" class="js-at-input" value="{{amount_taken}}" min="{{min}}" max="">
                   <button type="button" class="js-yield-remove">Remove</button>
                 </div>
               {{/each}}
