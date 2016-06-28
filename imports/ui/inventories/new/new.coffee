@@ -8,8 +8,7 @@
 Big = require 'big.js'
 
 # NOT finished need to change
-# Add yield be ingredient connect iamount to the min amount of the ingredients
-
+# ADD options to change amount manually or by packing
 
 OrganizationModule = require '../../../api/collections/organizations/organizations.coffee'
 InventoryModule = require '../../../api/collections/inventories/inventories.coffee'
@@ -29,13 +28,15 @@ Template.InventoriesNew.onCreated ->
   @ingyields = new ReactiveDict
   @product = new ReactiveVar
   @invAmount = new ReactiveVar(0)
+  @event = new ReactiveVar
+  @change = new ReactiveDict
 
 
 
   @selectYield = (yield_id) =>
     _yield = YieldModule.Yields.findOne(yield_id)
 
-    for ping in @product.get().ingredients
+    for ping in @product.get().pingredients
       if ping.ingredient_id is _yield.ingredient_id
         ying = @ingyields.get(_yield.ingredient_id)
         ying = camount: 0, yields: {} unless ying?
@@ -58,7 +59,7 @@ Template.InventoriesNew.onCreated ->
     for key, value of @ingyields.get(ingredient_id).yields
       sum += value.amount_taken
 
-    for ping in @product.get().ingredients
+    for ping in @product.get().pingredients
       if ping.ingredient_id is ingredient_id
         camount = new Big(sum).div(ping.amount)
         ying = @ingyields.get(ingredient_id)
@@ -80,22 +81,39 @@ Template.InventoriesNew.onCreated ->
 
     IMethods.insert.call {inventory_doc}, (err, res) =>
       console.log err
-      if (amount > 0 || yield_objects.length > 0) && res?
-        @packEvent(amount, yield_objects, res, inventory_doc.organization_id)
-      else
-        params =
-          organization_id: inventory_doc.organization_id
-        FlowRouter.go('inventories.index', params ) unless err?
+      if res?
+        console.log @event.get()
+        if yield_objects.length > 0
+          @packEvent(amount, yield_objects, res, inventory_doc.organization_id)
+        else if @event.get()? && @event.get().amount >
+          @userEvent(res)
+        else
+          params =
+            organization_id: inventory_doc.organization_id
+          FlowRouter.go('inventories.index', params ) unless err?
 
   @packEvent = (amount, yield_objects, inventory_id, organization_id) =>
     EMethods.pack.call {organization_id, inventory_id, yield_objects, amount}, (err, res) =>
       console.log err
-      @deleteEvent(organization_id, inventory_id) if err?
+      @delete(organization_id, inventory_id) if err?
       params =
         organization_id: organization_id
       FlowRouter.go('inventories.index', params ) unless err?
 
-  @deleteEvent = (organization_id, inventory_id) =>
+  @userEvent = (inventory_id) =>
+    event_doc = @event.get()
+    event_doc.for_type = 'inventory'
+    event_doc.for_id = inventory_id
+    event_doc.organization_id = FlowRouter.getParam 'organization_id'
+
+    EMethods.userEvent.call {event_doc}, (err, res) =>
+      console.log err
+      @delete(organization_id, inventory_id) if err?
+      params =
+        organization_id: event_doc.organization_id
+      FlowRouter.go('inventories.index', params ) unless err?
+
+  @delete = (organization_id, inventory_id) =>
     IMethods.delete.call {organization_id, inventory_id}, (err, res) =>
       console.log err
 
@@ -112,6 +130,13 @@ Template.InventoriesNew.helpers
     ying = Template.instance().ingyields.get(ingredient_id)
     (value for key, value of ying.yields) if ying?
 
+  packing: ->
+    Template.instance().change.get('packing') &&
+    Template.instance().product.get()?
+
+  manually: ->
+    Template.instance().change.get('manually') &&
+    Template.instance().product.get()?
 
   product: ->
     Template.instance().product.get()
@@ -121,7 +146,10 @@ Template.InventoriesNew.helpers
 
   camount: (ingredient_id) ->
     ying = Template.instance().ingyields.get(ingredient_id)
-    ying.camount if ying?
+    if ying?
+      ying.camount
+    else
+      0
 
 
 Template.InventoriesNew.events
@@ -143,14 +171,6 @@ Template.InventoriesNew.events
     instance.selector.set 'select', 'selectProduct'
     instance.product.set null
 
-
-  'mousedown .top': (event, instance) ->
-    container = instance.$('.js-selector')
-    instance.selector.set('title', null) if  !container.is(event.target) &&
-                                    container.has(event.target).length is 0 &&
-                                    instance.selector.get('title')?
-
-
   'change .js-at-input': (event, instance) ->
     ingredient_id = instance.$(event.target).closest('.js-ingredient').attr('data-id')
     yield_id = instance.$(event.target).closest('.js-yield').attr('data-id')
@@ -163,11 +183,43 @@ Template.InventoriesNew.events
     instance.ingyields.set(ingredient_id, ying)
     instance.checkCAmount ingredient_id
 
+  'click .js-changeM-b': (event, instance) ->
+    instance.change.set('packing', false)
+    instance.change.set('manually', true) if instance.product.get()?
+    instance.event.set null
+    instance.ingyields.clear()
+    instance.invAmount.set 0
+
+  'click .js-changeP-b': (event, instance) ->
+    instance.change.set('manually', false)
+    instance.event.set null
+    instance.invAmount.set 0
+    instance.change.set('packing', true)
+
+  'change .js-mamount-input': (event, instance) ->
+    value = Number instance.$(event.target).val()
+    if value < 0
+      instance.$(event.target).val(0)
+      value = 0
+
+    instance.invAmount.set value
+
+  'click .js-apply-event': (event, instance) ->
+    value = Number instance.invAmount.get()
+    $form = instance.$('.js-inventories-form-new')
+    instance.change.set 'manually', false
+    if value isnt 0
+      event_doc =
+        amount: value
+        description: $form.find('[name=event_description]').val()
+      instance.event.set event_doc
 
 
-  'change .js-iamount-input': (event, instance) ->
-    $input = $(event.target)
-    instance.invAmount.set Number($input.val())
+  'click .js-cancel-event': (event, instance) ->
+    instance.invAmount.set 0
+    instance.event.set null
+    instance.change.set 'manually', false
+
 
 
   'submit .js-inventories-form-new': (event, instance) ->
@@ -184,3 +236,10 @@ Template.InventoriesNew.events
       yield_objects: yield_objects
       product_id: $form.find('[name=product_id]').val()
     instance.insert inventory_doc
+
+
+  'mousedown .top': (event, instance) ->
+    container = instance.$('.js-selector')
+    instance.selector.set('title', null) if  !container.is(event.target) &&
+                                    container.has(event.target).length is 0 &&
+                                    instance.selector.get('title')?

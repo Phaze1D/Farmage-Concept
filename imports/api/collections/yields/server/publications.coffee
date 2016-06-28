@@ -1,6 +1,7 @@
 { Meteor } = require 'meteor/meteor'
 { publicationInfo } = require '../../../mixins/server/publications_mixin.coffee'
 
+YieldModule = require '../yields.coffee'
 UnitModule = require '../../units/units.coffee'
 IngredientModule = require '../../ingredients/ingredients.coffee'
 InventoryModule = require '../../inventories/inventories.coffee'
@@ -11,7 +12,7 @@ collections.unit = UnitModule.Units
 collections.ingredient = IngredientModule.Ingredients
 collections.inventory = InventoryModule.Inventories
 
-
+# Missing permissions and pagenation
 Meteor.publish "yields", (organization_id, parent, parent_id) ->
 
   info = publicationInfo organization_id, parent, parent_id
@@ -26,8 +27,20 @@ Meteor.publish "yields", (organization_id, parent, parent_id) ->
     unless(parentDoc? && parentDoc.organization_id is organization._id)
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
-  # Missing permissions and pagenation
   if @userId?
     return parentDoc.yields()
   else
     @ready();
+
+# Missing permissions and pagenation
+Meteor.publish 'yield.parents', (organization_id, yield_id) ->
+  info = publicationInfo organization_id, 'yield', yield_id
+  _yield = YieldModule.Yields.findOne yield_id
+
+  if @userId? && _yield?
+    return [
+      _yield.ingredient(),
+      _yield.unit()
+    ]
+  else
+    @ready()

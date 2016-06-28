@@ -6,12 +6,6 @@ ContactExports = require '../../shared/contact_info.coffee'
 { CreateByUserSchema } = require '../../shared/created_by_user.coffee'
 { BelongsOrganizationSchema } = require '../../shared/belong_organization.coffee'
 
-OrganizationModule = require '../organizations/organizations.coffee'
-CustomerModule = require '../customers/customers.coffee'
-UnitModule = require '../units/units.coffee'
-ProductModule = require '../products/products.coffee'
-InventoryModule = require '../inventories/inventories.coffee'
-
 
 class SellsCollection extends Mongo.Collection
   insert: (doc, callback) ->
@@ -205,31 +199,6 @@ Sells.deny
   remove: ->
     yes
 
-Sells.helpers
-
-  customer: ->
-    CustomerModule.Customers.findOne { _id: @customer_id }
-
-  products: ->
-    id_array = (detail.product_id for detail in @details)
-    ProductModule.Products.findOne { _id: $in: id_array}
-
-  inventories: ->
-    id_array = []
-    for detail in @details
-      for inventory in detail.inventories
-        id_array.push inventory.inventory_id
-
-    InventoryModule.Inventories.find { _id: $in: id_array }
-
-  organization: ->
-    OrganizationModule.Organizations.findOne { _id: @organization_id }
-
-  created_by: ->
-    Meteor.users.findOne { _id: @created_user_id }
-
-  updated_by: ->
-    Meteor.users.findOne { _id: @updated_user_id }
 
 
 # Sells depends on inventory id. Inventory can only be soft delete

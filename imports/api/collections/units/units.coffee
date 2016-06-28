@@ -6,13 +6,6 @@
 { CreateByUserSchema } = require '../../shared/created_by_user.coffee'
 { BelongsOrganizationSchema } = require '../../shared/belong_organization.coffee'
 
-OrganizationModule = require '../organizations/organizations.coffee'
-YieldModule = require '../yields/yields.coffee'
-EventModule = require '../events/events.coffee'
-SellModule = require '../sells/sells.coffee'
-ExpenseModule = require '../expenses/expenses.coffee'
-
-
 
 class UnitsCollection extends Mongo.Collection
   insert: (doc, callback) ->
@@ -74,31 +67,6 @@ Units.deny
       yes
 
 
-Units.helpers
-
-  unit: ->
-    Units.find @unit_id
-
-  units: ->
-    Units.find { unit_id: @_id }
-
-  yields: ->
-    YieldModule.Yields.find { unit_id: @_id }
-
-  events: ->
-    EventModule.Events.find { for_id: @_id }
-
-  expenses: ->
-    ExpenseModule.Expenses.find { unit_id: @_id }
-
-  organization: ->
-    OrganizationModule.Organizations.findOne { _id: @organization_id }
-
-  created_by: ->
-    Meteor.users.findOne { _id: @created_user_id}
-
-  updated_by: ->
-    Meteor.users.findOne { _id: @updated_user_id}
 
 if Meteor.isServer
   multikeys =

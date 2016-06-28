@@ -6,11 +6,6 @@
 { CreateByUserSchema } = require '../../shared/created_by_user.coffee'
 { BelongsOrganizationSchema } = require '../../shared/belong_organization.coffee'
 
-OrganizationModule = require '../organizations/organizations.coffee'
-InventoryModule = require '../inventories/inventories.coffee'
-IngredientModule = require '../ingredients/ingredients.coffee'
-SellModule = require '../sells/sells.coffee'
-
 
 class ProductsCollection extends Mongo.Collection
   insert: (doc, callback) ->
@@ -127,27 +122,9 @@ Products.deny
   remove: ->
     yes
 
-Products.helpers
-  ingredients: ->
-    id_array = ( pingredient.ingredient_id for pingredient in @pingredients )
-    IngredientModule.Ingredients.find { _id: $in: id_array }
 
-  sells: ->
-    SellModule.Sells.find 'details.product_id': @_id
 
-  inventories: ->
-    InventoryModule.Inventories.find product_id: @_id
-
-  organization: ->
-    OrganizationModule.Organizations.findOne { _id: @organization_id }
-
-  created_by: ->
-    Meteor.users.findOne { _id: @created_user_id}
-
-  updated_by: ->
-    Meteor.users.findOne { _id: @updated_user_id}
-
-  # SKU must be unique to a single organization only
+# SKU must be unique to a single organization only
 if Meteor.isServer
   multikeys =
     sku: 1

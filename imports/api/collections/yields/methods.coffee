@@ -52,10 +52,10 @@ module.exports.update = new ValidatedMethod
     unless @isSimulation
       hasPermission(@userId, organization_id, "units_manager")
       yieldBelongsToOrgan(yield_id, organization_id)
+      unitBelongsToOrgan(yield_doc.unit_id, organization_id) if yield_doc.unit_id?
 
     delete yield_doc.amount
     delete yield_doc.ingredient_id
-    delete yield_doc.unit_id
     delete yield_doc.organization_id
 
     YieldModule.Yields.update yield_id,

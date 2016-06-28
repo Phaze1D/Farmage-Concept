@@ -5,12 +5,6 @@
 { CreateByUserSchema } = require '../../shared/created_by_user.coffee'
 { BelongsOrganizationSchema } = require '../../shared/belong_organization.coffee'
 
-OrganizationModule = require '../organizations/organizations.coffee'
-UnitModule = require '../units/units.coffee'
-InventoryModule = require '../inventories/inventories.coffee'
-EventModule = require '../events/events.coffee'
-IngredientModule = require '../ingredients/ingredients.coffee'
-
 
 
 class YieldsCollection extends Mongo.Collection
@@ -55,7 +49,8 @@ YieldSchema =
     unit_id:
       type: String
       index: true
-      denyUpdate: true
+
+    # Possible Add updatale yield date
 
   , CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 
@@ -70,28 +65,6 @@ Yields.deny
   remove: ->
     yes
 
-Yields.helpers
-
-  unit: ->
-    UnitModule.Units.findOne _id: @unit_id 
-
-  inventories: ->
-    InventoryModule.Inventories.find 'yield_objects.yield_id': @_id # possible error
-
-  ingredient: ->
-    IngredientModule.Ingredients.findOne @ingredient_id
-
-  events: ->
-    EventModule.Events.find for_id: @_id
-
-  organization: ->
-    OrganizationModule.Organizations.findOne _id: @organization_id
-
-  created_by: ->
-    Meteor.users.findOne _id: @created_user_id
-
-  updated_by: ->
-    Meteor.users.findOne _id: @updated_user_id
 
 # Yield depends on unit_id. On Unit delete
 #             Option 1: move yield to parent Unit

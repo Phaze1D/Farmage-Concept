@@ -5,10 +5,6 @@
 { CreateByUserSchema } = require '../../shared/created_by_user.coffee'
 { BelongsOrganizationSchema } = require '../../shared/belong_organization.coffee'
 
-OrganizationModule = require '../organizations/organizations.coffee'
-UnitModule = require '../units/units.coffee'
-YieldModule = require '../yields/yields.coffee'
-InventoryModule = require '../inventories/inventories.coffee'
 
 
 class EventsCollection extends Mongo.Collection
@@ -70,25 +66,6 @@ Events.deny
     yes
   remove: ->
     yes
-
-Events.helpers
-  for_doc: ->
-    switch @for_type
-      when 'unit' then  UnitModule.Units.findOnd { _id: @for_id}
-      when 'yield' then YieldModule.Yields.findOne { _id: @for_id }
-      when 'inventory' then InventoryModule.Inventories.findOne { _id: @for_id}
-      else
-        return
-
-  organization: ->
-    OrganizationModule.Organizations.findOne { _id: @organization_id }
-
-  created_by: ->
-    Meteor.users.findOne { _id: @created_user_id}
-
-  updated_by: ->
-    Meteor.users.findOne { _id: @updated_user_id}
-
 
 
 # Events depends on for_id ( The object that the event affected ). If for_id is deleted then delete all its events

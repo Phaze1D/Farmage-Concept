@@ -5,11 +5,6 @@
 { CreateByUserSchema } = require '../../shared/created_by_user.coffee'
 { BelongsOrganizationSchema } = require '../../shared/belong_organization.coffee'
 
-OrganizationModule = require '../organizations/organizations.coffee'
-ProductModule = require '../products/products.coffee'
-YieldModule = require '../yields/yields.coffee'
-EventModule = require '../events/events.coffee'
-SellModule = require '../sells/sells.coffee'
 
 class InventoriesCollection extends Mongo.Collection
   insert: (doc, callback) ->
@@ -51,7 +46,7 @@ InventorySchema =
       min: 0
 
     expiration_date:
-      type: Date
+      type: String
       label: 'expiration_date'
       optional: true
 
@@ -80,29 +75,6 @@ Inventories.deny
   remove: ->
     yes
 
-Inventories.helpers
-
-  sells: ->
-    SellModule.Sells.find { sell_details: $elemMatch: inventories: $elemMatch: inventory_id: @_id }   # Careful could lead to error
-
-  events: ->
-    EventModule.Events.find { for_id: @_id }, sort: created_at: -1
-
-  yields: ->
-    id_array = ( yield_item.yield_id for yield_item in @yield_objects )
-    YieldModule.Yields.find { _id: $in: id_array }
-
-  product: ->
-    ProductModule.Products.findOne { _id: @product_id }
-
-  organization: ->
-    OrganizationModule.Organizations.findOne { _id: @organization_id }
-
-  created_by: ->
-    Meteor.users.findOne { _id: @created_user_id}
-
-  updated_by: ->
-    Meteor.users.findOne { _id: @updated_user_id}
 
 # Inventory depends on yield_id. Yields can only be soft deleted
 # Inventory depends on product_id. If Product gets soft deleted and Inventory amount > 0 ask user to set amount = 0

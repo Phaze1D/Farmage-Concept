@@ -5,10 +5,6 @@
 { CreateByUserSchema } = require '../../shared/created_by_user.coffee'
 { BelongsOrganizationSchema } = require '../../shared/belong_organization.coffee'
 
-OrganizationModule = require '../organizations/organizations.coffee'
-YieldModule = require '../yields/yields.coffee'
-ProductModule = require '../products/products.coffee'
-
 
 
 class IngredientsCollection extends Mongo.Collection
@@ -50,21 +46,6 @@ Ingredients.deny
   remove: ->
     yes
 
-Ingredients.helpers
-  products: ->
-    ProductModule.Products.find {'ingredients.ingredient_id': @_id} # possible error
-
-  yields: ->
-    YieldModule.Yields.find {ingredient_id: @_id}
-
-  organization: ->
-    OrganizationModule.Organizations.findOne { _id: @organization_id }
-
-  created_by: ->
-    Meteor.users.findOne { _id: @created_user_id}
-
-  updated_by: ->
-    Meteor.users.findOne { _id: @updated_user_id}
 
 
 # Name must be unique to a single organization only

@@ -7,8 +7,6 @@
 { CreateByUserSchema } = require '../../shared/created_by_user.coffee'
 { BelongsOrganizationSchema } = require '../../shared/belong_organization.coffee'
 
-OrganizationModule = require '../organizations/organizations.coffee'
-ExpenseModule = require '../expenses/expenses.coffee'
 
 
 class ProvidersCollection extends Mongo.Collection
@@ -67,20 +65,8 @@ Providers.deny
   remove: ->
     yes
 
-Providers.helpers
-    expenses: ->
-      ExpenseModule.Expenses.find { provider_id: @_id}
 
-    organization: ->
-      OrganizationModule.Organizations.findOne { _id: @organization_id }
 
-    created_by: ->
-      Meteor.users.findOne { _id: @created_user_id}
-
-    updated_by: ->
-      Meteor.users.findOne { _id: @updated_user_id}
-
-    # console.log error
 
 # * depends on organization_id. If organization is deleted then all * of that organization will be deleted
 # * depends on user_id. If user is delete then user_id will change to the current user or owner

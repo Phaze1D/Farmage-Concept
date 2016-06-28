@@ -111,7 +111,7 @@ module.exports.pack = new ValidatedMethod
       mixins.hasPermission(@userId, organization_id, "inventories_manager")
       inventory = mixins.inventoryBelongsToOrgan(inventory_id, organization_id)
       product = mixins.productBelongsToOrgan(inventory.product_id, organization_id)
-      pDictionary = convertToDictionary(product.ingredients, "ingredient_id")
+      pDictionary = convertToDictionary(product.pingredients, "ingredient_id")
       yield_objects = unifySameYields(yield_objects)
       sums = getSums(yield_objects, pDictionary, organization_id)
       checkAmounts(sums, product, amount, organization_id)
@@ -172,7 +172,7 @@ getSums = (yield_objects, pDictionary, organization_id) ->
 
 
 checkAmounts = (sums, product, amount, organization_id) ->
-  for ing in product.ingredients
+  for ing in product.pingredients
     ingredient = mixins.ingredientBelongsToOrgan(ing.ingredient_id, organization_id)
     unless sums[ingredient.name]?
       throw new Meteor.Error "ingredientError", "this ingredient is missing"

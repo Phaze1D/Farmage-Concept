@@ -2,24 +2,39 @@
   <div class="top">
     <div class="">
       <form class="js-inventories-form-update">
-        <label for="amount">Amount</label>
-        <input type="number" name="amount" class="js-iamount-input" value="{{invAmount}}" min="0">
+        <label for="product_id">Product</label>
+        <input type="text" class="js-input-products" name="product_id" value="{{product._id}}">
         <br>
         <label for="expiration_date">Expiration Date</label>
         <input type="date" name="expiration_date" value="">
         <br>
-        <label for="product_id">Product</label>
-        <input type="text" class="js-input-products" name="product_id" value="{{product._id}}">
+        <label for="amount">Amount</label>
+        <input type="number" name="amount" value="{{invAmount}}" min="0" disabled>
+        <button type="button" class="js-changeM-b">Change Manually</button>
+        <button type="button" class="js-changeP-b">Change With Yields</button>
+        <br>
+        {{#if manually}}
+          <label for="event_amount">Change Amount</label>
+          <input type="number" name="amount" class="js-mamount-input" value="{{invAmount}}" min="0">
+          <label for="event_description">Change Description</label>
+          <textarea name="event_description" rows="8" cols="40"></textarea>
+          <button type="button" class="js-apply-event">Apply</button>
+          <button type="button" class="js-cancel-event">Cancel</button>
+        {{/if}}
+        <br>
         {{product.name}} {{product.price}} {{product._id}}
         <br>
         {{#with product}}
           <label>Ingredients</label>
-          <br>
-          {{#each ingredients}}
+          {{#each pingredients}}
             <br>
             <div class="js-ingredient" data-id={{ingredient_id}}>
-              ID: {{ingredient_id}} Amount per Product: {{amount}} Current Inventory Amount: {{camount ingredient_id}}
-              <button type="button" class="js-yield-add">Add Yield</button>
+              ID: {{ingredient_id}} Amount per Product: {{amount}}
+              {{#if packing}}
+                <button type="button" class="js-yield-add">Add Yield</button>
+                <br>
+                Current Inventory Amount: {{camount ingredient_id}}
+              {{/if}}
               {{#each yields ingredient_id}}
                 <br>
                 <div class="js-yield" data-id="{{yield._id}}">
@@ -32,9 +47,6 @@
             </div>
           {{/each}}
         {{/with}}
-
-
-
 
         <br>
         <br>
@@ -49,5 +61,4 @@
       {{/with}}
     </div>
   </div>
-
 </template>

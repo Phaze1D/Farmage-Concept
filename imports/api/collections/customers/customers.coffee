@@ -6,9 +6,6 @@
 { BelongsOrganizationSchema } = require '../../shared/belong_organization.coffee'
 { CreateByUserSchema } = require '../../shared/created_by_user.coffee'
 
-OrganizationModule = require '../organizations/organizations.coffee'
-SellModule = require '../sells/sells.coffee'
-
 
 class CustomersCollection extends Mongo.Collection
   insert: (doc, callback) ->
@@ -73,18 +70,6 @@ Customers.deny
     yes
 
 
-Customers.helpers
-  sells: ->
-    SellModule.Sells.find {customer_id: @_id},  sort: created_at: -1
-
-  organization: ->
-    OrganizationModule.Organizations.findOne { _id: @organization_id }
-
-  created_by: ->
-    Meteor.users.findOne { _id: @created_user_id}
-
-  updated_by: ->
-    Meteor.users.findOne { _id: @updated_user_id}
 
 
 

@@ -5,9 +5,6 @@
 { CreateByUserSchema } = require '../../shared/created_by_user.coffee'
 { BelongsOrganizationSchema } = require '../../shared/belong_organization.coffee'
 
-OrganizationModule = require '../organizations/organizations.coffee'
-ProviderModule = require '../providers/providers.coffee'
-UnitModule = require '../units/units.coffee'
 
 
 class ExpensesCollection extends Mongo.Collection
@@ -74,22 +71,6 @@ Expenses.deny
   remove: ->
     yes
 
-Expenses.helpers
-  provider: ->
-    if @provider_id?
-      return ProviderModule.Providers.find @provider_id
-
-  unit: ->
-    UnitModule.Units.find @unit_id
-
-  organization: ->
-    OrganizationModule.Organizations.findOne @organization_id
-
-  created_by: ->
-    Meteor.users.findOne @created_user_id
-
-  updated_by: ->
-    Meteor.users.findOne @updated_user_id
 
 # Expense depends on receipts_id. If receipt is deleted then receipts_id will be null
 # Expense depends on provider_id. If provider is deleted then provider_id will be null

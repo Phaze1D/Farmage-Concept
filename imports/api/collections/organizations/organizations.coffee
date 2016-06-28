@@ -5,18 +5,6 @@
 { ContactSchema } = require '../../shared/contact_info.coffee'
 { TimestampSchema } = require '../../shared/timestamps.coffee'
 
-ExpenseModule = require '../expenses/expenses.coffee'
-EventModule = require '../events/events.coffee'
-InventoryModule = require '../inventories/inventories.coffee'
-ProviderModule = require '../providers/providers.coffee'
-SellModule = require '../sells/sells.coffee'
-UnitModule = require '../units/units.coffee'
-YieldModule = require '../yields/yields.coffee'
-IngredientModule = require '../ingredients/ingredients.coffee'
-CustomerModule  = require '../customers/customers.coffee'
-ProductModule = require '../products/products.coffee'
-
-
 
 
 class OrganizationsCollection extends Mongo.Collection
@@ -122,34 +110,3 @@ Organizations.deny
     yes
   remove: ->
     yes
-
-Organizations.helpers
-  events: ->
-    EventModule.Events.find { organization_id: @_id }
-  customers: ->
-    CustomerModule.Customers.find { organization_id: @_id }
-  expenses: ->
-    ExpenseModule.Expenses.find { organization_id: @_id }
-  inventories: ->
-    InventoryModule.Inventories.find { organization_id: @_id }
-  ingredients: ->
-    IngredientModule.Ingredients.find { organization_id: @_id }
-  products: ->
-    ProductModule.Products.find { organization_id: @_id }
-  providers: ->
-    ProviderModule.Providers.find { organization_id: @_id }
-  sells: ->
-    SellModule.Sells.find { organization_id: @_id }
-  units: ->
-    UnitModule.Units.find { organization_id: @_id } # make sure only parents
-  o_users: ->
-    id_array = ( user.user_id for user in @ousers )
-    Meteor.users.find { _id: $in: id_array }
-  yields: ->
-    YieldModule.Yields.find { organization_id: @_id }
-
-  hasUser: (user_id) ->
-    for user in @ousers
-      if user_id is user.user_id
-        return user
-    return
