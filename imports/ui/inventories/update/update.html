@@ -1,15 +1,16 @@
 <template name="InventoriesUpdate">
   <div class="top">
     <div class="">
+      {{#with inventory}}
       <form class="js-inventories-form-update">
         <label for="product_id">Product</label>
-        <input type="text" class="js-input-products" name="product_id" value="{{product._id}}">
+        <input type="text" name="product_id" value="{{product._id}}" disabled>
         <br>
         <label for="expiration_date">Expiration Date</label>
-        <input type="date" name="expiration_date" value="">
+        <input type="date" name="expiration_date" value="{{expiration_date}}">
         <br>
         <label for="amount">Amount</label>
-        <input type="number" name="amount" value="{{invAmount}}" min="0" disabled>
+        <input type="number" name="amount" value="{{amounts.inamount}}" min="0" disabled>
         <button type="button" class="js-changeM-b">Change Manually</button>
         <button type="button" class="js-changeP-b">Change With Yields</button>
         <br>
@@ -33,7 +34,7 @@
               {{#if packing}}
                 <button type="button" class="js-yield-add">Add Yield</button>
                 <br>
-                Current Inventory Amount: {{camount ingredient_id}}
+                Added Inventory Amount: {{camount ingredient_id}}
               {{/if}}
               {{#each yields ingredient_id}}
                 <br>
@@ -52,6 +53,8 @@
         <br>
         <input type="submit" name="name" value="Save">
       </form>
+      {{/with}}
+
     </div>
 
     <br>

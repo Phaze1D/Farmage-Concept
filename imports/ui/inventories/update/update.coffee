@@ -22,12 +22,32 @@ require './update.html'
 
 Template.InventoriesUpdate.onCreated ->
   @selector = new ReactiveDict
+  @inventory = new ReactiveVar
   @ingyields = new ReactiveDict
   @product = new ReactiveVar
-  @invAmount = new ReactiveVar(0)
+  @amounts = new ReactiveDict
   @event = new ReactiveVar
   @change = new ReactiveDict
 
+
+  @autorun =>
+    inventory = InventoryModule.Inventories.findOne FlowRouter.getParam 'child_id'
+    if inventory?
+      @inventory.set inventory
+      @subscribe 'inventory.parents', inventory.organization_id, inventory._id
+      @product.set inventory.product().fetch()[0]
+
+      @amounts.set 'inamount', inventory.amount
+      @amounts.set 'chamount', 0
+      if @subscriptionsReady()
+        for yield_item in inventory.yield_objects
+          _yield = YieldModule.Yields.findOne yield_item.yield_id
+          ying = camount: 0, yields: {}
+          ying.yields[_yield._id] =
+            yield: _yield
+            amount_taken: yield_item.amount_taken
+            min: yield_item.amount_taken
+          @ingyields.set(_yield.ingredient_id, ying)
 
 
   @selectYield = (yield_id) =>
@@ -37,18 +57,15 @@ Template.InventoriesUpdate.onCreated ->
       if ping.ingredient_id is _yield.ingredient_id
         ying = @ingyields.get(_yield.ingredient_id)
         ying = camount: 0, yields: {} unless ying?
-        ying.yields[yield_id] =
-          yield: _yield
-          amount_taken: 0
-        @ingyields.set(_yield.ingredient_id, ying)
-        @checkCAmount(_yield.ingredient_id)
+        unless ying.yields[yield_id]?
+          ying.yields[yield_id] =
+            yield: _yield
+            amount_taken: 0
+            min: 0
+          @ingyields.set(_yield.ingredient_id, ying)
+          @checkCAmount(_yield.ingredient_id)
     @selector.set('title', null)
 
-
-
-  @selectProduct = (product_id) =>
-    @product.set ProductModule.Products.findOne(product_id)
-    @selector.set('title', null)
 
 
   @checkCAmount = (ingredient_id) =>
@@ -123,6 +140,9 @@ Template.InventoriesUpdate.helpers
       select:
         select: instance[instance.selector.get('select')]
 
+  inventory: ->
+    Template.instance().inventory.get()
+
   yields: (ingredient_id) ->
     ying = Template.instance().ingyields.get(ingredient_id)
     (value for key, value of ying.yields) if ying?
@@ -138,8 +158,8 @@ Template.InventoriesUpdate.helpers
   product: ->
     Template.instance().product.get()
 
-  invAmount: ->
-    Template.instance().invAmount.get()
+  amounts: ->
+    Template.instance().amounts.all()
 
   camount: (ingredient_id) ->
     ying = Template.instance().ingyields.get(ingredient_id)
@@ -162,11 +182,6 @@ Template.InventoriesUpdate.events
   'click .js-yield-add': (event, instance) ->
     instance.selector.set 'title', 'YieldsSelector'
     instance.selector.set 'select', 'selectYield'
-
-  'focusin .js-input-products': (event, instance) ->
-    instance.selector.set 'title', 'ProductsSelector'
-    instance.selector.set 'select', 'selectProduct'
-    instance.product.set null
 
   'change .js-at-input': (event, instance) ->
     ingredient_id = instance.$(event.target).closest('.js-ingredient').attr('data-id')
