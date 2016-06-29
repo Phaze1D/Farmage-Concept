@@ -39,7 +39,6 @@ Template.InventoriesUpdate.onCreated ->
 
 
   @autorun =>
-    console.log autorun: 'asdf'
     @inventory.set InventoryModule.Inventories.findOne uninv_id
     @subscribe 'inventory.parents', @inventory.get().organization_id, @inventory.get()._id, @inventory.get().yield_objects.length, @subCallback
     @product.set @inventory.get().product().fetch()[0]
