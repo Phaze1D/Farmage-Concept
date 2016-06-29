@@ -33,7 +33,7 @@ Meteor.publish "inventories", (organization_id, parent, parent_id) ->
     @ready();
 
 # Missing permissions and pagenation
-Meteor.publish 'inventory.parents', (organization_id, inventory_id) ->
+Meteor.publish 'inventory.parents', (organization_id, inventory_id, yield_objects_count) ->
   info = publicationInfo organization_id, 'inventory', inventory_id
   inventory = InventoryModule.Inventories.findOne inventory_id
 

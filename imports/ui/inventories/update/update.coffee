@@ -29,25 +29,23 @@ Template.InventoriesUpdate.onCreated ->
   @event = new ReactiveVar
   @change = new ReactiveDict
 
-  @uninv_id = FlowRouter.getParam 'child_id'
-
+  uninv_id = FlowRouter.getParam 'child_id'
 
   @subCallback =
     onStop: (err) =>
       console.log "inventories update stop #{err}"
     onReady: () =>
       console.log "onReady"
-      @intialYield()
 
 
   @autorun =>
-    console.log autorun: 'atads'
-    @inventory.set InventoryModule.Inventories.findOne @uninv_id
-    @subscribe 'inventory.parents', @inventory.get().organization_id, @inventory.get()._id, @subCallback
-
+    console.log autorun: 'asdf'
+    @inventory.set InventoryModule.Inventories.findOne uninv_id
+    @subscribe 'inventory.parents', @inventory.get().organization_id, @inventory.get()._id, @inventory.get().yield_objects.length, @subCallback
     @product.set @inventory.get().product().fetch()[0]
     @amounts.set 'inamount', @inventory.get().amount
     @amounts.set 'chamount', 0
+
 
   @intialYield = () =>
     for yield_item in @inventory.get().yield_objects
@@ -100,7 +98,6 @@ Template.InventoriesUpdate.onCreated ->
       @amounts.set 'inamount', @inventory.get().amount + min.camount
 
 
-
   @update = (inventory_doc) =>
     yield_objects = inventory_doc.yield_objects
     amount = @amounts.get 'chamount'
@@ -134,7 +131,6 @@ Template.InventoriesUpdate.onCreated ->
       FlowRouter.go('inventories.show', params ) unless err?
 
 
-
   @userEvent = (inventory_id) =>
     event_doc = @event.get()
     event_doc.for_type = 'inventory'
@@ -149,11 +145,9 @@ Template.InventoriesUpdate.onCreated ->
       FlowRouter.go('inventories.show', params ) unless err?
 
 
-
   @delete = (organization_id, inventory_id) =>
     IMethods.delete.call {organization_id, inventory_id}, (err, res) =>
       console.log err
-
 
 
 
@@ -252,6 +246,7 @@ Template.InventoriesUpdate.events
     instance.amounts.set 'chamount', 0
     instance.amounts.set 'inamount', instance.inventory.get().amount
     instance.change.set('packing', true)
+    instance.intialYield()
 
   'change .js-mamount-input': (event, instance) ->
     value = Number instance.$(event.target).val()

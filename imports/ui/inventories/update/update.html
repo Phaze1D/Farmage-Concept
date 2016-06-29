@@ -5,13 +5,11 @@
       <form class="js-inventories-form-update">
         <label for="product_id">Product</label>
         <input type="text" name="product_id" value="{{product._id}}" disabled>
-        {{product.unit_price}}
         <br>
         <label for="expiration_date">Expiration Date</label>
         <input type="date" name="expiration_date" value="{{expiration_date}}">
         <br>
         <label for="amount">Amount</label>
-        {{amount}}
         <input type="number" name="amount" value="{{amounts.inamount}}" min="0" disabled>
         <button type="button" class="js-changeM-b">Change Manually</button>
         <button type="button" class="js-changeP-b">Change With Yields</button>
