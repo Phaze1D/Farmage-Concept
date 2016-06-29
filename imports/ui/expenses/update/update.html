@@ -1,45 +1,45 @@
 <template name="ExpensesUpdate">
   {{#if Template.subscriptionsReady}}
-  <div class="top">
-    <div class="">
-      {{#with expense}}
-      <form class="js-expenses-form-update">
-        <label for="price">Price</label>
-        <input type="text" name="price" value="{{price}}">
-        <br>
-        <label for="currency">Currency</label>
-        <select class="" name="currency">
-          <option value="{{currency}}">{{currency}}</option>
-          <option value="MXN">MXN</option>
-          <option value="USD">USD</option>
-        </select>
-        <br>
-        <label for="description">Description</label>
-        <textarea name="description" rows="8" cols="40">{{description}}</textarea>
-        <br>
-        <label for="receipt_url">Receipt</label>
-        <input type="text" name="receipt_url" value="{{receipt_url}}">
-        <br>
-        <label for="provider_id">Provider</label>
-        <input type="text" class="js-input-providers" name="provider_id" value="{{provider._id}}">
-        {{provider.first_name}}
-        <br>
-        <label for="unit_id">Unit</label>
-        <input type="text" class="js-input-units" name="unit_id" value="{{unit._id}}">
-        {{unit.name}}
-        <br>
-        <input type="submit" name="name" value="Save">
-      </form>
-      {{/with}}
-    </div>
+    <div class="top">
+      <div class="">
+        {{#with expense}}
+        <form class="js-expenses-form-update">
+          <label for="price">Price</label>
+          <input type="text" name="price" value="{{price}}">
+          <br>
+          <label for="currency">Currency</label>
+          <select class="" name="currency">
+            <option value="{{currency}}">{{currency}}</option>
+            <option value="MXN">MXN</option>
+            <option value="USD">USD</option>
+          </select>
+          <br>
+          <label for="description">Description</label>
+          <textarea name="description" rows="8" cols="40">{{description}}</textarea>
+          <br>
+          <label for="receipt_url">Receipt</label>
+          <input type="text" name="receipt_url" value="{{receipt_url}}">
+          <br>
+          <label for="provider_id">Provider</label>
+          <input type="text" class="js-input-providers" name="provider_id" value="{{provider._id}}">
+          {{provider.first_name}}
+          <br>
+          <label for="unit_id">Unit</label>
+          <input type="text" class="js-input-units" name="unit_id" value="{{unit._id}}">
+          {{unit.name}}
+          <br>
+          <input type="submit" name="name" value="Save">
+        </form>
+        {{/with}}
+      </div>
 
-    <br>
-    <div class="js-selector">
-      {{#with selector}}
-        {{> Template.dynamic template=title data=select }}
-      {{/with}}
+      <br>
+      <div class="js-selector">
+        {{#with selector}}
+          {{> Template.dynamic template=title data=select }}
+        {{/with}}
+      </div>
     </div>
-  </div>
   {{else}}
     Loading....
   {{/if}}

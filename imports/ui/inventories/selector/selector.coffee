@@ -13,7 +13,7 @@ require './selector.html'
 
 
 Template.InventoriesSelector.onCreated ->
-  @ready = new ReactiveVar
+  organ_id = FlowRouter.getParam('organization_id')
 
   @subCallback =
     onStop: (err) ->
@@ -25,17 +25,11 @@ Template.InventoriesSelector.onCreated ->
       select:
         type: Function
     ).validate(@data)
-
-    organ_id = FlowRouter.getParam('organization_id')
-    handler = Meteor.subscribe 'inventories', organ_id, 'organization', organ_id, @subCallback
-    @ready.set handler.ready()
+    @subscribe 'inventories', organ_id, 'organization', organ_id, @subCallback
 
 
 
 Template.InventoriesSelector.helpers
-  ready: ->
-    Template.instance().ready.get()
-
   inventories:  ->
     organization = Organizations.findOne(FlowRouter.getParam('organization_id'))
     return false if organization.inventories().count() <= 0

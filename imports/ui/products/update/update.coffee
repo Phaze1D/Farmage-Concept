@@ -18,11 +18,10 @@ require './update.html'
 
 Template.ProductsUpdate.onCreated ->
   @product = new ReactiveVar
-
+  organization_id = FlowRouter.getParam 'organization_id'
+  product_id = FlowRouter.getParam 'child_id'
 
   @autorun =>
-    organization_id = FlowRouter.getParam 'organization_id'
-    product_id = FlowRouter.getParam 'child_id'
     @product.set ProductModule.Products.findOne product_id
     @subscribe 'product.ingredients', organization_id, product_id
 

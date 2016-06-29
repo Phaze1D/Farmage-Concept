@@ -22,14 +22,14 @@ Template.ExpensesUpdate.onCreated ->
   @unit = new ReactiveVar
   @provider = new ReactiveVar
   @expense = new ReactiveVar
+  organ_id = FlowRouter.getParam 'organization_id'
+  @unexp_id = FlowRouter.getParam 'child_id'
 
   @autorun =>
-    organ_id = FlowRouter.getParam 'organization_id'
-    @expense.set ExpenseModule.Expenses.findOne FlowRouter.getParam('child_id')
-    if @expense.get()?
-      @subscribe 'expense.parents', organ_id, @expense.get()._id
-      @unit.set @expense.get().unit().fetch()[0]
-      @provider.set @expense.get().provider().fetch()[0]
+    @expense.set ExpenseModule.Expenses.findOne @unexp_id
+    @subscribe 'expense.parents', organ_id, @expense.get()._id
+    @unit.set @expense.get().unit().fetch()[0]
+    @provider.set @expense.get().provider().fetch()[0]
 
 
   @update = (expense_doc) =>

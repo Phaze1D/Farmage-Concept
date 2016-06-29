@@ -18,7 +18,9 @@ require './providers.html'
 
 
 Template.ProvidersT.onCreated ->
-  @ready = new ReactiveVar(false)
+  organ_id = FlowRouter.getParam('organization_id')
+  parent = FlowRouter.getQueryParam('parent')
+  parent_id = FlowRouter.getQueryParam('parent_id')
 
   @subCallback =
     onStop: (err) ->
@@ -27,19 +29,10 @@ Template.ProvidersT.onCreated ->
 
   @autorun =>
     SubSchema.validate(@data)
-
-    organ_id = FlowRouter.getParam('organization_id')
-    parent = FlowRouter.getQueryParam('parent')
-    parent_id = FlowRouter.getQueryParam('parent_id')
-    handler = Meteor.subscribe 'providers', organ_id, parent, parent_id, @subCallback
-    @ready.set handler.ready()
-
+    @subscribe 'providers', organ_id, parent, parent_id, @subCallback
 
 
 Template.ProvidersT.helpers
-  ready: () ->
-    Template.instance().ready.get()
-
   organization: () ->
     OrganizationModule.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
 

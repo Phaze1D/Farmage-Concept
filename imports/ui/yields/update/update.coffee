@@ -26,15 +26,15 @@ Template.YieldsUpdate.onCreated ->
   @amounts = new ReactiveDict(eamount: '0')
   @ingredient = new ReactiveVar
   @unit = new ReactiveVar
+  unyi_id = FlowRouter.getParam 'child_id'
 
   @autorun =>
-    _yield = YieldModule.Yields.findOne FlowRouter.getParam 'child_id'
+    _yield = YieldModule.Yields.findOne unyi_id
     @yield.set _yield
-    if _yield?
-      @subscribe 'yield.parents', _yield.organization_id, _yield._id
-      @amounts.set('yamount', _yield.amount)
-      @unit.set _yield.unit().fetch()[0]
-      @ingredient.set _yield.ingredient().fetch()[0]
+    @subscribe 'yield.parents', _yield.organization_id, _yield._id
+    @amounts.set('yamount', _yield.amount)
+    @unit.set _yield.unit().fetch()[0]
+    @ingredient.set _yield.ingredient().fetch()[0]
 
   @update = (yield_doc) =>
     organization_id = FlowRouter.getParam 'organization_id'

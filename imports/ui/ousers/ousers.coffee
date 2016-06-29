@@ -17,7 +17,9 @@ require './show/show.coffee'
 require './ousers.html'
 
 Template.OUsersT.onCreated ->
-  @ready = new ReactiveVar(false)
+  organ_id = FlowRouter.getParam('organization_id')
+  parent = FlowRouter.getQueryParam('parent')
+  parent_id = FlowRouter.getQueryParam('parent_id')
 
   @subCallback =
     onStop: (err) ->
@@ -26,19 +28,10 @@ Template.OUsersT.onCreated ->
 
   @autorun =>
     SubSchema.validate(@data)
-
-    organ_id = FlowRouter.getParam('organization_id')
-    parent = FlowRouter.getQueryParam('parent')
-    parent_id = FlowRouter.getQueryParam('parent_id')
-    handler = Meteor.subscribe 'ousers', organ_id, parent, parent_id, @subCallback
-    @ready.set handler.ready()
-
+    @subscribe 'ousers', organ_id, parent, parent_id, @subCallback
 
 
 Template.OUsersT.helpers
-  ready: () ->
-    Template.instance().ready.get()
-
   organization: () ->
     OrganizationModule.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
 

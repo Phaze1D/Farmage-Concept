@@ -13,7 +13,7 @@ require './selector.html'
 
 
 Template.IngredientsSelector.onCreated ->
-  @ready = new ReactiveVar
+  organ_id = FlowRouter.getParam('organization_id')
 
   @subCallback =
     onStop: (err) ->
@@ -25,17 +25,10 @@ Template.IngredientsSelector.onCreated ->
       select:
         type: Function
     ).validate(@data)
-
-    organ_id = FlowRouter.getParam('organization_id')
-    handler = Meteor.subscribe 'ingredients', organ_id, 'organization', organ_id, @subCallback
-    @ready.set handler.ready()
-
+    @subscribe 'ingredients', organ_id, 'organization', organ_id, @subCallback
 
 
 Template.IngredientsSelector.helpers
-  ready: ->
-    Template.instance().ready.get()
-
   ingredients:  ->
     organization = Organizations.findOne(FlowRouter.getParam('organization_id'))
     return false if organization.ingredients().count() <= 0

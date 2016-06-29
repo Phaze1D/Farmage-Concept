@@ -13,9 +13,9 @@ require './update.html'
 
 Template.OrganizationUpdate.onCreated ->
   @organization = new ReactiveVar
-
+  organ_id = FlowRouter.getParam 'organization_id'
   @autorun =>
-    organ = OC.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
+    organ = OC.Organizations.findOne organ_id
     @organization.set(organ)
 
   @addAddress = (address_doc, callBack) =>

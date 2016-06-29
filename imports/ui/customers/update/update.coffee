@@ -13,9 +13,10 @@ require './update.html'
 
 Template.CustomersUpdate.onCreated ->
   @customer = new ReactiveVar()
+  @uncus_id = FlowRouter.getParam 'child_id'
 
   @autorun =>
-    customer = CustomerModule.Customers.findOne(FlowRouter.getParam 'child_id')
+    customer = CustomerModule.Customers.findOne @uncus_id
     @customer.set customer
 
   @update = (customer_doc) =>
@@ -81,10 +82,6 @@ Template.CustomersUpdate.onCreated ->
     customer_doc =
       telephones: telephones
     CMethods.update.call {organization_id, customer_id, customer_doc}, callBack
-
-
-Template.CustomersUpdate.onRendered ->
-  @autorun =>
 
 
 Template.CustomersUpdate.helpers

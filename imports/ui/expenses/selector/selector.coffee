@@ -13,7 +13,7 @@ require './selector.html'
 
 
 Template.ExpensesSelector.onCreated ->
-  @ready = new ReactiveVar
+  organ_id = FlowRouter.getParam('organization_id')
 
   @subCallback =
     onStop: (err) ->
@@ -25,17 +25,10 @@ Template.ExpensesSelector.onCreated ->
       select:
         type: Function
     ).validate(@data)
-
-    organ_id = FlowRouter.getParam('organization_id')
-    handler = Meteor.subscribe 'expenses', organ_id, 'organization', organ_id, @subCallback
-    @ready.set handler.ready()
-
+    @subscribe 'expenses', organ_id, 'organization', organ_id, @subCallback
 
 
 Template.ExpensesSelector.helpers
-  ready: ->
-    Template.instance().ready.get()
-
   expenses:  ->
     organization = Organizations.findOne(FlowRouter.getParam('organization_id'))
     return false if organization.expenses().count() <= 0

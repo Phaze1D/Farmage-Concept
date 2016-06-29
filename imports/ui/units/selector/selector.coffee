@@ -13,8 +13,7 @@ require './selector.html'
 
 
 Template.UnitsSelector.onCreated ->
-  @ready = new ReactiveVar
-
+  organ_id = FlowRouter.getParam('organization_id')
   @subCallback =
     onStop: (err) ->
       console.log "selector unit stop #{err}"
@@ -25,17 +24,10 @@ Template.UnitsSelector.onCreated ->
       select:
         type: Function
     ).validate(@data)
-
-    organ_id = FlowRouter.getParam('organization_id')
-    handler = Meteor.subscribe 'units', organ_id, 'organization', organ_id, @subCallback
-    @ready.set handler.ready()
-
+    @subscribe 'units', organ_id, 'organization', organ_id, @subCallback
 
 
 Template.UnitsSelector.helpers
-  ready: ->
-    Template.instance().ready.get()
-
   units:  ->
     organization = Organizations.findOne(FlowRouter.getParam('organization_id'))
     return false if organization.units().count() <= 0

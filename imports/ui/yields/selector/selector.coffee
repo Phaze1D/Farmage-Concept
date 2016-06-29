@@ -13,7 +13,7 @@ require './selector.html'
 
 
 Template.YieldsSelector.onCreated ->
-  @ready = new ReactiveVar
+  organ_id = FlowRouter.getParam('organization_id')
 
   @subCallback =
     onStop: (err) ->
@@ -25,17 +25,10 @@ Template.YieldsSelector.onCreated ->
       select:
         type: Function
     ).validate(@data)
-
-    organ_id = FlowRouter.getParam('organization_id')
-    handler = Meteor.subscribe 'yields', organ_id, 'organization', organ_id, @subCallback
-    @ready.set handler.ready()
-
+    @subscribe 'yields', organ_id, 'organization', organ_id, @subCallback
 
 
 Template.YieldsSelector.helpers
-  ready: ->
-    Template.instance().ready.get()
-
   yields:  ->
     organization = Organizations.findOne(FlowRouter.getParam('organization_id'))
     return false if organization.yields().count() <= 0

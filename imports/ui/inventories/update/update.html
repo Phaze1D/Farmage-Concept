@@ -5,18 +5,20 @@
       <form class="js-inventories-form-update">
         <label for="product_id">Product</label>
         <input type="text" name="product_id" value="{{product._id}}" disabled>
+        {{product.unit_price}}
         <br>
         <label for="expiration_date">Expiration Date</label>
         <input type="date" name="expiration_date" value="{{expiration_date}}">
         <br>
         <label for="amount">Amount</label>
+        {{amount}}
         <input type="number" name="amount" value="{{amounts.inamount}}" min="0" disabled>
         <button type="button" class="js-changeM-b">Change Manually</button>
         <button type="button" class="js-changeP-b">Change With Yields</button>
         <br>
         {{#if manually}}
           <label for="event_amount">Change Amount</label>
-          <input type="number" name="amount" class="js-mamount-input" value="{{invAmount}}" min="0">
+          <input type="number" name="amount" class="js-mamount-input" value="{{amounts.chamount}}" min="-{{amount}}">
           <label for="event_description">Change Description</label>
           <textarea name="event_description" rows="8" cols="40"></textarea>
           <button type="button" class="js-apply-event">Apply</button>
@@ -35,16 +37,16 @@
                 <button type="button" class="js-yield-add">Add Yield</button>
                 <br>
                 Added Inventory Amount: {{camount ingredient_id}}
+                {{#each yields ingredient_id}}
+                  <br>
+                  <div class="js-yield" data-id="{{yield._id}}">
+                    {{yield._id}} (Amount: {{yield.amount}})
+                    <label>Amount Taken</label>
+                    <input type="number" step="any" class="js-at-input" value="{{amount_taken}}" min="{{min}}" max="{{max min yield.amount}}">
+                    <button type="button" class="js-yield-remove">Remove</button>
+                  </div>
+                {{/each}}
               {{/if}}
-              {{#each yields ingredient_id}}
-                <br>
-                <div class="js-yield" data-id="{{yield._id}}">
-                  {{yield._id}} (Amount: {{yield.amount}})
-                  <label>Amount Taken</label>
-                  <input type="number" step="any" class="js-at-input" value="{{amount_taken}}" min="{{min}}" max="">
-                  <button type="button" class="js-yield-remove">Remove</button>
-                </div>
-              {{/each}}
             </div>
           {{/each}}
         {{/with}}

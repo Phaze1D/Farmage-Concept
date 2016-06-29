@@ -29,24 +29,31 @@ Template.InventoriesUpdate.onCreated ->
   @event = new ReactiveVar
   @change = new ReactiveDict
 
+  @uninv_id = FlowRouter.getParam 'child_id'
+
+
+  @subCallback =
+    onStop: (err) =>
+      console.log "inventories update stop #{err}"
+    onReady: () =>
+      console.log "onReady"
+      @intialYield()
+
 
   @autorun =>
-    inventory = InventoryModule.Inventories.findOne FlowRouter.getParam 'child_id'
-    if inventory?
-      @inventory.set inventory
-      @subscribe 'inventory.parents', inventory.organization_id, inventory._id
-      @product.set inventory.product().fetch()[0]
+    console.log autorun: 'atads'
+    @inventory.set InventoryModule.Inventories.findOne @uninv_id
+    @subscribe 'inventory.parents', @inventory.get().organization_id, @inventory.get()._id, @subCallback
 
-      @amounts.set 'inamount', inventory.amount
-      @amounts.set 'chamount', 0
-      if @subscriptionsReady()
-        @intialYield()
-
+    @product.set @inventory.get().product().fetch()[0]
+    @amounts.set 'inamount', @inventory.get().amount
+    @amounts.set 'chamount', 0
 
   @intialYield = () =>
     for yield_item in @inventory.get().yield_objects
       _yield = YieldModule.Yields.findOne yield_item.yield_id
-      ying = camount: 0, yields: {}
+      ying = @ingyields.get(_yield.ingredient_id)
+      ying = camount: 0, yields: {} unless ying?
       ying.yields[_yield._id] =
         yield: _yield
         amount_taken: yield_item.amount_taken
@@ -93,33 +100,39 @@ Template.InventoriesUpdate.onCreated ->
       @amounts.set 'inamount', @inventory.get().amount + min.camount
 
 
-  @insert = (inventory_doc) =>
+
+  @update = (inventory_doc) =>
     yield_objects = inventory_doc.yield_objects
-    amount = inventory_doc.amount
+    amount = @amounts.get 'chamount'
+
     delete inventory_doc.amount
     delete inventory_doc.yield_objects
-    inventory_doc.organization_id = FlowRouter.getParam('organization_id')
 
-    IMethods.insert.call {inventory_doc}, (err, res) =>
+    inventory_id = FlowRouter.getParam 'child_id'
+    organization_id = FlowRouter.getParam('organization_id')
+
+    IMethods.update.call {organization_id, inventory_id, inventory_doc}, (err, res) =>
       console.log err
       if res?
         if yield_objects.length > 0
-          @packEvent(amount, yield_objects, res, inventory_doc.organization_id)
-        else if @event.get()? && @event.get().amount >
-          @userEvent(res)
+          @packEvent(amount, yield_objects, inventory_id, organization_id)
+        else if @event.get()? && @event.get().amount > 0
+          @userEvent(inventory_id)
         else
           params =
-            organization_id: inventory_doc.organization_id
-          FlowRouter.go('inventories.index', params ) unless err?
+            organization_id: organization_id
+            child_id: inventory_id
+          FlowRouter.go('inventories.show', params ) unless err?
 
 
   @packEvent = (amount, yield_objects, inventory_id, organization_id) =>
     EMethods.pack.call {organization_id, inventory_id, yield_objects, amount}, (err, res) =>
       console.log err
-      @delete(organization_id, inventory_id) if err?
       params =
         organization_id: organization_id
-      FlowRouter.go('inventories.index', params ) unless err?
+        child_id: inventory_id
+      FlowRouter.go('inventories.show', params ) unless err?
+
 
 
   @userEvent = (inventory_id) =>
@@ -130,15 +143,18 @@ Template.InventoriesUpdate.onCreated ->
 
     EMethods.userEvent.call {event_doc}, (err, res) =>
       console.log err
-      @delete(organization_id, inventory_id) if err?
       params =
         organization_id: event_doc.organization_id
-      FlowRouter.go('inventories.index', params ) unless err?
+        child_id: inventory_id
+      FlowRouter.go('inventories.show', params ) unless err?
+
 
 
   @delete = (organization_id, inventory_id) =>
     IMethods.delete.call {organization_id, inventory_id}, (err, res) =>
       console.log err
+
+
 
 
 Template.InventoriesUpdate.helpers
@@ -157,9 +173,8 @@ Template.InventoriesUpdate.helpers
     (value for key, value of ying.yields) if ying?
 
   packing: ->
-    true
-    # Template.instance().change.get('packing') &&
-    # Template.instance().product.get()?
+    Template.instance().change.get('packing') &&
+    Template.instance().product.get()?
 
   manually: ->
     Template.instance().change.get('manually') &&
@@ -178,14 +193,23 @@ Template.InventoriesUpdate.helpers
     else
       0
 
+  max: (min, amount) ->
+    min + amount
+
 
 Template.InventoriesUpdate.events
 
   'click .js-yield-remove': (event, instance) ->
     ingredient_id = instance.$(event.target).closest('.js-ingredient').attr('data-id')
-    yield_id = instance.$(event.target).closest('.js-yield').attr('data-id')
+    jsyield = instance.$(event.target).closest('.js-yield')
+    yield_id = jsyield.attr('data-id')
     ying = instance.ingyields.get(ingredient_id)
-    delete ying.yields[yield_id]
+    if ying.yields[yield_id].min > 0
+      ying.yields[yield_id].amount_taken = ying.yields[yield_id].min
+      jsyield.find('.js-at-input').val(ying.yields[yield_id].min)
+    else
+      delete ying.yields[yield_id]
+
     instance.ingyields.set(ingredient_id, ying)
     instance.checkCAmount ingredient_id
 
@@ -198,10 +222,9 @@ Template.InventoriesUpdate.events
     yield_id = instance.$(event.target).closest('.js-yield').attr('data-id')
     ying = instance.ingyields.get(ingredient_id)
     value = Number instance.$(event.target).val()
-    if value > 0
-      ying.yields[yield_id].amount_taken = value
-    else
-      delete ying.yields[yield_id]
+    ymin = ying.yields[yield_id].min
+    ying.yields[yield_id].amount_taken = if value < ymin then ymin else value
+    instance.$(event.target).val(ymin) if value < ymin
     instance.ingyields.set(ingredient_id, ying)
     instance.checkCAmount ingredient_id
 
@@ -209,25 +232,38 @@ Template.InventoriesUpdate.events
     instance.change.set('packing', false)
     instance.change.set('manually', true) if instance.product.get()?
     instance.event.set null
-    instance.ingyields.clear()
-    instance.invAmount.set 0
+    inyiels = instance.ingyields.all()
+    for ikey, ing of inyiels
+      for ykey, yiel of ing.yields
+          ying = instance.ingyields.get(ikey)
+          if yiel.min is 0
+            delete ying.yields[ykey]
+          else
+            ying.yields[ykey].amount_taken = ying.yields[ykey].min
+          instance.ingyields.set(ikey, ying)
+      instance.checkCAmount ikey
+    instance.amounts.set 'chamount', 0
+    instance.amounts.set 'inamount', instance.inventory.get().amount
+
 
   'click .js-changeP-b': (event, instance) ->
     instance.change.set('manually', false)
     instance.event.set null
-    instance.invAmount.set 0
+    instance.amounts.set 'chamount', 0
+    instance.amounts.set 'inamount', instance.inventory.get().amount
     instance.change.set('packing', true)
 
   'change .js-mamount-input': (event, instance) ->
     value = Number instance.$(event.target).val()
-    if value < 0
-      instance.$(event.target).val(0)
-      value = 0
+    if value < -instance.inventory.get().amount
+      instance.$(event.target).val -instance.inventory.get().amount
+      value = -instance.inventory.get().amount
 
-    instance.invAmount.set value
+    instance.amounts.set 'chamount', value
+    instance.amounts.set 'inamount', instance.inventory.get().amount + value
 
   'click .js-apply-event': (event, instance) ->
-    value = Number instance.invAmount.get()
+    value = Number instance.amounts.get 'chamount'
     $form = instance.$('.js-inventories-form-update')
     instance.change.set 'manually', false
     if value isnt 0
@@ -238,7 +274,8 @@ Template.InventoriesUpdate.events
 
 
   'click .js-cancel-event': (event, instance) ->
-    instance.invAmount.set 0
+    instance.amounts.set 'chamount', 0
+    instance.amounts.set 'inamount', instance.inventory.get().amount
     instance.event.set null
     instance.change.set 'manually', false
 
@@ -250,14 +287,13 @@ Template.InventoriesUpdate.events
     yield_objects = []
     for key, ying of instance.ingyields.all()
       for key, value of ying.yields
-        yield_objects.push(yield_id: value.yield._id, amount_taken: value.amount_taken )
+        if value.amount_taken - value.min > 0
+          yield_objects.push(yield_id: value.yield._id, amount_taken: value.amount_taken - value.min)
 
     inventory_doc =
-      amount: Number( $form.find('[name=amount]').val())
       expiration_date: $form.find('[name=expiration_date]').val()
       yield_objects: yield_objects
-      product_id: $form.find('[name=product_id]').val()
-    instance.insert inventory_doc
+    instance.update inventory_doc
 
 
   'mousedown .top': (event, instance) ->

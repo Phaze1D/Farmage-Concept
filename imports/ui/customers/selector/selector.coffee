@@ -13,7 +13,7 @@ require './selector.html'
 
 
 Template.CustomersSelector.onCreated ->
-  @ready = new ReactiveVar
+  organ_id = FlowRouter.getParam('organization_id')
 
   @subCallback =
     onStop: (err) ->
@@ -25,16 +25,11 @@ Template.CustomersSelector.onCreated ->
       select:
         type: Function
     ).validate(@data)
-
-    organ_id = FlowRouter.getParam('organization_id')
-    handler = Meteor.subscribe 'customers', organ_id, 'organization', organ_id, @subCallback
-    @ready.set handler.ready()
+    @subscribe 'customers', organ_id, 'organization', organ_id, @subCallback
 
 
 
 Template.CustomersSelector.helpers
-  ready: ->
-    Template.instance().ready.get()
 
   customers:  ->
     organization = Organizations.findOne(FlowRouter.getParam('organization_id'))

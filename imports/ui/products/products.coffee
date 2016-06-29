@@ -19,7 +19,9 @@ require './products.html'
 
 
 Template.ProductsT.onCreated ->
-  @ready = new ReactiveVar(false)
+  organ_id = FlowRouter.getParam('organization_id')
+  parent = FlowRouter.getQueryParam('parent')
+  parent_id = FlowRouter.getQueryParam('parent_id')
 
   @subCallback =
     onStop: (err) ->
@@ -28,19 +30,10 @@ Template.ProductsT.onCreated ->
 
   @autorun =>
     SubSchema.validate(@data)
-
-    organ_id = FlowRouter.getParam('organization_id')
-    parent = FlowRouter.getQueryParam('parent')
-    parent_id = FlowRouter.getQueryParam('parent_id')
-    handler = Meteor.subscribe 'products', organ_id, parent, parent_id, @subCallback
-    @ready.set handler.ready()
-
+    @subscribe 'products', organ_id, parent, parent_id, @subCallback
 
 
 Template.ProductsT.helpers
-  ready: () ->
-    Template.instance().ready.get()
-
   organization: () ->
     OrganizationModule.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
 

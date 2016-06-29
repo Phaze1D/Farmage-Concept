@@ -13,9 +13,10 @@ require './update.html'
 
 Template.ProvidersUpdate.onCreated ->
   @provider = new ReactiveVar()
+  unpro_id = FlowRouter.getParam 'child_id'
 
   @autorun =>
-    provider = ProviderModule.Providers.findOne(FlowRouter.getParam 'child_id')
+    provider = ProviderModule.Providers.findOne unpro_id
     @provider.set provider
 
   @update = (provider_doc) =>
@@ -82,9 +83,6 @@ Template.ProvidersUpdate.onCreated ->
       telephones: telephones
     PMethods.update.call {organization_id, provider_id, provider_doc}, callBack
 
-
-Template.ProvidersUpdate.onRendered ->
-  @autorun =>
 
 
 Template.ProvidersUpdate.helpers

@@ -152,8 +152,7 @@ IngredientModule.Ingredients.helpers
 # Expense Helpers
 ExpenseModule.Expenses.helpers
   provider: ->
-    if @provider_id?
-      return ProviderModule.Providers.find @provider_id
+    ProviderModule.Providers.find _id: @provider_id
 
   unit: ->
     UnitModule.Units.find @unit_id

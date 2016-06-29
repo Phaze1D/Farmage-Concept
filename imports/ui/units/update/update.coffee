@@ -21,14 +21,14 @@ Template.UnitsUpdate.onCreated ->
   @change = new ReactiveVar(false)
   @amounts = new ReactiveDict(eamount: '0')
   @selector = new ReactiveDict
+  unun_id = FlowRouter.getParam 'child_id'
 
   @autorun =>
-    unit = UnitModule.Units.findOne FlowRouter.getParam 'child_id'
+    unit = UnitModule.Units.findOne unun_id
     @unit.set(unit)
-    if unit?
-      @amounts.set('uamount', unit.amount)
-      @subscribe 'unit.parent', unit.organization_id, unit._id
-      @parent.set unit.unit().fetch()[0]
+    @amounts.set('uamount', unit.amount)
+    @subscribe 'unit.parent', unit.organization_id, unit._id
+    @parent.set unit.unit().fetch()[0]
 
   @update = (unit_doc) =>
     organization_id = FlowRouter.getParam 'organization_id'

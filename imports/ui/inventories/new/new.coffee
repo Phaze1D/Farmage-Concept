@@ -84,7 +84,7 @@ Template.InventoriesNew.onCreated ->
       if res?
         if yield_objects.length > 0
           @packEvent(amount, yield_objects, res, inventory_doc.organization_id)
-        else if @event.get()? && @event.get().amount >
+        else if @event.get()? && @event.get().amount > 0
           @userEvent(res)
         else
           params =
