@@ -43,11 +43,11 @@ Meteor.users.helpers
 # Sell Helpers
 SellModule.Sells.helpers
   customer: ->
-    CustomerModule.Customers.findOne { _id: @customer_id }
+    CustomerModule.Customers.find _id: @customer_id
 
   products: ->
     id_array = (detail.product_id for detail in @details)
-    ProductModule.Products.findOne { _id: $in: id_array}
+    ProductModule.Products.find { _id: $in: id_array}
 
   inventories: ->
     id_array = []

@@ -28,7 +28,15 @@ Meteor.publish "inventories", (organization_id, parent, parent_id) ->
 
 
   if @userId? && parentDoc?
-    return parentDoc.inventories()
+    invcursor = parentDoc.inventories()
+    parry = []
+    invcursor.forEach (doc) ->
+      parry.push doc.product_id
+
+    return [
+      invcursor,
+      ProductModule.Products.find(_id: $in: parry)
+    ]
   else
     @ready();
 

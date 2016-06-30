@@ -129,6 +129,7 @@ module.exports.addItems = new ValidatedMethod
       invsByProduct = checkAddInventories(inventories, organization_id)
       addToDetailInventories(sell, invsByProduct)
       setQuantities(sell)
+      removeZeroDetail(sell)
       setupSell(sell)
       updateInventories(inventories, -1, sell)
       removeUnauthUpdateFields(sell)
@@ -162,8 +163,8 @@ module.exports.putBackItems = new ValidatedMethod
       invsByProduct = checkPutBackInventories(inventories, organization_id)
       putBackInventories(sell, invsByProduct)
       setQuantities(sell)
-      setupSell(sell)
       removeZeroDetail(sell)
+      setupSell(sell)
       updateInventories(inventories, 1, sell)
       removeUnauthUpdateFields(sell)
       SellModule.Sells.simpleSchema().clean(sell)
@@ -335,10 +336,11 @@ removeZeroDetail = (sell_doc) ->
 
 setQuantities = (sell) ->
   for detail in sell.details
-    detail.quantity = 0
-    detail.inventories = (dinv for dinv in detail.inventories when dinv.quantity_taken isnt 0)
-    for inv in detail.inventories
-      detail.quantity += inv.quantity_taken
+    if detail.inventories? && detail.inventories.length > 0
+      detail.quantity = 0
+      detail.inventories = (dinv for dinv in detail.inventories when dinv.quantity_taken isnt 0)
+      for inv in detail.inventories
+        detail.quantity += inv.quantity_taken
 
 addToDetailInventories = (sell, invsByProduct) ->
   for detail in sell.details

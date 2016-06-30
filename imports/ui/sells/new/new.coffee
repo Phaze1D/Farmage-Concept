@@ -21,7 +21,7 @@ require './new.html'
 
 
 Template.SellsNew.onCreated ->
-  @selector = new ReactiveDict(detail: 'false', customer: 'false', inventory: 'false')
+  @selector = new ReactiveDict(detail: 'false', customer: 'false', inventory: 'false', rinvent: 'false')
   @customer = new ReactiveVar
   @pdetails = new ReactiveDict
   @totals = new ReactiveDict(sub_total: '0.00', tax_total: '0.00', total_price: '0.00', discount: '0', discount_type: "true")
@@ -40,15 +40,19 @@ Template.SellsNew.onCreated ->
     @selector.set(detail: false, customer: false, inventory: false)
 
 
-  @selectInventory = (inventory_id) =>
+  @selectInventory = (inventory_id, quantity_taken = 1) =>
     inventory = InventoryModule.Inventories.findOne inventory_id
     dinventory =
       inventory: inventory
-      quantity_taken: 1
+      quantity_taken: quantity_taken
 
     pdetail = @pdetails.get(inventory.product_id)
-    if pdetail? && !pdetail.inventories[inventory._id]
-      pdetail.inventories[inventory._id] = dinventory
+    if pdetail?
+      if pdetail.inventories[inventory._id]?
+        pdetail.inventories[inventory._id].quantity_taken+= quantity_taken
+      else
+        pdetail.inventories[inventory._id] = dinventory
+      pdetail.disabled = disabled: true
       pdetail.quantity = 0
       pdetail.quantity += value.quantity_taken for key, value of pdetail.inventories
       @pdetails.set(inventory.product_id, pdetail)
@@ -58,8 +62,9 @@ Template.SellsNew.onCreated ->
       if product?
         pdetail =
           product: product
-          quantity: 1
+          quantity: quantity_taken
           inventories: {}
+          disabled: disabled: true
         pdetail.inventories[inventory._id] = dinventory
         @pdetails.set(inventory.product_id, pdetail)
     @setTotals()
@@ -172,7 +177,10 @@ Template.SellsNew.helpers
 Template.SellsNew.events
   'click .js-add-detail': (event, instance) ->
     instance.selector.set('detail', true)
-    instance.selector.set('inventory', true)
+    instance.selector.set 'inventory', false
+    instance.selector.set 'rinvent', false
+
+
 
   'focusin .js-add-customer': (event, instance) ->
     instance.selector.set('customer', true)
@@ -204,6 +212,8 @@ Template.SellsNew.events
       pdetail.quantity += value.quantity_taken for key, value of pdetail.inventories
     else
       delete pdetail.inventories[inventory_id]
+      pdetail.disabled = undefined if _.isEmpty pdetail.inventories
+
     instance.pdetails.set(pdetail.product._id, pdetail)
     instance.setTotals()
 
@@ -213,18 +223,45 @@ Template.SellsNew.events
     instance.setTotals()
 
   'click .js-add-inventory': (event, instance) ->
-    instance.selector.set('inventory', true)
+    instance.selector.set 'inventory', true
+    instance.selector.set 'detail', false
+    instance.selector.set 'rinvent', false
+
 
   'click .js-remove-inventory': (event, instance) ->
-    product_id = instance.$(event.target).closest('.js-pdetail').attr('data-id')
-    inventory_id = instance.$(event.target).closest('.js-inventory').attr('data-id')
-    pdetail = instance.pdetails.get(product_id)
-    delete pdetail.inventories[inventory_id]
-    pdetail.quantity = 0
-    pdetail.quantity += value.quantity_taken for key, value of pdetail.inventories
-    pdetail.quantity = if pdetail.quantity > 0 then pdetail.quantity else 1
-    instance.pdetails.set(pdetail.product._id, pdetail)
+    instance.selector.set 'inventory', false
+    instance.selector.set 'detail', false
+    instance.selector.set 'rinvent', false
+
+    for key, value of instance.pdetails.all()
+      unless _.isEmpty value.inventories
+        instance.selector.set 'rinvent', true
+
+    unless instance.selector.get 'rinvent'
+      console.warn 'No inventories added yet'
+
+
+  'click .js-inventory-select': (event, instance) ->
+    value = instance.$(event.target).attr('data-id')
+    instance.$('.js-remove-inven-input').val(value)
+
+
+  'click .js-apply-remove': (event, instance) ->
+    instance.selector.set 'rinvent', false
+    inv_id = instance.$('.js-remove-inven-input').val()
+    pdetails = instance.pdetails.all()
+    for key, pdetail of pdetails
+      if pdetail.inventories[inv_id]?
+        pdetail.inventories[inv_id].quantity_taken--
+        pdetail.quantity--
+        delete pdetail.inventories[inv_id] if pdetail.inventories[inv_id].quantity_taken is 0
+        instance.pdetails.set(pdetail.product._id, pdetail)
     instance.setTotals()
+
+  'click .js-cancel-remove': (event, instance) ->
+    instance.selector.set 'rinvent', false
+
+
 
   'change .js-discount-input': (event, instance) ->
     value = instance.$(event.target).val()
@@ -275,7 +312,5 @@ Template.SellsNew.events
 
   'mousedown .top': (event, instance) ->
     container = instance.$('.js-selector')
-    instance.selector.set(detail: false, customer: false, inventory: false) if !container.is(event.target) &&
-                                                                              container.has(event.target).length is 0 &&
-                                                                              ( instance.selector.get('detail') ||
-                                                                              instance.selector.get('customer') )
+    if !container.is(event.target) && container.has(event.target).length is 0 && ( instance.selector.get('detail') || instance.selector.get('customer') || instance.selector.get('inventory') || instance.selector.get('rinvent') )
+      instance.selector.set(detail: false, customer: false, inventory: false, rinvent: false)

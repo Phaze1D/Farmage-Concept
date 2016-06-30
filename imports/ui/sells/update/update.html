@@ -1,49 +1,24 @@
 <template name="SellsUpdate">
   <div class="top">
     <div class="">
-      <form class="js-sells-form-new">
-        <!-- InventoryAssociationSchema =
-            quantity_taken:
-            inventory_id:
+      <form class="js-sells-form-update">
 
-        SellDetailsSchema =
-            product_id:
-            quantity:
-            unit_price: NO
-            tax_rate: NO
-            inventories:
-
-        SellSchema =
-            sub_total: NO
-            tax_total: NO
-            discount:
-            discount_type:
-            total_price: NO
-            currency:
-            details:
-            status:
-            paid:
-            payment_method:
-            receipt_url:
-            note:
-            customer_id:
-            shipping_address:
-            telephone: -->
         <label for="details">Sell Details</label>
         <button type="button" class="js-add-detail">Add Product</button>
+        <button type="button" class="js-add-inventory">Add Physical Product</button>
+        <button type="button" class="js-remove-inventory">Remove Physical Product</button>
+        <br>
         <br>
         {{#each pdetail in pdetails}}
           <div class="js-pdetail" data-id="{{pdetail.product._id}}">
-            Name: {{pdetail.product.name}}, Unit Price: ${{pdetail.product.unit_price}}, Tax Rate: {{pdetail.product.tax_rate}}, Quantity:
-            <input type="number" class="js-quantity" name="detail_quantity" value="{{pdetail.quantity}}" min="0" data-productid="{{pdetail.product._id}}">
-            <button type="button" class="js-add-inventory">Add Physical Product</button>
+            Name: {{pdetail.product.name}}, Unit Price: ${{pdetail.product.unit_price}}, Tax Rate: {{pdetail.product.tax_rate}}%, Quantity:
+            <input type="number" class="js-quantity" name="detail_quantity" value="{{pdetail.quantity}}" min="0" data-productid="{{pdetail.product._id}}" {{pdetail.disabled}}>
             <button type="button" class="js-remove-detail">Remove Product</button>
 
             {{#each inventories pdetail}}
               <div class="js-inventory" data-id="{{inventory._id}}">
                 ID: {{inventory._id}}, Current Amount: {{inventory.amount}}, Quantity Taken:
                 <input type="number" class="js-quantity-taken" name="quantity_taken" value="{{quantity_taken}}" min="0">
-                <button type="button" class="js-remove-inventory">Remove Physical Product</button>
               </div>
             {{/each}}
           </div>
@@ -61,6 +36,23 @@
             <label>By Inventory</label>
             {{> InventoriesSelector iselect }}
           {{/if}}
+          {{#if selector.rinvent}}
+            <label>Current Inventories</label>
+            <br>
+            <input type="text" class="js-remove-inven-input" value="" placeholder="inventory_id">
+            <button type="button" class="js-apply-remove">Remove</button>
+            <button type="button" class="js-cancel-remove">Cancel</button>
+            {{#each pdetail in pdetails}}
+              {{#each inventories pdetail}}
+                <br>
+                <div class="js-inventory-select" data-id="{{inventory._id}}">
+                  {{inventory.name}}
+                  {{inventory.measurement_unit}}
+                  {{inventory._id}}
+                </div>
+              {{/each}}
+            {{/each}}
+          {{/if}}
         </div>
         <br>
         <br>
@@ -72,7 +64,7 @@
         <br>
         <br>
         <label for="discount">Discount</label>
-        <input type="number" class="js-discount-input" name="discount" value="" min="0" step="any">
+        <input type="number" class="js-discount-input" name="discount" value="{{sell.discount}}" min="0" step="any">
         <label for="discount_type">Discount Type</label>
         <select class="js-discount-type-select" name="discount_type">
           <option value="1">%</option>
@@ -87,11 +79,11 @@
         </select>
         <br>
         <label for="status">Status</label>
-        <input type="text" name="status" value="">
+        <input type="text" name="status" value="{{sell.status}}">
         <br>
         <br>
         <label for="note">Notes</label>
-        <textarea name="note" rows="8" cols="40"></textarea>
+        <textarea name="note" rows="8" cols="40">{{sell.note}}</textarea>
         <br>
         <br>
         <label for="customer_id">Customer</label>
@@ -111,7 +103,7 @@
         {{#if ship}}
         <br>
         <label for="street">Street</label>
-        <input type="text" name="street" value="{{address.street}}">
+        <input type="text" name="street" value="">
         <br>
         <label for="street2">Street 2</label>
         <input type="text" name="street2" value="" >

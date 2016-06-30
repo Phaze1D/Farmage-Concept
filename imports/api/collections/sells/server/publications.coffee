@@ -4,12 +4,14 @@
 CustomerModule = require '../../customers/customers.coffee'
 InventoryModule = require '../../inventories/inventories.coffee'
 ProductModule = require '../../products/products.coffee'
+SellModule = require '../sells.coffee'
 
 collections = {}
 collections.product = ProductModule.Products
 collections.customer = CustomerModule.Customers
 collections.inventory = InventoryModule.Inventories
 
+# Missing permissions and pagenation
 Meteor.publish "sells", (organization_id, parent, parent_id) ->
 
   info = publicationInfo organization_id, parent, parent_id
@@ -24,8 +26,22 @@ Meteor.publish "sells", (organization_id, parent, parent_id) ->
     unless(parentDoc? && parentDoc.organization_id is organization._id)
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
-  # Missing permissions and pagenation
   if @userId?
     return parentDoc.sells()
   else
     @ready();
+
+
+# Missing permissions and pagenation
+Meteor.publish 'sell.parents', (organization_id, sell_id) ->
+  info = publicationInfo organization_id, 'sell', sell_id
+  sell = SellModule.Sells.findOne sell_id
+
+  if @userId? && sell?
+    return [
+      sell.products(),
+      sell.inventories(),
+      sell.customer()
+    ]
+  else
+    @ready()
