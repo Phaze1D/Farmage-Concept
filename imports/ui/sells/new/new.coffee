@@ -208,12 +208,12 @@ Template.SellsNew.events
     value = Number( $(event.target).val() )
     if value > 0
       pdetail.inventories[inventory_id].quantity_taken = value
-      pdetail.quantity = 0
-      pdetail.quantity += value.quantity_taken for key, value of pdetail.inventories
     else
       delete pdetail.inventories[inventory_id]
       pdetail.disabled = undefined if _.isEmpty pdetail.inventories
 
+    pdetail.quantity = 0
+    pdetail.quantity += value.quantity_taken for key, value of pdetail.inventories
     instance.pdetails.set(pdetail.product._id, pdetail)
     instance.setTotals()
 
