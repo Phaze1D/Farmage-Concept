@@ -60,7 +60,7 @@ Template.OUsersUpdate.events
     $form = instance.$('.js-ouser-form-update')
     permission =
       owner: $form.find('[name=owner]').prop('checked')
-      editor: $form.find('[name=editor]').prop('checked')
+      viewer: $form.find('[name=viewer]').prop('checked')
       expenses_manager: $form.find('[name=expenses_manager]').prop('checked')
       sells_manager: $form.find('[name=sells_manager]').prop('checked')
       units_manager: $form.find('[name=units_manager]').prop('checked')

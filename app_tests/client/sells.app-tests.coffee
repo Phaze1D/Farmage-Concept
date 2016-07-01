@@ -790,7 +790,7 @@ inviteUse = (done, email) ->
 
   permission =
     owner: false
-    editor: false
+    viewer: false
     expenses_manager: false
     sells_manager: false
     units_manager: false

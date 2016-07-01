@@ -7,14 +7,16 @@ Meteor.publish "providers", (organization_id, parent, parent_id) ->
   organization = info.organization
   parentDoc = info.parentDoc
 
-  unless(organization? && organization.hasUser(@userId)?)
+  if organization? && organization.hasUser(@userId)?
+    permissions = organization.hasUser(@userId).permission
+
+  unless permissions?
     throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   unless parentDoc?
     throw new Meteor.Error 'notAuthorized', 'not authorized'
 
-  # Missing permissions and pagenation
-  if @userId?
+  if @userId? && (permissions.viewer || permissions.expenses_manager || permissions.owner)
     return parentDoc.providers()
   else
     @ready();

@@ -18,7 +18,10 @@ Meteor.publish "inventories", (organization_id, parent, parent_id) ->
   parentDoc = info.parentDoc
   organization = info.organization
 
-  unless(organization? && organization.hasUser(@userId)?)
+  if organization? && organization.hasUser(@userId)?
+    permissions = organization.hasUser(@userId).permission
+
+  unless permissions?
     throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   unless parentDoc?
@@ -26,8 +29,7 @@ Meteor.publish "inventories", (organization_id, parent, parent_id) ->
     unless(parentDoc? && parentDoc.organization_id is organization._id)
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
-
-  if @userId? && parentDoc?
+  if @userId? && parentDoc? && (permissions.viewer || permissions.inventories_manager || permissions.owner)
     invcursor = parentDoc.inventories()
     parry = []
     invcursor.forEach (doc) ->
@@ -43,9 +45,20 @@ Meteor.publish "inventories", (organization_id, parent, parent_id) ->
 # Missing permissions and pagenation
 Meteor.publish 'inventory.parents', (organization_id, inventory_id, yield_objects_count) ->
   info = publicationInfo organization_id, 'inventory', inventory_id
-  inventory = InventoryModule.Inventories.findOne inventory_id
+  organization = info.organization
 
-  if @userId? && inventory?
+  if organization? && organization.hasUser(@userId)?
+    permissions = organization.hasUser(@userId).permission
+
+  unless permissions?
+    throw new Meteor.Error 'notAuthorized', 'not authorized'
+
+  inventory = InventoryModule.Inventories.findOne inventory_id
+  unless(inventory? && inventory.organization_id is organization._id)
+    throw new Meteor.Error 'notAuthorized', 'not authorized'
+
+
+  if @userId? && (permissions.viewer || permissions.inventories_manager || permissions.owner)
     return [
       inventory.product(),
       inventory.yields()

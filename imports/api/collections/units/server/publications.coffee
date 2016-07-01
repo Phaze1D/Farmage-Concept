@@ -14,7 +14,10 @@ Meteor.publish "units", (organization_id, parent, parent_id) ->
   organization = info.organization
   parentDoc = info.parentDoc
 
-  unless(organization? && organization.hasUser(@userId)?)
+  if organization? &&  organization.hasUser(@userId)?
+    permissions = organization.hasUser(@userId).permission
+
+  unless permissions?
     throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   unless parentDoc?
@@ -22,7 +25,7 @@ Meteor.publish "units", (organization_id, parent, parent_id) ->
     unless(parentDoc? && parentDoc.organization_id is organization._id)
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
-  if @userId?
+  if @userId? && (permissions.viewer || permissions.units_manager || permissions.owner)
     return parentDoc.units()
   else
     @ready();
@@ -30,9 +33,19 @@ Meteor.publish "units", (organization_id, parent, parent_id) ->
 # Missing permissions and pagenation
 Meteor.publish 'unit.parent', (organization_id, unit_id) ->
   info = publicationInfo organization_id, 'unit', unit_id
-  unit = UnitModule.Units.findOne unit_id
+  organization = info.organization
 
-  if @userId? && unit?
+  if organization? && organization.hasUser(@userId)?
+    permissions = organization.hasUser(@userId).permission
+
+  unless permissions?
+    throw new Meteor.Error 'notAuthorized', 'not authorized'
+
+  unit = UnitModule.Units.findOne unit_id
+  unless(unit? && unit.organization_id is organization._id)
+    throw new Meteor.Error 'notAuthorized', 'not authorized'
+
+  if @userId? && (permissions.viewer || permissions.units_manager || permissions.owner)
     return unit.unit()
   else
     @ready()

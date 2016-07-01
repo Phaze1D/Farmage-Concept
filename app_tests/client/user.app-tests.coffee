@@ -121,7 +121,7 @@ xdescribe 'User Full App Tests Client', () ->
 
       permission =
         owner: false
-        editor: false
+        viewer: false
         expenses_manager: false
         sells_manager: false
         units_manager: false
@@ -161,7 +161,7 @@ xdescribe 'User Full App Tests Client', () ->
 
       permission =
           owner: false
-          editor: false
+          viewer: false
           expenses_manager: false
           sells_manager: false
           units_manager: false
@@ -201,7 +201,7 @@ xdescribe 'User Full App Tests Client', () ->
 
       permission =
         owner: false
-        editor: false
+        viewer: false
         expenses_manager: false
         sells_manager: false
         units_manager: false
@@ -233,7 +233,7 @@ xdescribe 'User Full App Tests Client', () ->
 
       permission =
         owner: false
-        editor: false
+        viewer: false
         expenses_manager: false
         sells_manager: false
         units_manager: false
@@ -261,7 +261,7 @@ xdescribe 'User Full App Tests Client', () ->
 
         permission =
           owner: false
-          editor: false
+          viewer: false
           expenses_manager: false
           sells_manager: false
           units_manager: false
@@ -393,7 +393,7 @@ xdescribe 'User Full App Tests Client', () ->
 
         permission =
           owner: false
-          editor: false
+          viewer: false
           expenses_manager: false
           sells_manager: false
           units_manager: false
@@ -421,7 +421,7 @@ xdescribe 'User Full App Tests Client', () ->
       organization_id = organization_id00
       permission =
         owner: true
-        editor: false
+        viewer: false
         expenses_manager: false
         sells_manager: false
         units_manager: false
@@ -447,7 +447,7 @@ xdescribe 'User Full App Tests Client', () ->
       organization_id = organization_id00
       permission =
         owner: true
-        editor: false
+        viewer: false
         expenses_manager: false
         sells_manager: false
         units_manager: false
@@ -465,7 +465,7 @@ xdescribe 'User Full App Tests Client', () ->
       organization_id = organization_id00
       permission =
         owner: false
-        editor: false
+        viewer: false
         expenses_manager: false
         sells_manager: false
         units_manager: false
@@ -482,7 +482,7 @@ xdescribe 'User Full App Tests Client', () ->
       organization_id = organization_id00
       permission =
         owner: false
-        editor: false
+        viewer: false
         expenses_manager: false
         sells_manager: false
         units_manager: false
@@ -508,7 +508,7 @@ xdescribe 'User Full App Tests Client', () ->
       organization_id = organization_id00
       permission =
         owner: true
-        editor: false
+        viewer: false
         expenses_manager: false
         sells_manager: false
         units_manager: false
@@ -525,7 +525,7 @@ xdescribe 'User Full App Tests Client', () ->
       organization_id = organization_id00
       permission =
         owner: false
-        editor: true
+        viewer: true
         expenses_manager: false
         sells_manager: false
         units_manager: false
@@ -534,7 +534,7 @@ xdescribe 'User Full App Tests Client', () ->
 
       updatePermission.call {update_user_id, organization_id, permission}, (err, res) ->
         expect(err).to.not.exist
-        expect(Organizations.findOne().hasUser(Meteor.userId()).permission.editor).to.equal(true)
+        expect(Organizations.findOne().hasUser(Meteor.userId()).permission.viewer).to.equal(true)
         done()
 
 
@@ -565,7 +565,7 @@ xdescribe 'User Full App Tests Client', () ->
       organization_id = organization_id01
       permission =
         owner: true
-        editor: false
+        viewer: false
         expenses_manager: false
         sells_manager: false
         units_manager: false
@@ -592,7 +592,7 @@ xdescribe 'User Full App Tests Client', () ->
       organization_id = organization_id01
       permission =
         owner: true
-        editor: false
+        viewer: false
         expenses_manager: false
         sells_manager: false
         units_manager: false

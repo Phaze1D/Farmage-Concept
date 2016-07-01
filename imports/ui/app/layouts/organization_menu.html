@@ -5,17 +5,37 @@
   <div class="">
     {{#if organization}}
       <div class="">
-        <a href="/organizations/{{organization._id}}/customers">Customers</a>
+        {{#if permission 'sells_manager'}}
+          <a href="/organizations/{{organization._id}}/customers">Customers</a>
+          <a href="/organizations/{{organization._id}}/sells">Sells</a>
+        {{/if}}
+
+        {{#if permission 'owner'}}
         <a href="/organizations/{{organization._id}}/events">Events</a>
+        {{/if}}
+
+        {{#if permission 'expenses_manager'}}
         <a href="/organizations/{{organization._id}}/expenses">Expenses</a>
+        <a href="/organizations/{{organization._id}}/providers">Providers</a>
+        {{/if}}
+
+        {{#if permission 'owner'}}
         <a href="/organizations/{{organization._id}}/ingredients">Ingredients</a>
+        {{/if}}
+
+        {{#if permission 'inventories_manager'}}
         <a href="/organizations/{{organization._id}}/inventories">Inventories</a>
         <a href="/organizations/{{organization._id}}/products">Products</a>
-        <a href="/organizations/{{organization._id}}/providers">Providers</a>
-        <a href="/organizations/{{organization._id}}/sells">Sells</a>
+        {{/if}}
+
+        {{#if permission 'units_manager'}}
         <a href="/organizations/{{organization._id}}/units">Units</a>
-        <a href="/organizations/{{organization._id}}/ousers">Users</a>
         <a href="/organizations/{{organization._id}}/yields">Yields</a>
+        {{/if}}
+
+        {{#if permission 'users_manager'}}
+        <a href="/organizations/{{organization._id}}/ousers">Users</a>
+        {{/if}}
       </div>
 
       <br>

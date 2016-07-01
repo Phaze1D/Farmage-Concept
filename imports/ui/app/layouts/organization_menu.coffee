@@ -34,9 +34,13 @@ Template.OrganizationMenu.helpers
   organization: ->
     OC.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
 
-  permission: ->
+  permission: (type)->
     organ = OC.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
-    organ.hasUser(Meteor.userId()).permission if organ?
+    if organ?
+      ouser = organ.hasUser(Meteor.userId())
+      return ouser.permission[type] ||
+             ouser.permission.owner ||
+             ouser.permission.viewer
 
   subView: ->
     routeName = FlowRouter.getRouteName()

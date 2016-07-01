@@ -6,7 +6,6 @@
 { TimestampSchema } = require '../../shared/timestamps.coffee'
 
 
-
 class OrganizationsCollection extends Mongo.Collection
   insert: (doc, callback) ->
     super(doc, callback)
@@ -24,31 +23,25 @@ PermissionSchema = exports.PermissionSchema =
       type: Boolean
       defaultValue: false
 
-
-    editor:
+    viewer:
       type: Boolean
       defaultValue: false
-
 
     expenses_manager:
       type: Boolean
       defaultValue: false
 
-
     sells_manager:
       type: Boolean
       defaultValue: false
-
 
     units_manager:
       type: Boolean
       defaultValue: false
 
-
     inventories_manager:
       type: Boolean
       defaultValue: false
-
 
     users_manager:
       type: Boolean
@@ -87,7 +80,7 @@ OrganizationSchema =
             user_id: @userId
             permission:
               owner: true
-              editor: true
+              viewer: true
               users_manager: true
               inventories_manager: true
               units_manager: true

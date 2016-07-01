@@ -1,24 +1,25 @@
 { Meteor } = require 'meteor/meteor'
 { publicationInfo } = require '../../../mixins/server/publications_mixin.coffee'
 
+
 UnitModule = require '../../units/units.coffee'
 ProviderModule = require '../../providers/providers.coffee'
 ExpenseModule = require '../expenses.coffee'
-
-
 
 collections = {}
 collections.unit = UnitModule.Units
 collections.provider = ProviderModule.Providers
 
-# Missing permissions and pagenation
 Meteor.publish "expenses", (organization_id, parent, parent_id) ->
 
   info = publicationInfo organization_id, parent, parent_id
   parentDoc = info.parentDoc
   organization = info.organization
 
-  unless(organization? && organization.hasUser(@userId)?)
+  if organization? && organization.hasUser(@userId)?
+    permissions = organization.hasUser(@userId).permission
+
+  unless permissions?
     throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   unless parentDoc?
@@ -26,19 +27,30 @@ Meteor.publish "expenses", (organization_id, parent, parent_id) ->
     unless(parentDoc? && parentDoc.organization_id is organization._id)
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
-  if @userId? && parentDoc?
+
+  if @userId? && parentDoc? && (permissions.viewer || permissions.expenses_manager || permissions.owner)
     return parentDoc.expenses()
   else
     @ready();
 
 
-# Missing permissions and pagenation
 Meteor.publish 'expense.parents', (organization_id, expense_id) ->
 
   info = publicationInfo organization_id, 'expense', expense_id
+  organization = info.organization
+
+  if organization? && organization.hasUser(@userId)?
+    permissions = organization.hasUser(@userId).permission
+
+  unless permissions?
+    throw new Meteor.Error 'notAuthorized', 'not authorized'
+
   expense = ExpenseModule.Expenses.findOne(expense_id)
 
-  if @userId? && expense?
+  unless(expense? && expense.organization_id is organization._id)
+    throw new Meteor.Error 'notAuthorized', 'not authorized'
+
+  if @userId? && (permissions.viewer || permissions.expenses_manager || permissions.owner)
     return [
       expense.provider(),
       expense.unit()

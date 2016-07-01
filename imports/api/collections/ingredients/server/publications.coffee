@@ -14,7 +14,10 @@ Meteor.publish "ingredients", (organization_id, parent, parent_id) ->
   parentDoc = info.parentDoc
   organization = info.organization
 
-  unless(organization? && organization.hasUser(@userId)?)
+  if organization? && organization.hasUser(@userId)?
+    permissions = organization.hasUser(@userId).permission
+
+  unless permissions?
     throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   unless parentDoc?
@@ -23,8 +26,7 @@ Meteor.publish "ingredients", (organization_id, parent, parent_id) ->
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
 
-  # Missing permissions and pagenation
-  if @userId? && parentDoc?
+  if @userId? && parentDoc? && (permissions.viewer || permissions.owner)
     return parentDoc.ingredients()
   else
     @ready();

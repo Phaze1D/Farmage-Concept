@@ -14,7 +14,7 @@ IngredientModule = require './ingredients.coffee'
 } = require '../../mixins/mixins.coffee'
 
 
-# Insert Customer
+# Insert 
 module.exports.insert = new ValidatedMethod
   name: 'ingredient.insert'
   validate: ({ingredient_doc}) ->
@@ -24,7 +24,7 @@ module.exports.insert = new ValidatedMethod
   run: ({ingredient_doc}) ->
     loggedIn @userId
     unless @isSimulation
-      hasPermission(@userId, ingredient_doc.organization_id, "units_manager")
+      hasPermission(@userId, ingredient_doc.organization_id, "owner")
 
     if IngredientModule.Ingredients.findOne( $and: [ { organization_id: ingredient_doc.organization_id }, {name: ingredient_doc.name} ] )?
       throw new Meteor.Error 'nameNotUnique', 'name must be unqiue'
