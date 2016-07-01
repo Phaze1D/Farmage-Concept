@@ -151,13 +151,11 @@ Template.SellsNew.helpers
   customer: ->
     Template.instance().customer.get()
 
-  address: (i) ->
-    customer = Template.instance.customer.get()
-    customer.addresses[i] if customer? && 0 <= i < customer.addresses.length
+  address:  ->
+    Template.instance().contact.get 'address'
 
-  telephone:(i)->
-    customer = Template.instance.customer.get()
-    customer.telephones[i] if customer? &&  0 <= i < customer.telephones.length
+  telephone: ->
+    Template.instance().contact.get 'telephone'
 
   selector: ->
     Template.instance().selector.all()
@@ -279,8 +277,40 @@ Template.SellsNew.events
     instance.pay.set(true)
     if instance.$(event.target).hasClass('disabled')
       console.warn "Warn users every detail must have a scanned physical item"
+      instance.pay.set(false)
     else
       instance.$('.js-sells-form-new').submit()
+
+  'click .js-ship-here-b': (event, instance) ->
+    index = instance.$(event.target).closest('.js-address-div').attr('data-index')
+    customer = instance.customer.get()
+    instance.contact.set 'address', customer.addresses[index]
+
+  'click .js-new-shipping': (event, instance) ->
+    ship =
+      street: ''
+      street2: ''
+      city: ''
+      state: ''
+      zip_code: ''
+      country: ''
+    instance.contact.set 'address', ship
+
+  'click .js-remove-address': (event, instance) ->
+    instance.contact.set 'address', null
+
+  'click .js-telephone-here-b': (event, instance) ->
+    index = instance.$(event.target).closest('.js-telephone-div').attr('data-index')
+    customer = instance.customer.get()
+    instance.contact.set 'telephone', customer.telephones[index]
+
+  'click .js-new-telephone': (event, instance) ->
+    telephone =
+      number: ''
+    instance.contact.set 'telephone', telephone
+
+  'click .js-remove-telephone': (event, instance) ->
+    instance.contact.set 'telephone', null
 
   'submit .js-sells-form-new': (event, instance) ->
     event.preventDefault()
@@ -297,9 +327,10 @@ Template.SellsNew.events
           quantity_taken: value.quantity_taken
         inventories.push invdoc
     $form = instance.$('.js-sells-form-new')
+    console.log instance.totals.get('discount_type')
     sell_doc =
       discount: instance.totals.get('discount')
-      discount_type: instance.totals.get('discount_type')
+      discount_type: if Number instance.totals.get('discount_type') is 1 then true else false
       currency: $form.find('[name=currency]').val()
       details: details
       status: $form.find('[name=status]').val()

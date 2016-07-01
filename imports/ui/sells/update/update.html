@@ -1,24 +1,29 @@
 <template name="SellsUpdate">
+  {{#if Template.subscriptionsReady}}
   <div class="top">
     <div class="">
       <form class="js-sells-form-update">
 
         <label for="details">Sell Details</label>
+        {{#unless sell.paid}}
         <button type="button" class="js-add-detail">Add Product</button>
         <button type="button" class="js-add-inventory">Add Physical Product</button>
         <button type="button" class="js-remove-inventory">Remove Physical Product</button>
+        {{/unless}}
         <br>
         <br>
         {{#each pdetail in pdetails}}
           <div class="js-pdetail" data-id="{{pdetail.product._id}}">
             Name: {{pdetail.product.name}}, Unit Price: ${{pdetail.product.unit_price}}, Tax Rate: {{pdetail.product.tax_rate}}%, Quantity:
             <input type="number" class="js-quantity" name="detail_quantity" value="{{pdetail.quantity}}" min="0" data-productid="{{pdetail.product._id}}" {{pdetail.disabled}}>
-            <button type="button" class="js-remove-detail">Remove Product</button>
+            {{#unless sell.paid}}
+              <button type="button" class="js-remove-detail">Remove Product</button>
+            {{/unless}}
 
             {{#each inventories pdetail}}
               <div class="js-inventory" data-id="{{inventory._id}}">
                 ID: {{inventory._id}}, Current Amount: {{inventory.amount}}, Quantity Taken:
-                <input type="number" class="js-quantity-taken" name="quantity_taken" value="{{quantity_taken}}" min="0">
+                <input type="number" class="js-quantity-taken" name="quantity_taken" value="{{quantity_taken}}" min="0" {{paidDisable}}>
               </div>
             {{/each}}
           </div>
@@ -64,15 +69,15 @@
         <br>
         <br>
         <label for="discount">Discount</label>
-        <input type="number" class="js-discount-input" name="discount" value="{{sell.discount}}" min="0" step="any">
+        <input type="number" class="js-discount-input" name="discount" value="{{sell.discount}}" min="0" step="any" {{paidDisable}}>
         <label for="discount_type">Discount Type</label>
-        <select class="js-discount-type-select" name="discount_type">
+        <select class="js-discount-type-select" name="discount_type" {{paidDisable}}>
           <option value="1">%</option>
           <option value="0">$</option>
         </select>
         <br>
         <label for="currency">Currency</label>
-        <select class="" name="currency">
+        <select class="" name="currency" {{paidDisable}}>
           <option value=""></option>
           <option value="MXN">MXN</option>
           <option value="USD">USD</option>
@@ -87,7 +92,7 @@
         <br>
         <br>
         <label for="customer_id">Customer</label>
-        <input type="text" class="js-add-customer" name="customer_id" value="{{customer._id}}">
+        <input type="text" class="js-add-customer" name="customer_id" value="{{customer._id}}" {{paidDisable}}>
         {{customer.first_name}}
         <div class="js-selector">
           {{#if selector.customer}}
@@ -96,46 +101,59 @@
           {{/if}}
         </div>
         <br>
-        <br>
-        <!--  Make sure to add customer's first address and telephone if the press added shipping-->
+        {{#each customer.addresses}}
+          <div class="js-address-div" data-index="{{@index}}">
+            Street: {{street}} City: {{city}} State: {{state}}
+            <button type="button" class="js-ship-here-b">Ship Here</button>
+          </div>
+        {{/each}}
         <label for="">Shipping Address</label>
-        <button type="button" class="js-add-shipping">Add Shipping</button>
-        {{#if ship}}
+        <button type="button" class="js-new-shipping">Add Shipping</button>
+        {{#with address}}
+          <button type="button" class="js-remove-address">Remove</button>
+          <br>
+          <label for="street">Street</label>
+          <input type="text" name="street" value="{{street}}">
+          <br>
+          <label for="street2">Street 2</label>
+          <input type="text" name="street2" value="{{street2}}" >
+          <br>
+          <label for="city">City</label>
+          <input type="text" name="city" value="{{city}}">
+          <br>
+          <label for="state">State</label>
+          <input type="text" name="state" value="{{state}}">
+          <br>
+          <label for="zip_code">Zip Code</label>
+          <input type="text" name="zip_code" value="{{zip_code}}">
+          <br>
+          <label for="country">Country</label>
+          <input type="text" name="country" value="{{country}}">
+        {{/with}}
         <br>
-        <label for="street">Street</label>
-        <input type="text" name="street" value="">
         <br>
-        <label for="street2">Street 2</label>
-        <input type="text" name="street2" value="" >
-        <br>
-        <label for="city">City</label>
-        <input type="text" name="city" value="">
-        <br>
-        <label for="state">State</label>
-        <input type="text" name="state" value="">
-        <br>
-        <label for="zip_code">Zip Code</label>
-        <input type="text" name="zip_code" value="">
-        <br>
-        <label for="country">Country</label>
-        <input type="text" name="country" value="">
-        {{/if}}
-        <br>
-        <br>
-
+        {{#each customer.telephones}}
+          <div class="js-telephone-div" data-index="{{@index}}">
+            Number: {{number}}
+            <button type="button" class="js-telephone-here-b">Choice</button>
+          </div>
+        {{/each}}
         <label for="number">Telephone</label>
-        <button type="button" class="js-add-telephone">Add Telephone</button>
-        {{#if tele}}
-        <br>
-        <input type="text" name="number" value="">
-        {{/if}}
+        <button type="button" class="js-new-telephone">Add Telephone</button>
+        {{#with telephone}}
+          <button type="button" class="js-remove-telephone">Remove</button>
+          <br>
+          <input type="text" name="number" value="{{number}}">
+        {{/with}}
         <br>
         <br>
         <input type="submit" name="name" value="Save">
 
-        <button type="button" class="js-pay-button {{canPay}}" >Pay</button>
-
+        {{#unless sell.paid}}
+          <button type="button" class="js-pay-button {{canPay}}" >Pay</button>
+        {{/unless}}
       </form>
     </div>
   </div>
+  {{/if}}
 </template>

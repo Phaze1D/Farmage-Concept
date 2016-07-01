@@ -1,6 +1,8 @@
 { FlowRouter } = require 'meteor/kadira:flow-router'
 { BlazeLayout } = require 'meteor/kadira:blaze-layout'
 
+SellModule = require '../../api/collections/sells/sells.coffee'
+
 require '../../ui/app/root/root.coffee'
 require '../../ui/app/layouts/main_menu.coffee'
 require '../../ui/app/layouts/organization_menu.coffee'
@@ -15,11 +17,11 @@ require '../../ui/contact_info/addresses.coffee'
 require '../../ui/contact_info/telephones.coffee'
 
 
-loggedIn = () ->
+loggedIn = (context, redirect) ->
   if Meteor.userId()?
-    FlowRouter.go 'home' if FlowRouter.current().route.name is 'root'
+    redirect '/home' if FlowRouter.current().route.name is 'root'
   else
-    FlowRouter.go 'root'
+    redirect '/'
 
 
 

@@ -205,12 +205,13 @@ module.exports.pay = new ValidatedMethod
 
       setupSell(sell)
       removeUnauthUpdateFields(sell)
+
       sell.paid = true
       sell.payment_method = payment_method
 
-    SellModule.Sells.simpleSchema().clean(sell)
-    SellModule.Sells.update sell_id,
-                            $set: sell
+      SellModule.Sells.simpleSchema().clean(sell)
+      SellModule.Sells.update sell_id,
+                              $set: sell
 
 
 

@@ -96,39 +96,50 @@
           {{/if}}
         </div>
         <br>
-        <br>
-        <!--  Make sure to add customer's first address and telephone if the press added shipping-->
+        {{#each customer.addresses}}
+          <div class="js-address-div" data-index="{{@index}}">
+            Street: {{street}} City: {{city}} State: {{state}}
+            <button type="button" class="js-ship-here-b">Ship Here</button>
+          </div>
+        {{/each}}
         <label for="">Shipping Address</label>
-        <button type="button" class="js-add-shipping">Add Shipping</button>
-        {{#if ship}}
+        <button type="button" class="js-new-shipping">Add Shipping</button>
+        {{#with address}}
+          <button type="button" class="js-remove-address">Remove</button>
+          <br>
+          <label for="street">Street</label>
+          <input type="text" name="street" value="{{street}}">
+          <br>
+          <label for="street2">Street 2</label>
+          <input type="text" name="street2" value="{{street2}}" >
+          <br>
+          <label for="city">City</label>
+          <input type="text" name="city" value="{{city}}">
+          <br>
+          <label for="state">State</label>
+          <input type="text" name="state" value="{{state}}">
+          <br>
+          <label for="zip_code">Zip Code</label>
+          <input type="text" name="zip_code" value="{{zip_code}}">
+          <br>
+          <label for="country">Country</label>
+          <input type="text" name="country" value="{{country}}">
+        {{/with}}
         <br>
-        <label for="street">Street</label>
-        <input type="text" name="street" value="{{address.street}}">
         <br>
-        <label for="street2">Street 2</label>
-        <input type="text" name="street2" value="" >
-        <br>
-        <label for="city">City</label>
-        <input type="text" name="city" value="">
-        <br>
-        <label for="state">State</label>
-        <input type="text" name="state" value="">
-        <br>
-        <label for="zip_code">Zip Code</label>
-        <input type="text" name="zip_code" value="">
-        <br>
-        <label for="country">Country</label>
-        <input type="text" name="country" value="">
-        {{/if}}
-        <br>
-        <br>
-
+        {{#each customer.telephones}}
+          <div class="js-telephone-div" data-index="{{@index}}">
+            Number: {{number}}
+            <button type="button" class="js-telephone-here-b">Choice</button>
+          </div>
+        {{/each}}
         <label for="number">Telephone</label>
-        <button type="button" class="js-add-telephone">Add Telephone</button>
-        {{#if tele}}
-        <br>
-        <input type="text" name="number" value="">
-        {{/if}}
+        <button type="button" class="js-new-telephone">Add Telephone</button>
+        {{#with telephone}}
+          <button type="button" class="js-remove-telephone">Remove</button>
+          <br>
+          <input type="text" name="number" value="{{number}}">
+        {{/with}}
         <br>
         <br>
         <input type="submit" name="name" value="Save">

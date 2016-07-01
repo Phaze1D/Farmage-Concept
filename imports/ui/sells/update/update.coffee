@@ -28,7 +28,7 @@ Template.SellsUpdate.onCreated ->
   @contact = new ReactiveDict
   @pay = new ReactiveVar(false)
   @sell = new ReactiveVar
-  @done = new ReactiveDict(putback: 'false', add: 'false')
+  @done = new ReactiveDict
 
   unsell_id = FlowRouter.getParam 'child_id'
   organ_id = FlowRouter.getParam 'organization_id'
@@ -38,13 +38,15 @@ Template.SellsUpdate.onCreated ->
       console.log "sells update stop #{err}"
     onReady: () =>
       console.log "onReady"
+      @contact.set 'address', @sell.get().shipping_address
+      @contact.set 'telephone', @sell.get().telephone
+
       for detail in @sell.get().details
         @selectProduct detail.product_id, detail.quantity
         for inventory in detail.inventories
           @selectInventory inventory.inventory_id, inventory.quantity_taken
 
   @autorun =>
-    console.log autorun: 'selaut'
     @sell.set SellModule.Sells.findOne unsell_id
     @subscribe 'sell.parents', @sell.get().organization_id, @sell.get()._id, @subCallback
     @customer.set @sell.get().customer().fetch()[0]
@@ -160,11 +162,13 @@ Template.SellsUpdate.onCreated ->
 
   @reRoute = (organization_id, sell_id) =>
     if @done.get('putback') && @done.get('add')
-      console.log reRoute: 're'
       params =
         organization_id: organization_id
         child_id: sell_id
-      FlowRouter.go('sells.show', params ) unless err?
+      if @pay.get()
+        FlowRouter.go('sells.update.pay', params ) unless err?
+      else
+        FlowRouter.go('sells.show', params ) unless err?
 
 
   @classify = =>
@@ -213,7 +217,6 @@ Template.SellsUpdate.onCreated ->
           quantity_taken: inv.quantity_taken
         putBackInventories.push pinventory
 
-    console.log details
     {details: details, addInventories: addInventories, putBackInventories: putBackInventories}
 
   @remove = (organization_id, sell_id) =>
@@ -240,13 +243,11 @@ Template.SellsUpdate.helpers
   customer: ->
     Template.instance().customer.get()
 
-  address: (i) ->
-    customer = Template.instance.customer.get()
-    customer.addresses[i] if customer? && 0 <= i < customer.addresses.length
+  address:  ->
+    Template.instance().contact.get 'address'
 
-  telephone:(i)->
-    customer = Template.instance.customer.get()
-    customer.telephones[i] if customer? &&  0 <= i < customer.telephones.length
+  telephone: ->
+    Template.instance().contact.get 'telephone'
 
   selector: ->
     Template.instance().selector.all()
@@ -262,6 +263,9 @@ Template.SellsUpdate.helpers
 
   cselect: ->
     select: Template.instance().selectCustomer
+
+  paidDisable: ->
+    disabled: true if Template.instance().sell.get().paid
 
 Template.SellsUpdate.events
   'click .js-add-detail': (event, instance) ->
@@ -365,8 +369,42 @@ Template.SellsUpdate.events
     instance.pay.set(true)
     if instance.$(event.target).hasClass('disabled')
       console.warn "Warn users every detail must have a scanned physical item"
+      instance.pay.set(false)
     else
       instance.$('.js-sells-form-update').submit()
+
+
+  'click .js-ship-here-b': (event, instance) ->
+    index = instance.$(event.target).closest('.js-address-div').attr('data-index')
+    customer = instance.customer.get()
+    instance.contact.set 'address', customer.addresses[index]
+
+  'click .js-new-shipping': (event, instance) ->
+    ship =
+      street: ''
+      street2: ''
+      city: ''
+      state: ''
+      zip_code: ''
+      country: ''
+    instance.contact.set 'address', ship
+
+  'click .js-remove-address': (event, instance) ->
+    instance.contact.set 'address', null
+
+  'click .js-telephone-here-b': (event, instance) ->
+    index = instance.$(event.target).closest('.js-telephone-div').attr('data-index')
+    customer = instance.customer.get()
+    instance.contact.set 'telephone', customer.telephones[index]
+
+  'click .js-new-telephone': (event, instance) ->
+    telephone =
+      number: ''
+    instance.contact.set 'telephone', telephone
+
+  'click .js-remove-telephone': (event, instance) ->
+    instance.contact.set 'telephone', null
+
 
   'submit .js-sells-form-update': (event, instance) ->
     event.preventDefault()
@@ -384,6 +422,8 @@ Template.SellsUpdate.events
       shipping_address: instance.contact.get('address')
       telephone: instance.contact.get('telephone')
 
+    instance.done.set 'putback', false
+    instance.done.set 'add', false
     instance.update sell_doc, classified.addInventories, classified.putBackInventories
 
   'mousedown .top': (event, instance) ->
