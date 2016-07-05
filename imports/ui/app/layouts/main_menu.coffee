@@ -3,6 +3,8 @@
 { Accounts } = require 'meteor/accounts-base'
 { FlowRouter } = require 'meteor/kadira:flow-router'
 { SimpleSchema } = require 'meteor/aldeed:simple-schema'
+{ ReactiveVar } = require 'meteor/reactive-var'
+
 
 { Organizations } = require '../../../api/collections/organizations/organizations.coffee'
 
@@ -11,12 +13,13 @@ require './main_menu.html'
 
 
 Template.MainMenu.onCreated ->
-  @ready = new ReactiveVar
+  @user = new ReactiveVar
 
   @subCallback =
     onStop: (err) ->
       console.log "sub stop #{err}"
     onReady: () ->
+
 
   @logout = ->
     Meteor.logout( (err) ->
@@ -24,10 +27,8 @@ Template.MainMenu.onCreated ->
       FlowRouter.go 'root' unless err?
     )
 
-
   @autorun =>
-    handler = Meteor.subscribe("organizations", @subCallback)
-    @ready.set handler.ready()
+    @subscribe("organizations", @subCallback)
 
 Template.MainMenu.onRendered ->
   @autorun =>
@@ -35,10 +36,11 @@ Template.MainMenu.onRendered ->
 
 
 Template.MainMenu.helpers
-  ready: () ->
-    Template.instance().ready.get()
+  user: ->
+    Meteor.users.findOne()
 
-
+  email: ->
+    Meteor.users.findOne().emails[0].address
 
 Template.MainMenu.events
   'click .js-logout': (event, instance) ->

@@ -35,3 +35,5 @@ blaze-html-templates
 kadira:blaze-layout
 meteorhacks:subs-manager
 reactive-dict
+stylus
+twbs:bootstrap
