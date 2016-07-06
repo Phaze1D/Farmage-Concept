@@ -40,8 +40,6 @@ Template.MainMenu.helpers
   title: ->
     FlowRouter.watchPathChange()
     group = FlowRouter.current().route.group
-
-    console.log group.name if group?
     Template.instance().title.get()
 
   links: ->
@@ -49,6 +47,7 @@ Template.MainMenu.helpers
       {
         name: 'Home'
         link: '/home'
+        class: 'js-link'
       },
       {
         name: 'Organizations'
@@ -59,11 +58,11 @@ Template.MainMenu.helpers
   linkOrganizations: ->
     ret = []
     param = FlowRouter.getParam('organization_id')
-    Organizations.find().forEach (doc) ->
-      if !param? || param is doc._id
-        ret.push
-          name: doc.name
-          link: "/organizations/#{doc._id}"
+    param = if param? then _id: param else {}
+    Organizations.find(param).forEach (doc) ->
+      ret.push
+        name: doc.name
+        link: "/organizations/#{doc._id}"
     ret
 
   linkOrganSub: ->
@@ -128,15 +127,16 @@ Template.MainMenu.events
   'click .js-logout': (event, instance) ->
     instance.logout()
 
-  'click .mask': (event, instance) ->
+  "click .js-mask, click .js-link": (event, instance) ->
     container = instance.$('.sidebar')
     container.removeClass 'showSidebar'
     container.addClass 'hideSidebar'
     container.one "transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd",() ->
-      instance.$(event.target).removeClass('mask-on').addClass('mask-off')
+      instance.$('.js-mask').removeClass('mask-on').addClass('mask-off')
 
 
-  'click #appmenu-button': (event, instance) ->
+
+  'click #js-appmenu-b': (event, instance) ->
     instance.$('.mask').removeClass('mask-off').addClass('mask-on')
     container = instance.$('.sidebar')
     container.one "transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd",() ->
