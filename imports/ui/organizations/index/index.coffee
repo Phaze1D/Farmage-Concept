@@ -12,8 +12,7 @@ require './index.html'
 
 
 Template.OrganizationsIndex.onCreated ->
-
-
+  
 
 Template.OrganizationsIndex.helpers
 

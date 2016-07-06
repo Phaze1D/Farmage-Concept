@@ -32,10 +32,10 @@ Template.OrganizationMenu.onDestroyed ->
 
 Template.OrganizationMenu.helpers
   organization: ->
-    OC.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
+    OC.Organizations.findOne _id: FlowRouter.getParam 'organization_id'
 
   permission: (type)->
-    organ = OC.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
+    organ = OC.Organizations.findOne _id: FlowRouter.getParam 'organization_id'
     if organ?
       ouser = organ.hasUser(Meteor.userId())
       return ouser.permission[type] ||

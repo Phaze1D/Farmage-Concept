@@ -21,7 +21,7 @@ loggedIn = (context, redirect) ->
   if Meteor.userId()?
     redirect '/home' if FlowRouter.current().route.name is 'root'
   else
-    redirect '/'
+    FlowRouter.go 'root'
 
 
 

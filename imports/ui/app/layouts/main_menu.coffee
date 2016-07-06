@@ -5,15 +5,13 @@
 { SimpleSchema } = require 'meteor/aldeed:simple-schema'
 { ReactiveVar } = require 'meteor/reactive-var'
 
-
 { Organizations } = require '../../../api/collections/organizations/organizations.coffee'
-
 
 require './main_menu.html'
 
 
 Template.MainMenu.onCreated ->
-  @user = new ReactiveVar
+  @title = new ReactiveVar('Home')
 
   @subCallback =
     onStop: (err) ->
@@ -30,18 +28,118 @@ Template.MainMenu.onCreated ->
   @autorun =>
     @subscribe("organizations", @subCallback)
 
-Template.MainMenu.onRendered ->
-  @autorun =>
-    console.log "MR"
-
 
 Template.MainMenu.helpers
   user: ->
     Meteor.users.findOne()
 
   email: ->
-    Meteor.users.findOne().emails[0].address
+    user = Meteor.users.findOne()
+    user.emails[0].address if user?
+
+  title: ->
+    FlowRouter.watchPathChange()
+    group = FlowRouter.current().route.group
+
+    console.log group.name if group?
+    Template.instance().title.get()
+
+  links: ->
+    ret = [
+      {
+        name: 'Home'
+        link: '/home'
+      },
+      {
+        name: 'Organizations'
+        link: '/organizations'
+      }
+    ]
+
+  linkOrganizations: ->
+    ret = []
+    param = FlowRouter.getParam('organization_id')
+    Organizations.find().forEach (doc) ->
+      if !param? || param is doc._id
+        ret.push
+          name: doc.name
+          link: "/organizations/#{doc._id}"
+    ret
+
+  linkOrganSub: ->
+    param = FlowRouter.getParam('organization_id')
+    organization = Organizations.findOne param
+    if organization?
+      permission = organization.hasUser(Meteor.userId()).permission
+      ret = []
+      if permission.sells_manager || permission.owner || permission.viewer
+        ret.push
+          name: 'Customers'
+          link: "/organizations/#{organization._id}/customers"
+        ret.push
+          name: 'Sells'
+          link: "/organizations/#{organization._id}/sells"
+
+      if permission.owner || permission.viewer
+        ret.push
+          name: 'Events'
+          link: "/organizations/#{organization._id}/events"
+
+      if permission.expenses_manager || permission.owner || permission.viewer
+        ret.push
+          name: 'Expenses'
+          link: "/organizations/#{organization._id}/expenses"
+        ret.push
+          name: 'Providers'
+          link: "/organizations/#{organization._id}/providers"
+
+      if permission.owner || permission.viewer
+        ret.push
+          name: 'Ingredients'
+          link: "/organizations/#{organization._id}/ingredients"
+
+      if permission.inventories_manager || permission.owner || permission.viewer
+        ret.push
+          name: 'Inventories'
+          link: "/organizations/#{organization._id}/inventories"
+
+        ret.push
+          name: 'Products'
+          link: "/organizations/#{organization._id}/products"
+
+      if permission.units_manager || permission.owner || permission.viewer
+        ret.push
+          name: 'Units'
+          link: "/organizations/#{organization._id}/units"
+
+        ret.push
+          name: 'Yields'
+          link: "/organizations/#{organization._id}/yields"
+
+      if permission.users_manager || permission.owner || permission.viewer
+        ret.push
+          name: 'Users'
+          link: "/organizations/#{organization._id}/ousers"
+
+      return ret
+
 
 Template.MainMenu.events
   'click .js-logout': (event, instance) ->
     instance.logout()
+
+  'click .mask': (event, instance) ->
+    container = instance.$('.sidebar')
+    container.removeClass 'showSidebar'
+    container.addClass 'hideSidebar'
+    container.one "transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd",() ->
+      instance.$(event.target).removeClass('mask-on').addClass('mask-off')
+
+
+  'click #appmenu-button': (event, instance) ->
+    instance.$('.mask').removeClass('mask-off').addClass('mask-on')
+    container = instance.$('.sidebar')
+    container.one "transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd",() ->
+
+    container.removeClass 'hideSidebar'
+    container.addClass 'showSidebar'

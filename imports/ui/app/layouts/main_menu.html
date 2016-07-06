@@ -1,19 +1,86 @@
 <template name="MainMenu">
 
-  <div class="sidebar">
-    <div class="sidebar-top">
-      <div class="avatar-div">
-        <img class="avatar-img" src="default_avatar.png" alt="" />
-      </div>
-      <div class="name-div">
-        <h5 class="name-h">{{user.profile.first_name}} {{user.profile.last_name}}</h5>
-        <h6 class="email-h">{{email}}</h6>
+  {{#if Template.subscriptionsReady }}
+  <div class="root">
+
+
+    <div class="sidebar">
+      <div class="sidebar-wrapper">
+
+        <div class="sidebar-upper">
+          <div class="avatar-div">
+            <img class="avatar-img" src="/default_avatar.png" alt="" />
+          </div>
+          <div class="name-div">
+            <h5 class="name-h">{{user.profile.first_name}} {{user.profile.last_name}}</h5>
+            <h6 class="email-h">{{email}}</h6>
+          </div>
+        </div>
+
+        <div class="sidebar-menu">
+          <ul class="menu-ul">
+            {{#each links}}
+              <li>
+                <a class="menu-link" href="{{link}}">{{name}}</a>
+              </li>
+            {{/each}}
+          </ul>
+        </div>
+
+        <div class="sidebar-organ">
+          <ul class="organ-ul">
+            {{#each linkOrganizations}}
+              <li>
+                <a class="menu-link" href="{{link}}">{{name}}</a>
+              </li>
+            {{/each}}
+          </ul>
+          <ul class="suborgan-ul">
+            {{#each linkOrganSub}}
+              <li>
+                <a class="sub-link" href="{{link}}">{{name}}</a>
+              </li>
+            {{/each}}
+          </ul>
+        </div>
+
+        <div class="sidebar-lower">
+
+        </div>
+
       </div>
     </div>
 
-    <div class="sidbar-menu">
+    <div class="main">
+      <div class="container-fluid">
+        <div class="row">
+          <div class="appbar col-xs-12">
+            <div class="row">
+              <div class="col-xs-10">
+                <button id="appmenu-button" type="button" class="appmenu-b">
+                  <i class="glyphicon glyphicon-menu-hamburger appmenu-icon"></i>
+                </button>
+                <div class="appbar-title">
+                  {{title}}
+                </div>
+              </div>
 
+              <div class="col-xs-10">
+
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- {{> Template.dynamic template=main}} -->
+      </div>
     </div>
+
   </div>
+
+  <div class="mask mask-on">
+
+  </div>
+
+  {{/if}}
 
 </template>
