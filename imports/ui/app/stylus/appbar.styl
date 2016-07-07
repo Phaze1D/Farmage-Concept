@@ -52,7 +52,7 @@
   line-height: appbarHeight
   white-space: nowrap;
   position: fixed;
-  left: 62px;
+  left: 65px;
   top: 0
 
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1)
@@ -61,5 +61,25 @@
   transition-delay: 0.1s
 
   @media (min-width: screen-md) {
-    left: sideBarWidth + 32
+    left: sideBarWidth + 25
   }
+
+.appbar-link
+  color: fontColor
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: sideBarWidth
+  
+  &:hover
+    text-decoration: none
+    color: fontColor
+
+  &:focus
+    text-decoration: none
+    color: fontColor
+    outline: none
+
+  &:visited
+    text-decoration: none
+    color: fontColor

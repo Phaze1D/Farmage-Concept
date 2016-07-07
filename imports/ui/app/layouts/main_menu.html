@@ -51,14 +51,22 @@
 
     <div class="main">
       <div class="appbar">
-
+        <div class="appbar-title">
+          {{#each titles}}
+            <a href="{{link}}" class="appbar-link">{{name}}</a>
+            {{#unless last}}
+              <span> - </span>
+            {{/unless}}
+          {{/each}}
+        </div>
       </div>
 
       <button id="js-appmenu-b" type="button" class="appmenu-b">
         <i class="appmenu-icon fa fa-bars" aria-hidden="true"></i>
       </button>
 
-      
+
+
 
       {{> Template.dynamic template=main}}
     </div>

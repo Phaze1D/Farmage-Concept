@@ -17,6 +17,9 @@ Template.MainMenu.onCreated ->
       console.log "sub stop #{err}"
     onReady: () ->
 
+  @autorun =>
+    @subscribe("organizations", @subCallback)
+
 
   @logout = ->
     Meteor.logout( (err) ->
@@ -24,8 +27,71 @@ Template.MainMenu.onCreated ->
       FlowRouter.go 'root' unless err?
     )
 
-  @autorun =>
-    @subscribe("organizations", @subCallback)
+  @subTitles = ( title, organ, routesB) ->
+
+    child_id = FlowRouter.getParam 'child_id'
+    parent = FlowRouter.getQueryParam('parent')
+    parent_id = FlowRouter.getQueryParam('parent_id')
+    group = FlowRouter.current().route.group.name
+
+    title.push
+      name: organ.name
+      link: "/organizations/#{organ._id}"
+
+    if parent_id? && parent
+      title.push
+        name: @capitalize parent
+        link: "/organizations/#{organ._id}/#{parent}s/#{parent_id}/show"
+
+    if routesB.showR || routesB.updateR
+      title.push
+        name: @capitalize @singular group
+        link: "/organizations/#{organ._id}/#{group}/#{child_id}/show"
+
+    if routesB.updateR
+      title.push
+        name: 'Update'
+        link: "/organizations/#{organ._id}/#{group}/#{child_id}/update"
+
+    if routesB.indexR
+      title.push
+        name: @capitalize group
+        link: "/organizations/#{organ._id}/#{group}"
+
+    if routesB.newR
+      title.push
+        name: 'New'
+        link: "/organizations/#{organ._id}/#{group}/new"
+
+
+  @organizationTitles = (title, organ, routesB) =>
+    if routesB.showR || routesB.updateR
+      title.push
+        name: organ.name
+        link: "/organizations/#{organ._id}"
+
+    if routesB.updateR
+      title.push
+        name: 'Update'
+        link: "/organizations/#{organ._id}/update"
+
+    if routesB.indexR
+      title.push
+        name: 'Organizations'
+        link: "/organizations"
+
+    if routesB.newR
+      title.push
+        name: 'New'
+        link: "/organizations/new"
+
+  @capitalize = (string) =>
+    string.charAt(0).toUpperCase() + string.slice(1)
+
+  @singular = (plural) =>
+    if plural is 'inventories' or plural is 'Inventories'
+      return plural.slice(0, -3) + 'y'
+    plural.slice(0,-1)
 
 
 Template.MainMenu.helpers
@@ -35,6 +101,31 @@ Template.MainMenu.helpers
   email: ->
     user = Meteor.users.findOne()
     user.emails[0].address if user?
+
+  titles: ->
+    FlowRouter.watchPathChange()
+    routeName = FlowRouter.getRouteName()
+
+    routesB = {}
+    routesB.newR = if /new/i.test(routeName) then true else false
+    routesB.updateR = if /update/i.test(routeName) then true else false
+    routesB.showR = if /show/i.test(routeName) then true else false
+    routesB.indexR = !(routesB.showR || routesB.updateR)
+
+    organ = Organizations.findOne FlowRouter.getParam 'organization_id'
+    group = FlowRouter.current().route.group
+    title = []
+    if organ? && group.name isnt 'organizations'
+      Template.instance().subTitles title, organ, routesB
+    else if group? && group.name is 'organizations'
+      Template.instance().organizationTitles title, organ, routesB
+    else
+      title.push
+        name: 'Home'
+        link: '/home'
+
+    title[title.length - 1].last = true
+    title
 
   links: ->
     ret = [

@@ -35,7 +35,7 @@ Template.CustomersT.onCreated ->
 
 Template.CustomersT.helpers
   organization: () ->
-    OrganizationModule.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
+    OrganizationModule.Organizations.findOne(FlowRouter.getParam 'organization_id')
 
   sView: () ->
     data = Template.instance().data
