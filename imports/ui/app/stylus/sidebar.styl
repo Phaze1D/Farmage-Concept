@@ -2,29 +2,29 @@ avatarImgWidth = 65px
 sidebarTopHeight = 170px
 appbarHeight = 64px
 
-.main
-  position: absolute;
-  width: 100%
-  height: 100%
 
 .sidebar
-  border: 1px solid bodyColor
   z-index: top
   width: sideBarWidth
   background-color: backColor
-  position: absolute
-  min-height: 100%
+  position: fixed
   top: 0
   left: 0
+  bottom: 0
+  overflow-y: auto;
+  overflow-x: hidden;
 
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1)
   transition-property: transform,left
   transition-duration: 0.2s
   transition-delay: 0.1s
 
+
+
 .sidebar-wrapper
   min-height: 100%
   padding-bottom: 96px
+  position: relative
 
 .sidebar-upper
   width: 100%
@@ -60,12 +60,17 @@ appbarHeight = 64px
 
   & li
     width: 100%
-    padding: 0 0 0 12px
+    padding: 0 12px
     margin: 10px 0 0
 
 .menu-link
   font-size: 17px
   color: fontColor
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: sideBarWidth
+  display: block;
 
   &:hover
     text-decoration: none
@@ -98,17 +103,38 @@ appbarHeight = 64px
 
 .sidebar-lower
   border-top: 1px solid bodyColor
-  height: (sidebarTopHeight/2)
+  height: 80px
   width: 100%
   background-color: backColor
   position: absolute;
   bottom: 0
 
+.showSidebar
+  transform: translateX(0);
+  @media (max-width: screen-md) {
+    box-shadow: 1px 0 13px 0px rgba(0, 0, 0, 0.5);
+  }
+
+
 .hideSidebar
-  transform: translateX(sideBarWidth * -1);
+  transform: translateX(sideBarWidth * -1)
+  box-shadow: none
+
+  @media (min-width: screen-md) {
+    transform: translateX(0)
+  }
+
+.hide
+  visibility: hidden
 
 .mask
-  position: absolute;
+  position: fixed;
+  top: 0
+  left: 0
+  @media (min-width: screen-md) {
+    display: none;
+  }
+
 
 .mask-off
   height: 0
@@ -118,35 +144,4 @@ appbarHeight = 64px
 .mask-on
   min-height: 100%
   width: 100%
-  background-color: black
-  opacity: .4
-
-.showSidebar
-  transform: translateX(0);
-
-
-.appbar
-  width: 100%
-  height: appbarHeight
-  background-color: backColor
-  padding-left: 30px
-
-.appmenu-b
-  float: left;
-  border: none
-  box-shadow: none
-  outline: none
-  height: appbarHeight
-  background-color: backColor
-  padding: 0
-
-  & i
-    font-size: 20px
-
-.appbar-title
-  display: inline-block;
-  padding-left: 22px
-  padding-top: (appbarHeight/2) - 15px
-  font-size: 20px
-  width: 90%
-  height: appbarHeight
+  background-color: rgba(0, 0, 0, 0.5);

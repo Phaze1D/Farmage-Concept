@@ -1,6 +1,12 @@
 @import "variables"
 @import "sidebar"
+@import "appbar"
 
 
 body
   background-color: bodyColor
+
+.disable-scroll
+  @media (max-width: screen-md) {
+    overflow: hidden;
+  }

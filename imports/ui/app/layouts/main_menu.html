@@ -2,9 +2,7 @@
 
   {{#if Template.subscriptionsReady }}
   <div class="root">
-
-
-    <div class="sidebar">
+    <div class="sidebar hideSidebar">
       <div class="sidebar-wrapper">
 
         <div class="sidebar-upper">
@@ -31,7 +29,7 @@
           <ul class="organ-ul">
             {{#each linkOrganizations}}
               <li>
-                <a class="menu-link" href="{{link}}">{{name}}</a>
+                <a class="js-link menu-link" href="{{link}}">{{name}}</a>
               </li>
             {{/each}}
           </ul>
@@ -52,34 +50,24 @@
     </div>
 
     <div class="main">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="appbar col-xs-12">
-            <div class="row">
-              <div class="col-xs-10">
-                <button id="js-appmenu-b" type="button" class="appmenu-b">
-                  <i class="appmenu-icon fa fa-bars" aria-hidden="true"></i>
-                </button>
-                <div class="appbar-title">
-                  {{title}}
-                </div>
-              </div>
+      <div class="appbar">
 
-              <div class="col-xs-10">
-
-              </div>
-            </div>
-          </div>
-        </div>
-        <!-- {{> Template.dynamic template=main}} -->
       </div>
+
+      <button id="js-appmenu-b" type="button" class="appmenu-b">
+        <i class="appmenu-icon fa fa-bars" aria-hidden="true"></i>
+      </button>
+
+      
+
+      {{> Template.dynamic template=main}}
     </div>
 
-  </div>
-
-  <div class="js-mask mask mask-on">
+    <div class="js-mask mask mask-off"></div>
 
   </div>
+
+
 
   {{/if}}
 

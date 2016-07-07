@@ -11,7 +11,6 @@ require './main_menu.html'
 
 
 Template.MainMenu.onCreated ->
-  @title = new ReactiveVar('Home')
 
   @subCallback =
     onStop: (err) ->
@@ -36,11 +35,6 @@ Template.MainMenu.helpers
   email: ->
     user = Meteor.users.findOne()
     user.emails[0].address if user?
-
-  title: ->
-    FlowRouter.watchPathChange()
-    group = FlowRouter.current().route.group
-    Template.instance().title.get()
 
   links: ->
     ret = [
@@ -133,13 +127,12 @@ Template.MainMenu.events
     container.addClass 'hideSidebar'
     container.one "transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd",() ->
       instance.$('.js-mask').removeClass('mask-on').addClass('mask-off')
-
-
+      $('body').removeClass 'disable-scroll'
 
   'click #js-appmenu-b': (event, instance) ->
     instance.$('.mask').removeClass('mask-off').addClass('mask-on')
     container = instance.$('.sidebar')
-    container.one "transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd",() ->
-
     container.removeClass 'hideSidebar'
     container.addClass 'showSidebar'
+    $('body').addClass 'disable-scroll'
+    container.one "transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd",() ->
