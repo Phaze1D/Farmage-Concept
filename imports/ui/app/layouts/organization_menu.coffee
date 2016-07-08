@@ -71,3 +71,6 @@ Template.OrganizationMenu.helpers
 
 
 Template.OrganizationMenu.events
+
+  'click .list-item': (event, instance) ->
+    $(event.target).addClass('list-expand')

@@ -1,5 +1,6 @@
 
 .appbar
+  z-index: top
   width: 100%
   overflow: hidden;
   height: appbarHeight
@@ -7,7 +8,7 @@
   padding-left: 30px
   position: fixed
   top: 0
-  box-shadow: 0 1px 7px 1px rgba(100,100,100,0.5)
+  box-shadow: 0 1px 7px 0px rgba(100,100,100,0.5)
 
 
 .appmenu-b
@@ -29,7 +30,7 @@
   & i
     font-size: 24px
 
-  @media (min-width: screen-lg) {
+  @media (min-width: screen-md) {
     opacity: 0
   }
 
@@ -47,7 +48,7 @@
   transition-duration: 0.2s
   transition-delay: 0.1s
 
-  @media (min-width: screen-lg) {
+  @media (min-width: screen-md) {
     left: sideBarWidth + 25
   }
 

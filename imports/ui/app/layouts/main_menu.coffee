@@ -86,6 +86,8 @@ Template.MainMenu.onCreated ->
         link: "/organizations/new"
 
   @capitalize = (string) =>
+    if string is 'ousers' or string is 'Ousers'
+      return string.charAt(1).toUpperCase() + string.slice(2)
     string.charAt(0).toUpperCase() + string.slice(1)
 
   @singular = (plural) =>

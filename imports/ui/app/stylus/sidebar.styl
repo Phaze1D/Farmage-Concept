@@ -1,6 +1,6 @@
 
 .sidebar
-  z-index: top
+  z-index: top +1
   width: sideBarWidth
   background-color: backColor
   position: fixed
@@ -8,6 +8,7 @@
   left: 0
   bottom: 0
   overflow-y: auto;
+  border: 1px solid primColor
   overflow-x: hidden;
 
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1)
@@ -107,7 +108,7 @@
 
 .showSidebar
   transform: translateX(0);
-  @media (max-width: screen-lg) {
+  @media (max-width: screen-md) {
     box-shadow: 1px 0 13px 0px rgba(0, 0, 0, 0.5);
   }
 
@@ -116,7 +117,7 @@
   transform: translateX(sideBarWidth * -1)
   box-shadow: none
 
-  @media (min-width: screen-lg) {
+  @media (min-width: screen-md) {
     transform: translateX(0)
   }
 
@@ -127,7 +128,7 @@
   position: fixed;
   top: 0
   left: 0
-  @media (min-width: screen-lg) {
+  @media (min-width: screen-md) {
     display: none;
   }
 

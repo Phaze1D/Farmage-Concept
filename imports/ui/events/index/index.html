@@ -1,16 +1,11 @@
 <template name="EventsIndex">
-  <div class="row">
+  <div class="list">
     {{#each event in events}}
-      <div class="col-xs-12 col-xs-offset-0 col-md-10 col-md-offset-1">
-        <div class="index-item">
-          <div class="">
-            <!-- {{event.for_type}} {{event.for_id}} ( Amount: {{event.amount}} ) -->
-          </div>
+      <div class="list-item">
+        <div class="">
+          <!-- {{event.for_type}} {{event.for_id}} ( Amount: {{event.amount}} ) -->
         </div>
       </div>
     {{/each}}
-
   </div>
-
-
 </template>
