@@ -50,25 +50,25 @@
     </div>
 
     <div class="main">
-      <div class="appbar">
-        <div class="appbar-title">
-          {{#each titles}}
-            <a href="{{link}}" class="appbar-link">{{name}}</a>
-            {{#unless last}}
-              <span> - </span>
-            {{/unless}}
-          {{/each}}
+      <div class="sub-main">
+        <div class="container-fluid">
+          {{> Template.dynamic template=main}}
         </div>
       </div>
+    </div>
 
+    <div class="appbar">
+      <div class="appbar-title">
+        {{#each titles}}
+          <a href="{{link}}" class="appbar-link">{{name}}</a>
+          {{#unless last}}
+            <span> - </span>
+          {{/unless}}
+        {{/each}}
+      </div>
       <button id="js-appmenu-b" type="button" class="appmenu-b">
         <i class="appmenu-icon fa fa-bars" aria-hidden="true"></i>
       </button>
-
-
-
-
-      {{> Template.dynamic template=main}}
     </div>
 
     <div class="js-mask mask mask-off"></div>

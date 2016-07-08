@@ -1,7 +1,3 @@
-avatarImgWidth = 65px
-sidebarTopHeight = 170px
-appbarHeight = 64px
-
 
 .sidebar
   z-index: top
@@ -111,7 +107,7 @@ appbarHeight = 64px
 
 .showSidebar
   transform: translateX(0);
-  @media (max-width: screen-md) {
+  @media (max-width: screen-lg) {
     box-shadow: 1px 0 13px 0px rgba(0, 0, 0, 0.5);
   }
 
@@ -120,7 +116,7 @@ appbarHeight = 64px
   transform: translateX(sideBarWidth * -1)
   box-shadow: none
 
-  @media (min-width: screen-md) {
+  @media (min-width: screen-lg) {
     transform: translateX(0)
   }
 
@@ -131,7 +127,7 @@ appbarHeight = 64px
   position: fixed;
   top: 0
   left: 0
-  @media (min-width: screen-md) {
+  @media (min-width: screen-lg) {
     display: none;
   }
 
