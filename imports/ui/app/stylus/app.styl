@@ -41,7 +41,6 @@ body
   @media (min-width: screen-md) {
     padding: 0
     box-shadow: 0 6px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.4);
-    margin: 0 50px
   }
 
 
@@ -58,6 +57,10 @@ body
   border-radius: 2px
   margin-bottom: 10px
   padding: 5px
+  margin: 0
+  left: 0
+  top: 0
+  margin-bottom: 10px
   transition: all .3s cubic-bezier(0.4, 0, 0.2, 1)
 
   @media (min-width: screen-md) {
@@ -71,9 +74,8 @@ body
 
 .list-expand
   z-index: 10
-  margin-top: 0
-  position: absolute;
-  top: 0;
-  left: 0;
+  position: fixed;
   min-height: 100%;
   display: block;
+  left: 0
+  top: 0

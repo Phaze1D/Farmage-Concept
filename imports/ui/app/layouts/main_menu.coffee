@@ -218,8 +218,9 @@ Template.MainMenu.events
     container = instance.$('.sidebar')
     container.removeClass 'showSidebar'
     container.addClass 'hideSidebar'
+    instance.$('.js-mask').addClass('mask-off')
     container.one "transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd",() ->
-      instance.$('.js-mask').removeClass('mask-on').addClass('mask-off')
+      instance.$('.js-mask').removeClass('mask-on')
       $('body').removeClass 'disable-scroll'
 
   'click #js-appmenu-b': (event, instance) ->
