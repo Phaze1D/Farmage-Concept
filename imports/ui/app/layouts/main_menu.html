@@ -19,7 +19,7 @@
           <ul class="menu-ul">
             {{#each links}}
               <li>
-                <a class="{{class}} menu-link" href="{{link}}">{{name}}</a>
+                <a class="{{class}} menu-link js-menu-link" href="{{link}}">{{name}}</a>
               </li>
             {{/each}}
           </ul>
@@ -29,17 +29,18 @@
           <ul class="organ-ul">
             {{#each linkOrganizations}}
               <li>
-                <a class="js-link menu-link" href="{{link}}">{{name}}</a>
+                <a class="menu-link js-organ-link" href="{{link}}">{{organization.name}}</a>
+                <ul class="suborgan-ul">
+                  {{#each linkOrganSub organization}}
+                    <li>
+                      <a class="js-link sub-link" href="{{link}}">{{name}}</a>
+                    </li>
+                  {{/each}}
+                </ul>
               </li>
             {{/each}}
           </ul>
-          <ul class="suborgan-ul">
-            {{#each linkOrganSub}}
-              <li>
-                <a class="js-link sub-link" href="{{link}}">{{name}}</a>
-              </li>
-            {{/each}}
-          </ul>
+
         </div>
 
         <div class="sidebar-lower">
@@ -49,7 +50,7 @@
       </div>
     </div>
 
-    <div class="main">
+    <div id="main" class="main">
       <div class="sub-main">
         {{> Template.dynamic template=main}}
       </div>
@@ -69,7 +70,7 @@
       </button>
     </div>
 
-    <div class="js-mask mask mask-off"></div>
+    <div class="js-mask-app-b mask mask-off mask-media-md"></div>
 
   </div>
 

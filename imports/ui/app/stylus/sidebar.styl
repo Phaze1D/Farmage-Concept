@@ -1,6 +1,6 @@
 
 .sidebar
-  z-index: top +1
+  z-index: ztop + 1
   width: sideBarWidth
   background-color: backColor
   position: fixed
@@ -92,7 +92,19 @@
 
 .suborgan-ul
   @extend .menu-ul
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1)
+  transition-property: height
+  transition-duration: 0.2s
+  transition-delay: 0.1s
+  height: 0
+  overflow-y: hidden;
   padding: 0 0 0 10px
+
+.suborgan-show
+  height: 350px
+
+.suborgan-hide
+  height: 0
 
 .sub-link
   @extend .menu-link
@@ -125,7 +137,7 @@
   visibility: hidden
 
 .mask
-  z-index: top
+  z-index: ztop
   position: fixed;
   top: 0
   left: 0
@@ -133,6 +145,8 @@
   transition-property: opacity
   transition-duration: 0.2s
   transition-delay: 0.1s
+
+.mask-media-md
   @media (min-width: screen-md) {
     display: none;
   }

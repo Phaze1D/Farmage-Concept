@@ -144,17 +144,13 @@ Template.MainMenu.helpers
 
   linkOrganizations: ->
     ret = []
-    param = FlowRouter.getParam('organization_id')
-    param = if param? then _id: param else {}
-    Organizations.find(param).forEach (doc) ->
+    Organizations.find().forEach (doc) ->
       ret.push
-        name: doc.name
+        organization: doc
         link: "/organizations/#{doc._id}"
     ret
 
-  linkOrganSub: ->
-    param = FlowRouter.getParam('organization_id')
-    organization = Organizations.findOne param
+  linkOrganSub: (organization) ->
     if organization?
       permission = organization.hasUser(Meteor.userId()).permission
       ret = []
@@ -214,19 +210,40 @@ Template.MainMenu.events
   'click .js-logout': (event, instance) ->
     instance.logout()
 
-  "click .js-mask, click .js-link": (event, instance) ->
-    container = instance.$('.sidebar')
-    container.removeClass 'showSidebar'
-    container.addClass 'hideSidebar'
-    instance.$('.js-mask').addClass('mask-off')
-    container.one "transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd",() ->
-      instance.$('.js-mask').removeClass('mask-on')
+  "click .js-mask-app-b, click .js-link": (event, instance) ->
+    sideBar = instance.$('.sidebar')
+    sideBar.removeClass('showSidebar')
+    sideBar.addClass('hideSidebar')
+    instance.$('.js-mask-app-b').addClass('mask-off')
+
+    sideBar.on "transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd",() ->
+      sideBar.off "transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd"
+      instance.$('.js-mask-app-b').removeClass('mask-on')
       $('body').removeClass 'disable-scroll'
 
+  'click .js-organ-link': (event, instance) ->
+    $('.suborgan-ul').each( ()->
+      $this = $(@)
+      if $this.hasClass('suborgan-show')
+        $this.removeClass('suborgan-show')
+        $this.parent().find('.menu-link').removeClass('js-link')
+    )
+    $target = $(event.target)
+    $target.parent().find('.suborgan-ul').addClass('suborgan-show')
+    $target.addClass('js-link')
+
+  'click .js-menu-link': (event, instance) ->
+    $('.suborgan-ul').each( ()->
+      $this = $(@)
+      if $this.hasClass('suborgan-show')
+        $this.removeClass('suborgan-show')
+        $this.parent().find('.menu-link').removeClass('js-link')
+    )
+
+
   'click #js-appmenu-b': (event, instance) ->
-    instance.$('.mask').removeClass('mask-off').addClass('mask-on')
-    container = instance.$('.sidebar')
-    container.removeClass 'hideSidebar'
-    container.addClass 'showSidebar'
+    instance.$('.js-mask-app-b').removeClass('mask-off').addClass('mask-on')
+    sideBar = instance.$('.sidebar')
+    sideBar.removeClass 'hideSidebar'
+    sideBar.addClass 'showSidebar'
     $('body').addClass 'disable-scroll'
-    container.one "transitionend webkitTransitionEnd oTransitionEnd MSTransitionEnd",() ->

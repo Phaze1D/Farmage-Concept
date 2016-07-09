@@ -73,4 +73,17 @@ Template.OrganizationMenu.helpers
 Template.OrganizationMenu.events
 
   'click .list-item': (event, instance) ->
-    $(event.target).addClass('list-expand')
+    listItem = $(event.target)
+    pos = listItem.position()
+    wi = listItem.outerWidth()
+    he = listItem.outerHeight()
+
+    listItem.css left: pos.left, top: pos.top, 'width': wi, 'min-height': he
+
+    set = () ->
+      listItem.css left: '', top: '', 'width': '', 'min-height': ''
+      listItem.addClass('list-expand')
+
+    Meteor.setTimeout( ->
+      set()
+    , 100)
