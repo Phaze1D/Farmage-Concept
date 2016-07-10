@@ -30,10 +30,10 @@ email
 meteorhacks:ssr
 random
 kadira:flow-router
-blaze-html-templates
 kadira:blaze-layout
 meteorhacks:subs-manager
 reactive-dict
 stylus
 twbs:bootstrap
 fortawesome:fontawesome
+peerlibrary:blaze-components
