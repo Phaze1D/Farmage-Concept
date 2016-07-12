@@ -69,7 +69,7 @@ class PaperPanel extends BlazeComponent
     drawer.attr 'opened', 'false'
     drawer.removeClass('move-foward').addClass('move-back')
     $("#paper-main").removeClass('move-back').addClass('move-foward')
-    $('#scrim').removeClass('show').addClass('hide')
+    $('#scrim').removeClass('show')
 
   moveDrawerFoward: ->
     drawer = $("#paper-drawer")
@@ -116,6 +116,7 @@ class PaperPanel extends BlazeComponent
 
   closeDrawer: (event) ->
     drawer = $("#paper-drawer")
+    $('#scrim').addClass('hide')
     drawer.velocity
       p:
         left: "-240px"

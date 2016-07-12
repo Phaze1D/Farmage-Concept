@@ -5,7 +5,7 @@
   bottom: 0
   background-color: white
   width: $drawerWidth
-  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4)
+  box-shadow: 1px 0 13px 0px rgba(0, 0, 0, 0.5);
   overflow-y: auto
   overflow-x: hidden
   z-index: 1
@@ -32,8 +32,12 @@
   left: 0
   right: 0
   bottom: 0
-  background-color: rgba(0, 0, 0, 0.3)
-  transition: opacity ease-in-out .2s
+  background-color: rgba(0, 0, 0, 0.5)
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1)
+  transition-property: opacity, visibility
+  transition-duration: 0.2s
+  transition-delay: 0.1s
+
   &.show
     visibility: visible;
     opacity: 1
