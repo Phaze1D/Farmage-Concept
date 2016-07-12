@@ -34,6 +34,6 @@ kadira:blaze-layout
 meteorhacks:subs-manager
 reactive-dict
 stylus
-twbs:bootstrap
 fortawesome:fontawesome
 peerlibrary:blaze-components
+mquandalle:jade

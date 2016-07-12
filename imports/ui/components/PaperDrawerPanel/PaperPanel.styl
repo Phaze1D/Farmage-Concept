@@ -1,0 +1,43 @@
+.paper-drawer
+  position: fixed
+  left: 0
+  top: 0
+  bottom: 0
+  background-color: white
+  width: $drawerWidth
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4)
+  overflow-y: auto
+  overflow-x: hidden
+  z-index: 1
+
+
+.paper-main
+  z-index: 0
+  position: absolute;
+  right: 0
+  left: 0
+  top: 0
+  bottom: 0
+  background-color: lightgrey
+
+.move-foward
+  z-index: 1
+
+.move-back
+  z-index: 0
+
+#scrim
+  position: absolute
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  background-color: rgba(0, 0, 0, 0.3)
+  transition: opacity ease-in-out .2s
+  &.show
+    visibility: visible;
+    opacity: 1
+
+  &.hide
+    visibility: hidden;
+    opacity: 0
