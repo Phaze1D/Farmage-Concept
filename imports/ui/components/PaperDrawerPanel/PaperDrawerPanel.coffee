@@ -1,15 +1,13 @@
 { ReactiveVar } = require 'meteor/reactive-var'
 { ReactiveDict } = require 'meteor/reactive-dict'
 
-require 'velocity-animate'
-
-require './PaperPanel.tpl.jade'
+require './PaperDrawerPanel.tpl.jade'
 require './PaperDrawer.tpl.jade'
-require './PaperMain.tpl.jade'
+require './PaperDrawerMain.tpl.jade'
 
 
-class PaperPanel extends BlazeComponent
-  @register "PaperPanel"
+class PaperDrawerPanel extends BlazeComponent
+  @register "PaperDrawerPanel"
 
   constructor: (args) ->
     super
@@ -39,7 +37,6 @@ class PaperPanel extends BlazeComponent
     @scrimRemoveEvents()
     @mainRemoveEvents()
 
-
   scrimRemoveEvents: ->
     scrim = document.getElementById('scrim')
     scrim.removeEventListener 'touchmove', @scrimHandleMove
@@ -53,13 +50,13 @@ class PaperPanel extends BlazeComponent
     scrim.addEventListener 'touchend', @scrimHandleEnd
 
   mainRemoveEvents: ->
-    main = document.getElementById('paper-main')
+    main = document.getElementById('touch-div')
     main.removeEventListener 'touchstart', @mainHandleStart
     main.removeEventListener 'touchmove', @mainHandleMove
     main.removeEventListener 'touchend', @mainHandleEnd
 
   mainAddEvents: ->
-    main = document.getElementById('paper-main')
+    main = document.getElementById('touch-div')
     main.addEventListener 'touchstart', @mainHandleStart
     main.addEventListener 'touchmove', @mainHandleMove
     main.addEventListener 'touchend', @mainHandleEnd
@@ -68,20 +65,21 @@ class PaperPanel extends BlazeComponent
     drawer = $("#paper-drawer")
     drawer.attr 'opened', 'false'
     drawer.removeClass('move-foward').addClass('move-back')
-    $("#paper-main").removeClass('move-back').addClass('move-foward')
-    $('#scrim').removeClass('show')
+    $("#paper-drawer-main").removeClass('move-back').addClass('move-foward')
+    $('#scrim').removeClass('show').addClass('hide')
 
   moveDrawerFoward: ->
     drawer = $("#paper-drawer")
     drawer.attr 'opened', 'true'
     drawer.removeClass('move-back').addClass('move-foward')
-    $("#paper-main").removeClass('move-foward').addClass('move-back')
+    $("#paper-drawer-main").removeClass('move-foward').addClass('move-back')
     $('#scrim').addClass('show').removeClass('hide') if @isWide.get()? && !@isWide.get()
 
   handleResize: ->
 
     if window.innerWidth < 1024 && (!@isWide.get()? || @isWide.get())
-      $("#paper-main").velocity
+      $("#paper-drawer").removeClass('elevation-0')
+      $("#paper-drawer-main").velocity
         p:
           left: "0px"
         o:
@@ -92,7 +90,8 @@ class PaperPanel extends BlazeComponent
 
     if window.innerWidth >= 1024 && (!@isWide.get()? || !@isWide.get())
       $('#scrim').removeClass('show').addClass('hide')
-      $("#paper-main").velocity
+      $("#paper-drawer").addClass('elevation-0')
+      $("#paper-drawer-main").velocity
         p:
           left: "240px"
         o:
