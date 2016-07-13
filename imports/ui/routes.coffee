@@ -6,6 +6,7 @@ require 'velocity-animate'
 
 require './app.jade'
 require './components/PaperDrawerPanel/PaperDrawerPanel.coffee'
+require './components/PaperHeaderPanel/PaperHeaderPanel.coffee'
 
 FlowRouter.route '/',
   name: 'root'
