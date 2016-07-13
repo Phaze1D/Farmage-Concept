@@ -9,11 +9,12 @@ class PaperHeaderPanel extends BlazeComponent
 
   constructor: (args) ->
     @lastY = 0
-    @fix = 0
+    @yChange = 1
     @ticking = false
-    @crossed = false
     @down = false
-    @startTime = 0
+    @goingUp = false
+    @crossed = false
+
 
     @throttle = @throttle.bind(@)
 
@@ -32,33 +33,43 @@ class PaperHeaderPanel extends BlazeComponent
 
   scrolling: (yPosition) ->
     mainY = yPosition
-    if yPosition > 212
-      mainY = 212
-      @crossed = true
-
 
     if @lastY < yPosition
-      @lastY = yPosition
-
-    if yPosition > 212 && @lastY > yPosition && @fix is 0
-      @fix = yPosition
-      @startTime = Date.now()
-
-    if yPosition > 212 && yPosition + 100 < @fix
-      duration = Date.now() - @startTime
-      @fix = 0
-      @lastY = yPosition
-      @moveDown(duration)
+      if @goingUp
+        @yChange = yPosition + 100
+        @startTime = Date.now()
+      @goingUp = false
+    else
+      unless @goingUp
+        @startTime = Date.now()
+        @yChange = (yPosition - 100)
+      @goingUp =  true
 
 
+    if yPosition > 212 + 148
+      if @down && !@goingUp && yPosition > @yChange
+        duration = Date.now() - @startTime
+        @moveUp duration #move up if going down
+
+      if !@down && @goingUp && yPosition < @yChange
+        duration = Date.now() - @startTime
+        @moveDown duration #move down if going up
 
 
     smallY = if yPosition > 148 then 148 else yPosition
     $('#header-small').css transform: "translate3d(0px, #{smallY}px, 0px)"
 
-    if yPosition < 212
-      $('#paper-header').css transform: "translate3d(0px, -#{mainY}px, 0px)"
-      @crossed = false
+    if yPosition < 212 || @lastY < 212
+      header = $('#paper-header')
+      if @goingUp && yPosition > 148 && @down
+        header.css transform: "translate3d(0px, -148px, 0px)"
+      else
+        header.addClass('elevation-0').removeClass('elevation-1')
+        mainY = if mainY > 212 then 212 else mainY
+        header.css transform: "translate3d(0px, -#{mainY}px, 0px)"
+        @down = false
+
+    @lastY = yPosition
 
 
 
@@ -66,10 +77,23 @@ class PaperHeaderPanel extends BlazeComponent
     unless @down
       duration = if duration > 200 then 200 else duration
       @down = true
-      $('#paper-header').velocity
+      header = $('#paper-header')
+      header.addClass('elevation-1').removeClass('elevation-0')
+      header.velocity
         p:
           translateY: ["-148px", "-212px"]
         o:
           duration: duration
 
   moveUp: (duration) ->
+    if @down
+      duration = if duration > 200 then 200 else duration
+      @down = false
+      header = $('#paper-header')
+      header.velocity
+        p:
+          translateY: "-212px"
+        o:
+          duration: duration
+          complete: ->
+            header.addClass('elevation-0').removeClass('elevation-1')
