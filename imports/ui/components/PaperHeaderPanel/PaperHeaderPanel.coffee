@@ -57,7 +57,8 @@ class PaperHeaderPanel extends BlazeComponent
 
 
     smallY = if yPosition > 148 then 148 else yPosition
-    $('#header-small').css transform: "translate3d(0px, #{smallY}px, 0px)"
+    if smallY < 149
+      $('#header-small').css transform: "translate3d(0px, #{smallY}px, 0px)"
 
     if yPosition < 212 || @lastY < 212
       header = $('#paper-header')
@@ -70,8 +71,6 @@ class PaperHeaderPanel extends BlazeComponent
         @down = false
 
     @lastY = yPosition
-
-
 
   moveDown: (duration) ->
     unless @down
