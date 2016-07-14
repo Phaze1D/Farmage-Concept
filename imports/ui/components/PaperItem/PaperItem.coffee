@@ -11,7 +11,7 @@ class PaperItem extends BlazeComponent
   toggleItem: (event) ->
     PI = @
     $back = $(event.target).closest('.paper-item').find('.item-back')
-    @focus $back
+    @focus($back, event)
     $('.item-back').each ->
       $this = $(@)
       if !($this.is($back)) && $this.css('right') is '0px'
@@ -19,18 +19,32 @@ class PaperItem extends BlazeComponent
 
 
 
-  focus: ($target) ->
+  focus: ($target, event) ->
     if @instant
-      $target.css right: '0'
+      $target.css right: '0', left: '0'
     else
-      $target.velocity({right: '0'}, {duration: 150, easing: "ease-in-out"})
+      left = event.offsetX
+      right = event.target.clientWidth - left
+      $target.velocity(
+        p:
+          right: right
+          left: left
+        o:
+          duration: 0
+          easing: "ease-in-out"
+      ).velocity(
+        p:
+          right: 0
+          left: 0
+        o:
+          duration: 150
+          easing: "ease-in-out"
+      )
 
 
   unfocus: ($target) ->
-    if @instant
-      $target.css right: '100%'
-    else
-      $target.velocity({right: '100%'}, {duration: 150, easing: "ease-in-out"})
+    $target.css right: '', left: ''
+
 
 
   events: ->
