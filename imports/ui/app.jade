@@ -6,11 +6,35 @@ template(name="root")
 
   +PaperDrawerPanel
     +PaperDrawer
-      +PaperItem
-        | Menu Item
-      +PaperItem
-        | Menu Item
-    
+      +PaperMenu
+        .menu-item
+          +PaperItem
+            | Link
+          .sub-menu
+            .menu-item
+              +PaperItem classes="sub-test" animationType=2 focusColor='skyblue'
+                | Sub Menu
+            .menu-item
+              +PaperItem classes="sub-test" animationType=2 focusColor='skyblue'
+                | Sub Menu
+            .menu-item
+              +PaperItem classes="sub-test"
+                | Sub Menu 
+              .sub-menu
+                .menu-item
+                  +PaperItem classes="sub-test" animationType=2 focusColor='skyblue'
+                    | Sub Menu
+                .menu-item
+                  +PaperItem classes="sub-test" animationType=2 focusColor='skyblue'
+                    | Sub Menu
+                .menu-item
+                  +PaperItem classes="sub-test" animationType=2 focusColor='skyblue'
+                    | Sub Menu   
+              
+        .menu-item
+          +PaperItem
+            | Menu Item
+        
         
     
     +PaperDrawerMain
@@ -19,7 +43,7 @@ template(name="root")
           
 
         +PaperHeaderMain
-            
+            div(class="elevation-0" style="width: 400px; margin: auto; height: 4000px; background-color: white")
           
           
     

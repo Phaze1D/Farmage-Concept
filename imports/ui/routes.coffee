@@ -9,6 +9,7 @@ require './components/PaperDrawerPanel/PaperDrawerPanel.coffee'
 require './components/PaperHeaderPanel/PaperHeaderPanel.coffee'
 require './components/PaperRipple/PaperRipple.coffee'
 require './components/PaperItem/PaperItem.coffee'
+require './components/PaperMenu/PaperMenu.coffee'
 
 FlowRouter.route '/',
   name: 'root'
