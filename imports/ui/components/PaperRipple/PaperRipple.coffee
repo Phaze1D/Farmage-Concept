@@ -4,11 +4,18 @@ require './PaperRipple.tpl.jade'
 class PaperRipple extends BlazeComponent
   @register "PaperRipple"
 
+  constructor: (args) ->
+    super
 
   onCreated: ->
     super
     @mouseD = false
     @fill = @data().fill
+    @classes = @data().classes
+    @touchDuration = 1000
+
+
+
 
   rippleAnimation: (event) ->
     @mouseD = true
@@ -22,7 +29,6 @@ class PaperRipple extends BlazeComponent
     deltaY       = (h / 2) + offsetY
     scale_ratio  = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2))
 
-    console.log @fill
     $(event.target).find('.ripple-obj').css(fill: @fill)
     ripple = $(event.target).find('.js-ripple')
     ripple.velocity 'stop'
@@ -38,28 +44,13 @@ class PaperRipple extends BlazeComponent
     ).velocity(
       p:
         scale: scale_ratio
+        opacity: 0
       o:
         duration: 300
         easing: "easeOutSine"
     )
 
 
-  opacityAnimation: (event) ->
-    if @mouseD
-      @mouseD = false
-      ripple = $(event.target).find('.js-ripple')
-      ripple.velocity(
-        p:
-          opacity: [0, .8]
-        o:
-          duration: 400
-          easing: "easeOutSine"
-          queue: false
-      )
-
-
   events: ->
     super.concat
-      'mousedown .js-ripple-action': @rippleAnimation
-      'mouseup .js-ripple-action': @opacityAnimation
-      'mouseout .js-ripple-action': @opacityAnimation
+      'click .js-ripple-action': @rippleAnimation
