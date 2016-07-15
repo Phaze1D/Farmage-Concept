@@ -2,6 +2,7 @@
 { BlazeLayout } = require 'meteor/kadira:blaze-layout'
 
 require 'velocity-animate'
+require 'jquery-touch-events'
 
 
 require './app.jade'

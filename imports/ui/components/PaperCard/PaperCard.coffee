@@ -6,10 +6,16 @@ class PaperCard extends BlazeComponent
   constructor: (args) ->
 
   onCreated: ->
+    super
     @elevation = @data().elevation
+
+  onRendered: ->
+    super
+
 
   expand: (event) ->
     $wind = $(window)
+    console.log 'ecpan'
     pacard = $(event.target).closest('.paper-card')
     top = pacard.offset().top - $wind.scrollTop();
     left = pacard.offset().left - $wind.scrollLeft();
