@@ -74,7 +74,7 @@ class PaperHeaderPanel extends BlazeComponent
 
   moveDown: (duration) ->
     unless @down
-      duration = if duration > 200 then 200 else duration
+      duration = if duration > 250 then 250 else duration
       @down = true
       header = $('#paper-header')
       header.addClass('elevation-2').removeClass('elevation-0')
@@ -83,10 +83,12 @@ class PaperHeaderPanel extends BlazeComponent
           translateY: ["-148px", "-212px"]
         o:
           duration: duration
+          easing: 'linear'
+
 
   moveUp: (duration) ->
     if @down
-      duration = if duration > 200 then 200 else duration
+      duration = if duration > 250 then 250 else duration
       @down = false
       header = $('#paper-header')
       header.velocity
@@ -94,5 +96,6 @@ class PaperHeaderPanel extends BlazeComponent
           translateY: "-212px"
         o:
           duration: duration
+          easing: 'linear'
           complete: ->
             header.addClass('elevation-0').removeClass('elevation-2')

@@ -12,6 +12,7 @@ require './components/PaperRipple/PaperRipple.coffee'
 require './components/PaperItem/PaperItem.coffee'
 require './components/PaperMenu/PaperMenu.coffee'
 require './components/PaperCard/PaperCard.coffee'
+require './components/PaperButton/PaperButton.coffee'
 
 FlowRouter.route '/',
   name: 'root'

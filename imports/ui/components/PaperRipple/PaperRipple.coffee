@@ -15,12 +15,18 @@ class PaperRipple extends BlazeComponent
     @touchDuration = 1000
 
 
+  onRendered: ->
+    super
 
 
-  rippleAnimation: (event) ->
+
+  rippleAnimation: (event, eoffsetX, eoffsetY) ->
+    eoffsetX = if event.offsetX? then event.offsetX else eoffsetX
+    eoffsetY = if event.offsetY? then event.offsetY else eoffsetY
+
     @mouseD = true
-    x            = event.offsetX
-    y            = event.offsetY
+    x            = eoffsetX
+    y            = eoffsetY
     w            = event.target.offsetWidth
     h            = event.target.offsetHeight
     offsetX      = Math.abs( (w / 2) - x )
@@ -44,13 +50,27 @@ class PaperRipple extends BlazeComponent
     ).velocity(
       p:
         scale: scale_ratio
-        opacity: 0
       o:
-        duration: 300
+        duration: 250
         easing: "easeOutSine"
     )
 
 
+  opacityAnimation: (event) ->
+    if @mouseD
+      @mouseD = false
+      ripple = $(event.target).find('.js-ripple')
+      ripple.velocity(
+        p:
+          opacity: [0, .8]
+        o:
+          duration: 250
+          easing: "easeOutSine"
+      )
+
+
   events: ->
     super.concat
-      'click .js-ripple-action': @rippleAnimation
+      'mousedown .js-ripple-action': @rippleAnimation
+      'mouseup .js-ripple-action': @opacityAnimation
+      'mouseout .js-ripple-action': @opacityAnimation

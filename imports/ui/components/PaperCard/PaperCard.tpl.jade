@@ -1,6 +1,10 @@
 paper-card
+  div(class="card-ghost" style='display: none') 
   div(class="elevation-{{elevation}} paper-card")
-    +Template.contentBlock
+    +PaperRipple fill='#eeeeee' classes='card-ripple'
+    .card-content
+      +Template.contentBlock
     
-    +PaperRipple fill="lightgrey"
+   
+
   
