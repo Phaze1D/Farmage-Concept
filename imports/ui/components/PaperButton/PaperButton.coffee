@@ -9,14 +9,12 @@ class PaperButton extends BlazeComponent
 
   onCreated: ->
     super
-    @classes = @data().classes
-    @rippleOn = if @data().rippleOn? then @data().rippleOn else true
     @raise = @data().raise
-    @classes += ' elevation-1' if @raise
+    @data().classes += ' elevation-1' if @raise
 
 
   onRendered: ->
-    
+
   down: (event) ->
     target = $(event.target)
     target = target.closest('button.paper-button') unless target.is('button.paper-button')

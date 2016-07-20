@@ -14,8 +14,7 @@ class PaperHeaderPanel extends BlazeComponent
     @down = false
     @goingUp = false
     @crossed = false
-
-
+    
     @throttle = @throttle.bind(@)
 
   onRendered: ->

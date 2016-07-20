@@ -3,7 +3,7 @@
 
 require 'velocity-animate'
 require 'jquery-touch-events'
-
+require 'textarea-autosize'
 
 require './app.jade'
 require './components/PaperDrawerPanel/PaperDrawerPanel.coffee'
@@ -13,6 +13,7 @@ require './components/PaperItem/PaperItem.coffee'
 require './components/PaperMenu/PaperMenu.coffee'
 require './components/PaperCard/PaperCard.coffee'
 require './components/PaperButton/PaperButton.coffee'
+require './components/PaperInput/PaperInput.coffee'
 
 FlowRouter.route '/',
   name: 'root'

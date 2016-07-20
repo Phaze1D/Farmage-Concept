@@ -1,7 +1,8 @@
-button(class="paper-button {{classes}}")
-  +if rippleOn 
+button(class="paper-button #{classes}")
+  if rippleOn 
     +PaperRipple fill='lightgrey'
     
   +Template.contentBlock
+  | #{testing}
   
   

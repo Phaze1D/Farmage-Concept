@@ -10,8 +10,6 @@ class PaperRipple extends BlazeComponent
   onCreated: ->
     super
     @mouseD = false
-    @fill = @data().fill
-    @classes = @data().classes
     @touchDuration = 1000
 
 
@@ -35,7 +33,7 @@ class PaperRipple extends BlazeComponent
     deltaY       = (h / 2) + offsetY
     scale_ratio  = Math.sqrt(Math.pow(deltaX, 2) + Math.pow(deltaY, 2))
 
-    $(event.target).find('.ripple-obj').css(fill: @fill)
+    $(event.target).find('.ripple-obj').css(fill: @data().fill)
     ripple = $(event.target).find('.js-ripple')
     ripple.velocity 'stop'
     ripple.velocity(

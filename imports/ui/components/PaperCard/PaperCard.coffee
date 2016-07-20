@@ -7,12 +7,12 @@ class PaperCard extends BlazeComponent
 
   onCreated: ->
     super
-    @elevation = @data().elevation
     @expanded = false
 
 
   onRendered: ->
     super
+
 
   mouseDown: (event) ->
     pacard = $(event.target).closest('.paper-card')
@@ -28,17 +28,20 @@ class PaperCard extends BlazeComponent
   expand: (event) ->
 
     unless @expanded
+      height = $(@find('.paper-card')).height()
+      $(@find('.card-ghost')).css height: height
       @expanded = true
-      $wind = $(window)
       pacard = $(event.target).closest('.paper-card')
-      top = pacard.offset().top - $wind.scrollTop();
-      left = pacard.offset().left - $wind.scrollLeft();
+      top = pacard.position().top
+      left = pacard.position().left
       width = pacard.width()
       $('#paper-drawer-main').css overflow: 'hidden'
 
+      $wind = $('#paper-drawer-main')
+      console.log $wind.scrollTop()
 
       pacard.css
-        position: 'fixed'
+        position: 'absolute'
         'z-index': 1
         top: "#{top}px"
         left: "#{left}px"
@@ -47,13 +50,13 @@ class PaperCard extends BlazeComponent
       pacard.closest('paper-card').find('.card-ghost').css display: 'block'
 
       Meteor.setTimeout( ->
-        pacard.addClass('card-expanded')
         pacard.velocity
           p:
             left: 0
-            top: 0
+            top: $wind.scrollTop()
             width: '100%'
-            height: '100%'
+            height: '100vh'
+            'border-radius': 0
           o:
             duration: 250
             easing: 'ease-in-out'
@@ -73,7 +76,6 @@ class PaperCard extends BlazeComponent
       roffsetY = target.position().top  + event.offsetY + parseInt target.css('margin-top')
       pacard.find('.card-ripple:first').trigger('click', [roffsetX, roffsetY])
       Meteor.setTimeout( =>
-        pacard.removeClass('card-expanded')
         pacard.velocity "reverse",
           complete: (elements) =>
             @expanded = false

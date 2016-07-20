@@ -49,10 +49,23 @@ template(name="root")
             +PaperButton classes='card-shrink-action' rippleOn=false raise=true
               | Shrink me
               
-            +PaperButton classes='raise' raise=false
+            +PaperButton raise=false testing='nonono' rippleOn=true
               | Ripple
+            
+            div(style='display: inline-block; width: 100%; padding: 0 20px; box-sizing: border-box;')
+              +PaperInput type='text' label='First Test' focusColor='#3f51b5' value="vadsaf"
+            
+            br
+            br
+            div(style='display: inline-block; width: 100%; padding: 0 20px; box-sizing: border-box;')
+              +PaperInput type='number' label='total' focusColor='#3f51b5' max=12 min=0 value=4
+            
+            br
+            br
+            div(style='display: inline-block; width: 100%; padding: 0 20px; box-sizing: border-box;')
+              +PaperInput type='textarea' label='textarea' focusColor='#3f51b5' showCount=true charMax='120'
 
-            | A
+            
           +PaperCard elevation=1
             +PaperButton classes='card-expand-action' rippleOn=false
               | Push Me

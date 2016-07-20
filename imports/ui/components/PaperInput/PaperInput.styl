@@ -1,0 +1,116 @@
+.paper-input
+  display: block;
+  padding: 8px 0
+
+  &[disabled]
+    opacity: .3
+
+.floated-label-container
+  -webkit-font-smoothing: antialiased;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.011em;
+  line-height: 20px;
+
+.input-container
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+
+.input-label
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  width: 100%;
+  font: inherit;
+  color: #737373;
+  transition: transform 0.2s, width 0.2s;
+  transform-origin: left top;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-family: 'Roboto', 'Noto', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+
+  &.label-floating
+    transform: translateY(-75%) scale(0.75);
+    width: 133%;
+
+  &.label-hidden
+    visibility: hidden;
+
+
+.pinput
+  position: relative;
+  outline: none;
+  box-shadow: none;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  background: transparent;
+  border: none;
+  color: #212121;
+  -webkit-appearance: none;
+  text-align: inherit;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  font-weight: 400;
+  line-height: 24px;
+
+.pinput-textarea
+  resize: none;
+
+.underline-container
+  position: relative;
+
+.underline-unfocused
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #737373;
+  height: 1px;
+
+  &[disabled]
+    border-bottom: 1px dashed;
+    border-color: #737373;
+    background: transparent;
+
+.underline-focused
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  transform-origin: center center;
+  transform: scale3d(0,1,1);
+
+  &.highlight
+    transform: none
+    transition: transform 0.25s
+
+
+.add-on-content
+  position: relative;
+
+.char-count
+  display: inline-block;
+  float: right;
+  -webkit-font-smoothing: antialiased;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.011em;
+  line-height: 20px;

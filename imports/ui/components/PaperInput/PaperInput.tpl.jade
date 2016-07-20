@@ -1,0 +1,35 @@
+paper-input(class="paper-input #{classes}" disabled=disabled)
+  div(class='floated-label-container')  &nbsp;
+  div(class='input-container')
+    label(class="input-label #{float.get}" style="color: #{colorL.get}")=label
+    if textarea
+      textarea(type=type
+                name=name
+                data-id="textarea"
+                class="pinput-textarea pinput"
+                disabled=disabled
+                rows="1"
+                placeholder=placeholder
+                readonly=readonly)= value 
+    else
+      input(type=type
+            name=name
+            data-id="input"
+            class="pinput"
+            value=value
+            disabled=disabled
+            placeholder=placeholder
+            readonly=readonly
+            max=max
+            min=min
+            step=step)
+  div(class='underline-container')
+    div(class='underline-unfocused' disabled=disabled)
+    div(class='underline-focused #{underline.get}' style="background: #{focusColor}")
+  
+  div(class='add-on-content')
+    if showCount
+      div(class='char-count' style="color: #{color.get}")
+        span
+          | #{charCount.get}
+  

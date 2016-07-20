@@ -1,28 +1,19 @@
+paper-card
+  display: block;
 
 .paper-card
   position: relative;
   border-radius: 3px
   margin: auto
   width: 100%
-  height: 200px
+  min-height: 200px
   background-color: white
   margin-bottom: 15px
   overflow: hidden;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
   box-sizing: border-box;
-  transform-style: preserve-3d
-  transition-duration: 0.25s
-  transition-property: padding-left
-  transition-timing-function: ease-in-out
 
 .card-ripple
   z-index: -1
-
-.card-expanded
-  @media (min-width: 1024px) {
-    padding-left: 240px
-  }
 
 .card-content
   z-index: 1
@@ -33,3 +24,4 @@
 .card-ghost
   @extend .paper-card
   background-color: transparent
+  height: 100%
