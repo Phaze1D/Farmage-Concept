@@ -38,7 +38,6 @@ class PaperCard extends BlazeComponent
       $('#paper-drawer-main').css overflow: 'hidden'
 
       $wind = $('#paper-drawer-main')
-      console.log $wind.scrollTop()
 
       pacard.css
         position: 'absolute'
@@ -46,7 +45,7 @@ class PaperCard extends BlazeComponent
         top: "#{top}px"
         left: "#{left}px"
         width: "#{width}px"
-        overflow: 'scroll'
+        'overflow-y': 'scroll'
       pacard.closest('paper-card').find('.card-ghost').css display: 'block'
 
       Meteor.setTimeout( ->
@@ -68,6 +67,7 @@ class PaperCard extends BlazeComponent
 
   shrink: (event) ->
     if @expanded
+      @expanded = false
       $('.paper-card').css visibility: 'visible'
       $('#paper-drawer-main').css overflow: 'auto'
       pacard = $(event.target).closest('.paper-card')
@@ -78,7 +78,6 @@ class PaperCard extends BlazeComponent
       Meteor.setTimeout( =>
         pacard.velocity "reverse",
           complete: (elements) =>
-            @expanded = false
             pacard.closest('paper-card').find('.card-ghost').css display: 'none'
             pacard.css
               position: ''

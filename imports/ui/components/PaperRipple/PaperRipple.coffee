@@ -62,8 +62,9 @@ class PaperRipple extends BlazeComponent
         p:
           opacity: [0, .8]
         o:
-          duration: 250
+          duration: 450
           easing: "easeOutSine"
+          queue: false
       )
 
 
