@@ -34,8 +34,7 @@ class PaperDrawerPanel extends BlazeComponent
   onDestroyed: ->
     super
     window.removeEventListener 'resize', @handleResize
-    @scrimRemoveEvents()
-    @mainRemoveEvents()
+
 
   scrimRemoveEvents: ->
     scrim = document.getElementById('scrim')
@@ -102,8 +101,7 @@ class PaperDrawerPanel extends BlazeComponent
 
   openDrawer: (event) ->
     @moveDrawerFoward()
-    drawer = $("#paper-drawer")
-    drawer.velocity
+    $("#paper-drawer").velocity
       p:
         left: "0px"
       o:
@@ -114,9 +112,8 @@ class PaperDrawerPanel extends BlazeComponent
           @mainRemoveEvents()
 
   closeDrawer: (event) ->
-    drawer = $("#paper-drawer")
     $('#scrim').addClass('hide')
-    drawer.velocity
+    $("#paper-drawer").velocity
       p:
         left: "-240px"
       o:

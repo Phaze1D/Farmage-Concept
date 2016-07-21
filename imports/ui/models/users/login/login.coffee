@@ -10,6 +10,9 @@ class Login extends BlazeComponent
     @state = new ReactiveDict
     @loginState()
 
+  onRendered: ->
+    @enterAnimation()
+
 
   onStateChange: (event) ->
     if @state.get 'log'
@@ -51,6 +54,7 @@ class Login extends BlazeComponent
     profile =
       first_name: @find('[name=first_name]').value
       last_name: @find('[name=last_name]').value
+
     @signup email, password, profile
 
   login: (email, password) ->
@@ -58,13 +62,37 @@ class Login extends BlazeComponent
       console.log err
       unless err?
         Meteor.logoutOtherClients( (er) =>
-          FlowRouter.go 'home' unless er?
+          @exitAnimation() unless er?
         )
 
   signup: (email, password, profile) ->
     Accounts.createUser {email, password, profile}, (err) =>
       console.log err
-      FlowRouter.go 'home' unless err?
+      @exitAnimation() unless err?
+
+
+  exitAnimation:  ->
+    logindiv = $(@find('.login-div'))
+    logindiv.velocity
+      p:
+        opacity: 0
+      o:
+        duration: 350
+        easing: 'ease-in-out'
+        complete: (elements) ->
+          FlowRouter.go 'home'
+
+  enterAnimation: ->
+    logindiv = $(@find('.login-div'))
+    logindiv.velocity
+      p:
+        opacity: 1
+      o:
+        duration: 350
+        easing: 'ease-in-out'
+
+
+
 
 
   events: ->

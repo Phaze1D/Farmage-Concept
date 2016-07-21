@@ -8,6 +8,7 @@ require 'textarea-autosize'
 require './app.coffee'
 require './components/components.coffee'
 require './models/models.coffee'
+require './layouts/home.coffee'
 
 loggedIn = (context, redirect) ->
   if Meteor.userId()?
@@ -36,4 +37,9 @@ FlowRouter.route '/login',
 FlowRouter.route '/home',
   name: 'home'
   action: () ->
-    BlazeLayout.render 'MainMenu'
+    BlazeLayout.render 'App', main: 'Home'
+
+FlowRouter.route '/home2',
+  name: 'home2'
+  action: () ->
+    BlazeLayout.render 'App', main: 'Home'

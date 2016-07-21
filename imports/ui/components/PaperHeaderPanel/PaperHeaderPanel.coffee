@@ -22,6 +22,19 @@ class PaperHeaderPanel extends BlazeComponent
     main = document.getElementById('paper-drawer-main')
     main.addEventListener('scroll', @throttle)
 
+    if @data().enter
+      @enterAnimation()
+
+  enterAnimation: ->
+    $('#paper-header').velocity
+      p:
+        top: "0"
+      o:
+        duration: 250
+
+
+
+
   throttle: (e) ->
     unless @ticking
       window.requestAnimationFrame( () =>
