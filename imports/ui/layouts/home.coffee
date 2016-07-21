@@ -1,6 +1,7 @@
+
+OrganizationModule = require '../../api/collections/organizations/organizations.coffee'
+
 require './home.jade'
-
-
 
 class Home extends BlazeComponent
   @register 'Home'
@@ -10,7 +11,7 @@ class Home extends BlazeComponent
   onCreated: ->
     @enterAnimation = new ReactiveVar(true)
     @autorun =>
-      @subscribe "organizations", 
+      @subscribe "organizations",
         onStop: (err) ->
           console.log "sub stop #{err}"
         onReady: ->
@@ -23,9 +24,14 @@ class Home extends BlazeComponent
     user.emails[0].address if user?
 
 
+  organizationClasses: ->
+    if OrganizationModule.Organizations.find().count() is 0
+      return "drawer-item toggle-drawer"
+    else
+      return "drawer-item"
+
   onLogout: (event) ->
     @exitAnimation()
-
 
   exitAnimation: () ->
     $('#scrim').addClass('hide')
