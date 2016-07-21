@@ -14,7 +14,7 @@ class PaperHeaderPanel extends BlazeComponent
     @down = false
     @goingUp = false
     @crossed = false
-    
+
     @throttle = @throttle.bind(@)
 
   onRendered: ->
@@ -47,12 +47,10 @@ class PaperHeaderPanel extends BlazeComponent
 
     if yPosition > 212 + 148
       if @down && !@goingUp && yPosition > @yChange
-        duration = Date.now() - @startTime
-        @moveUp duration #move up if going down
+        @moveUp Date.now() - @startTime
 
       if !@down && @goingUp && yPosition < @yChange
-        duration = Date.now() - @startTime
-        @moveDown duration #move down if going up
+        @moveDown Date.now() - @startTime #move down if going up
 
 
     smallY = if yPosition > 148 then 148 else yPosition

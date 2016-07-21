@@ -34,9 +34,8 @@ class PaperInput extends BlazeComponent
 
 
   onInput: (event) ->
-    empty = event.target.value.length <= 0
     @charCount.set("#{event.target.value.length}/#{@data().charMax}")
-    if empty
+    if event.target.value.length <= 0
       @float.set ''
       @colorL.set ''
     else if @data().labelFloat == 'false'

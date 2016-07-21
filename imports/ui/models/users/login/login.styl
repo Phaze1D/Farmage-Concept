@@ -1,0 +1,68 @@
+
+.parent
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  top: 0
+  left: 0
+  width: 100%
+  min-height: 100%
+  background-color: #eee
+
+.login-div
+  align-self: center;
+  width: 350px
+
+  @media (max-width: 425px) {
+    height: 100vh
+    min-width: 100%
+  }
+
+.top-area
+  height: 130px
+  width: 100%
+  border-bottom: 1px solid #eee
+
+.middle-area
+  padding: 15px 30px 20px
+
+.comp-area
+  margin-top: 5px
+
+.forgot
+  font-size: 11px
+  width: 100%
+  text-align: right
+  transition: opacity .25s ease-in-out
+
+  & a
+    text-decoration: none
+    &:visited
+      color: blue
+
+.login-button
+  width: 100%
+  text-align: center;
+  margin-top: 30px
+  padding: 6px 0
+  font-size: 16px
+  background-color: #eee
+  font-weight: 300
+
+
+.option-2
+  font-size: 11px
+  width: 100%
+  text-align: center;
+  margin-top: 10px
+
+  & a
+    text-decoration: none
+
+    &:visited
+      color: blue
+
+.signup-extra
+  height: 0
+  overflow: hidden;
+  transition: height .25s ease-in-out

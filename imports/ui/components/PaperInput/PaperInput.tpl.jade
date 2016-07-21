@@ -10,6 +10,7 @@ paper-input(class="paper-input #{classes}" disabled=disabled)
                 disabled=disabled
                 rows="1"
                 placeholder=placeholder
+                autocomplete='off'
                 readonly=readonly)= value 
     else
       input(type=type
@@ -22,7 +23,8 @@ paper-input(class="paper-input #{classes}" disabled=disabled)
             readonly=readonly
             max=max
             min=min
-            step=step)
+            autocomplete='off'
+            step=step)/
   div(class='underline-container')
     div(class='underline-unfocused' disabled=disabled)
     div(class='underline-focused #{underline.get}' style="background: #{focusColor}")

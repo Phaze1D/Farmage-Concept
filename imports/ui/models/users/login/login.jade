@@ -1,0 +1,45 @@
+template(name="Login")
+  div(class="parent")
+    div(class="login-div")
+      +PaperCard elevation=1
+        div(class="top-area")
+        
+        form(class='#{stateInfo.form}')
+          div(class="middle-area")
+          
+            div(class="signup-extra" style="height: #{stateInfo.height}")
+              div(class="comp-area")
+                +PaperInput type="text" name="first_name" label="First Name" focusColor="darkblue"
+            
+              div(class="comp-area")
+                +PaperInput type="text" name="last_name" label="Last Name" focusColor="darkblue"
+            
+            div(class="comp-area")
+              +PaperInput type="text" name="email" label="Email" focusColor="darkblue"
+              
+            div(class="comp-area")
+              +PaperInput type="password" name="password" label="Password" focusColor="darkblue"
+              div(class="forgot" style="opacity: #{stateInfo.forgot}")
+                a(href="#forgot")
+                  | Forgot
+          
+            div(class="comp-area")
+              if stateInfo.log
+                +PaperButton classes="login-button js-login-button" raise=false rippleOn=true submit=true
+                  | #{stateInfo.title}
+                  
+                div(class="option-2")
+                  | No Account? 
+                  a(href="#signup" id="js-state")
+                    | Sign Up
+              
+              else
+                +PaperButton classes="login-button js-signup-button" raise=false rippleOn=true submit=true
+                  | #{stateInfo.title}
+                  
+                div(class="option-2")
+                  | Have Account? 
+                  a(href="#signup" id="js-state")
+                    | Login
+            
+        div(class='buttom-area')

@@ -17,20 +17,20 @@ class PaperButton extends BlazeComponent
 
   down: (event) ->
     target = $(event.target)
-    target = target.closest('button.paper-button') unless target.is('button.paper-button')
+    target = target.closest('.paper-button') unless target.is('.paper-button')
     if @raise
-      target.toggleClass('elevation-2')
+      target.addClass('elevation-2')
 
 
   up: (event) ->
     target = $(event.target)
-    target = target.closest('button.paper-button') unless target.is('button.paper-button')
+    target = target.closest('.paper-button') unless target.is('.paper-button')
     if @raise
       target.removeClass('elevation-2')
 
 
   events: ->
     super.concat
-      'mousedown': @down
-      'mouseup': @up
-      'mouseout': @up
+      'mousedown .paper-button': @down
+      'mouseup .paper-button': @up
+      'mouseout .paper-button': @up

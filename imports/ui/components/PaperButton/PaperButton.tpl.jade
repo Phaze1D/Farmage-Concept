@@ -1,8 +1,11 @@
-button(class="paper-button #{classes}")
+div(class="paper-button #{classes}")
   if rippleOn 
     +PaperRipple fill='lightgrey'
-    
+  
   +Template.contentBlock
-  | #{testing}
+  
+  if submit
+    input(type="submit" value='')
+  
   
   

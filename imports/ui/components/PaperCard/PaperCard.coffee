@@ -15,36 +15,37 @@ class PaperCard extends BlazeComponent
 
 
   mouseDown: (event) ->
-    pacard = $(event.target).closest('.paper-card')
-    target = $(event.target)
-    roffsetX = target.position().left + event.offsetX + parseInt target.css('margin-left')
-    roffsetY = target.position().top  + event.offsetY + parseInt target.css('margin-top')
-    pacard.find('.card-ripple:first').trigger('mousedown', [roffsetX, roffsetY])
+    $(event.target)
+    .closest('.paper-card')
+    .find('.card-ripple:first')
+    .trigger 'mousedown',
+      [
+        ( $(event.target).position().left + event.offsetX + parseInt $(event.target).css('margin-left') ),
+        ( $(event.target).position().top  + event.offsetY + parseInt $(event.target).css('margin-top') )
+      ]
+
 
   mouseUp: (event) ->
-    pacard = $(event.target).closest('.paper-card')
-    pacard.find('.card-ripple:first').trigger('mouseup')
+    $(event.target)
+    .closest('.paper-card')
+    .find('.card-ripple:first')
+    .trigger('mouseup')
+
 
   expand: (event) ->
 
     unless @expanded
-      height = $(@find('.paper-card')).height()
-      $(@find('.card-ghost')).css height: height
+      $(@find('.card-ghost')).css height: $(@find('.paper-card')).height()
       @expanded = true
       pacard = $(event.target).closest('.paper-card')
-      top = pacard.position().top
-      left = pacard.position().left
-      width = pacard.width()
       $('#paper-drawer-main').css overflow: 'hidden'
-
-      $wind = $('#paper-drawer-main')
 
       pacard.css
         position: 'absolute'
         'z-index': 1
-        top: "#{top}px"
-        left: "#{left}px"
-        width: "#{width}px"
+        top: "#{pacard.position().top}px"
+        left: "#{pacard.position().left}px"
+        width: "#{pacard.width()}px"
         'overflow-y': 'scroll'
       pacard.closest('paper-card').find('.card-ghost').css display: 'block'
 
@@ -52,7 +53,7 @@ class PaperCard extends BlazeComponent
         pacard.velocity
           p:
             left: 0
-            top: $wind.scrollTop()
+            top: $('#paper-drawer-main').scrollTop()
             width: '100%'
             height: '100vh'
             'border-radius': 0
@@ -62,7 +63,7 @@ class PaperCard extends BlazeComponent
             complete: (elements) ->
               $('.paper-card').css visibility: 'hidden'
               pacard.css visibility: 'visible'
-      , 300)
+      , 250)
 
 
   shrink: (event) ->
@@ -71,10 +72,13 @@ class PaperCard extends BlazeComponent
       $('.paper-card').css visibility: 'visible'
       $('#paper-drawer-main').css overflow: 'auto'
       pacard = $(event.target).closest('.paper-card')
-      target = $(event.target)
-      roffsetX = target.position().left + event.offsetX + parseInt target.css('margin-left')
-      roffsetY = target.position().top  + event.offsetY + parseInt target.css('margin-top')
-      pacard.find('.card-ripple:first').trigger('click', [roffsetX, roffsetY])
+
+      pacard.find('.card-ripple:first').trigger 'click', [
+        $(event.target).position().left + event.offsetX + parseInt $(event.target).css('margin-left'),
+        $(event.target).position().top  + event.offsetY + parseInt $(event.target).css('margin-top')
+      ]
+
+
       Meteor.setTimeout( =>
         pacard.velocity "reverse",
           complete: (elements) =>

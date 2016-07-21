@@ -5,17 +5,35 @@ require 'velocity-animate'
 require 'jquery-touch-events'
 require 'textarea-autosize'
 
-require './app.jade'
-require './components/PaperDrawerPanel/PaperDrawerPanel.coffee'
-require './components/PaperHeaderPanel/PaperHeaderPanel.coffee'
-require './components/PaperRipple/PaperRipple.coffee'
-require './components/PaperItem/PaperItem.coffee'
-require './components/PaperMenu/PaperMenu.coffee'
-require './components/PaperCard/PaperCard.coffee'
-require './components/PaperButton/PaperButton.coffee'
-require './components/PaperInput/PaperInput.coffee'
+require './app.coffee'
+require './components/components.coffee'
+require './models/models.coffee'
+
+loggedIn = (context, redirect) ->
+  if Meteor.userId()?
+    name = FlowRouter.current().route.name
+    if name is 'root' || name is 'login'
+      redirect '/home'
+  else
+    FlowRouter.go 'login'
+
+
+# Globaly Triggers
+FlowRouter.triggers.enter([loggedIn]);
+
 
 FlowRouter.route '/',
   name: 'root'
   action: () ->
-    BlazeLayout.render 'root'
+    BlazeLayout.render 'App', main: ''
+
+FlowRouter.route '/login',
+  name: 'login'
+  action: () ->
+    BlazeLayout.render 'App', main: 'Login'
+
+
+FlowRouter.route '/home',
+  name: 'home'
+  action: () ->
+    BlazeLayout.render 'MainMenu'
