@@ -1,10 +1,10 @@
 
 OrganizationModule = require '../../api/collections/organizations/organizations.coffee'
 
-require './home.jade'
+require './structure.jade'
 
-class Home extends BlazeComponent
-  @register 'Home'
+class Structure extends BlazeComponent
+  @register 'structure'
 
   constructor: (args) ->
 
@@ -16,19 +16,30 @@ class Home extends BlazeComponent
           console.log "sub stop #{err}"
         onReady: ->
 
+
+
+  headermain: ->
+    FlowRouter.getRouteName()
+
   user: ->
-    Meteor.users.findOne()
+    Meteor.user()
 
   email: ->
-    user = Meteor.users.findOne()
+    user = Meteor.user()
     user.emails[0].address if user?
-
 
   organizationClasses: ->
     if OrganizationModule.Organizations.find().count() is 0
       return "drawer-item toggle-drawer"
     else
       return "drawer-item"
+
+  organizations: ->
+    OrganizationModule.Organizations.find()
+
+  permission: (type, organization_id) ->
+    ouser = OrganizationModule.Organizations.findOne(organization_id).hasUser(Meteor.userId())
+    ouser.permission[type] || ouser.permission['owner'] || ouser.permission['viewer']
 
   onLogout: (event) ->
     @exitAnimation()

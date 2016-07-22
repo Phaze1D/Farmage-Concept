@@ -2,7 +2,7 @@ require './login.jade'
 
 
 class Login extends BlazeComponent
-  @register 'Login'
+  @register 'login'
 
   constructor: (args) ->
 

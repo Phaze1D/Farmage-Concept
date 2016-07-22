@@ -1,0 +1,119 @@
+template(name="structure")
+  
+  +PaperDrawerPanel
+    +PaperDrawer 
+      div(class='drawer-wrapper')
+        div(class='drawer-top')
+            
+          +PaperButton classes="js-logout logout-icon" raise=false rippleOn=false submit=false
+            i(class="fa fa-sign-out" aria-hidden="true")
+          div(class="avatar-div")
+            img(class="avatar-img" src="/default_avatar.png" alt="")
+          div(class="name-div")
+            h5(class="name-h")
+              | #{user.profile.first_name} #{user.profile.last_name}
+            h6(class="email-h")
+              | #{email}
+          
+      
+        div(class='drawer-middle')
+          if subscriptionsReady
+            +PaperMenu
+              .menu-item
+                +PaperItem classes='drawer-item toggle-drawer'
+                  a(href="/home")
+                    | Home
+            
+            +PaperMenu
+              .menu-item
+                +PaperItem classes='drawer-item toggle-drawer'
+                  a(href="#")
+                    | Profile
+                
+            +PaperMenu
+              .menu-item
+                +PaperItem classes=organizationClasses
+                  a(href="/organizations")
+                    | Organizations
+                
+                .sub-menu
+                  each organization in organizations
+                    .menu-item
+                      +PaperItem classes="organ-name"
+                        a(href="#")
+                          | #{organization.name}
+                      .sub-menu
+                        if permission 'sells_manager' organization._id
+                          .menu-item
+                            +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
+                              a(href="#")
+                                | Customers
+                              
+                          .menu-item
+                            +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
+                              a(href="#")
+                                | Sells
+                        
+                        if permission 'owner' organization._id  
+                          .menu-item
+                            +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
+                              a(href="#")
+                                | Events
+                        
+                        if permission 'expenses_manager' organization._id
+                          .menu-item
+                            +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
+                              a(href="#")
+                                | Expenses
+                          
+                          .menu-item
+                            +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
+                              a(href="#")
+                                | Providers
+                        
+                        if permission 'owner' organization._id  
+                          .menu-item
+                            +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
+                              a(href="#")
+                                | Ingredients
+                        
+                        if permission 'inventories_manager' organization._id
+                          .menu-item
+                            +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
+                              a(href="#")
+                                | Inventories
+                              
+                          .menu-item
+                            +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
+                              a(href="#")
+                                | Products
+                        
+                        if permission 'units_manager' organization._id  
+                          .menu-item
+                            +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
+                              a(href="#")
+                                | Units
+                              
+                          .menu-item
+                            +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
+                              a(href="#")
+                                | Yields
+                            
+                        if permission 'users_manager' organization._id
+                          .menu-item
+                            +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
+                              a(href="#")
+                                | Users
+              
+              
+    
+        div(class='drawer-button')
+        
+    +PaperDrawerMain
+      +PaperHeaderPanel enter=enterAnimation.get
+        +PaperHeader
+        
+        
+        +PaperHeaderMain
+          +Template.dynamic template=headermain
+  
