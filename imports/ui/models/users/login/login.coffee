@@ -32,7 +32,7 @@ class Login extends BlazeComponent
     @state.set('log', false)
     @state.set('title', 'Sign Up')
     @state.set('forgot', '0')
-    @state.set('height', '130px')
+    @state.set('height', '131px')
     @state.set('form', 'js-signup-form')
     @state.set('button', 'js-signup-button')
 

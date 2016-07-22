@@ -22,7 +22,11 @@ class Structure extends BlazeComponent
     FlowRouter.getRouteName()
 
   user: ->
-    Meteor.user()
+    user = Meteor.user()
+    if user?
+      return user
+    else
+      @exitAnimation()
 
   email: ->
     user = Meteor.user()
