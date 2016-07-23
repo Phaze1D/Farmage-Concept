@@ -82,7 +82,7 @@ class PaperDrawerPanel extends BlazeComponent
         p:
           left: "0px"
         o:
-          duration: 200
+          duration: 250
           easing: "ease-in-out"
       @isWide.set false
       @closeDrawer()
@@ -94,7 +94,7 @@ class PaperDrawerPanel extends BlazeComponent
         p:
           left: "240px"
         o:
-          duration: 200
+          duration: 250
           easing: "ease-in-out"
       @isWide.set true
       @openDrawer()
@@ -105,7 +105,7 @@ class PaperDrawerPanel extends BlazeComponent
       p:
         left: "0px"
       o:
-        duration: 200
+        duration: 250
         easing: "ease-in-out"
         complete: =>
           @scrimAddEvents()
@@ -117,7 +117,7 @@ class PaperDrawerPanel extends BlazeComponent
       p:
         left: "-240px"
       o:
-        duration: 200
+        duration: 250
         easing: "ease-in-out"
         complete: =>
           @scrimRemoveEvents()

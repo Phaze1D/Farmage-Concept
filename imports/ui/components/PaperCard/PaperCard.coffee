@@ -8,6 +8,7 @@ class PaperCard extends BlazeComponent
   onCreated: ->
     super
     @expanded = false
+    @data().rippleFill = 'black' unless @data().rippleFill?
 
 
   onRendered: ->
@@ -50,19 +51,27 @@ class PaperCard extends BlazeComponent
       pacard.closest('paper-card').find('.card-ghost').css display: 'block'
 
       Meteor.setTimeout( ->
-        pacard.velocity
+        pacard.velocity(
           p:
             left: 0
             top: $('#paper-drawer-main').scrollTop()
             width: '100%'
             height: '100vh'
-            'border-radius': 0
           o:
             duration: 250
             easing: 'ease-in-out'
             complete: (elements) ->
               $('.paper-card').css visibility: 'hidden'
               pacard.css visibility: 'visible'
+        )
+        pacard.velocity(
+          p:
+            'border-radius': 0
+          o:
+            duration: 50
+            easing: 'linear'
+            queue: false
+        )
       , 250)
 
 

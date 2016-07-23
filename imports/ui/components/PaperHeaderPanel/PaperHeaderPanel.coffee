@@ -32,9 +32,6 @@ class PaperHeaderPanel extends BlazeComponent
       o:
         duration: 250
 
-
-
-
   throttle: (e) ->
     unless @ticking
       window.requestAnimationFrame( () =>
