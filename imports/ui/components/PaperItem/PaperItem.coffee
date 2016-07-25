@@ -8,8 +8,8 @@ class PaperItem extends BlazeComponent
     super
     @instant = @data().instant
     @animationType = @data().animationType
-    @focusColor = if @data().focusColor? then @data().focusColor else '#eceff1'
-    @unfocusColor = if @data().unfocusColor? then @data().unfocusColor else 'black'
+    @focusColor = '#eceff1' unless @data().focusColor?
+    @unfocusColor = 'black' unless @data().unfocusColor?
     @classes = @data().classes
 
   toggleItem: (event) ->

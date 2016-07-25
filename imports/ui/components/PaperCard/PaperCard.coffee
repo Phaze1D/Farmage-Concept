@@ -8,6 +8,7 @@ class PaperCard extends BlazeComponent
   onCreated: ->
     super
     @expanded = false
+    @borderR = 0
     @data().rippleFill = 'black' unless @data().rippleFill?
 
 
@@ -40,18 +41,20 @@ class PaperCard extends BlazeComponent
       @expanded = true
       pacard = $(event.target).closest('.paper-card')
       $('#paper-drawer-main').css overflow: 'hidden'
-
+      @borderR = pacard.css('border-radius')
       pacard.css
         position: 'absolute'
         'z-index': 1
         top: "#{pacard.position().top}px"
         left: "#{pacard.position().left}px"
         width: "#{pacard.width()}px"
+
         'overflow-y': 'scroll'
       pacard.closest('paper-card').find('.card-ghost').css display: 'block'
 
-      Meteor.setTimeout( ->
-        pacard.velocity(
+      Meteor.setTimeout =>
+        @data().callbacks.onExpandCallback()
+        pacard.velocity
           p:
             left: 0
             top: $('#paper-drawer-main').scrollTop()
@@ -60,19 +63,20 @@ class PaperCard extends BlazeComponent
           o:
             duration: 250
             easing: 'ease-in-out'
-            complete: (elements) ->
+            complete: (elements) =>
               $('.paper-card').css visibility: 'hidden'
               pacard.css visibility: 'visible'
-        )
-        pacard.velocity(
+
+
+        pacard.velocity
           p:
             'border-radius': 0
           o:
             duration: 50
             easing: 'linear'
             queue: false
-        )
-      , 250)
+
+      , 250
 
 
   shrink: (event) ->
@@ -89,17 +93,26 @@ class PaperCard extends BlazeComponent
 
 
       Meteor.setTimeout( =>
-        pacard.velocity "reverse",
-          complete: (elements) =>
-            pacard.closest('paper-card').find('.card-ghost').css display: 'none'
-            pacard.css
-              position: ''
-              'z-index': ''
-              top: ""
-              left: ""
-              width: ""
-              overflow: ''
-              height: ''
+        pacard.velocity("reverse")
+        pacard.velocity
+          p:
+            'border-radius': @borderR
+          o:
+            duration: 450
+            easing: 'easeInBack'
+            queue: false
+            complete: (elements) =>
+              @data().callbacks.onShinkedCallback()
+              pacard.closest('paper-card').find('.card-ghost').css display: 'none'
+              pacard.css
+                position: ''
+                'z-index': ''
+                top: ""
+                left: ""
+                width: ""
+                overflow: ''
+                height: ''
+                'border-radius': ''
       , 250)
 
 

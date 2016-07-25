@@ -9,14 +9,15 @@ class Structure extends BlazeComponent
   constructor: (args) ->
 
   onCreated: ->
-    @enterAnimation = new ReactiveVar(true)
+    @enterAnimation = true
     @autorun =>
       @subscribe "organizations",
         onStop: (err) ->
           console.log "sub stop #{err}"
         onReady: ->
 
-
+  onRendered: ->
+    @onEnterAnimation()
 
   headermain: ->
     FlowRouter.getRouteName()
@@ -26,7 +27,7 @@ class Structure extends BlazeComponent
     if user?
       return user
     else
-      @exitAnimation()
+      @onExitAnimation()
 
   email: ->
     user = Meteor.user()
@@ -46,35 +47,66 @@ class Structure extends BlazeComponent
     ouser.permission[type] || ouser.permission['owner'] || ouser.permission['viewer']
 
   onLogout: (event) ->
-    @exitAnimation()
+    @onExitAnimation()
 
-  exitAnimation: () ->
-    $('#scrim').addClass('hide')
-    $('#paper-drawer').velocity
-      p:
-        left: "-240px"
-      o:
-        duration: 250
-        easing: "ease-in-out"
+  onEnterAnimation: () ->
+    if @enterAnimation
+      @enterAnimation = false
+      $('#paper-header').velocity
+        p:
+          top: "0px"
+        o:
+          duration: 250
+          queue: false
 
-    $("#paper-drawer-main").velocity
-      p:
-        left: "0px"
-      o:
-        duration: 250
-        easing: "ease-in-out"
+      $("#paper-header-main").velocity
+        p:
+          opacity: '1'
+        o:
+          duration: 200
+          easing: "linear"
+          queue: false
 
-    $('#paper-header').velocity
-      p:
-        top: "-212px"
-      o:
-        duration: 250
-        complete: ->
-          $('#paper-drawer').removeClass('move-foward').addClass('move-back')
-          $("#paper-drawer-main").removeClass('move-back').addClass('move-foward')
-          Meteor.logout( (err) ->
-            FlowRouter.go 'login' unless err?
-          )
+  onExitAnimation: () ->
+    unless @enterAnimation
+      @enterAnimation = true
+      $('#scrim').addClass('hide')
+      $('#paper-drawer').velocity
+        p:
+          left: "-240px"
+        o:
+          duration: 250
+          easing: "ease-in-out"
+          queue: false
+
+      $("#paper-drawer-main").velocity
+        p:
+          left: "0px"
+        o:
+          duration: 250
+          easing: "ease-in-out"
+          queue: false
+
+      $("#paper-header-main").velocity
+        p:
+          opacity: '0'
+        o:
+          duration: 250
+          easing: "linear"
+          queue: false
+
+      $('#paper-header').velocity
+        p:
+          top: "-212px"
+        o:
+          duration: 250
+          queue: false
+          complete: ->
+            $('#paper-drawer').removeClass('move-foward').addClass('move-back')
+            $("#paper-drawer-main").removeClass('move-back').addClass('move-foward')
+            Meteor.logout( (err) ->
+              FlowRouter.go 'login' unless err?
+            )
 
 
   events: ->
