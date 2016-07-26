@@ -16,7 +16,7 @@ class OrganizationsIndex extends BlazeComponent
 
   onExpand: =>
     @expandedClass.set('card-shrink-action')
-    @iconClass.set('arrow_back')
+    @iconClass.set('clear')
     @expanded.set(true)
 
   onShrinked: =>

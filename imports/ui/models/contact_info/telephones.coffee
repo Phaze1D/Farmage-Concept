@@ -1,8 +1,10 @@
 
-require './addresses.jade'
 
-class AddressAdd extends BlazeComponent
-  @register 'address.add'
+require './telephones.jade'
+
+
+class TelephoneAdd extends BlazeComponent
+  @register 'telephone.add'
 
   constructor: (args) ->
 
@@ -17,12 +19,12 @@ class AddressAdd extends BlazeComponent
     @iconType.set 'remove_circle'
     $(event.target)
     .closest('.add-contact-info-b')
-    .toggleClass('js-add-address-b')
-    .toggleClass('js-remove-address-b')
+    .toggleClass('js-add-telephone-b')
+    .toggleClass('js-remove-telephone-b')
     $(@find('.icon-button')).css color: '#FF3D00'
     $(@find('.contact-info-inputs')).velocity
       p:
-        height: '300px'
+        height: '60px'
       o:
         duration: 250
         easing: 'linear'
@@ -30,8 +32,8 @@ class AddressAdd extends BlazeComponent
   onRemove: (event) ->
     $(event.target)
     .closest('.add-contact-info-b')
-    .toggleClass('js-add-address-b')
-    .toggleClass('js-remove-address-b')
+    .toggleClass('js-add-telephone-b')
+    .toggleClass('js-remove-telephone-b')
     @iconType.set 'add_circle'
     $(@find('.icon-button')).css color: ''
     $(@find('.contact-info-inputs')).velocity 'reverse'
@@ -39,5 +41,5 @@ class AddressAdd extends BlazeComponent
 
   events: ->
     super.concat
-      'click .js-add-address-b': @onAdd
-      'click .js-remove-address-b': @onRemove
+      'click .js-add-telephone-b': @onAdd
+      'click .js-remove-telephone-b': @onRemove

@@ -1,42 +1,44 @@
-.add-address
+.add-contact-info
   color: #737373
 
 .button-wrapper
   position: relative;
   width: 100%
   height: 28px
-  margin-top: 33px;
+  margin-top: 40px;
 
-.add-address-b
+.add-contact-info-b
 
   display: flex;
   color: #737373
+  min-width: 110px
+  height: 24px
   position: absolute;
   background-color: transparent;
 
+
   & .icon-button
+    z-index: -1
     display: inline-block;
     align-self: center;
     color: #00E676
     height: 24px
     width: 24px
+    position: absolute;
+    right: 0
+
+  & .text-div
+    display: inline-block;
+    align-self: center;
+    height: 16px
 
 
-
-
-
-.text-div
-  display: inline-block;
-  align-self: center;
-  margin-right: 10px
-  height: 16px
-
-.address-inputs
+.contact-info-inputs
   width: 100%
   overflow: hidden;
   height: 0
 
-.address-input-wrapper
+.contact-info-input-wrapper
   background-color: transparent;
 
 .grid-wrapper

@@ -4,6 +4,7 @@ template(name="organizations.index")
       div(class='organizations-new-div')
         if expanded.get
           +organizations.new
+          
       div(class='#{expandedClass.get} plus-icon-div js-new-expand')
         i(class="material-icons plus-icon")
           | #{iconClass.get}

@@ -4,14 +4,25 @@ template(name='organizations.new')
   //- Add Address button
   //- Add Telephone button
   
-  div(class='organization-new')
-    form(class="js-organization-new")
+  form(class="js-organization-new")
+    div(class='new-organ-title elevation-1')
+      +PaperButton classes="save-icon-div" raise=false rippleOn=true submit=false
+        i(class="material-icons")
+          | check
+      
+    div(class='organization-new')
       div(class='organ-input-div organ-name-div')
         +PaperInput type="text" name="name" label="Organization Name" focusColor="darkblue" size='size-medium'
       div(class='organ-input-div organ-email-div')
         +PaperInput type="email" name="email" label="Contact Email" focusColor="darkblue"
         
-      div(class="organ-input-div add-address")
+        
+      div(class="organ-input-div add-contact-info")
+        +telephone.add
+        
+      div(class="organ-input-div add-contact-info")
         +address.add
-          
+        
+      
+        
       
