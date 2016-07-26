@@ -15,6 +15,7 @@ class PaperInput extends BlazeComponent
     @charCount = new ReactiveVar "0/#{@data().charMax}"
     @textarea = @data().type is 'textarea'
 
+
   onRendered: ->
     $(@find('.pinput')).trigger('input')
     $(@find('.pinput')).trigger('focusout')
@@ -26,11 +27,19 @@ class PaperInput extends BlazeComponent
     @underline.set('highlight')
     @color.set @data().focusColor
     @colorL.set @data().focusColor if event.target.value.length > 0
+    if @data().labelFloat == 'false'
+      @float.set('label-hidden')
+    else
+      @float.set('label-floating')
+    @colorL.set @data().focusColor
+
 
   onFocusOut: (event) ->
+    @onInput(event)
     @underline.set ''
     @color.set ''
     @colorL.set ''
+
 
 
   onInput: (event) ->
@@ -53,4 +62,4 @@ class PaperInput extends BlazeComponent
     super.concat
       'focusin .pinput': @onFocusIn
       'focusout .pinput': @onFocusOut
-      'input .pinput': @onInput
+      # 'input .pinput': @onInput

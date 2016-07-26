@@ -1,0 +1,31 @@
+template(name="address.add")
+    div(class='button-wrapper')
+      +PaperButton classes="add-address-b js-add-address-b" raise=false rippleOn=true submit=false 
+        div(class="text-div")
+          | Address
+        div(class='icon-button')
+          i(class="material-icons")
+            | #{iconType.get}
+            
+    div(class='address-inputs')
+      div(class='address-input-wrapper')
+        div(class='grid-wrapper')
+          div(class="grid-column col-4" style='padding-left: 0')      
+            +PaperInput type="text" name="address_name" labelFloat='false' label="Name" focusColor="darkblue"
+          
+          div(class="grid-column col-8")
+            +PaperInput type="text" name="street" label="Address Line 1" focusColor="darkblue" 
+            +PaperInput type="text" name="street2" label="Address Line 2" focusColor="darkblue"
+            div(class='grid-wrapper')
+              div(class="grid-column col-6" style='padding-left: 0; padding-right: 0')
+                +PaperInput type="text" name="city" label="City" focusColor="darkblue"
+              div(class="grid-column col-6" style='padding-right: 0')
+                +PaperInput type="text" name="state" label="State" focusColor="darkblue"
+            div(class='grid-wrapper')
+              div(class="grid-column col-6" style='padding-left: 0; padding-right: 0')
+                +PaperInput type="text" name="zip_code" label="Zip Code" focusColor="darkblue"
+              div(class="grid-column col-6" style='padding-right: 0')
+                +PaperInput type="text" name="country" label="Country" focusColor="darkblue"
+      
+  
+  

@@ -11,6 +11,7 @@ class PaperButton extends BlazeComponent
     super
     @raise = @data().raise
     @data().classes += ' elevation-1' if @raise
+    @data().rippleFill = 'lightgrey' unless @data().rippleFill?
 
 
   onRendered: ->

@@ -3,7 +3,15 @@ template(name='organizations.new')
   //- contact email
   //- Add Address button
   //- Add Telephone button
+  
   div(class='organization-new')
     form(class="js-organization-new")
-      div(class='organ-name-div')
-        +PaperInput type="text" name="name" label="Organization Name" focusColor="black"
+      div(class='organ-input-div organ-name-div')
+        +PaperInput type="text" name="name" label="Organization Name" focusColor="darkblue" size='size-medium'
+      div(class='organ-input-div organ-email-div')
+        +PaperInput type="email" name="email" label="Contact Email" focusColor="darkblue"
+        
+      div(class="organ-input-div add-address")
+        +address.add
+          
+      

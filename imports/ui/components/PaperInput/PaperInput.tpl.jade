@@ -1,12 +1,12 @@
 paper-input(class="paper-input #{classes}" disabled=disabled)
   div(class='floated-label-container')  &nbsp;
   div(class='input-container')
-    label(class="input-label #{float.get}" style="color: #{colorL.get}")=label
+    label(class="input-label #{float.get} #{size}" style="color: #{colorL.get}")=label
     if textarea
       textarea(type=type
                 name=name
                 data-id="textarea"
-                class="pinput-textarea pinput"
+                class="pinput-textarea pinput #{size}"
                 disabled=disabled
                 rows="1"
                 placeholder=placeholder
@@ -16,7 +16,7 @@ paper-input(class="paper-input #{classes}" disabled=disabled)
       input(type=type
             name=name
             data-id="input"
-            class="pinput"
+            class="pinput #{size}"
             value=value
             disabled=disabled
             placeholder=placeholder
