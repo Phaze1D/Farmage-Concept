@@ -20,7 +20,7 @@ class AddressAdd extends BlazeComponent
     .toggleClass('js-add-address-b')
     .toggleClass('js-remove-address-b')
     $(@find('.icon-button')).css color: '#FF3D00'
-    $(@find('.contact-info-inputs')).animate
+    $(@find('.contact-info-inputs')).velocity
       p:
         height: '300px'
       o:
@@ -34,7 +34,7 @@ class AddressAdd extends BlazeComponent
     .toggleClass('js-remove-address-b')
     @iconType.set 'add_circle'
     $(@find('.icon-button')).css color: ''
-    $(@find('.contact-info-inputs')).animate 'reverse'
+    $(@find('.contact-info-inputs')).velocity 'reverse'
 
 
   events: ->

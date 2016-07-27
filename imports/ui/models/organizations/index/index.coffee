@@ -24,21 +24,21 @@ class OrganizationsIndex extends BlazeComponent
 
 
   changeDimensions: (floatB) ->
-
+    floatB.css 'box-shadow': 'none'
     hypo = parseInt Math.sqrt Math.pow($('#paper-header-main')[0].clientHeight - 38, 2) +
                               Math.pow($('#paper-header-main')[0].clientWidth - 38, 2)
-    floatB.animate
+    floatB.velocity
       p:
         width: hypo * 2
         height: hypo * 2
         opacity: 0
         translateX: '50%'
         translateY: '50%'
-        translateZ: '0'
       o:
         duration: 350
         easing: 'linear'
-        queue: false
+
+
 
 
 

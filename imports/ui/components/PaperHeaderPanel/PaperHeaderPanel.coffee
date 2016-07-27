@@ -81,7 +81,7 @@ class PaperHeaderPanel extends BlazeComponent
       o =
         duration: duration
         easing: 'linear'
-      header.animate p, o
+      header.velocity p, o
 
 
   moveUp: (duration) ->
@@ -96,4 +96,4 @@ class PaperHeaderPanel extends BlazeComponent
         easing: 'linear'
         complete: ->
           header.addClass('elevation-0').removeClass('elevation-2')
-      header.animate p,o
+      header.velocity p,o

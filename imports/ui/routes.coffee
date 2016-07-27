@@ -2,6 +2,7 @@
 { BlazeLayout } = require 'meteor/kadira:blaze-layout'
 
 require 'jquery-touch-events'
+require 'velocity-animate'
 require 'textarea-autosize'
 
 require './app.coffee'

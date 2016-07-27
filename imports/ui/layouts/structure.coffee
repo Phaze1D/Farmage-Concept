@@ -52,7 +52,7 @@ class Structure extends BlazeComponent
   onEnterAnimation: () ->
     if @enterAnimation
       @enterAnimation = false
-      $('#paper-header').animate(
+      $('#paper-header').velocity(
         {
           top: "0px"
         },
@@ -62,7 +62,7 @@ class Structure extends BlazeComponent
         }
       )
 
-      $("#paper-header-main").animate(
+      $("#paper-header-main").velocity(
         {
           opacity: '1'
         },
@@ -77,7 +77,7 @@ class Structure extends BlazeComponent
     unless @enterAnimation
       @enterAnimation = true
       $('#scrim').addClass('hide')
-      $('#paper-drawer').animate(
+      $('#paper-drawer').velocity(
         {
           left: "-240px"
         },
@@ -88,7 +88,7 @@ class Structure extends BlazeComponent
         }
       )
 
-      $("#paper-drawer-main").animate(
+      $("#paper-drawer-main").velocity(
         {
           left: "0px"
         },
@@ -99,7 +99,7 @@ class Structure extends BlazeComponent
         }
       )
 
-      $("#paper-header-main").animate(
+      $("#paper-header-main").velocity(
         {
           opacity: '0'
         },
@@ -110,7 +110,7 @@ class Structure extends BlazeComponent
         }
       )
 
-      $('#paper-header').animate(
+      $('#paper-header').velocity(
         {
           top: "-212px"
         },

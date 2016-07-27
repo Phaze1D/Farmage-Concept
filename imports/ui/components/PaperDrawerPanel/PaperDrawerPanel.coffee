@@ -82,7 +82,7 @@ class PaperDrawerPanel extends BlazeComponent
       o =
         duration: 250
 
-      $("#paper-drawer-main").animate p,o
+      $("#paper-drawer-main").velocity p,o
       @isWide.set false
       @closeDrawer()
 
@@ -95,7 +95,7 @@ class PaperDrawerPanel extends BlazeComponent
         duration: 250
         easing: 'ease-in-out'
 
-      $("#paper-drawer-main").animate p, o
+      $("#paper-drawer-main").velocity p, o
       @isWide.set true
       @openDrawer()
 
@@ -110,7 +110,7 @@ class PaperDrawerPanel extends BlazeComponent
         @scrimAddEvents()
         @mainRemoveEvents()
         
-    $("#paper-drawer").animate p, o
+    $("#paper-drawer").velocity p, o
 
   closeDrawer: (event) ->
     $('#scrim').addClass('hide')
@@ -124,7 +124,7 @@ class PaperDrawerPanel extends BlazeComponent
         @mainAddEvents()
         @moveMainFoward()
 
-    $("#paper-drawer").animate p, o
+    $("#paper-drawer").velocity p, o
 
   toggleDrawer: (event) ->
     if $("#paper-drawer").attr('opened') is 'true'

@@ -73,7 +73,7 @@ class Login extends BlazeComponent
 
   exitAnimation:  ->
     logindiv = $(@find('.login-div'))
-    logindiv.animate
+    logindiv.velocity
       p:
         opacity: 0
       o:
@@ -84,7 +84,7 @@ class Login extends BlazeComponent
 
   enterAnimation: ->
     logindiv = $(@find('.login-div'))
-    logindiv.animate
+    logindiv.velocity
       p:
         opacity: 1
       o:
