@@ -1,13 +1,14 @@
 template(name="organizations.index")
   div(class="organizations")
-    +PaperCard elevation=2 classes="organizations new-action" rippleFill='lightgrey' callbacks=callbacks
+    if expanded.get
       div(class='organizations-new-div')
-        if expanded.get
-          +organizations.new
-          
-      div(class='#{expandedClass.get} plus-icon-div js-new-expand')
+        +organizations.new
+        
+    +PaperButton classes="new-action" raise=2 rippleOn='true'   
+      div(class='plus-icon-div')
         i(class="material-icons plus-icon")
-          | #{iconClass.get}
+          | add
+      
       
   
   

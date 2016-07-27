@@ -9,22 +9,51 @@ class OrganizationsIndex extends BlazeComponent
 
   onCreated: ->
     super
-    @expandedClass = new ReactiveVar('card-expand-action')
-    @iconClass = new ReactiveVar('add')
     @expanded = new ReactiveVar(false)
 
+  onRendered: ->
+    super
 
-  onExpand: =>
-    @expandedClass.set('card-shrink-action')
-    @iconClass.set('clear')
+
+  onExpand: (event) ->
     @expanded.set(true)
 
-  onShrinked: =>
+    Meteor.setTimeout =>
+      @changeDimensions($(event.currentTarget))
+    , 250
+
+
+  changeDimensions: (floatB) ->
+
+    hypo = parseInt Math.sqrt Math.pow($('#paper-header-main')[0].clientHeight - 38, 2) +
+                              Math.pow($('#paper-header-main')[0].clientWidth - 38, 2)
+    floatB.animate
+      p:
+        width: hypo * 2
+        height: hypo * 2
+        opacity: 0
+        translateX: '50%'
+        translateY: '50%'
+        translateZ: '0'
+      o:
+        duration: 350
+        easing: 'linear'
+        queue: false
+
+
+
+    floatB.find('.plus-icon-div').css visibility: 'hidden'
+
+
+
+  onShrinked: (event) ->
     @expandedClass.set('card-expand-action')
     @iconClass.set('add')
     @expanded.set(false)
 
-  callbacks: ->
-    ret =
-      onExpandCallback: @onExpand
-      onShinkedCallback: @onShrinked
+
+
+
+  events: ->
+    super.concat
+      'click .new-action': @onExpand

@@ -19,8 +19,8 @@ class PaperInput extends BlazeComponent
   onRendered: ->
     $(@find('.pinput')).trigger('input')
     $(@find('.pinput')).trigger('focusout')
-
     $(@find('textarea')).textareaAutoSize();
+    @onInput @find('.pinput')
 
 
   onFocusIn: (event) ->
@@ -35,16 +35,16 @@ class PaperInput extends BlazeComponent
 
 
   onFocusOut: (event) ->
-    @onInput(event)
+    @onInput(event.target)
     @underline.set ''
     @color.set ''
     @colorL.set ''
 
 
 
-  onInput: (event) ->
-    @charCount.set("#{event.target.value.length}/#{@data().charMax}")
-    if event.target.value.length <= 0
+  onInput: (input) ->
+    @charCount.set("#{input.value.length}/#{@data().charMax}")
+    if input.value.length <= 0
       @float.set ''
       @colorL.set ''
     else if @data().labelFloat == 'false'

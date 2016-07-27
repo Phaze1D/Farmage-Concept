@@ -25,7 +25,7 @@ template(name="login")
           
             div(class="comp-area")
               if stateInfo.log
-                +PaperButton classes="login-button js-login-button" raise=false rippleOn=true submit=true
+                +PaperButton classes="login-button js-login-button" raise=0 rippleOn=true submit=true
                   | #{stateInfo.title}
                   
                 div(class="option-2")
@@ -34,7 +34,7 @@ template(name="login")
                     | Sign Up
               
               else
-                +PaperButton classes="login-button js-signup-button" raise=false rippleOn=true submit=true
+                +PaperButton classes="login-button js-signup-button" raise=0 rippleOn=true submit=true
                   | #{stateInfo.title}
                   
                 div(class="option-2")

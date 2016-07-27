@@ -28,40 +28,46 @@ class PaperRipple extends BlazeComponent
     rio.css(fill: @data().fill)
 
     ripple = $(event.target).find('.js-ripple')
-    ripple.velocity 'stop'
-    ripple.velocity(
-      p:
+    ripple.animate 'stop'
+    ripple.animate(
+      {
         translateZ: '0'
         translateX: eoffsetX
         translateY: eoffsetY
-        transformOriginX: '1px'
-        transformOriginY: '1px'
+        transformOriginX: '50%'
+        transformOriginY: '50%'
         scale: 0
         opacity: 0.8
-      o:
+      },
+      {
         duration: 0
-    ).velocity(
-      p:
+      }
+    ).animate(
+      {
         scale: Math.sqrt(Math.pow((event.target.offsetWidth / 2) +
                Math.abs( (event.target.offsetWidth / 2) - eoffsetX ), 2) +
                Math.pow((event.target.offsetHeight / 2) +
                Math.abs( (event.target.offsetHeight / 2) - eoffsetY ), 2))
-      o:
+      },
+      {
         duration: 250
         easing: "easeOutSine"
+      }
     )
 
 
   opacityAnimation: (event) ->
     if @mouseD
       @mouseD = false
-      $(event.target).find('.js-ripple').velocity(
-        p:
+      $(event.target).find('.js-ripple').animate(
+        {
           opacity: [0, .8]
-        o:
+        },
+        {
           duration: 450
           easing: "easeOutSine"
           queue: false
+        }
       )
 
 

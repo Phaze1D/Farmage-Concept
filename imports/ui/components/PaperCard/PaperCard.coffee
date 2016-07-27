@@ -54,7 +54,7 @@ class PaperCard extends BlazeComponent
 
       Meteor.setTimeout =>
         @data().callbacks.onExpandCallback()
-        pacard.velocity
+        pacard.animate
           p:
             left: 0
             top: $('#paper-drawer-main').scrollTop()
@@ -68,7 +68,7 @@ class PaperCard extends BlazeComponent
               pacard.css visibility: 'visible'
 
 
-        pacard.velocity
+        pacard.animate
           p:
             'border-radius': 0
           o:
@@ -93,8 +93,8 @@ class PaperCard extends BlazeComponent
 
 
       Meteor.setTimeout( =>
-        pacard.velocity("reverse")
-        pacard.velocity
+        pacard.animate("reverse")
+        pacard.animate
           p:
             'border-radius': @borderR
           o:

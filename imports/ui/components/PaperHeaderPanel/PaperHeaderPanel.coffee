@@ -22,7 +22,7 @@ class PaperHeaderPanel extends BlazeComponent
     main = document.getElementById('paper-drawer-main')
     main.addEventListener('scroll', @throttle)
 
-    
+
   throttle: (e) ->
     unless @ticking
       window.requestAnimationFrame( () =>
@@ -76,12 +76,12 @@ class PaperHeaderPanel extends BlazeComponent
       @down = true
       header = $('#paper-header')
       header.addClass('elevation-2').removeClass('elevation-0')
-      header.velocity
-        p:
-          translateY: ["-148px", "-212px"]
-        o:
-          duration: duration
-          easing: 'linear'
+      p =
+        translateY: ["-148px", "-212px"]
+      o =
+        duration: duration
+        easing: 'linear'
+      header.animate p, o
 
 
   moveUp: (duration) ->
@@ -89,11 +89,11 @@ class PaperHeaderPanel extends BlazeComponent
       duration = if duration > 250 then 250 else duration
       @down = false
       header = $('#paper-header')
-      header.velocity
-        p:
-          translateY: "-212px"
-        o:
-          duration: duration
-          easing: 'linear'
-          complete: ->
-            header.addClass('elevation-0').removeClass('elevation-2')
+      p =
+        translateY: "-212px"
+      o =
+        duration: duration
+        easing: 'linear'
+        complete: ->
+          header.addClass('elevation-0').removeClass('elevation-2')
+      header.animate p,o

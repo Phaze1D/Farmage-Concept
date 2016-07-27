@@ -36,20 +36,24 @@ class PaperItem extends BlazeComponent
 
   animation1: ($target, event) ->
     $target.css 'background-color': @focusColor
-    $target.velocity(
-      p:
+    $target.animate(
+      {
         right: event.target.clientWidth - event.offsetX
         left: event.offsetX
-      o:
+      },
+      {
         duration: 0
         easing: "ease-in-out"
-    ).velocity(
-      p:
+      }
+    ).animate(
+      {
         right: 0
         left: 0
-      o:
+      },
+      {
         duration: 150
         easing: "ease-in-out"
+      }
     )
 
   animation2: ($target, events) ->

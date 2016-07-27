@@ -1,13 +1,16 @@
-.organizations
+.new-action
+  position: fixed;
+  width: 56px
+  height: 56px
+  border-radius: 50%
+  bottom: 15px;
+  right: 15px;
+  z-index: 1;
+  opacity: 1
+  background-color: darkblue
 
-  &.new-action
-    position: absolute;
-    width: 56px
-    height: 56px
-    border-radius: 50%
-    top: 184px;
-    z-index: 1;
-    right: 20px;
+
+
 
 .plus-icon-div
   position: absolute;
@@ -16,12 +19,20 @@
   height: 56px;
   display: flex;
   justify-content: center;
+  z-index: -1
 
 
 .plus-icon
   align-self: center;
-  color: black
+  color: white
   cursor: pointer;
 
 .organizations-new-div
-  padding-top: 56px
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1;
+  bottom: 0;
+  background: white;
+  overflow: scroll;

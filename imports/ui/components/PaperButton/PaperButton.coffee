@@ -9,8 +9,6 @@ class PaperButton extends BlazeComponent
 
   onCreated: ->
     super
-    @raise = @data().raise
-    @data().classes += ' elevation-1' if @raise
     @data().rippleFill = 'lightgrey' unless @data().rippleFill?
 
 
@@ -19,15 +17,15 @@ class PaperButton extends BlazeComponent
   down: (event) ->
     target = $(event.target)
     target = target.closest('.paper-button') unless target.is('.paper-button')
-    if @raise
-      target.addClass('elevation-2')
+    if @data().raise isnt 0
+      target.addClass("elevation-#{@data().raise + 1}")
 
 
   up: (event) ->
     target = $(event.target)
     target = target.closest('.paper-button') unless target.is('.paper-button')
-    if @raise
-      target.removeClass('elevation-2')
+    if @data().raise isnt 0
+      target.removeClass("elevation-#{@data().raise + 1}")
 
 
   events: ->

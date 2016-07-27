@@ -75,54 +75,56 @@ class PaperDrawerPanel extends BlazeComponent
     $('#scrim').addClass('show').removeClass('hide') if @isWide.get()? && !@isWide.get()
 
   handleResize: ->
-
     if window.innerWidth < 1024 && (!@isWide.get()? || @isWide.get())
       $("#paper-drawer").removeClass('elevation-0')
-      $("#paper-drawer-main").velocity
-        p:
-          left: "0px"
-        o:
-          duration: 250
-          easing: "ease-in-out"
+      p =
+        left: "0px"
+      o =
+        duration: 250
+
+      $("#paper-drawer-main").animate p,o
       @isWide.set false
       @closeDrawer()
 
     if window.innerWidth >= 1024 && (!@isWide.get()? || !@isWide.get())
       $('#scrim').removeClass('show').addClass('hide')
       $("#paper-drawer").addClass('elevation-0')
-      $("#paper-drawer-main").velocity
-        p:
-          left: "240px"
-        o:
-          duration: 250
-          easing: "ease-in-out"
+      p =
+        left: "240px"
+      o =
+        duration: 250
+        easing: 'ease-in-out'
+
+      $("#paper-drawer-main").animate p, o
       @isWide.set true
       @openDrawer()
 
   openDrawer: (event) ->
     @moveDrawerFoward()
-    $("#paper-drawer").velocity
-      p:
-        left: "0px"
-      o:
-        duration: 250
-        easing: "ease-in-out"
-        complete: =>
-          @scrimAddEvents()
-          @mainRemoveEvents()
+    p =
+      left: "0px"
+    o =
+      duration: 250
+      easing: "ease-in-out"
+      complete: =>
+        @scrimAddEvents()
+        @mainRemoveEvents()
+        
+    $("#paper-drawer").animate p, o
 
   closeDrawer: (event) ->
     $('#scrim').addClass('hide')
-    $("#paper-drawer").velocity
-      p:
-        left: "-240px"
-      o:
-        duration: 250
-        easing: "ease-in-out"
-        complete: =>
-          @scrimRemoveEvents()
-          @mainAddEvents()
-          @moveMainFoward()
+    p =
+      left: "-240px"
+    o =
+      duration: 250
+      easing: "ease-in-out"
+      complete: =>
+        @scrimRemoveEvents()
+        @mainAddEvents()
+        @moveMainFoward()
+
+    $("#paper-drawer").animate p, o
 
   toggleDrawer: (event) ->
     if $("#paper-drawer").attr('opened') is 'true'

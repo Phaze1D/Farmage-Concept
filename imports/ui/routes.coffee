@@ -1,7 +1,6 @@
 { FlowRouter } = require 'meteor/kadira:flow-router'
 { BlazeLayout } = require 'meteor/kadira:blaze-layout'
 
-require 'velocity-animate'
 require 'jquery-touch-events'
 require 'textarea-autosize'
 

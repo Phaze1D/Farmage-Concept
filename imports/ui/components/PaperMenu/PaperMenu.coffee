@@ -16,24 +16,30 @@ class PaperMenu extends BlazeComponent
 
 
   showSub: ($subMenu) ->
-    $subMenu.velocity
-      p:
-        'height': $subMenu[0].scrollHeight + 'px'
-      o:
+    $subMenu.animate(
+      {
+        height: $subMenu[0].scrollHeight + 'px'
+      },
+      {
         duration: 250
         easing: 'ease-in-out'
         complete: (elements) ->
           $subMenu.css height: 'auto'
+      }
+    )
 
 
 
   hideSub: ($subMenu) ->
-    $subMenu.velocity
-      p:
-        'height': '0px'
-      o:
+    $subMenu.animate(
+      {
+        height: '0px'
+      },
+      {
         duration: 250
         easing: 'ease-in-out'
+      }
+    )
 
   events: ->
     super.concat

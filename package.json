@@ -6,10 +6,10 @@
   },
   "dependencies": {
     "big.js": "^3.1.3",
+    "gsap": "^1.19.0",
     "jquery-touch-events": "git+https://github.com/benmajor/jQuery-Touch-Events.git",
     "meteor-node-stubs": "~0.2.0",
-    "textarea-autosize": "^0.4.2",
-    "velocity-animate": "^1.2.3"
+    "textarea-autosize": "^0.4.2"
   },
   "devDependencies": {
     "faker": "^3.1.0"
