@@ -48,7 +48,7 @@ class PaperRipple extends BlazeComponent
                Math.pow((event.target.offsetHeight / 2) +
                Math.abs( (event.target.offsetHeight / 2) - eoffsetY ), 2))
       o:
-        duration: 250
+        duration: 200
         easing: "linear"
 
 
@@ -61,7 +61,7 @@ class PaperRipple extends BlazeComponent
         p:
           opacity: [0, .8]
         o:
-          duration: 450
+          duration: 350
           easing: "linear"
           queue: false
 
