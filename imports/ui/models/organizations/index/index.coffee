@@ -15,45 +15,72 @@ class OrganizationsIndex extends BlazeComponent
     super
 
 
-  onExpand: (event) ->
-    @expanded.set(true)
-
+  onShow: (event) ->
+    @expanded.set true
     Meteor.setTimeout =>
-      @changeDimensions($(event.currentTarget))
+      @show()
     , 250
 
 
-  changeDimensions: (floatB) ->
-    floatB.css 'box-shadow': 'none'
-    hypo = parseInt Math.sqrt Math.pow($('#paper-header-main')[0].clientHeight - 38, 2) +
-                              Math.pow($('#paper-header-main')[0].clientWidth - 38, 2)
-    floatB.velocity
+  show: ->
+    $(@find('.shade')).addClass('show')
+    $(@find('.new-action')).velocity
       p:
-        width: hypo * 2
-        height: hypo * 2
-        opacity: 0
-        translateX: '50%'
-        translateY: '50%'
+        scaleX: 0
+        scaleY : 0
       o:
-        duration: 350
-        easing: 'linear'
+        duration: 125
+
+    $('.organizations-new-div').velocity
+      p:
+        right: '0'
+      o:
+        duration: 250
+        easing: 'ease-in-out'
+
+    # if $(window).width() >= 1024
+    #   $(@find('.organizations')).velocity
+    #     p:
+    #       'padding-right': '40%'
+    #     o:
+    #       duration: 250
+    #       easing: 'ease-in-out'
+
+  onHide: (event) ->
+    Meteor.setTimeout =>
+      @hide()
+    , 250
+
+  hide: ->
+    shade = @find('.shade')
+    $(shade).css opacity: '0'
+    Meteor.setTimeout =>
+      $(shade).css opacity: ''
+      $(shade).removeClass('show')
+    , 250
+
+
+    $(@find('.new-action')).velocity 'reverse'
+
+    $('.organizations-new-div').velocity
+      p:
+        right: if $(window).width() >= 1024 then '-40%' else '-100%'
+      o:
+        duration: 250
+        easing: 'ease-in-out'
+        complete: =>
+          $('.organizations-new-div').css right: ''
+          @expanded.set false
 
 
 
 
 
-    floatB.find('.plus-icon-div').css visibility: 'hidden'
-
-
-
-  onShrinked: (event) ->
-    @expandedClass.set('card-expand-action')
-    @iconClass.set('add')
-    @expanded.set(false)
 
 
 
 
   events: ->
     super.concat
-      'click .new-action': @onExpand
+      'click .js-show-new': @onShow
+      'click .js-hide-new': @onHide

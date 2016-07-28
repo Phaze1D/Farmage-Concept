@@ -1,3 +1,22 @@
+.organizations
+  & .shade
+    position: absolute
+    left: 0
+    top: 0
+    width: 0
+    height: 0
+    z-index: 1
+    opacity: 0
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: opacity .25s linear
+
+  & .show
+    @media(max-width: 1023px)
+      opacity: 1
+      width: 100%
+      height: 100%
+
+
 .new-action
   position: fixed;
   width: 56px
@@ -5,11 +24,9 @@
   border-radius: 50%
   bottom: 15px;
   right: 15px;
-  z-index: 1;
+  z-index: 2;
   opacity: 1
-  background-color: darkblue
-
-
+  background-color: darkblue;
 
 
 .plus-icon-div
@@ -21,7 +38,6 @@
   justify-content: center;
   z-index: -1
 
-
 .plus-icon
   align-self: center;
   color: white
@@ -29,10 +45,18 @@
 
 .organizations-new-div
   position: absolute;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 1;
-  bottom: 0;
+  right: -40%;
+  top: 0px;
+  width: 40%
+  height: 100%
+  z-index: 2;
   background: white;
   overflow: scroll;
+  box-sizing: border-box;
+  border-left: 1px solid lightgray
+  // transition: all .25s ease-in-out
+  @media (max-width: 1023px){
+    right: -100%
+    width: 100%
+    border-left: none
+  }

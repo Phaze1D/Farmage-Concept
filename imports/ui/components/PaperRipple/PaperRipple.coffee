@@ -30,45 +30,41 @@ class PaperRipple extends BlazeComponent
     ripple = $(event.target).find('.js-ripple')
     ripple.velocity 'stop'
     ripple.velocity(
-      {
+      p:
         translateZ: '0'
         translateX: eoffsetX
         translateY: eoffsetY
-        transformOriginX: '50%'
-        transformOriginY: '50%'
+        transformOriginX: '1px'
+        transformOriginY: '1px'
         scale: 0
         opacity: 0.8
-      },
-      {
+      o:
         duration: 0
-      }
-    ).velocity(
-      {
+
+    ).velocity
+      p:
         scale: Math.sqrt(Math.pow((event.target.offsetWidth / 2) +
                Math.abs( (event.target.offsetWidth / 2) - eoffsetX ), 2) +
                Math.pow((event.target.offsetHeight / 2) +
                Math.abs( (event.target.offsetHeight / 2) - eoffsetY ), 2))
-      },
-      {
+      o:
         duration: 250
-        easing: "easeOutSine"
-      }
-    )
+        easing: "linear"
+
+
 
 
   opacityAnimation: (event) ->
     if @mouseD
       @mouseD = false
-      $(event.target).find('.js-ripple').velocity(
-        {
+      $(event.target).find('.js-ripple').velocity
+        p:
           opacity: [0, .8]
-        },
-        {
+        o:
           duration: 450
-          easing: "easeOutSine"
+          easing: "linear"
           queue: false
-        }
-      )
+
 
 
   events: ->

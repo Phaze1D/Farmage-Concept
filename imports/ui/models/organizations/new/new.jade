@@ -6,8 +6,7 @@ template(name='organizations.new')
   
   form(class="js-organization-new")
   
-  
-    div(class='organization-top elevation-2')
+    div(class='organization-top')
       div(class='input-area')
         div(class='organ-input-div organ-name-div')
           +PaperInput type="text" name="name" label="Organization Name" focusColor="darkblue" size='size-medium'
@@ -17,6 +16,10 @@ template(name='organizations.new')
         +PaperButton classes="save-icon-div" raise=0 rippleOn=true submit=false
           i(class="material-icons")
             | check
+            
+        +PaperButton classes="remove-icon-div js-hide-new" raise=0 rippleOn=true submit=false
+          i(class="material-icons")
+            | clear
         
     
       

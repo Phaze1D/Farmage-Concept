@@ -48,6 +48,7 @@ class PaperCard extends BlazeComponent
         top: "#{pacard.position().top}px"
         left: "#{pacard.position().left}px"
         width: "#{pacard.width()}px"
+        'box-shadow': 'none'
 
         'overflow-y': 'scroll'
       pacard.closest('paper-card').find('.card-ghost').css display: 'block'
@@ -112,6 +113,7 @@ class PaperCard extends BlazeComponent
                 width: ""
                 overflow: ''
                 height: ''
+                'box-shadow': ''
                 'border-radius': ''
       , 250)
 
