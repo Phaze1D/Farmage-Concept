@@ -7,19 +7,20 @@ template(name='organizations.new')
   form(class="js-organization-new")
   
     div(class='organization-top')
+      +PaperButton classes="save-icon-div" raise=0 rippleOn=true submit=false
+        i(class="material-icons")
+          | check
+          
+      +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+        i(class="material-icons")
+          | clear
+          
       div(class='input-area')
         div(class='organ-input-div organ-name-div')
           +PaperInput type="text" name="name" label="Organization Name" focusColor="darkblue" size='size-medium'
         div(class='organ-input-div organ-email-div')
           +PaperInput type="email" name="email" label="Contact Email" focusColor="darkblue"
           
-        +PaperButton classes="save-icon-div" raise=0 rippleOn=true submit=false
-          i(class="material-icons")
-            | check
-            
-        +PaperButton classes="remove-icon-div js-hide-new" raise=0 rippleOn=true submit=false
-          i(class="material-icons")
-            | clear
         
     
       

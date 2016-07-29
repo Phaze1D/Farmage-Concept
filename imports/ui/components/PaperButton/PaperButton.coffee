@@ -15,17 +15,16 @@ class PaperButton extends BlazeComponent
   onRendered: ->
 
   down: (event) ->
-    target = $(event.target)
-    target = target.closest('.paper-button') unless target.is('.paper-button')
+    target = $(@find('.paper-button'))
     if @data().raise isnt 0
-      target.addClass("elevation-#{@data().raise + 1}")
+      target.addClass("elevation-#{@data().elevation + 1}")
 
 
   up: (event) ->
     target = $(event.target)
     target = target.closest('.paper-button') unless target.is('.paper-button')
     if @data().raise isnt 0
-      target.removeClass("elevation-#{@data().raise + 1}")
+      target.removeClass("elevation-#{@data().elevation + 1}")
 
 
   events: ->

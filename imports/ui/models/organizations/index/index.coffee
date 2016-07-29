@@ -17,13 +17,7 @@ class OrganizationsIndex extends BlazeComponent
 
   onShow: (event) ->
     @expanded.set true
-    Meteor.setTimeout =>
-      @show()
-    , 250
-
-
-  show: ->
-    $(@find('.shade')).addClass('show')
+    $('.js-show-right').trigger('click')
     $(@find('.new-action')).velocity
       p:
         scaleX: 0
@@ -31,52 +25,10 @@ class OrganizationsIndex extends BlazeComponent
       o:
         duration: 125
 
-    $('.organizations-new-div').velocity
-      p:
-        right: '0'
-      o:
-        duration: 250
-        easing: 'ease-in-out'
 
-    # if $(window).width() >= 1024
-    #   $(@find('.organizations')).velocity
-    #     p:
-    #       'padding-right': '40%'
-    #     o:
-    #       duration: 250
-    #       easing: 'ease-in-out'
 
   onHide: (event) ->
-    Meteor.setTimeout =>
-      @hide()
-    , 250
-
-  hide: ->
-    shade = @find('.shade')
-    $(shade).css opacity: '0'
-    Meteor.setTimeout =>
-      $(shade).css opacity: ''
-      $(shade).removeClass('show')
-    , 250
-
-
     $(@find('.new-action')).velocity 'reverse'
-
-    $('.organizations-new-div').velocity
-      p:
-        right: if $(window).width() >= 1024 then '-40%' else '-100%'
-      o:
-        duration: 250
-        easing: 'ease-in-out'
-        complete: =>
-          $('.organizations-new-div').css right: ''
-          @expanded.set false
-
-
-
-
-
-
 
 
 

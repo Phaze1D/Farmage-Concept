@@ -13,8 +13,9 @@ class PaperDrawerPanel extends BlazeComponent
     super
     @isWide = new ReactiveVar
     @startVars = {}
+    @ticking = false
 
-    @handleResize = @handleResize.bind(@)
+    @throttle = @throttle.bind(@)
     @scrimHandleMove = @scrimHandleMove.bind(@)
     @scrimHandleStart = @scrimHandleStart.bind(@)
     @scrimHandleEnd = @scrimHandleEnd.bind(@)
@@ -29,11 +30,20 @@ class PaperDrawerPanel extends BlazeComponent
   onRendered: ->
     super
     @handleResize()
-    window.addEventListener 'resize', @handleResize
+    window.addEventListener 'resize', @throttle
+
 
   onDestroyed: ->
     super
-    window.removeEventListener 'resize', @handleResize
+    window.removeEventListener 'resize', @throttle
+
+
+  throttle: (e) ->
+    unless @ticking
+      window.requestAnimationFrame =>
+        @handleResize()
+        @ticking = false;
+    @ticking = true;
 
 
   scrimRemoveEvents: ->
@@ -109,7 +119,7 @@ class PaperDrawerPanel extends BlazeComponent
       complete: =>
         @scrimAddEvents()
         @mainRemoveEvents()
-        
+
     $("#paper-drawer").velocity p, o
 
   closeDrawer: (event) ->

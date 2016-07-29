@@ -23,6 +23,11 @@ class PaperHeaderPanel extends BlazeComponent
     main.addEventListener('scroll', @throttle)
 
 
+  onDestroyed: ->
+    main = document.getElementById('paper-drawer-main')
+    main.removeEventListener('scroll', @throttle)
+
+
   throttle: (e) ->
     unless @ticking
       window.requestAnimationFrame( () =>

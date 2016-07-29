@@ -37,7 +37,7 @@ class PaperRipple extends BlazeComponent
         transformOriginX: '1px'
         transformOriginY: '1px'
         scale: 0
-        opacity: 0.8
+        opacity: 0.5
       o:
         duration: 0
 
@@ -59,7 +59,7 @@ class PaperRipple extends BlazeComponent
       @mouseD = false
       $(event.target).find('.js-ripple').velocity
         p:
-          opacity: [0, .8]
+          opacity: [0, .5]
         o:
           duration: 350
           easing: "linear"

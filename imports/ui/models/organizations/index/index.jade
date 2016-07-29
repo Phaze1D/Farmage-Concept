@@ -1,20 +1,20 @@
 template(name="organizations.index")
 
-  div(class='organizations-new-div')
+  +PaperRightPanel
+    div(class='js-show-right')
     if expanded.get
       +organizations.new
     
   
-  +PaperButton classes="new-action js-show-new" raise=2 rippleOn='true'   
+  +PaperButton classes="new-action js-show-new" elevation=2 rippleOn='true' rippleFill='white'
     div(class='plus-icon-div')
       i(class="material-icons plus-icon")
         | add
   
   div(class="organizations")
+    div(style="height: 5000px; width: 60%; margin: auto; background-color: white ")
   
-    div(class='shade')
-
-      
+    
       
   
   
