@@ -5,8 +5,11 @@
   height: 100%
   right: -35%;
   width: 35%
-  border-left: 1px solid lightgray
+  border-left: none
   z-index: 2;
   background: white;
   overflow-x: hidden;
   box-sizing: border-box;
+
+  @media(min-width: 1024px)
+    border-left: 1px solid lightgray

@@ -18,6 +18,8 @@ class OrganizationsIndex extends BlazeComponent
   onShow: (event) ->
     @expanded.set true
     $('.js-show-right').trigger('click')
+    $('.js-right-content').css opacity: 1
+
     $(@find('.new-action')).velocity
       p:
         scaleX: 0
@@ -29,6 +31,15 @@ class OrganizationsIndex extends BlazeComponent
 
   onHide: (event) ->
     $(@find('.new-action')).velocity 'reverse'
+
+    $('.js-right-content').velocity
+      p:
+        opacity: 0
+      o:
+        duration: 350
+        complete: =>
+          @expanded.set false
+
 
 
 

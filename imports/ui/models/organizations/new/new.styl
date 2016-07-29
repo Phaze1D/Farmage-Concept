@@ -1,6 +1,8 @@
 .input-area
   max-width: 800px
   margin: auto;
+  background-color: inherit;
+  padding-bottom: 18px
 
 .organization-top
   position: relative;
@@ -14,6 +16,8 @@
 
 .organization-bottom
   position: relative;
+  z-index: 1
+  background-color: white
 
 .organ-input-div
   margin-bottom: 5px
@@ -33,21 +37,11 @@
   border-radius: 50%
   display: flex;
   justify-content: center;
-
+  z-index: -1
 
   & i
     align-self: center;
 
 .remove-icon-div
-  position: absolute;
-  left: 0
-  top: 0
-  height: 56px
-  width: 56px
-  background-color: transparent;
-  border-radius: 50%
-  display: flex;
-  justify-content: center;
-
-  & i
-    align-self: center;
+  @extend .save-icon-div
+  right: inherit;

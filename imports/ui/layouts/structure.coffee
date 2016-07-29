@@ -53,68 +53,58 @@ class Structure extends BlazeComponent
     if @enterAnimation
       @enterAnimation = false
       $('#paper-header').velocity(
-        {
+        p:
           top: "0px"
-        },
-        {
+        o:
           duration: 250
           queue: false
-        }
       )
 
       $("#paper-header-main").velocity(
-        {
+        p:
           opacity: '1'
-        },
-        {
+        o:
           duration: 200
           easing: "linear"
           queue: false
-        }
       )
 
   onExitAnimation: () ->
     unless @enterAnimation
       @enterAnimation = true
       $('#scrim').addClass('hide')
+      $('.js-hide-right').trigger('click')
       $('#paper-drawer').velocity(
-        {
+        p:
           left: "-240px"
-        },
-        {
+        o:
           duration: 250
           easing: "ease-in-out"
           queue: false
-        }
       )
 
       $("#paper-drawer-main").velocity(
-        {
+        p:
           left: "0px"
-        },
-        {
+        o:
           duration: 250
           easing: "ease-in-out"
           queue: false
-        }
       )
 
       $("#paper-header-main").velocity(
-        {
+        p:
           opacity: '0'
-        },
-        {
+        o:
           duration: 250
           easing: "linear"
           queue: false
-        }
       )
 
       $('#paper-header').velocity(
-        {
+        p:
           top: "-212px"
-        },
-        {
+        o:
           duration: 250
           queue: false
           complete: ->
@@ -123,7 +113,6 @@ class Structure extends BlazeComponent
             Meteor.logout( (err) ->
               FlowRouter.go 'login' unless err?
             )
-        }
       )
 
 

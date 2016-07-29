@@ -2,8 +2,9 @@ template(name="organizations.index")
 
   +PaperRightPanel
     div(class='js-show-right')
-    if expanded.get
-      +organizations.new
+    div(class="js-right-content")
+      if expanded.get
+        +organizations.new
     
   
   +PaperButton classes="new-action js-show-new" elevation=2 rippleOn='true' rippleFill='white'
