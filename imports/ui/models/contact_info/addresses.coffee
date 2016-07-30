@@ -2,42 +2,104 @@
 require './addresses.jade'
 
 class AddressAdd extends BlazeComponent
-  @register 'address.add'
+  @register 'addresses.add'
 
   constructor: (args) ->
 
   onCreated: ->
     super
-    @iconType = new ReactiveVar 'add_circle'
+    @addresses = new ReactiveVar([])
 
   onRendered: ->
     super
 
-  onAdd: (event) ->
-    @iconType.set 'remove_circle'
-    $(event.target)
-    .closest('.add-contact-info-b')
-    .toggleClass('js-add-address-b')
-    .toggleClass('js-remove-address-b')
-    $(@find('.icon-button')).css color: '#FF3D00'
-    $(@find('.contact-info-inputs')).velocity
+  initHeight: ->
+    if @addresses.get().length > 0
+      return 'auto'
+    return '0px'
+
+  showAddress: (event) ->
+    @addAddress()
+    target = $(@find '.contact-div')
+    target.velocity
       p:
-        height: '300px'
+        height: target.height() + 270
       o:
         duration: 250
         easing: 'linear'
+        complete: ->
+          target.css height: 'auto'
 
-  onRemove: (event) ->
-    $(event.target)
-    .closest('.add-contact-info-b')
-    .toggleClass('js-add-address-b')
-    .toggleClass('js-remove-address-b')
-    @iconType.set 'add_circle'
-    $(@find('.icon-button')).css color: ''
-    $(@find('.contact-info-inputs')).velocity 'reverse'
+
+  addAddress: ->
+    temp = @addresses.get()
+    temp.push name: '', number: ''
+    @addresses.set temp
+
+    if temp.length is 5
+      $('.js-add-address-b').velocity
+        p:
+          opacity: 0
+        o:
+          duration: 200
+          complete: ->
+            $('.js-add-address-b').css display: 'none'
+
+    if temp.length is 1
+      $('.js-add-address-b').css 'padding-top': '0'
+
+
+
+  hideAddress: (event) ->
+    if @addresses.get().length is 1
+      $('.js-add-address-b').css 'padding-top': '30px'
+    $(@find '.contact-div').css height: 'auto'
+    target = $(event.target).closest('.contact-single')
+    index = target.attr('data-index')
+    target.velocity
+      p:
+        height: 0
+      o:
+        duration: 250
+        easing: 'linear'
+        complete: =>
+          $(@find '.contact-div').css height: $(@find '.contact-div').height()
+          target.css height: 'auto'
+          @removeAddress(index)
+
+
+
+
+  removeAddress: (index) ->
+
+    if @addresses.get().length is 5
+      $('.js-add-address-b').css display: 'inline-block'
+      $('.js-add-address-b').velocity
+        p:
+          opacity: 1
+        o:
+          duration: 200
+
+    adds = []
+    for address, i in @addresses.get()
+      if i isnt Number index
+        address.name = $(".index-#{i}").find('[name=address_name]').val()
+        address.street = $(".index-#{i}").find('[name=street]').val()
+        address.street2 = $(".index-#{i}").find('[name=street2]').val()
+        address.city = $(".index-#{i}").find('[name=city]').val()
+        address.state = $(".index-#{i}").find('[name=state]').val()
+        address.zip_code = $(".index-#{i}").find('[name=zip_code]').val()
+        address.country = $(".index-#{i}").find('[name=country]').val()
+
+        adds.push address
+
+    @addresses.set(adds)
+
+
+
 
 
   events: ->
     super.concat
-      'click .js-add-address-b': @onAdd
-      'click .js-remove-address-b': @onRemove
+      'click .js-add-address-b': @showAddress
+      'click .js-remove-address-b': @hideAddress

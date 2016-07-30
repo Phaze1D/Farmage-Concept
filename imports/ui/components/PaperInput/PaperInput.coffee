@@ -51,7 +51,6 @@ class PaperInput extends BlazeComponent
       @float.set('label-hidden')
     else
       @float.set('label-floating')
-      @colorL.set @data().focusColor
 
 
 

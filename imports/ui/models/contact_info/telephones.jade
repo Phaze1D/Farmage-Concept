@@ -1,19 +1,30 @@
-template(name="telephone.add")
-  div(class='button-wrapper')
-    +PaperButton classes="add-contact-info-b js-add-telephone-b" raise=0 rippleOn=false submit=false 
-      div(class="text-div")
-        | Telephone
-      div(class='icon-button')
-        i(class="material-icons")
-          | #{iconType.get}
+template(name="telephone_single")      
+  div(class="contact-single index-#{index}" data-index=index)
+    div(class="telephone-hide")
+      div(class="grid-wrapper")
+        div(class="col-4 p-right")
+          +PaperInput type="text" name="telephone_name" labelFloat='false' label="Name" focusColor="darkblue" value=name
+        
+        div(class="col-8 p-left p-right")
+          +PaperInput type="text" name="number" label="Number" focusColor="darkblue" value=number
           
-  div(class='contact-info-inputs')
-    div(class='contact-info-input-wrapper')
-      div(class='grid-wrapper')
-        div(class="grid-column col-4" style='padding-left: 0')      
-          +PaperInput type="text" name="address_name" labelFloat='false' label="Name" focusColor="darkblue"
-        
-        div(class="grid-column col-8")
-          +PaperInput type="text" name="number" label="Number" focusColor="darkblue" 
-        
+        +PaperButton raise=0 submit=false rippleOn=false classes="js-remove-telephone-b remove-telephone-b"
+          div(class="icon-div")
+            i(class="material-icons icon") remove_circle
+
+
+      
+template(name="telephones.add")
+  
+  div(class="contact-div" style="height: #{initHeight}")
+    each telephones.get
+      +telephone_single index=@index name=name number=number
+    
+  
+      
+  +PaperButton raise=0 submit=false rippleOn=false classes="js-add-telephone-b button-wrapper"
+    div(class="add-telephone-b")
+      div(class="text-div") Telephone
+      div(class="icon-div")
+        i(class="material-icons icon") add_circle
   

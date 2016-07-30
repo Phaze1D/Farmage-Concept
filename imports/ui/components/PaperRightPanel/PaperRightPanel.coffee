@@ -21,12 +21,7 @@ class PaperRightPanel extends BlazeComponent
 
 
   throttle: (e) ->
-    unless @ticking
-      window.requestAnimationFrame( () =>
-        @handleResize()
-        @ticking = false
-      )
-    @ticking = true;
+    @handleResize()
 
 
   handleResize: ->
@@ -62,7 +57,6 @@ class PaperRightPanel extends BlazeComponent
     @opened = true
     $('#scrim').css 'z-index': 1
     $('#scrim').addClass('show').removeClass('hide')
-    $("#paper-drawer-main").removeClass('move-foward').addClass('move-back')
     @rightPanel.velocity
       p:
         width: window.innerWidth
@@ -71,6 +65,7 @@ class PaperRightPanel extends BlazeComponent
         duration: 350
         easing: 'ease-in-out'
         complete: =>
+          $("#paper-drawer-main").removeClass('move-foward').addClass('move-back')
           @rightPanel.css width: '100%'
 
 
@@ -111,10 +106,22 @@ class PaperRightPanel extends BlazeComponent
 
 
 
+  onFocusIn: (event) ->
+    $("#paper-header").css 'background-color': '#E0E0E0'
+    $("#paper-header-main").css 'background-color': '#F5F5F5'
+    $("#right-top").css 'background-color': '#eee'
+    $('#paper-right-panel').css 'background-color': 'white'
 
+  onFocusOut: (event) ->
+    $("#paper-header").css 'background-color': '#EEE'
+    $("#paper-header-main").css 'background-color': 'white'
+    $("#right-top").css 'background-color': '#E0E0E0'
+    $('#paper-right-panel').css 'background-color': '#F5F5F5'
 
 
   events: ->
     super.concat
       'click .js-show-right': @onShow
       'click .js-hide-right': @onHide
+      # 'focusin #paper-right-panel': @onFocusIn
+      # 'focusout #paper-right-panel': @onFocusOut

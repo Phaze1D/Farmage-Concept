@@ -5,8 +5,8 @@ template(name='organizations.new')
   //- Add Telephone button
   form(class="js-organization-new-form")
   
-    div(class='organization-top')
-      +PaperButton classes="save-icon-div" raise=0 rippleOn=true submit=false
+    div(id='right-top' class='organization-top')
+      +PaperButton classes="save-icon-div js-submit-new-organ" raise=0 rippleOn=true submit=true
         i(class="material-icons")
           | check
           
@@ -25,11 +25,16 @@ template(name='organizations.new')
       
     div(class='organization-bottom')
       div(class='input-area')
-        div(class="organ-input-div add-contact-info")
-          +telephone.add
+      
+        div(class="organ-input-div")
+          +telephones.add
           
-        div(class="organ-input-div add-contact-info")
-          +address.add
+        div(class="organ-input-div")
+          +addresses.add
+      
+          
+          
+        
         
       
         
