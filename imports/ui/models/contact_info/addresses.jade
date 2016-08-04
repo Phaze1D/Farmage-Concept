@@ -1,5 +1,5 @@
 template(name="address_single")
-  div(class="contact-single index-#{index}" data-index=index style="padding-bottom: 30px")
+  div(class="contact-single index-#{index} address-form" data-index=index style="padding-bottom: 30px")
     div(class="address-hide")
       div(class="grid-wrapper")
         div(class="col-4 p-right" style="align-self: center")      
@@ -30,7 +30,7 @@ template(name="addresses.add")
     each addresses.get
       +address_single index=@index name=name street=street street2=street2 city=city state=state zip_code=zip_code country=country
 
-  +PaperButton raise=0 submit=false rippleOn=false classes="js-add-address-b button-wrapper"
+  +PaperButton raise=0 submit=false rippleOn=true classes="js-add-address-b button-wrapper"
     div(class="add-telephone-b")
       div(class="text-div") Address
       div(class="icon-div")

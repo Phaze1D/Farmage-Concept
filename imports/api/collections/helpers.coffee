@@ -234,6 +234,12 @@ OrganizationModule.Organizations.helpers
         return user
     return
 
+  founder: ->
+    for ouser in @ousers
+      if ouser.permission.founder
+        return ouser
+    return
+
 
 # Unit Helpers
 UnitModule.Units.helpers

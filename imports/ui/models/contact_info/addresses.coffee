@@ -46,13 +46,14 @@ class AddressAdd extends BlazeComponent
             $('.js-add-address-b').css display: 'none'
 
     if temp.length is 1
-      $('.js-add-address-b').css 'padding-top': '0'
+      $('.js-add-address-b').css 'margin-top': '0'
 
 
 
   hideAddress: (event) ->
     if @addresses.get().length is 1
-      $('.js-add-address-b').css 'padding-top': '30px'
+      $('.js-add-address-b').css 'margin-top': '30px'
+
     $(@find '.contact-div').css height: 'auto'
     target = $(event.target).closest('.contact-single')
     index = target.attr('data-index')

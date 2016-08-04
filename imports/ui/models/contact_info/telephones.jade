@@ -1,5 +1,5 @@
 template(name="telephone_single")      
-  div(class="contact-single index-#{index}" data-index=index)
+  div(class="contact-single index-#{index} telephone-form" data-index=index)
     div(class="telephone-hide")
       div(class="grid-wrapper")
         div(class="col-4 p-right")
@@ -22,7 +22,7 @@ template(name="telephones.add")
     
   
       
-  +PaperButton raise=0 submit=false rippleOn=false classes="js-add-telephone-b button-wrapper"
+  +PaperButton raise=0 submit=false rippleOn=true classes="js-add-telephone-b button-wrapper"
     div(class="add-telephone-b")
       div(class="text-div") Telephone
       div(class="icon-div")

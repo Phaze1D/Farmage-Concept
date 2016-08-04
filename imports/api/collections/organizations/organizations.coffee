@@ -19,6 +19,10 @@ class OrganizationsCollection extends Mongo.Collection
 
 PermissionSchema = exports.PermissionSchema =
   new SimpleSchema(
+    founder:
+      type: Boolean
+      defaultValue: false
+
     owner:
       type: Boolean
       defaultValue: false
@@ -79,6 +83,7 @@ OrganizationSchema =
           sub_doc =
             user_id: @userId
             permission:
+              founder: true
               owner: true
               viewer: true
               users_manager: true

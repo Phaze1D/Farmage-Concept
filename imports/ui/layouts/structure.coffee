@@ -10,6 +10,7 @@ class Structure extends BlazeComponent
 
   onCreated: ->
     @enterAnimation = true
+
     @autorun =>
       @subscribe "organizations",
         onStop: (err) ->
@@ -115,8 +116,16 @@ class Structure extends BlazeComponent
             )
       )
 
+  onChangeRoute: (event) ->
+    event.preventDefault()
+    unless FlowRouter.getRouteName() is $(event.target).attr 'href'
+      # Animate page change
+      $("#paper-drawer-main").css 'padding-right': ''
+      FlowRouter.go $(event.target).attr 'href'
+
 
   events: ->
     super.concat
       'click .js-logout': @onLogout
       'click .js-test-home': @testhome
+      'click a': @onChangeRoute

@@ -1,8 +1,4 @@
-template(name='organizations.new')
-  //- name
-  //- contact email
-  //- Add Address button
-  //- Add Telephone button
+template(name='organizationsNew')
   form(class="js-organization-new-form")
   
     div(id='right-top' class='organization-top')
@@ -16,9 +12,9 @@ template(name='organizations.new')
           
       div(class='input-area')
         div(class='organ-input-div organ-name-div')
-          +PaperInput type="text" name="name" label="Organization Name" focusColor="darkblue" size='size-medium'
+          +PaperInput type="text" name="company_name" label="Organization Name" focusColor="darkblue" size='size-medium'
         div(class='organ-input-div organ-email-div')
-          +PaperInput type="email" name="email" label="Contact Email" focusColor="darkblue"
+          +PaperInput type="text" name="email" label="Contact Email" focusColor="darkblue"
           
         
     

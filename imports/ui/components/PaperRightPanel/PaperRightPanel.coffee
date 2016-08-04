@@ -52,11 +52,21 @@ class PaperRightPanel extends BlazeComponent
         complete: =>
           @rightPanel.css width: '35%'
 
+    $('#paper-drawer-main').velocity
+      p:
+        'padding-right': (window.innerWidth * .35).toFixed(0)
+      o:
+        duration: 350
+        easing: 'ease-in-out'
+        complete: =>
+          $('#paper-drawer-main').css 'padding-right': '35%'
+
 
   showFull: ->
     @opened = true
     $('#scrim').css 'z-index': 1
     $('#scrim').addClass('show').removeClass('hide')
+    $('#paper-drawer-main').css 'padding-right': '0'
     @rightPanel.velocity
       p:
         width: window.innerWidth
@@ -88,10 +98,19 @@ class PaperRightPanel extends BlazeComponent
           @rightPanel.css width: '35%'
           @rightPanel.css right: '-35%'
 
+    $('#paper-drawer-main').velocity
+      p:
+        'padding-right': 0
+      o:
+        duration: 250
+        easing: 'ease-in-out'
+
+
 
   hideFull: ->
     @opened = false
-    $('#scrim').addClass('hide').removeClass('show')
+    $('#paper-drawer-main').css 'padding-right': '0'
+    $('#scrim').addClass('hide')
     $("#paper-drawer-main").removeClass('move-back').addClass('move-foward')
     @rightPanel.velocity
       p:
@@ -100,6 +119,7 @@ class PaperRightPanel extends BlazeComponent
         duration: 250
         easing: 'ease-in-out'
         complete: =>
+          $('#scrim').removeClass('show')
           $('#scrim').css 'z-index': 2
           @rightPanel.css width: '100%'
           @rightPanel.css right: '-100%'

@@ -25,7 +25,7 @@ class PaperHeaderPanel extends BlazeComponent
 
   onDestroyed: ->
     main = document.getElementById('paper-drawer-main')
-    main.removeEventListener('scroll', @throttle)
+    main.removeEventListener('scroll', @throttle) if main?
 
 
   throttle: (e) ->

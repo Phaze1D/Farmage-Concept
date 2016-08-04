@@ -37,7 +37,7 @@ class PaperCard extends BlazeComponent
   expand: (event) ->
 
     unless @expanded
-      $(@find('.card-ghost')).css height: $(@find('.paper-card')).height()
+      $(@find('.card-ghost')).css height: $(@find('.paper-card')).innerHeight()
       @expanded = true
       pacard = $(event.target).closest('.paper-card')
       $('#paper-drawer-main').css overflow: 'hidden'
@@ -47,14 +47,15 @@ class PaperCard extends BlazeComponent
         'z-index': 1
         top: "#{pacard.position().top}px"
         left: "#{pacard.position().left}px"
-        width: "#{pacard.width()}px"
-        'box-shadow': 'none'
+        width: "#{pacard.innerWidth()}px"
+        height: "#{pacard.innerHeight()}px"
 
-        'overflow-y': 'scroll'
+
       pacard.closest('paper-card').find('.card-ghost').css display: 'block'
 
       Meteor.setTimeout =>
-        @data().callbacks.onExpandCallback()
+        # @data().callbacks.onExpandCallback()
+        pacard.css 'box-shadow': 'none'
         pacard.velocity
           p:
             left: 0
@@ -99,11 +100,11 @@ class PaperCard extends BlazeComponent
           p:
             'border-radius': @borderR
           o:
-            duration: 450
+            duration: 250
             easing: 'easeInBack'
             queue: false
             complete: (elements) =>
-              @data().callbacks.onShinkedCallback()
+              # @data().callbacks.onShinkedCallback()
               pacard.closest('paper-card').find('.card-ghost').css display: 'none'
               pacard.css
                 position: ''

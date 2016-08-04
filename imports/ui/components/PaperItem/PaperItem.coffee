@@ -14,12 +14,15 @@ class PaperItem extends BlazeComponent
 
   toggleItem: (event) ->
     PI = @
-    $back = $(event.target).closest('.paper-item').find('.item-back')
-    @focus($back, event) if $back.css('right') isnt '0px'
+    back = $(event.target).closest('.paper-item').find('.item-back')
+
+    if back.attr('focused') is 'false'
+      @focus back, event
+    
+
     $('.item-back').each ->
-      $this = $(@)
-      if !($this.is($back)) && $this.attr('focused') is 'true'
-        PI.unfocus($this)
+      if !( $(@).is back ) && $(@).attr('focused') is 'true'
+        PI.unfocus($(@))
 
 
 
@@ -37,23 +40,21 @@ class PaperItem extends BlazeComponent
   animation1: ($target, event) ->
     $target.css 'background-color': @focusColor
     $target.velocity(
-      {
+      p:
         right: event.target.clientWidth - event.offsetX
         left: event.offsetX
-      },
-      {
+      o:
         duration: 0
         easing: "ease-in-out"
-      }
+
     ).velocity(
-      {
+      p:
         right: 0
         left: 0
-      },
-      {
+      o:
         duration: 150
         easing: "ease-in-out"
-      }
+
     )
 
   animation2: ($target, events) ->

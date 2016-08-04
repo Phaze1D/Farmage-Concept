@@ -4,7 +4,7 @@ template(name="organizations.index")
     div(class='js-show-right')
     div(class="js-right-content")
       if expanded.get
-        +organizations.new
+        +organizationsNew
     
   
   +PaperButton classes="new-action js-show-new" elevation=2 rippleOn='true' rippleFill='white'
@@ -13,8 +13,48 @@ template(name="organizations.index")
         | add
   
   div(class="organizations")
-    //- div(style="height: 5000px; width: 60%; margin: auto; background-color: white ")
-  
+    div(class='container-fluid')
+      div(class='row')
+        each organization in organizations
+          div(class='col-xs-12 col-sm-6 col-lg-3 card-margin')
+            +PaperCard elevation=1 classes="card"
+              +PaperButton elevation=0 rippleOn=true raise=0 classes='icon-div'
+                i(class="material-icons") share
+                
+              //- div.row
+              //-   div(class='col-xs-12 image-col')
+              //-     div.image-header
+                    
+                
+              div.row
+                div(class='col-xs-12')
+                  h2.title.card-expand-action
+                    | #{organization.name}
+              div.row
+                div(class="col-xs-12")
+                  div.subtitle.card-shrink-action
+                    with founder organization
+                      | #{profile.first_name} #{profile.last_name}
+              
+              div.row
+                div(class="col-xs-12")
+                  div.divider
+              
+              div.row
+                div(class="col-xs-12")
+                  //- +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
+                  //-   | Events
+                    
+                  +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
+                    | Subscription
+                    
+              
+              //- Name 
+              //- Owner
+              //- Invite User
+              //
+        
+      
     
       
   
