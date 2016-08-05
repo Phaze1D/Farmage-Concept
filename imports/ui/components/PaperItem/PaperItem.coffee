@@ -8,9 +8,8 @@ class PaperItem extends BlazeComponent
     super
     @instant = @data().instant
     @animationType = @data().animationType
-    @focusColor = '#eceff1' unless @data().focusColor?
-    @unfocusColor = 'black' unless @data().unfocusColor?
     @classes = @data().classes
+    @data().unfocusColor = 'black' unless @data().unfocusColor?
 
   toggleItem: (event) ->
     PI = @
@@ -18,7 +17,7 @@ class PaperItem extends BlazeComponent
 
     if back.attr('focused') is 'false'
       @focus back, event
-    
+
 
     $('.item-back').each ->
       if !( $(@).is back ) && $(@).attr('focused') is 'true'
@@ -38,7 +37,7 @@ class PaperItem extends BlazeComponent
 
 
   animation1: ($target, event) ->
-    $target.css 'background-color': @focusColor
+    $target.css 'background-color': @data().focusColor
     $target.velocity(
       p:
         right: event.target.clientWidth - event.offsetX
@@ -58,14 +57,14 @@ class PaperItem extends BlazeComponent
     )
 
   animation2: ($target, events) ->
-    $target.closest('.paper-item').css color: @focusColor
+    $target.closest('.paper-item').css color: @data().focusColor
 
   unfocus: ($target) ->
     $target.css
       right: ''
       left: ''
-      'background-color': @unfocusColor
-    $target.closest('.paper-item').css color: @unfocusColor
+      'background-color': @data().unfocusColor
+    $target.closest('.paper-item').css color: @data().unfocusColor
     $target.attr('focused', false)
 
   events: ->

@@ -21,89 +21,89 @@ template(name="structure")
           if subscriptionsReady
             +PaperMenu
               .menu-item
-                +PaperItem classes='drawer-item toggle-drawer'
+                +PaperItem classes='drawer-item toggle-drawer' focusColor='lightgrey'
                   a(href="home")
                     | Home
             
             +PaperMenu
               .menu-item
-                +PaperItem classes='drawer-item toggle-drawer'
+                +PaperItem classes='drawer-item toggle-drawer' focusColor='lightgrey'
                   a(href="#")
                     | Profile
                 
             +PaperMenu
               .menu-item
-                +PaperItem classes=organizationClasses
+                +PaperItem classes=organizationClasses focusColor='lightgrey'
                   a(href="organizations.index")
                     | Organizations
                 
                 .sub-menu
                   each organization in organizations
                     .menu-item
-                      +PaperItem classes="organ-name"
-                        a(href="#")
+                      +PaperItem classes="organ-name" focusColor='lightgrey'
+                        a(href="/organizations/:organization_id" data-organ="#{organization._id}")
                           | #{organization.name}
                       .sub-menu
                         if permission 'sells_manager' organization._id
                           .menu-item
                             +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
-                              a(href="#")
+                              a(href="/organizations/:organization_id/customers/index" data-organ="#{organization._id}")
                                 | Customers
                               
                           .menu-item
                             +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
-                              a(href="#")
+                              a(href="/organizations/:organization_id/sells/index" data-organ="#{organization._id}")
                                 | Sells
                         
                         if permission 'owner' organization._id  
                           .menu-item
                             +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
-                              a(href="#")
+                              a(href="/organizations/:organization_id/events/index" data-organ="#{organization._id}")
                                 | Events
                         
                         if permission 'expenses_manager' organization._id
                           .menu-item
                             +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
-                              a(href="#")
+                              a(href="/organizations/:organization_id/expenses/index" data-organ="#{organization._id}")
                                 | Expenses
                           
                           .menu-item
                             +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
-                              a(href="#")
+                              a(href="/organizations/:organization_id/providers/index" data-organ="#{organization._id}")
                                 | Providers
                         
                         if permission 'owner' organization._id  
                           .menu-item
                             +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
-                              a(href="#")
+                              a(href="/organizations/:organization_id/ingredients/index" data-organ="#{organization._id}")
                                 | Ingredients
                         
                         if permission 'inventories_manager' organization._id
                           .menu-item
                             +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
-                              a(href="#")
+                              a(href="/organizations/:organization_id/inventories/index" data-organ="#{organization._id}")
                                 | Inventories
                               
                           .menu-item
                             +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
-                              a(href="#")
+                              a(href="/organizations/:organization_id/products/index" data-organ="#{organization._id}")
                                 | Products
                         
                         if permission 'units_manager' organization._id  
                           .menu-item
                             +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
-                              a(href="#")
+                              a(href="/organizations/:organization_id/units/index" data-organ="#{organization._id}")
                                 | Units
                               
                           .menu-item
                             +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
-                              a(href="#")
+                              a(href="/organizations/:organization_id/yields/index" data-organ="#{organization._id}")
                                 | Yields
                             
                         if permission 'users_manager' organization._id
                           .menu-item
                             +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='deepskyblue'
-                              a(href="#")
+                              a(href="/organizations/:organization_id/ousers/index" data-organ="#{organization._id}")
                                 | Users
               
               

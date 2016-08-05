@@ -35,6 +35,7 @@ class PaperRightPanel extends BlazeComponent
 
 
   onShow: (event) ->
+
     if window.innerWidth >= 1024
       @showSmall()
     else
@@ -49,17 +50,26 @@ class PaperRightPanel extends BlazeComponent
       o:
         duration: 350
         easing: 'ease-in-out'
+        mobileHA: false
+        progress: (elements, complete, remaining, start, tweenValue) =>
+          if @data().callbacks? && @data().callbacks.progressCallback?
+            @data().callbacks.progressCallback()
+
         complete: =>
           @rightPanel.css width: '35%'
+          if @data().callbacks? && @data().callbacks.showCallBack?
+            @data().callbacks.showCallBack()
 
     $('#paper-drawer-main').velocity
       p:
         'padding-right': (window.innerWidth * .35).toFixed(0)
       o:
         duration: 350
+        mobileHA: false
         easing: 'ease-in-out'
         complete: =>
           $('#paper-drawer-main').css 'padding-right': '35%'
+
 
 
   showFull: ->
@@ -77,6 +87,8 @@ class PaperRightPanel extends BlazeComponent
         complete: =>
           $("#paper-drawer-main").removeClass('move-foward').addClass('move-back')
           @rightPanel.css width: '100%'
+          if @data().callbacks? && @data().callbacks.showCallBack?
+            @data().callbacks.showCallBack()
 
 
   onHide: (event) ->
@@ -94,15 +106,23 @@ class PaperRightPanel extends BlazeComponent
       o:
         duration: 250
         easing: 'ease-in-out'
+        mobileHA: false
+        progress: (elements, complete, remaining, start, tweenValue) =>
+          if @data().callbacks? && @data().callbacks.progressCallback?
+            @data().callbacks.progressCallback()
+            
         complete: =>
           @rightPanel.css width: '35%'
           @rightPanel.css right: '-35%'
+          if @data().callbacks? && @data().callbacks.hideCallBack?
+            @data().callbacks.hideCallBack()
 
     $('#paper-drawer-main').velocity
       p:
         'padding-right': 0
       o:
         duration: 250
+        mobileHA: false
         easing: 'ease-in-out'
 
 
@@ -123,6 +143,8 @@ class PaperRightPanel extends BlazeComponent
           $('#scrim').css 'z-index': 2
           @rightPanel.css width: '100%'
           @rightPanel.css right: '-100%'
+          if @data().callbacks? && @data().callbacks.hideCallBack?
+            @data().callbacks.hideCallBack()
 
 
 

@@ -121,7 +121,13 @@ class Structure extends BlazeComponent
     unless FlowRouter.getRouteName() is $(event.target).attr 'href'
       # Animate page change
       $("#paper-drawer-main").css 'padding-right': ''
-      FlowRouter.go $(event.target).attr 'href'
+      a = $(event.target)
+      params = {}
+
+      params.organization_id = a.attr('data-organ') if a.attr('data-organ')?
+      params.child_id = a.attr('data-child') if a.attr('data-child')?
+
+      FlowRouter.go a.attr('href'), params
 
 
   events: ->

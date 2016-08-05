@@ -1,0 +1,12 @@
+template(name='yields.index')
+  +PaperRightPanel callbacks=rightCallbacks
+    div(class='js-show-right')
+    div(class="js-right-content")
+      if expanded.get
+        +yieldsNew
+    
+
+  +PaperButton classes="new-action js-show-new" elevation=2 rippleOn='true' rippleFill='white'
+    div(class='plus-icon-div')
+      i(class="material-icons plus-icon")
+        | add
