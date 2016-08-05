@@ -6,4 +6,4 @@ class IngredientsIndex extends IndexMixin
   @register 'ingredients.index'
 
   constructor: (args) ->
-    # body...
+    super

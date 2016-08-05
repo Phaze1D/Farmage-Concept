@@ -6,3 +6,4 @@ class ProvidersIndex extends IndexMixin
   @register 'providers.index'
 
   constructor: (args) ->
+    super

@@ -6,3 +6,4 @@ class YieldsIndex extends IndexMixin
   @register 'yields.index'
 
   constructor: (args) ->
+    super

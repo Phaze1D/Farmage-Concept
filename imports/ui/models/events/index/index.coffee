@@ -6,3 +6,4 @@ class EventsIndex extends IndexMixin
   @register 'events.index'
 
   constructor: (args) ->
+    super

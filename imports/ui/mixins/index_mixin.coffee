@@ -3,6 +3,7 @@
 class IndexMixin extends BlazeComponent
 
   constructor: (args) ->
+    super
     @throttle = @throttle.bind(@)
 
   onCreated: ->

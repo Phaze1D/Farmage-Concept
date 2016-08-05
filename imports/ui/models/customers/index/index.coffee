@@ -6,3 +6,4 @@ class CustomersIndex extends IndexMixin
   @register 'customers.index'
 
   constructor: (args) ->
+    super

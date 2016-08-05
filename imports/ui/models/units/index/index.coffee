@@ -6,3 +6,4 @@ class UnitsIndex extends IndexMixin
   @register 'units.index'
 
   constructor: (args) ->
+    super

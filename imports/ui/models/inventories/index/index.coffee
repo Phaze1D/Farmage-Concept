@@ -6,3 +6,4 @@ class InventoriesIndex extends IndexMixin
   @register 'inventories.index'
 
   constructor: (args) ->
+    super

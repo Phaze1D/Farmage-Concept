@@ -6,3 +6,4 @@ class SellsIndex extends IndexMixin
   @register 'sells.index'
 
   constructor: (args) ->
+    super
