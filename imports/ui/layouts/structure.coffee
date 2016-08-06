@@ -51,6 +51,7 @@ class Structure extends BlazeComponent
     @onExitAnimation()
 
   onEnterAnimation: () ->
+    
     if @enterAnimation
       @enterAnimation = false
       $('#paper-header').velocity(

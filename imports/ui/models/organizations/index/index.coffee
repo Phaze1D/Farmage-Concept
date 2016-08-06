@@ -7,7 +7,13 @@ require './index.jade'
 class OrganizationsIndex extends IndexMixin
   @register 'organizations.index'
 
+
+  onRendered: ->
+    super
+
+
   organizations: ->
+    @resizeCard()
     OrganizationModule.Organizations.find()
 
   founder: (organization) ->

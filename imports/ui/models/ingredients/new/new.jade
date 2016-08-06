@@ -1,0 +1,26 @@
+template(name="ingredientsNew")
+  form(class="js-organization-new-form")
+
+    div(id='right-top' class='organization-top')
+      +PaperButton classes="save-icon-div js-submit-new-organ" raise=0 rippleOn=true submit=true
+        i(class="material-icons")
+          | check
+          
+      +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+        i(class="material-icons")
+          | clear
+          
+      div(class='input-area')
+        h2
+          | New Resource
+          
+          
+      
+    
+    div(class='organization-bottom')
+      div(class='input-area')
+        div(class='organ-input-div organ-name-div')
+          +PaperInput type="text" name="company_name" label="Name" focusColor="darkblue" size='size-medium'
+        div(class='organ-input-div organ-email-div')
+          +PaperInput type="text" name="email" label="Measurement Unit" focusColor="darkblue"
+          
