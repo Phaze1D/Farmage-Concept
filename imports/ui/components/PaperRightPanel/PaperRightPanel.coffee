@@ -9,7 +9,7 @@ class PaperRightPanel extends BlazeComponent
     @ticking = false
 
   onRendered: ->
-    @headerMain = $('#paper-header-main')
+    @headerMain = $("#paper-drawer-main")
     @rightPanel = $('#paper-right-panel')
     @opened = false
     @wide = if window.innerWidth >= 1024 then true else false
@@ -60,7 +60,7 @@ class PaperRightPanel extends BlazeComponent
           if @data().callbacks? && @data().callbacks.showCallBack?
             @data().callbacks.showCallBack()
 
-    $('#paper-drawer-main').velocity
+    @headerMain.velocity
       p:
         'padding-right': (window.innerWidth * .35).toFixed(0)
       o:
@@ -68,7 +68,7 @@ class PaperRightPanel extends BlazeComponent
         mobileHA: false
         easing: 'ease-in-out'
         complete: =>
-          $('#paper-drawer-main').css 'padding-right': '35%'
+          @headerMain.css 'padding-right': '35%'
 
 
 
@@ -76,7 +76,7 @@ class PaperRightPanel extends BlazeComponent
     @opened = true
     $('#scrim').css 'z-index': 1
     $('#scrim').addClass('show').removeClass('hide')
-    $('#paper-drawer-main').css 'padding-right': '0'
+    @headerMain.css 'padding-right': '0'
     @rightPanel.velocity
       p:
         width: window.innerWidth
@@ -85,7 +85,7 @@ class PaperRightPanel extends BlazeComponent
         duration: 350
         easing: 'ease-in-out'
         complete: =>
-          $("#paper-drawer-main").removeClass('move-foward').addClass('move-back')
+          @headerMain.removeClass('move-foward').addClass('move-back')
           @rightPanel.css width: '100%'
           if @data().callbacks? && @data().callbacks.showCallBack?
             @data().callbacks.showCallBack()
@@ -110,14 +110,14 @@ class PaperRightPanel extends BlazeComponent
         progress: (elements, complete, remaining, start, tweenValue) =>
           if @data().callbacks? && @data().callbacks.progressCallback?
             @data().callbacks.progressCallback()
-            
+
         complete: =>
           @rightPanel.css width: '35%'
           @rightPanel.css right: '-35%'
           if @data().callbacks? && @data().callbacks.hideCallBack?
             @data().callbacks.hideCallBack()
 
-    $('#paper-drawer-main').velocity
+    @headerMain.velocity
       p:
         'padding-right': 0
       o:
@@ -129,9 +129,9 @@ class PaperRightPanel extends BlazeComponent
 
   hideFull: ->
     @opened = false
-    $('#paper-drawer-main').css 'padding-right': '0'
+    @headerMain.css 'padding-right': '0'
     $('#scrim').addClass('hide')
-    $("#paper-drawer-main").removeClass('move-back').addClass('move-foward')
+    @headerMain.removeClass('move-back').addClass('move-foward')
     @rightPanel.velocity
       p:
         right: (-@rightPanel.width()).toFixed(0)

@@ -51,10 +51,10 @@ class Structure extends BlazeComponent
     @onExitAnimation()
 
   onEnterAnimation: () ->
-    
+
     if @enterAnimation
       @enterAnimation = false
-      $('#paper-header').velocity(
+      $('#root-paper-header').velocity(
         p:
           top: "0px"
         o:
@@ -62,7 +62,7 @@ class Structure extends BlazeComponent
           queue: false
       )
 
-      $("#paper-header-main").velocity(
+      $("#root-paper-header-main").velocity(
         p:
           opacity: '1'
         o:
@@ -94,7 +94,7 @@ class Structure extends BlazeComponent
           queue: false
       )
 
-      $("#paper-header-main").velocity(
+      $("#root-paper-header-main").velocity(
         p:
           opacity: '0'
         o:
@@ -103,7 +103,7 @@ class Structure extends BlazeComponent
           queue: false
       )
 
-      $('#paper-header').velocity(
+      $('#root-paper-header').velocity(
         p:
           top: "-212px"
         o:
@@ -134,5 +134,4 @@ class Structure extends BlazeComponent
   events: ->
     super.concat
       'click .js-logout': @onLogout
-      'click .js-test-home': @testhome
       'click a': @onChangeRoute

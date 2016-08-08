@@ -3,8 +3,12 @@ template(name="organizations.index")
   +PaperRightPanel callbacks=rightCallbacks
     div(class='js-show-right')
     div(class="js-right-content")
-      if expanded.get
-        +organizationsNew
+    if expanded.get
+      +PaperHeaderPanel id="right"
+        +PaperHeader id="right"
+        
+        +PaperHeaderMain id="right"
+          +organizationsNew
     
   
   +PaperButton classes="new-action js-show-new" elevation=2 rippleOn='true' rippleFill='white'

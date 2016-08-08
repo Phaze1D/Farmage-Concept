@@ -1,11 +1,11 @@
 
-paper-header-panel
+.paper-header-panel
   width: 100%
-  height: 100%
+  max-height: 100vh
   overflow: auto
 
-#paper-header
-  position: fixed
+.paper-header
+  position: absolute;
   width: 100%
   height: 212px
   background-color: #fff
@@ -13,27 +13,26 @@ paper-header-panel
   top: 0
   z-index: 1
 
-#header-small
+.header-small
   position: relative
   width: 100%
   height: 64px
   z-index: 1
 
 
-#header-large
+.header-large
   position: relative
   width: 100%
   height: 148px
 
 
 
-#paper-header-main
+.paper-header-main
   padding-top: 212px
   position: relative;
   box-sizing: border-box;
   min-height: 100vh
   background-color: #eee
-  opacity: 0
   overflow-x: hidden;
 
 
@@ -47,4 +46,4 @@ paper-header-panel
   z-index: 2
 
 .header-main.content
-  padding: 15px 8px
+  padding: 15px 8px 0

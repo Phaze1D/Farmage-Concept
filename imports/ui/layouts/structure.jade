@@ -111,10 +111,10 @@ template(name="structure")
         div(class='drawer-button')
         
     +PaperDrawerMain
-      +PaperHeaderPanel
-        +PaperHeader
+      +PaperHeaderPanel id="root"
+        +PaperHeader id="root" classes="header-start"
         
         
-        +PaperHeaderMain
+        +PaperHeaderMain id="root" classes="headermain-start"
           +Template.dynamic template=headermain
   

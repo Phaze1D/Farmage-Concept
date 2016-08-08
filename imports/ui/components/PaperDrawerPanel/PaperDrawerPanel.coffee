@@ -29,7 +29,7 @@ class PaperDrawerPanel extends BlazeComponent
 
   onRendered: ->
     super
-    @handleResize()
+    @handleResize(0)
     window.addEventListener 'resize', @throttle
 
 
@@ -84,13 +84,13 @@ class PaperDrawerPanel extends BlazeComponent
     $("#paper-drawer-main").removeClass('move-foward').addClass('move-back')
     $('#scrim').addClass('show').removeClass('hide') if @isWide.get()? && !@isWide.get()
 
-  handleResize: ->
+  handleResize: (duration = 250) ->
     if window.innerWidth < 1024 && (!@isWide.get()? || @isWide.get())
       $("#paper-drawer").removeClass('elevation-0')
       p =
         left: "0px"
       o =
-        duration: 250
+        duration: duration
 
       $("#paper-drawer-main").velocity p,o
       @isWide.set false
@@ -102,7 +102,7 @@ class PaperDrawerPanel extends BlazeComponent
       p =
         left: "240px"
       o =
-        duration: 250
+        duration: duration
         easing: 'ease-in-out'
 
       $("#paper-drawer-main").velocity p, o

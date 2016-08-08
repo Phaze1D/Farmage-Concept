@@ -40,7 +40,7 @@ class PaperCard extends BlazeComponent
       $(@find('.card-ghost')).css height: $(@find('.paper-card')).innerHeight()
       @expanded = true
       pacard = $(event.target).closest('.paper-card')
-      $('#paper-drawer-main').css overflow: 'hidden'
+      $(event.target).closest('.paper-header-panel').css overflow: 'hidden'
       @borderR = pacard.css('border-radius')
       pacard.css
         position: 'absolute'
@@ -59,7 +59,7 @@ class PaperCard extends BlazeComponent
         pacard.velocity
           p:
             left: 0
-            top: $('#paper-drawer-main').scrollTop()
+            top: $(event.target).closest('.paper-header-panel').scrollTop()
             width: '100%'
             height: '100vh'
           o:
@@ -85,7 +85,7 @@ class PaperCard extends BlazeComponent
     if @expanded
       @expanded = false
       $('.paper-card').css visibility: 'visible'
-      $('#paper-drawer-main').css overflow: 'auto'
+      $(event.target).closest('.paper-header-panel').css overflow: 'auto'
       pacard = $(event.target).closest('.paper-card')
 
       pacard.find('.card-ripple:first').trigger 'click', [

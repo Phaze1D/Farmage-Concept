@@ -19,12 +19,12 @@ class PaperHeaderPanel extends BlazeComponent
 
   onRendered: ->
     super
-    main = document.getElementById('paper-drawer-main')
+    main = document.getElementById("#{@data().id}-paper-header-panel") # Need to change id
     main.addEventListener('scroll', @throttle)
 
 
   onDestroyed: ->
-    main = document.getElementById('paper-drawer-main')
+    main = document.getElementById("#{@data().id}-paper-header-panel") # Need to change id
     main.removeEventListener('scroll', @throttle) if main?
 
 
@@ -61,10 +61,10 @@ class PaperHeaderPanel extends BlazeComponent
 
     smallY = if yPosition > 148 then 148 else yPosition
     if smallY < 149
-      $('#header-small').css transform: "translate3d(0px, #{smallY}px, 0px)"
+      $(@find '.header-small').css transform: "translate3d(0px, #{smallY}px, 0px)"
 
     if yPosition < 212 || @lastY < 212
-      header = $('#paper-header')
+      header = $('#' + @data().id + '-paper-header')
       if @goingUp && yPosition > 148 && @down
         header.css transform: "translate3d(0px, -148px, 0px)"
       else
@@ -79,7 +79,7 @@ class PaperHeaderPanel extends BlazeComponent
     unless @down
       duration = if duration > 250 then 250 else duration
       @down = true
-      header = $('#paper-header')
+      header = $('#' + @data().id + '-paper-header')
       header.addClass('elevation-2').removeClass('elevation-0')
       p =
         translateY: ["-148px", "-212px"]
@@ -93,7 +93,7 @@ class PaperHeaderPanel extends BlazeComponent
     if @down
       duration = if duration > 250 then 250 else duration
       @down = false
-      header = $('#paper-header')
+      header = $('#' + @data().id + '-paper-header')
       p =
         translateY: "-212px"
       o =
