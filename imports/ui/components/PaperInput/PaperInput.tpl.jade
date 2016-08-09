@@ -3,7 +3,10 @@ paper-input(class="paper-input #{classes}" disabled=disabled)
   div(class='prefix')
     | #{prefix}
   div(class='input-container')
-    label(class="input-label #{float.get} #{size}" style="color: #{colorL.get}")=label
+    label(class="input-label #{float.get} #{size}" style="color: #{colorL.get}; ")
+      | #{label}
+      span
+        | #{span}
     if textarea
       textarea(type=type
                 name=name
@@ -31,11 +34,11 @@ paper-input(class="paper-input #{classes}" disabled=disabled)
       | #{defix}
   div(class='underline-container')
     div(class='underline-unfocused' disabled=disabled)
-    div(class='underline-focused #{underline.get}' style="background: #{focusColor}")
+    div(class='underline-focused #{underline.get}' style="background: #{focusColor}; ")
   
   div(class='add-on-content')
     if showCount
-      div(class='char-count' style="color: #{color.get}")
+      div(class='char-count' style="color: #{color.get}; ")
         span
           | #{charCount.get}
   

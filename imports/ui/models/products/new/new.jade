@@ -1,33 +1,49 @@
 template(name="productsNew")
-  +PaperHeaderPanel id="right" title="New Resource"
-    +PaperHeader id="right"
-      +PaperButton classes="save-icon-div js-submit-new-product" raise=0 rippleOn=true submit=true
-        i(class="material-icons")
-          | check
-          
-      +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
-        i(class="material-icons")
-          | clear
-    
-    +PaperHeaderMain id="right"
-      form(class="js-product-new-form")
-        div(class='organization-bottom')
-          div(class='input-area')
-            div(class='grid-wrapper')
-              div(class='col-8 p-right p-left')
-                +PaperInput type="text" name="name" label="Product Name" focusColor="darkblue"
-              div(class='col-4 p-right')
-                +PaperInput type="text" name="measurement_unit" label="SKU" focusColor="darkblue"
+  div(class="products-new")
+    +PaperHeaderPanel id="right" title="New Resource"
+      +PaperHeader id="right"
+        +PaperButton classes="save-icon-div js-submit-new-product" raise=0 rippleOn=true submit=true
+          i(class="material-icons")
+            | check
             
-            div(class='grid-wrapper')
-              div(class='col-4 p-right p-left')
-                +PaperInput type="text" name="name" label="Size" focusColor="darkblue"
-              div(class='col-4 p-right')
-                +PaperInput type="number" name="name" label="Unit Price" focusColor="darkblue" prefix="$" step="any" min='0'
-              div(class='col-4 p-right')
-                +PaperInput type="number" name="name" label="Tax Rate" focusColor="darkblue" defix="%" step="any" min="0" max="100"
-                
-            div(class='grid-wrapper')
-              div(class='col-12 p-right p-left')
-                +PaperInput type="textarea" name="name" label="Description" focusColor="darkblue" charMax='512' showCount=true
+        +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+          i(class="material-icons")
+            | clear
+      
+      +PaperHeaderMain id="right"
+        form(class="js-product-new-form")
+          div(class='organization-bottom')
+            div(class='input-area')
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperInput type="text" name="name" label="Product Name" focusColor="darkblue" size="size-medium"
+                  
+              div(class='grid-wrapper')
+                div(class="col-8 p-left p-right")
+                  +PaperInput type="text" name="name" label="Size" focusColor="darkblue"
+                div(class='col-4 p-right')
+                  +PaperInput type="text" name="measurement_unit" label="SKU" focusColor="darkblue"
+
+              div(class='grid-wrapper')
+                div(class='col-4 p-right p-left')
+                  +PaperInput type="number" classes="js-calc-p uprice" name="name" label="Price" focusColor="darkblue" prefix="$" step="0.01" min='0' span="(tax exc)"
+                div(class='col-4 p-right')
+                  +PaperInput type="number" classes="js-calc-p tax" name="name" label="Tax Rate" focusColor="darkblue" defix="%" step="any" min="0" max="100"
+                div(class='col-4 p-right')
+                  +PaperInput type="number" classes="js-calc-p tprice" name="name" label="Price" value="0.00" focusColor="darkblue" prefix="$" step="any" min='0' span="(tax inc)" disabled="true"
+                  
+                  
+                  
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperInput type="textarea" name="name" label="Description" focusColor="darkblue" charMax='512' showCount=true
+              
+              
+                  +PaperButton raise=0 submit=false rippleOn=true classes="button-wrapper"
+                    div(class="resources-b")
+                      div(class="text-div") Resources
+                      div(class="icon-div")
+                        i(class="material-icons icon") add_circle
+                  
             
+                  
