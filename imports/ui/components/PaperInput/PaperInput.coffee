@@ -52,6 +52,12 @@ class PaperInput extends BlazeComponent
     else
       @float.set('label-floating')
 
+  onCharInput: (event) ->
+    if @data().showCount
+      input = @find('.pinput')
+      @charCount.set("#{input.value.length}/#{@data().charMax}")
+
+
 
 
 
@@ -61,4 +67,4 @@ class PaperInput extends BlazeComponent
     super.concat
       'focusin .pinput': @onFocusIn
       'focusout .pinput': @onFocusOut
-      # 'input .pinput': @onInput
+      'input .pinput': @onCharInput

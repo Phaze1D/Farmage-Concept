@@ -1,5 +1,7 @@
 paper-input(class="paper-input #{classes}" disabled=disabled)
   div(class='floated-label-container')  &nbsp;
+  div(class='prefix')
+    | #{prefix}
   div(class='input-container')
     label(class="input-label #{float.get} #{size}" style="color: #{colorL.get}")=label
     if textarea
@@ -25,6 +27,8 @@ paper-input(class="paper-input #{classes}" disabled=disabled)
             min=min
             autocomplete='off'
             step=step)/
+    div(class='defix')
+      | #{defix}
   div(class='underline-container')
     div(class='underline-unfocused' disabled=disabled)
     div(class='underline-focused #{underline.get}' style="background: #{focusColor}")

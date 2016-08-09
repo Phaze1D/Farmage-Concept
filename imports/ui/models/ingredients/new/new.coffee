@@ -28,4 +28,4 @@ class IngredientsNew extends BlazeComponent
   events: ->
     super.concat
       'submit .js-ingredient-new-form': @onSubmit
-      'click .js-submit-new-ing': @onSubmit
+      'click .js-submit-new-ingredient': @onSubmit

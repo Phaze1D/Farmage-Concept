@@ -14,7 +14,10 @@ require './events/index/index.coffee'
 require './expenses/index/index.coffee'
 require './inventories/index/index.coffee'
 require './ousers/index/index.coffee'
+
 require './products/index/index.coffee'
+require './products/new/new.coffee'
+
 require './providers/index/index.coffee'
 require './sells/index/index.coffee'
 require './units/index/index.coffee'
