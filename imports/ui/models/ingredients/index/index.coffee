@@ -1,4 +1,5 @@
 IndexMixin = require '../../../mixins/index_mixin.coffee'
+IngredientModule = require '../../../../api/collections/ingredients/ingredients.coffee'
 
 require './index.jade'
 
@@ -12,10 +13,11 @@ class IngredientsIndex extends IndexMixin
     super
     organization_id = FlowRouter.getParam("organization_id")
     @autorun =>
-      @subscribe "ingredients", organization_id, 
+      @subscribe "ingredients", organization_id,
         onStop: (err) ->
           console.log "sub stop #{err}"
         onReady: ->
 
 
   ingredients: ->
+    IngredientModule.Ingredients.find()

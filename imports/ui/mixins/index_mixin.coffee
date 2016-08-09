@@ -14,6 +14,7 @@ class IndexMixin extends BlazeComponent
 
   onRendered: ->
     super
+    console.log 'render'
     Meteor.setTimeout( =>
       @resizeCard()
     , 200)
@@ -82,15 +83,15 @@ class IndexMixin extends BlazeComponent
 
   resizeCard: ()->
     card = $(@findAll '.card-margin')
-    organDiv = $(@find '.main-content')
+    mainContent = $(@find '.main-content')
 
     count = 0
-    while count - 1 > 0 && organDiv.innerWidth() * ( 1/(count - 1)) < 290
+    while count - 1 > 0 && mainContent.innerWidth() * ( 1/(count - 1)) < 290
       count--
       @size = count
 
     count = 0
-    while organDiv.innerWidth() * ( 1/(count + 1) ) >= 290
+    while mainContent.innerWidth() * ( 1/(count + 1) ) >= 290
       count++
       @size = count
 

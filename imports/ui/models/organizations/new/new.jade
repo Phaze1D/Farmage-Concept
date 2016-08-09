@@ -1,29 +1,31 @@
 template(name='organizationsNew')
-  form(class="js-organization-new-form")
-  
-    //- div(id='right-top' class='organization-top')
-    //-   +PaperButton classes="save-icon-div js-submit-new-organ" raise=0 rippleOn=true submit=true
-    //-     i(class="material-icons")
-    //-       | check
-    //-       
-    //-   +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
-    //-     i(class="material-icons")
-    //-       | clear
-    //-       
-
-    div(class='organization-bottom')
-      div(class='input-area')
-        
-        div(class='organ-input-div organ-name-div')
-          +PaperInput type="text" name="company_name" label="Organization Name" focusColor="darkblue" size='size-medium'
-        div(class='organ-input-div organ-email-div')
-          +PaperInput type="text" name="email" label="Contact Email" focusColor="darkblue"
-      
-        div(class="organ-input-div")
-          +telephones.add
+  +PaperHeaderPanel id="right" title="New Organization"
+    +PaperHeader id="right"
+      +PaperButton classes="save-icon-div js-submit-new-organ" raise=0 rippleOn=true submit=true
+        i(class="material-icons")
+          | check
           
-        div(class="organ-input-div")
-          +addresses.add
+      +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+        i(class="material-icons")
+          | clear
+    
+    +PaperHeaderMain id="right"
+      form(class="js-organization-new-form")
+      
+          
+        div(class='organization-bottom')
+          div(class='input-area')
+            
+            div(class='organ-input-div organ-name-div')
+              +PaperInput type="text" name="company_name" label="Organization Name" focusColor="darkblue" size='size-medium'
+            div(class='organ-input-div organ-email-div')
+              +PaperInput type="text" name="email" label="Contact Email" focusColor="darkblue"
+          
+            div(class="organ-input-div")
+              +telephones.add
+              
+            div(class="organ-input-div")
+              +addresses.add
       
           
           

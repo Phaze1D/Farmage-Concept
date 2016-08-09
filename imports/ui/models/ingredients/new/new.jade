@@ -1,26 +1,20 @@
 template(name="ingredientsNew")
-  form(class="js-organization-new-form")
-
-    div(id='right-top' class='organization-top')
-      +PaperButton classes="save-icon-div js-submit-new-organ" raise=0 rippleOn=true submit=true
+  +PaperHeaderPanel id="right" title="New Resource"
+    +PaperHeader id="right"
+      +PaperButton classes="save-icon-div js-submit-new-ing" raise=0 rippleOn=true submit=true
         i(class="material-icons")
           | check
           
       +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
         i(class="material-icons")
           | clear
-          
-      div(class='input-area')
-        h2(style="padding: 10px 0 0 20px; font-size: 35px; font-weight: 300")
-          | New Resource
-          
-          
-      
     
-    div(class='organization-bottom')
-      div(class='input-area')
-        div(class='organ-input-div organ-name-div')
-          +PaperInput type="text" name="company_name" label="Name" focusColor="darkblue" size='size-medium'
-        div(class='organ-input-div organ-email-div')
-          +PaperInput type="text" name="email" label="Measurement Unit" focusColor="darkblue"
-          
+    +PaperHeaderMain id="right"
+      form(class="js-ingredient-new-form")
+        div(class='organization-bottom')
+          div(class='input-area')
+            div(class='organ-input-div organ-name-div')
+              +PaperInput type="text" name="name" label="Name" focusColor="darkblue" size='size-medium'
+            div(class='organ-input-div organ-email-div')
+              +PaperInput type="text" name="measurement_unit" label="Measurement Unit" focusColor="darkblue"
+              

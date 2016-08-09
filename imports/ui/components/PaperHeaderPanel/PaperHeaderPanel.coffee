@@ -69,6 +69,11 @@ class PaperHeaderPanel extends BlazeComponent
         header.css transform: "translate3d(0px, -148px, 0px)"
       else
         header.addClass('elevation-0').removeClass('elevation-2')
+        if mainY <= 148
+          header.find('.header-content').css height: "#{212 - mainY}px"
+        else
+          header.find('.header-content').css height: "64px"
+          
         mainY = if mainY > 212 then 212 else mainY
         header.css transform: "translate3d(0px, -#{mainY}px, 0px)"
         @down = false

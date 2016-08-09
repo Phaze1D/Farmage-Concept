@@ -10,3 +10,37 @@ template(name='ingredients.index')
     div(class='plus-icon-div')
       i(class="material-icons plus-icon")
         | add
+
+
+  div(class='ingredients main-content')
+    div(class='container-fluid')
+      div(class='row')
+        each ingredient in ingredients
+          div(class='card-margin')
+            +PaperCard elevation=1 classes="card"
+              div.row
+                div(class='col-xs-12 image-col')
+                  div.image-header
+                    
+                
+              div.row
+                div(class='col-xs-12')
+                  h2.title.card-expand-action
+                    | #{ingredient.name}
+              div.row
+                div(class="col-xs-12")
+                  div.subtitle.card-shrink-action
+                    | #{ingredient.measurement_unit}
+              
+              div.row
+                div(class="col-xs-12")
+                  div.divider
+              
+              div.row
+                div(class="col-xs-12")
+                  //- +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
+                  //-   | Events
+                    
+                  +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
+                    | Events
+              
