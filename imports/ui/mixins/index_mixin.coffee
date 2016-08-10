@@ -14,7 +14,6 @@ class IndexMixin extends BlazeComponent
 
   onRendered: ->
     super
-    console.log 'render'
     Meteor.setTimeout( =>
       @resizeCard()
     , 200)

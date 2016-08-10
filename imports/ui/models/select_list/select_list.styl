@@ -1,0 +1,39 @@
+.list
+  min-width: 320px
+  min-height: 480px
+  position: relative;
+  background-color: white
+
+  & .header
+    position: absolute;
+    z-index: 1
+    top: 0
+    left: 0
+    height: 64px
+    width: 100%
+    background-color: white
+    display: flex;
+
+    & .title
+      align-self: center;
+      font-size: 18px
+      font-weight: 300
+      display: inline-block;
+      margin-left: 20px
+
+
+    & .search-bar
+      width: 100%
+      height: 100%
+      display: flex;
+      justify-content: flex-end;
+
+      & i
+        padding: 0 20px 0 0
+        align-self: center;
+
+
+
+  & .items
+    background-color: #eee
+    padding-top: 64px

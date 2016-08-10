@@ -1,5 +1,10 @@
 template(name="productsNew")
   div(class="products-new")
+    +PaperDialog callbacks=dialogCB
+      div(class="js-open-dialog")
+      if showDialog.get
+        +selectList subscription='ingredients' many="true" params=""
+      
     +PaperHeaderPanel id="right" title="New Resource"
       +PaperHeader id="right"
         +PaperButton classes="save-icon-div js-submit-new-product" raise=0 rippleOn=true submit=true
@@ -39,7 +44,7 @@ template(name="productsNew")
                   +PaperInput type="textarea" name="name" label="Description" focusColor="darkblue" charMax='512' showCount=true
               
               
-                  +PaperButton raise=0 submit=false rippleOn=true classes="button-wrapper"
+                  +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
                     div(class="resources-b")
                       div(class="text-div") Resources
                       div(class="icon-div")

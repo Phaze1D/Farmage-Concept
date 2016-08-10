@@ -22,3 +22,5 @@ require './providers/index/index.coffee'
 require './sells/index/index.coffee'
 require './units/index/index.coffee'
 require './yields/index/index.coffee'
+
+require './select_list/select_list.coffee'
