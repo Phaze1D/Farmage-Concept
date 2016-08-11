@@ -7,6 +7,8 @@ require './index.jade'
 class OrganizationsIndex extends IndexMixin
   @register 'organizations.index'
 
+  constructor: (args) ->
+    super
 
   onRendered: ->
     super

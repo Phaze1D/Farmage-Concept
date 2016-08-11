@@ -1,5 +1,6 @@
 paper-input(class="paper-input #{classes}" disabled=disabled)
-  div(class='floated-label-container')  &nbsp;
+  unless hideTop
+    div(class='floated-label-container')&nbsp;
   div(class='prefix')
     | #{prefix}
   div(class='input-container')

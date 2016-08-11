@@ -19,6 +19,7 @@ class PaperRipple extends BlazeComponent
 
 
   rippleAnimation: (event, eoffsetX, eoffsetY) ->
+
     eoffsetX = if event.offsetX? then event.offsetX else eoffsetX
     eoffsetY = if event.offsetY? then event.offsetY else eoffsetY
 
@@ -48,7 +49,7 @@ class PaperRipple extends BlazeComponent
                Math.pow((event.target.offsetHeight / 2) +
                Math.abs( (event.target.offsetHeight / 2) - eoffsetY ), 2))
       o:
-        duration: 200
+        duration: 250
         easing: "linear"
 
 
@@ -64,6 +65,7 @@ class PaperRipple extends BlazeComponent
           duration: 350
           easing: "linear"
           queue: false
+
 
 
 

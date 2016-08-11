@@ -19,5 +19,10 @@ class IngredientsIndex extends IndexMixin
         onReady: ->
 
 
+  onRendered: ->
+    super
+
+
   ingredients: ->
+    @resizeCard()
     IngredientModule.Ingredients.find()

@@ -20,16 +20,17 @@
       opacity: 1
 
     & .dialog
+      perspective: 1px;
       align-self: center;
       width: 60%
       height: 80%
       max-width: 768px
-      max-height: 768px
+      position: relative;
 
-      background-color: white
-      overflow-y: scroll;
+      background-color: #eee
+      overflow-y: hidden;
       overflow-x: hidden;
-      border-radius: 3px
+      border-radius: 2px
 
       @media(max-width: 768px){
         height: 100%
@@ -37,3 +38,8 @@
         width: 100%
         border-radius: 0
       }
+
+      & .new-action
+        position: absolute;
+        right: 15px
+        bottom: 15px

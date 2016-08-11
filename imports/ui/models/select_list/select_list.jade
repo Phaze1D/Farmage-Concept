@@ -1,13 +1,38 @@
 template(name="selectList")
+        
   div(class="list")
     div(class="header elevation-1")
-
-      div(class="title")
-        | #{title}
       
       div(class="search-bar")
-        i(class="material-icons") search
-        i(class="material-icons") camera_alt
+        +PaperButton elevation=0 raise=0 classes="js-search-icon b-wrap" rippleOn=false
+          i(class="material-icons") search
+          
+        div(class='search-input-div' style='width: 0;')
+          div(class='cross-div js-cross-search')
+            i(class='material-icons') clear
+          +PaperInput type="text" name="search" label="" focusColor="darkblue" classes="search-input" labelFloat=false placeholder="Search" hideTop=true
+
+        +PaperButton elevation=0 raise=0 classes="b-wrap" rippleOn=true
+          i(class="material-icons") camera_alt
+          
+      div(class="title")
+        div
+          | #{title}
         
     
     div(class="items")
+      each item in items
+        div(class='js-list-item list-item js-checkbox-parent')
+          div(class="circle-image")
+            //- img(src='/no_image.png')
+            
+          div(class='info-div')
+            div
+              div(class="main")
+                | #{item.name}
+              div(class="sub")
+                | #{item.measurement_unit}
+            
+          div(class="checker-div")
+            +PaperCheckbox classes="checkbox" rippleFill='darkblue' fcolor='darkblue'
+            

@@ -23,17 +23,18 @@ class PaperDialog extends BlazeComponent
 
   onClose: (event) ->
     skrim = $(@find('.skrim'))
-    skrim.velocity
-      p:
-        opacity: 0
-      o:
-        duration: 250
-        complete: =>
-          if @data().callbacks? and @data().callbacks.hideClick?
-            @data().callbacks.hideClick()
-          skrim.addClass('closed').removeClass('opened')
-          $('#paper-drawer-main').css overflow: 'hidden', 'z-index': 0
-          skrim.removeClass('js-close-dialog')
+    if $(event.target).is(skrim)
+      skrim.velocity
+        p:
+          opacity: 0
+        o:
+          duration: 250
+          complete: =>
+            if @data().callbacks? and @data().callbacks.hideClick?
+              @data().callbacks.hideClick()
+            skrim.addClass('closed').removeClass('opened')
+            $('#paper-drawer-main').css overflow: 'hidden', 'z-index': 0
+            skrim.removeClass('js-close-dialog')
 
 
   events: ->

@@ -15,6 +15,8 @@ class PaperInput extends BlazeComponent
     @charCount = new ReactiveVar "0/#{@data().charMax}"
     @textarea = @data().type is 'textarea'
     @data().size = "size-small" unless @data().size?
+    @data().labelFloat = true unless @data().labelFloat?
+  
 
 
   onRendered: ->
@@ -28,7 +30,7 @@ class PaperInput extends BlazeComponent
     @underline.set('highlight')
     @color.set @data().focusColor
     @colorL.set @data().focusColor if event.target.value.length > 0
-    if @data().labelFloat == 'false'
+    if !@data().labelFloat
       @float.set('label-hidden')
     else
       @float.set('label-floating')
@@ -52,7 +54,7 @@ class PaperInput extends BlazeComponent
       @float.set ''
       @colorL.set ''
       $(@find '.input-label').css left: '0px'
-    else if @data().labelFloat == 'false'
+    else if !@data().labelFloat
       @float.set('label-hidden')
     else
       @float.set('label-floating')
