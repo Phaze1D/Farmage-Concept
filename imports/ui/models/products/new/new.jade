@@ -3,7 +3,7 @@ template(name="productsNew")
     +PaperDialog callbacks=dialogCB
       div(class="js-open-dialog")
       if showDialog.get
-        +selectList subscription='ingredients' many="true" params=""
+        +selectList subscription='ingredients' many="true" params="" callbacks=selectCallbacks currentList=ingredients.get
       
     +PaperHeaderPanel id="right" title="New Resource"
       +PaperHeader id="right"
@@ -50,6 +50,23 @@ template(name="productsNew")
                       div(class="text-div") Resources
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
-                  
+                        
+              
+              each ingredient in ingredients.get
+                div(class='grid-wrapper')
+                  div(class='col-7 p-left')
+                    div(class='ing-info')
+                      div(class='ing-img')
+                        div(class="circle-image")
+                      
+                      div(class='ing-text')
+                        div(class='ing-name')
+                          | #{ingredient.name}
+                        
+                      
+                  div(class='col-5 p-right p-left')
+                    div(class='ing-info')
+                      +PaperInput type="number" classes='amount-input' name="name" label="Amount" focusColor="darkblue" min="0" defix=ingredient.measurement_unit labelFloat=false hideTop=true
+                    
             
                   

@@ -15,24 +15,46 @@ template(name="selectList")
         +PaperButton elevation=0 raise=0 classes="b-wrap" rippleOn=true
           i(class="material-icons") camera_alt
           
-      div(class="title")
-        div
+        +PaperButton elevation=0 raise=0 classes="b-wrap" rippleOn=true
+          i(class="material-icons") sort
+          
+      div(class="title-div")
+        +PaperButton elevation=0 raise=0 classes="b-wrap js-close-dialog" rippleOn=true
+          i(class="material-icons") arrow_back
+          
+        div(class='title')
           | #{title}
         
     
     div(class="items")
       each item in items
-        div(class='js-list-item list-item js-checkbox-parent')
-          div(class="circle-image")
-            //- img(src='/no_image.png')
-            
-          div(class='info-div')
-            div
-              div(class="main")
-                | #{item.name}
-              div(class="sub")
-                | #{item.measurement_unit}
-            
-          div(class="checker-div")
-            +PaperCheckbox classes="checkbox" rippleFill='darkblue' fcolor='darkblue'
+        if itemIsSelected item._id
+          div(class='js-list-item list-item' data-id="#{item._id}" selected='true' style='color: darkblue')
+            div(class="circle-image" style='border: 1px solid darkblue')
+              //- img(src='/no_image.png')
+              
+            div(class='info-div')
+              div
+                div(class="main")
+                  | #{item.name}
+                div(class="sub")
+                  | #{item.measurement_unit}
+              
+            div(class="checker-div")
+              +PaperCheckbox classes="checkbox" rippleFill='darkblue' fcolor='darkblue' clickCallback=onItemClickCallback checked='checked'
+        
+        else
+          div(class='js-list-item list-item' data-id="#{item._id}" )
+            div(class="circle-image")
+              //- img(src='/no_image.png')
+              
+            div(class='info-div')
+              div
+                div(class="main")
+                  | #{item.name}
+                div(class="sub")
+                  | #{item.measurement_unit}
+              
+            div(class="checker-div")
+              +PaperCheckbox classes="checkbox" rippleFill='darkblue' fcolor='darkblue' clickCallback=onItemClickCallback
             

@@ -1,4 +1,7 @@
 
+IngredientModule = require '../../../../api/collections/ingredients/ingredients.coffee'
+
+
 require './new.jade'
 
 class ProductsNew extends BlazeComponent
@@ -10,6 +13,7 @@ class ProductsNew extends BlazeComponent
   onCreated: ->
     super
     @showDialog = new ReactiveVar(false)
+    @ingredients = new ReactiveVar([])
 
 
   dialogCB: ->
@@ -19,6 +23,23 @@ class ProductsNew extends BlazeComponent
       hideClick: =>
         @showDialog.set false
 
+  removeIngredient: (ingredient_id) =>
+    ings = (ingredient for ingredient in @ingredients.get() when ingredient._id isnt ingredient_id )
+    @ingredients.set(ings)
+
+  selectIngredient: (ingredient_id) =>
+    return for ingredient in @ingredients.get() when ingredient._id is ingredient_id
+    ings = @ingredients.get()
+    ings.push IngredientModule.Ingredients.findOne ingredient_id
+    @ingredients.set ings
+    
+
+
+
+  selectCallbacks: ->
+    ret =
+      select: @selectIngredient
+      remove: @removeIngredient
 
   onCalcPrice: (event) ->
     upv = @find('.uprice .pinput').value

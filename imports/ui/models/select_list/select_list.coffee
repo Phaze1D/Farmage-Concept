@@ -35,7 +35,9 @@ class SelectList extends BlazeComponent
   items: ->
     lists[@data().subscription].find()
 
-
+  itemIsSelected: (item_id) ->
+    return true for item in @data().currentList when item._id is item_id
+    return false
 
   onShowSearch: (event) ->
     $('.search-input .pinput').focus()
@@ -48,6 +50,7 @@ class SelectList extends BlazeComponent
           duration: 250
           easing: 'ease-in-out'
 
+
   onHideSearch: (event) ->
     sid = $(@find('.search-input-div'))
     sid.velocity
@@ -59,19 +62,26 @@ class SelectList extends BlazeComponent
 
 
   onItemClick: (event) ->
-    targ = $(event.currentTarget)
-    targ.find('.js-checkbox').trigger('click')
-    if targ.attr('selected')
-      targ.attr('selected', false)
-      targ.css 'color': ''
-      targ.find('.circle-image').css border: ''
-    else
-      targ.attr('selected', true)
-      targ.css 'color': 'darkblue'
-      targ.find('.circle-image').css border: '1px solid darkblue'
+    $(event.currentTarget).find('.js-checkbox').trigger('click')
+
+
+  onItemClickCallback: ->
+    ret =
+      callback: (event) =>
+        targ = $(event.target).closest('.js-list-item')
+        if targ.attr('selected')
+          @data().callbacks.remove(targ.attr('data-id'))
+          targ.attr('selected', false)
+          targ.css 'color': ''
+          targ.find('.circle-image').css border: ''
+        else
+          @data().callbacks.select(targ.attr('data-id'))
+          targ.attr('selected', true)
+          targ.css 'color': 'darkblue'
+          targ.find('.circle-image').css border: '1px solid darkblue'
 
   events: ->
     super.concat
       'click .js-search-icon': @onShowSearch
       'click .js-cross-search': @onHideSearch
-      'click .js-list-item': @onItemClick
+      'click .js-list-item':@onItemClick

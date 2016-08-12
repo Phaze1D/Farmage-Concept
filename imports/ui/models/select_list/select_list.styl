@@ -23,14 +23,13 @@
       height: 56px
     }
 
-    & .title
+    & .title-div
       display: inline-flex;
-      margin-left: 20px
       height: 100%
       position: absolute;
       z-index: -1
 
-      & div
+      & .title
         font-size: 18px
         font-weight: 300
         align-self: center;
@@ -52,13 +51,20 @@
         display: flex;
         justify-content: center;
 
-        @media(max-width: 350px){
-          max-width: 208px
+        @media(max-width: 424px){
+          max-width: 200px
+        }
+
+        @media(max-width: 374px){
+          max-width: 150px
         }
 
         & .search-input
           width: 100%
           align-self: center;
+
+          & .input-container
+            padding-right: 24px
 
         & .cross-div
           display: flex;
@@ -76,21 +82,21 @@
             background-color: white
 
 
-      & .b-wrap
-        width: 54px
-        height: calc(100% - 10px)
-        border-radius: 40px
-        margin: 5px 5px
-        display: flex;
-        justify-content: center;
+  & .b-wrap
+    width: 54px
+    height: calc(100% - 10px)
+    border-radius: 40px
+    margin: 5px 5px
+    display: flex;
+    justify-content: center;
 
-        @media (max-width: 768px){
-          width: 46px
+    @media (max-width: 768px){
+      width: 46px
 
-        }
+    }
 
-        & i
-          align-self: center;
+    & i
+      align-self: center;
 
 
 
