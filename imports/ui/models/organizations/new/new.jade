@@ -1,18 +1,16 @@
 template(name='organizationsNew')
-  +PaperHeaderPanel id="right" title="New Organization"
-    +PaperHeader id="right"
-      +PaperButton classes="save-icon-div js-submit-new-organ" raise=0 rippleOn=true submit=true
-        i(class="material-icons")
-          | check
-          
-      +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
-        i(class="material-icons")
-          | clear
-    
-    +PaperHeaderMain id="right"
-      form(class="js-organization-new-form")
+  form(class="js-organization-new-form")
+    +PaperHeaderPanel id="right" title="New Organization"
+      +PaperHeader id="right"
+        +PaperButton classes="save-icon-div js-submit-new-organ" raise=0 rippleOn=true submit=true
+          i(class="material-icons")
+            | check
+            
+        +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+          i(class="material-icons")
+            | clear
       
-          
+      +PaperHeaderMain id="right"    
         div(class='organization-bottom')
           div(class='input-area')
             

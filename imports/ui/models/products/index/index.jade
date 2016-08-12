@@ -12,3 +12,12 @@ template(name='products.index')
     div(class='plus-icon-div')
       i(class="material-icons plus-icon")
         | add
+        
+  if subscriptionsReady
+    div(class='products main-content')
+      div(class='container-fluid')
+        div(class='row')
+          each product in products
+            div(class='card-margin')
+              +PaperCard elevation=1 classes="card"
+                

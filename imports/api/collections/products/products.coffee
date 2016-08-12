@@ -50,7 +50,7 @@ ProductSchema =
       index: true
       max: 64
 
-    measurement:
+    size:
       type: String
       label: 'product.measurement'
       optional: true
