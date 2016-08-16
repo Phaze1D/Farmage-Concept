@@ -4,7 +4,7 @@ template(name="productsNew")
       +PaperDialog callbacks=dialogCB
         div(class="js-open-dialog")
         if showDialog.get
-          +selectList subscription='ingredients' many="true" params="" callbacks=selectCallbacks currentList=ingredients.get
+          +selectList subscription='ingredients' many="true" params="" currentList=ingredients.get
         
       +PaperHeaderPanel id="right" title="New Resource"
         +PaperHeader id="right"
@@ -45,7 +45,7 @@ template(name="productsNew")
               
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
+                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
                     div(class="resources-b")
                       div(class="text-div") Resources
                       div(class="icon-div")

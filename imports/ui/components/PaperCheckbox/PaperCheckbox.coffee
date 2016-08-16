@@ -7,8 +7,11 @@ class PaperCheckbox extends BlazeComponent
   onCreated: ->
     super
     @color = new ReactiveVar('black')
-    if @data().checked?
+    if @data().checked
+      @data().checked = 'checked'
       @color.set @data().fcolor
+    else
+      @data().checked = ''
 
   onClick: (event) ->
     event.stopImmediatePropagation()

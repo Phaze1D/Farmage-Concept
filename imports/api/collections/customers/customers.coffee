@@ -46,6 +46,7 @@ CustomerSchema =
       type: String
       label: 'notes'
       optional: true
+      max: 512
 
     company:
       type: String

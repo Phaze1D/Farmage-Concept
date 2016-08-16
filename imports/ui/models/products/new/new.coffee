@@ -23,21 +23,7 @@ class ProductsNew extends BlazeComponent
       hideClick: =>
         @showDialog.set false
 
-  removeIngredient: (ingredient_id) =>
-    ings = (ingredient for ingredient in @ingredients.get() when ingredient._id isnt ingredient_id )
-    @ingredients.set(ings)
-
-  selectIngredient: (ingredient_id) =>
-    return for ingredient in @ingredients.get() when ingredient._id is ingredient_id
-    ings = @ingredients.get()
-    ings.push IngredientModule.Ingredients.findOne ingredient_id
-    @ingredients.set ings
-
-
-  selectCallbacks: ->
-    ret =
-      select: @selectIngredient
-      remove: @removeIngredient
+      beforeHide: @onCloseDialog
 
   onCalcPrice: (event) ->
     upv = @find('.uprice .pinput').value
@@ -52,6 +38,14 @@ class ProductsNew extends BlazeComponent
 
   onShowDialog: (event) ->
     $(@find('.js-open-dialog')).trigger('click')
+
+  onCloseDialog: =>
+    ings = []
+    $(".list-item[selected='true']").each ->
+      ingredient_id = $(@).attr('data-id')
+      ings.push IngredientModule.Ingredients.findOne ingredient_id
+
+    @ingredients.set ings
 
 
   insert: (product_doc) ->

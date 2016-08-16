@@ -1,0 +1,51 @@
+template(name="expensesNew")
+  div(class="expenses-new")
+    form(class="js-expenses-new-form")
+      +PaperDialog callbacks=dialogCB
+        div(class="js-open-dialog")
+        if showDialog.get
+          +selectList subscription=subscription.get many="false" params="" callbacks=selectCallbacks currentList=currentList
+          
+      +PaperHeaderPanel id="right" title="New Resource"
+        +PaperHeader id="right"
+          +PaperButton classes="save-icon-div js-submit-new-expense" raise=0 rippleOn=true submit=true
+            i(class="material-icons")
+              | check
+              
+          +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+            i(class="material-icons")
+              | clear
+        
+        +PaperHeaderMain id="right"
+          div(class='organization-bottom')
+            div(class='input-area')
+              div(class="grid-wrapper")
+                div(class='col-12 p-right p-left')
+                  +PaperInput type="text" name="name" label="Item Name" focusColor="darkblue" size="size-medium"
+                  
+              div(class='grid-wrapper')
+                div(class='col-6 p-left')
+                  +PaperInput type="number" name="price" label="Price" focusColor="darkblue" prefix="$" step="0.01" min='0'
+
+                div(class='col-6 p-right p-left')
+                  +PaperInput type="number" name="quantity" label="Quantity" focusColor="darkblue" min='0'
+
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperInput type="textarea" name="description" label="Description" focusColor="darkblue" charMax='512' showCount=true
+
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
+                    div(class="resources-b" data-sub='providers')
+                      div(class="text-div") Provider
+                      div(class="icon-div")
+                        i(class="material-icons icon") add_circle
+                        
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
+                    div(class="resources-b" data-sub='units')
+                      div(class="text-div") Unit
+                      div(class="icon-div")
+                        i(class="material-icons icon") add_circle

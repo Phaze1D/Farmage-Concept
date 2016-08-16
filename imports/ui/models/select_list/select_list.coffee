@@ -13,6 +13,8 @@ IngredientModule = require '../../../api/collections/ingredients/ingredients.cof
 
 lists = {}
 lists.ingredients = IngredientModule.Ingredients
+lists.providers = ProviderModule.Providers
+lists.units = UnitModule.Units
 
 
 class SelectList extends BlazeComponent
@@ -20,11 +22,13 @@ class SelectList extends BlazeComponent
 
   onCreated: ->
     organization_id = FlowRouter.getParam 'organization_id'
+    @sitem = {}
     @autorun =>
       @subscribe @data().subscription, organization_id,
         onStop: (err) ->
           console.log "sub stop #{err}"
         onReady: ->
+
 
 
   title: ->
@@ -43,6 +47,7 @@ class SelectList extends BlazeComponent
     $('.search-input .pinput').focus()
     sid = $(@find('.search-input-div'))
     if sid.innerWidth() <= 0
+
       sid.velocity
         p:
           width: '250px'
@@ -60,28 +65,20 @@ class SelectList extends BlazeComponent
         duration: 250
         easing: 'ease-in-out'
 
+  selector: ->
+    @data().subscription + 'Selector'
 
-  onItemClick: (event) ->
-    $(event.currentTarget).find('.js-checkbox').trigger('click')
+  selectorItem: (item) ->
+    @sitem = item
+    true
 
-
-  onItemClickCallback: ->
+  selectorData: ->
     ret =
-      callback: (event) =>
-        targ = $(event.target).closest('.js-list-item')
-        if targ.attr('selected')
-          @data().callbacks.remove(targ.attr('data-id'))
-          targ.attr('selected', false)
-          targ.css 'color': ''
-          targ.find('.circle-image').css border: ''
-        else
-          @data().callbacks.select(targ.attr('data-id'))
-          targ.attr('selected', true)
-          targ.css 'color': 'darkblue'
-          targ.find('.circle-image').css border: '1px solid darkblue'
+      item:@sitem
+      isChecked: @itemIsSelected(@sitem._id)
+
 
   events: ->
     super.concat
       'click .js-search-icon': @onShowSearch
       'click .js-cross-search': @onHideSearch
-      'click .js-list-item':@onItemClick

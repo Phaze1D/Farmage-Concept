@@ -16,7 +16,7 @@ class PaperInput extends BlazeComponent
     @textarea = @data().type is 'textarea'
     @data().size = "size-small" unless @data().size?
     @data().labelFloat = true unless @data().labelFloat?
-  
+
 
 
   onRendered: ->
@@ -30,12 +30,13 @@ class PaperInput extends BlazeComponent
     @underline.set('highlight')
     @color.set @data().focusColor
     @colorL.set @data().focusColor if event.target.value.length > 0
-    if !@data().labelFloat
-      @float.set('label-hidden')
-    else
+    if @data().labelFloat
       @float.set('label-floating')
       if @data().prefix?
         $(@find '.input-label').css left: "-#{$(@find('.prefix')).outerWidth() + 1}px"
+    else
+      @float.set('label-hidden')
+
     @colorL.set @data().focusColor
 
 
@@ -54,19 +55,18 @@ class PaperInput extends BlazeComponent
       @float.set ''
       @colorL.set ''
       $(@find '.input-label').css left: '0px'
-    else if !@data().labelFloat
-      @float.set('label-hidden')
-    else
+    else if @data().labelFloat
       @float.set('label-floating')
       if @data().prefix?
         $(@find '.input-label').css left: "-#{$(@find('.prefix')).outerWidth() + 1}px"
+    else
+      @float.set('label-hidden')
+
 
   onCharInput: (event) ->
     if @data().showCount
       input = @find('.pinput')
       @charCount.set("#{input.value.length}/#{@data().charMax}")
-
-
 
 
 

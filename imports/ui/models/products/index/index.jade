@@ -20,4 +20,5 @@ template(name='products.index')
           each product in products
             div(class='card-margin')
               +PaperCard elevation=1 classes="card"
-                
+                div(class="not-done")
+                  | Not Done

@@ -6,18 +6,18 @@ template(name="address_single")
           +PaperInput type="text" name="address_name" labelFloat=false label="Name" focusColor="darkblue" value=name
         
         div(class="col-8 p-left p-right")
-          +PaperInput type="text" name="street" label="Address Line 1" focusColor="darkblue"  value=street
-          +PaperInput type="text" name="street2" label="Address Line 2" focusColor="darkblue" value=street2
+          +PaperInput type="text" name="street" labelFloat=true label="Address Line 1" focusColor="darkblue"  value=street
+          +PaperInput type="text" name="street2" labelFloat=true label="Address Line 2" focusColor="darkblue" value=street2
           div(class='grid-wrapper')
             div(class="col-6 p-right")
-              +PaperInput type="text" name="city" label="City" focusColor="darkblue" value=city
+              +PaperInput type="text" name="city" labelFloat=true label="City" focusColor="darkblue" value=city
             div(class="col-6")
-              +PaperInput type="text" name="state" label="State" focusColor="darkblue" value=state
+              +PaperInput type="text" name="state" labelFloat=true label="State" focusColor="darkblue" value=state
           div(class='grid-wrapper')
             div(class="col-6 p-right")
-              +PaperInput type="text" name="zip_code" label="Zip Code" focusColor="darkblue" value=zip_code
+              +PaperInput type="text" name="zip_code" labelFloat=true label="Zip Code" focusColor="darkblue" value=zip_code
             div(class="col-6")
-              +PaperInput type="text" name="country" label="Country" focusColor="darkblue" value=country
+              +PaperInput type="text" name="country" labelFloat=true label="Country" focusColor="darkblue" value=country
         
         +PaperButton raise=0 submit=false rippleOn=false classes="js-remove-address-b remove-address-b"
           div(class="icon-div")
