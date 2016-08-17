@@ -15,12 +15,15 @@ class EventMixin extends BlazeComponent
 
   showEvent: ->
     @eventTitle.set 'Undo'
-    $(@find '.event-box').velocity
+    ebox = $(@find '.event-box')
+    ebox.velocity
       p:
         height: '135px'
       o:
         duration: 250
         easing: 'ease-in-out'
+        complete: ->
+          ebox.css(height: '')
 
   hideEvent: ->
     @eventTitle.set 'Change'

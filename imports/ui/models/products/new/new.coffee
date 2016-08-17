@@ -25,6 +25,7 @@ class ProductsNew extends BlazeComponent
 
       beforeHide: @onCloseDialogCallback
 
+
   onCalcPrice: (event) ->
     upv = @find('.uprice .pinput').value
     tv = @find('.tax .pinput').value
@@ -38,6 +39,7 @@ class ProductsNew extends BlazeComponent
 
   onShowDialog: (event) ->
     $(@find('.js-open-dialog')).trigger('click')
+
 
   onCloseDialogCallback: =>
     ings = []
