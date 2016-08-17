@@ -1,0 +1,59 @@
+template(name='inventoriesNew')
+  div(class="inventories-new")
+    +PaperDialog callbacks=dialogCB
+      div(class="js-open-dialog")
+      if showDialog.get
+        +selectList subscription=subscription.get many="false" params="" callbacks=selectCallbacks currentList=currentList
+        
+    form(class="js-inventories-new-form js-form-event")    
+      +PaperHeaderPanel id="right" title="New Resource"
+        +PaperHeader id="right"
+          +PaperButton classes="save-icon-div js-submit-new-inventory" raise=0 rippleOn=true submit=true
+            i(class="material-icons")
+              | check
+              
+          +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+            i(class="material-icons")
+              | clear
+        
+        +PaperHeaderMain id="right"
+          div(class='organization-bottom')
+            div(class='input-area')
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperInput type="text" name="name" label="Name" focusColor="darkblue" size="size-medium"
+                  
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperInput type="textarea" name="notes" label="Notes" focusColor="darkblue" charMax='512' showCount=true
+                  
+              div(class='grid-wrapper')
+                div(class='col-6 p-left')
+                  +PaperInput type="text" name="expiration_date" label="Expiration Date" focusColor="darkblue" size="size-small"
+
+              div(class='grid-wrapper')
+                div(class='col-6 p-left')
+                  +PaperInput type="number" name="amount" label="Amount" focusColor="darkblue" size="size-small" disabled='true' value='0' min='0' step='any'
+                
+                div(class='col-6 p-right p-left')
+                  div(class='b-change-wrapper')
+                    +PaperButton raise=1 elevation=1 submit=false rippleOn=true classes='b-change js-event-b'
+                      | #{eventTitle.get}
+                      
+              +eventMixin
+              
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
+                    div(class="resources-b" data-sub='products')
+                      div(class="text-div") Product
+                      div(class="icon-div")
+                        i(class="material-icons icon") add_circle
+                        
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
+                    div(class="resources-b" data-sub='yields')
+                      div(class="text-div") Yields
+                      div(class="icon-div")
+                        i(class="material-icons icon") add_circle

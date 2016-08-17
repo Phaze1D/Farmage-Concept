@@ -1,11 +1,11 @@
 template(name="productsNew")
   div(class="products-new")
-    form(class="js-product-new-form")
-      +PaperDialog callbacks=dialogCB
-        div(class="js-open-dialog")
-        if showDialog.get
-          +selectList subscription='ingredients' many="true" params="" currentList=ingredients.get
+    +PaperDialog callbacks=dialogCB
+      div(class="js-open-dialog")
+      if showDialog.get
+        +selectList subscription='ingredients' many="true" params="" currentList=ingredients.get
         
+    form(class="js-product-new-form")
       +PaperHeaderPanel id="right" title="New Resource"
         +PaperHeader id="right"
           +PaperButton classes="save-icon-div js-submit-new-product" raise=0 rippleOn=true submit=true

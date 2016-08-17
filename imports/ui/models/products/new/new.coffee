@@ -23,7 +23,7 @@ class ProductsNew extends BlazeComponent
       hideClick: =>
         @showDialog.set false
 
-      beforeHide: @onCloseDialog
+      beforeHide: @onCloseDialogCallback
 
   onCalcPrice: (event) ->
     upv = @find('.uprice .pinput').value
@@ -39,7 +39,7 @@ class ProductsNew extends BlazeComponent
   onShowDialog: (event) ->
     $(@find('.js-open-dialog')).trigger('click')
 
-  onCloseDialog: =>
+  onCloseDialogCallback: =>
     ings = []
     $(".list-item[selected='true']").each ->
       ingredient_id = $(@).attr('data-id')

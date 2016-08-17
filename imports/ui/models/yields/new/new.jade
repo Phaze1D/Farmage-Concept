@@ -1,13 +1,14 @@
-template(name="expensesNew")
-  div(class="expenses-new")
+template(name='yieldsNew')
+  div(class="yields-new")
     +PaperDialog callbacks=dialogCB
       div(class="js-open-dialog")
       if showDialog.get
         +selectList subscription=subscription.get many="false" params="" callbacks=selectCallbacks currentList=currentList
-    form(class="js-expenses-new-form")    
+        
+    form(class="js-yields-new-form js-form-event")    
       +PaperHeaderPanel id="right" title="New Resource"
         +PaperHeader id="right"
-          +PaperButton classes="save-icon-div js-submit-new-expense" raise=0 rippleOn=true submit=true
+          +PaperButton classes="save-icon-div js-submit-new-yield" raise=0 rippleOn=true submit=true
             i(class="material-icons")
               | check
               
@@ -18,33 +19,37 @@ template(name="expensesNew")
         +PaperHeaderMain id="right"
           div(class='organization-bottom')
             div(class='input-area')
-              div(class="grid-wrapper")
+              div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperInput type="text" name="name" label="Item Name" focusColor="darkblue" size="size-medium"
+                  +PaperInput type="text" name="name" label="Name" focusColor="darkblue" size="size-medium"
                   
               div(class='grid-wrapper')
-                div(class='col-6 p-left')
-                  +PaperInput type="number" name="price" label="Price" focusColor="darkblue" prefix="$" step="0.01" min='0'
-
-                div(class='col-6 p-right p-left')
-                  +PaperInput type="number" name="quantity" label="Quantity" focusColor="darkblue" min='0'
+                div(class='col-12 p-right p-left')
+                  +PaperInput type="textarea" name="notes" label="Notes" focusColor="darkblue" charMax='512' showCount=true
 
               div(class='grid-wrapper')
-                div(class='col-12 p-right p-left')
-                  +PaperInput type="textarea" name="description" label="Description" focusColor="darkblue" charMax='512' showCount=true
-
+                div(class='col-6 p-left')
+                  +PaperInput type="number" name="amount" label="Amount" focusColor="darkblue" size="size-small" disabled='true' value='0' min='0' step='any'
+                
+                div(class='col-6 p-right p-left')
+                  div(class='b-change-wrapper')
+                    +PaperButton raise=1 elevation=1 submit=false rippleOn=true classes='b-change js-event-b'
+                      | #{eventTitle.get}
+                      
+              +eventMixin
+                  
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
-                    div(class="resources-b" data-sub='providers')
-                      div(class="text-div") Provider
+                    div(class="resources-b" data-sub='units')
+                      div(class="text-div") Unit
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
                         
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
-                    div(class="resources-b" data-sub='units')
-                      div(class="text-div") Unit
+                    div(class="resources-b" data-sub='ingredients')
+                      div(class="text-div") Resource
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle

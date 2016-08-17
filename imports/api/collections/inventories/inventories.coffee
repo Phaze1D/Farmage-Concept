@@ -38,6 +38,12 @@ YieldAssociationSchema =
 
 InventorySchema =
   new SimpleSchema([
+    name:
+      type: String
+      label: 'name'
+      max: 64
+      optional: true
+      
     amount:
       type: Number
       label: 'amount'
@@ -48,6 +54,12 @@ InventorySchema =
     expiration_date:
       type: String
       label: 'expiration_date'
+      optional: true
+
+    notes:
+      type: String
+      label: 'notes'
+      max: 512
       optional: true
 
     yield_objects: # Should be able to update if adding

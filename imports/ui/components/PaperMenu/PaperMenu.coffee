@@ -21,7 +21,7 @@ class PaperMenu extends BlazeComponent
         height: $subMenu[0].scrollHeight + 'px'
       o:
         duration: 250
-        easing: 'ease-in-out'
+        easing: 'easeOutQuad'
         complete: (elements) ->
           $subMenu.css height: 'auto'
 
@@ -34,7 +34,7 @@ class PaperMenu extends BlazeComponent
         height: '0px'
       o:
         duration: 250
-        easing: 'ease-in-out'
+        easing: 'easeInQuad'
         complete: ->
           $subMenu.closest('.menu-item').find('.sub-menu').css height: '0px'
 

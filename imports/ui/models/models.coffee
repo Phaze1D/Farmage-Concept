@@ -19,6 +19,8 @@ require './expenses/index/index.coffee'
 require './expenses/new/new.coffee'
 
 require './inventories/index/index.coffee'
+require './inventories/new/new.coffee'
+
 require './ousers/index/index.coffee'
 
 require './products/index/index.coffee'
@@ -28,7 +30,11 @@ require './providers/index/index.coffee'
 require './providers/new/new.coffee'
 
 require './sells/index/index.coffee'
+
 require './units/index/index.coffee'
+require './units/new/new.coffee'
+
 require './yields/index/index.coffee'
+require './yields/new/new.coffee'
 
 require './select_list/select_list.coffee'
