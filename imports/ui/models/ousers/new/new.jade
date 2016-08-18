@@ -1,0 +1,125 @@
+template(name='ousersNew')
+  div(class="ousers-new")
+        
+    form(class="js-ousers-new-form js-form-event")    
+      +PaperHeaderPanel id="right" title="New Resource"
+        +PaperHeader id="right"
+          +PaperButton classes="save-icon-div js-submit-new-ouser" raise=0 rippleOn=true submit=true
+            i(class="material-icons")
+              | check
+              
+          +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+            i(class="material-icons")
+              | clear
+        
+        +PaperHeaderMain id="right"
+          div(class='organization-bottom')
+            div(class='input-area')
+              div(class='grid-wrapper')
+                div(class='col-12 p-left p-right')
+                  +PaperInput type="text" name="first_name" label="First Name" focusColor="#00008b" size="size-medium"
+                  
+              div(class='grid-wrapper')
+                div(class='col-12 p-left p-right')
+                  +PaperInput type="text" name="last_name" label="Last Name" focusColor="#00008b" size="size-small"
+                  
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperInput type="text" name="email" label="Email" focusColor="#00008b" size="size-small"
+                
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  div(class='ou-title')
+                    | Permissions
+                  
+              div(class='grid-wrapper js-toggle-grid js-toggle-box')
+                div(class='col-9 p-left')
+                  div(class='ou-label')
+                    label
+                      | Owner
+                    div(class='ou-info')
+                      | View and edit everything (inc resources and events)
+                      
+                div(class='col-3 p-right')
+                  div(class='ou-toggle-div')
+                    div(class='ou-toggle')
+                      +PaperToggle onColor='#00008b' offColor='lightgrey' 
+                      
+              div(class='grid-wrapper js-toggle-grid js-toggle-box')
+                div(class='col-9 p-left')
+                  div(class='ou-label')
+                    label
+                      | Viewer
+                    div(class='ou-info')
+                      | View everything
+                      
+                div(class='col-3 p-right')
+                  div(class='ou-toggle-div')
+                    div(class='ou-toggle')
+                      +PaperToggle onColor='#00008b' offColor='lightgrey'
+                      
+              div(class='grid-wrapper js-toggle-grid js-toggle-box')
+                div(class='col-9 p-left')
+                  div(class='ou-label')
+                    label
+                      | Expenses Manager
+                    div(class='ou-info')
+                      | View and edit expenses and providers
+                      
+                div(class='col-3 p-right')
+                  div(class='ou-toggle-div')
+                    div(class='ou-toggle')
+                      +PaperToggle onColor='#00008b' offColor='lightgrey' 
+                
+              div(class='grid-wrapper js-toggle-grid js-toggle-box')
+                div(class='col-9 p-left')
+                  div(class='ou-label')
+                    label 
+                      | Sells Manager
+                    div(class='ou-info')
+                      | View and edit sells and clients
+                    
+                div(class='col-3 p-right')
+                  div(class='ou-toggle-div')
+                    div(class='ou-toggle')
+                      +PaperToggle onColor='#00008b' offColor='lightgrey' 
+                      
+              div(class='grid-wrapper js-toggle-grid js-toggle-box')
+                div(class='col-9 p-left')
+                  div(class='ou-label')
+                    label
+                      | Units Manager
+                    div(class='ou-info')
+                      | View and edit units and yields
+                        
+                div(class='col-3 p-right')
+                  div(class='ou-toggle-div')
+                    div(class='ou-toggle')
+                      +PaperToggle onColor='#00008b' offColor='lightgrey' 
+                    
+              div(class='grid-wrapper js-toggle-grid js-toggle-box')
+                div(class='col-9 p-left')
+                  div(class='ou-label')
+                    label
+                      | Inventories Manager
+                    div(class='ou-info')
+                      | View and edit inventories and products
+                        
+                div(class='col-3 p-right')
+                  div(class='ou-toggle-div')
+                    div(class='ou-toggle')
+                      +PaperToggle onColor='#00008b' offColor='lightgrey' 
+                      
+              div(class='grid-wrapper js-toggle-grid js-toggle-box')
+                div(class='col-9 p-left')
+                  div(class='ou-label')
+                    label 
+                      | Users Manager
+                    div(class='ou-info')
+                      | Invite and remove users
+                        
+                div(class='col-3 p-right')
+                  div(class='ou-toggle-div')
+                    div(class='ou-toggle')
+                      +PaperToggle onColor='#00008b' offColor='lightgrey' 
+                      

@@ -1,9 +1,6 @@
 template(name="productsNew")
   div(class="products-new")
-    +PaperDialog callbacks=dialogCB
-      div(class="js-open-dialog")
-      if showDialog.get
-        +selectList subscription='ingredients' many="true" params="" currentList=ingredients.get
+    +dialogMixin
         
     form(class="js-product-new-form")
       +PaperHeaderPanel id="right" title="New Resource"
@@ -46,13 +43,13 @@ template(name="productsNew")
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
-                    div(class="resources-b")
+                    div(class="resources-b" data-sub='ingredients' data-many='true')
                       div(class="text-div") Resources
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
                         
               
-              each ingredient in ingredients.get
+              each ingredient in clists.get 'ingredients'
                 div(class='grid-wrapper')
                   div(class='col-7 p-left')
                     div(class='ing-info')

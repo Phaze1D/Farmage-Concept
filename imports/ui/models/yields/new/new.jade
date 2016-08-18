@@ -1,10 +1,7 @@
 template(name='yieldsNew')
   div(class="yields-new")
-    +PaperDialog callbacks=dialogCB
-      div(class="js-open-dialog")
-      if showDialog.get
-        +selectList subscription=subscription.get many="false" params="" callbacks=selectCallbacks currentList=currentList
-        
+    +dialogMixin
+    
     form(class="js-yields-new-form js-form-event")    
       +PaperHeaderPanel id="right" title="New Resource"
         +PaperHeader id="right"
@@ -41,7 +38,7 @@ template(name='yieldsNew')
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
-                    div(class="resources-b" data-sub='units')
+                    div(class="resources-b" data-sub='units' data-many='false')
                       div(class="text-div") Unit
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
@@ -49,7 +46,7 @@ template(name='yieldsNew')
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
-                    div(class="resources-b" data-sub='ingredients')
+                    div(class="resources-b" data-sub='ingredients' data-many='false')
                       div(class="text-div") Resource
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle

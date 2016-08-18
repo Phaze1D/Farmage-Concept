@@ -1,29 +1,21 @@
 
-IngredientModule = require '../../../../api/collections/ingredients/ingredients.coffee'
 PMethods = require '../../../../api/collections/products/methods.coffee'
+DialogMixin = require '../../../mixins/dialog_mixin/dialog_mixin.coffee'
 
 require './new.jade'
 
 class ProductsNew extends BlazeComponent
   @register 'productsNew'
 
+  mixins: ->[
+    DialogMixin
+  ]
+
   constructor: (args) ->
     super
 
   onCreated: ->
     super
-    @showDialog = new ReactiveVar(false)
-    @ingredients = new ReactiveVar([])
-
-
-  dialogCB: ->
-    ret =
-      showClick: =>
-        @showDialog.set true
-      hideClick: =>
-        @showDialog.set false
-
-      beforeHide: @onCloseDialogCallback
 
 
   onCalcPrice: (event) ->
@@ -36,18 +28,8 @@ class ProductsNew extends BlazeComponent
     pv = upv * (1 + tv)
     @find('.tprice .pinput').value = pv.toFixed(2)
 
-
-  onShowDialog: (event) ->
-    $(@find('.js-open-dialog')).trigger('click')
-
-
-  onCloseDialogCallback: =>
-    ings = []
-    $(".list-item[selected='true']").each ->
-      ingredient_id = $(@).attr('data-id')
-      ings.push IngredientModule.Ingredients.findOne ingredient_id
-
-    @ingredients.set ings
+  currentList: (subscription)->
+    return @callFirstWith(@, 'currentList', subscription);
 
 
   insert: (product_doc) ->
@@ -61,7 +43,8 @@ class ProductsNew extends BlazeComponent
     event.preventDefault()
     $form = $('.js-product-new-form')
     ingredients = []
-    for ing in @ingredients.get()
+
+    for ing in @currentList('ingredients')
       ingredient_doc =
         ingredient_id: ing._id
         amount: $form.find("[name=#{ing._id}]").val()
@@ -82,6 +65,5 @@ class ProductsNew extends BlazeComponent
   events: ->
     super.concat
       'change .js-calc-p .pinput': @onCalcPrice
-      'click .js-show-d': @onShowDialog
       'submit .js-product-new-form': @onSubmit
       'click .js-submit-new-product': @onSubmit

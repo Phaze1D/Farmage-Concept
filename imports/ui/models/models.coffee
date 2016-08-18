@@ -22,6 +22,7 @@ require './inventories/index/index.coffee'
 require './inventories/new/new.coffee'
 
 require './ousers/index/index.coffee'
+require './ousers/new/new.coffee'
 
 require './products/index/index.coffee'
 require './products/new/new.coffee'

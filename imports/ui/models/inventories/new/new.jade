@@ -1,9 +1,6 @@
 template(name='inventoriesNew')
   div(class="inventories-new")
-    +PaperDialog callbacks=dialogCB
-      div(class="js-open-dialog")
-      if showDialog.get
-        +selectList subscription=subscription.get many="false" params="" callbacks=selectCallbacks currentList=currentList
+    +dialogMixin
         
     form(class="js-inventories-new-form js-form-event")    
       +PaperHeaderPanel id="right" title="New Resource"
@@ -28,7 +25,7 @@ template(name='inventoriesNew')
                   +PaperInput type="textarea" name="notes" label="Notes" focusColor="darkblue" charMax='512' showCount=true
                   
               div(class='grid-wrapper')
-                div(class='col-6 p-left')
+                div(class='col-12 p-left p-right')
                   +PaperInput type="text" name="expiration_date" label="Expiration Date" focusColor="darkblue" size="size-small"
 
               div(class='grid-wrapper')
@@ -45,7 +42,7 @@ template(name='inventoriesNew')
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
-                    div(class="resources-b" data-sub='products')
+                    div(class="resources-b" data-sub='products' data-many='false')
                       div(class="text-div") Product
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
@@ -53,7 +50,7 @@ template(name='inventoriesNew')
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
-                    div(class="resources-b" data-sub='yields')
+                    div(class="resources-b" data-sub='yields' data-many='true')
                       div(class="text-div") Yields
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle

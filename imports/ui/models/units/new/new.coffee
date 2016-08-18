@@ -1,4 +1,5 @@
 EventMixin = require '../../../mixins/event_mixin/event_mixin.coffee'
+DialogMixin = require '../../../mixins/dialog_mixin/dialog_mixin.coffee'
 
 
 require './new.jade'
@@ -6,33 +7,14 @@ require './new.jade'
 class UnitsNew extends BlazeComponent
   @register 'unitsNew'
 
-  constructor: (args) ->
-
   mixins: -> [
-    EventMixin
+    EventMixin, DialogMixin
   ]
+
 
   onCreated: ->
     super
-    @showDialog = new ReactiveVar(false)
-    @unit = new ReactiveVar([])
 
 
-  dialogCB: ->
-    ret =
-      showClick: =>
-        @showDialog.set true
-      hideClick: =>
-        @showDialog.set false
-
-      beforeHide: @onCloseDialog
-
-
-  onShowDialog: (event) ->
-    $(@find('.js-open-dialog')).trigger('click')
-
-
-
-  events: ->
-    super.concat
-      'click .js-show-d': @onShowDialog
+  currentList: (subscription)->
+    return @callFirstWith(@, 'currentList', subscription);

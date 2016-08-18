@@ -1,9 +1,7 @@
 template(name="expensesNew")
   div(class="expenses-new")
-    +PaperDialog callbacks=dialogCB
-      div(class="js-open-dialog")
-      if showDialog.get
-        +selectList subscription=subscription.get many="false" params="" callbacks=selectCallbacks currentList=currentList
+    +dialogMixin
+        
     form(class="js-expenses-new-form")    
       +PaperHeaderPanel id="right" title="New Resource"
         +PaperHeader id="right"
@@ -36,7 +34,7 @@ template(name="expensesNew")
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
-                    div(class="resources-b" data-sub='providers')
+                    div(class="resources-b" data-sub='providers'  data-many='false')
                       div(class="text-div") Provider
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
@@ -44,7 +42,7 @@ template(name="expensesNew")
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
-                    div(class="resources-b" data-sub='units')
+                    div(class="resources-b" data-sub='units'  data-many='false')
                       div(class="text-div") Unit
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle

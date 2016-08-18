@@ -18,7 +18,7 @@ class EventMixin extends BlazeComponent
     ebox = $(@find '.event-box')
     ebox.velocity
       p:
-        height: '135px'
+        height: '68px'
       o:
         duration: 250
         easing: 'ease-in-out'

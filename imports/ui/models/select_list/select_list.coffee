@@ -1,26 +1,14 @@
+
+{ mlists } = require '../../mixins/mlist_mixin.coffee'
+
 require './select_list.jade'
-
-CustomerModule = require '../../../api/collections/customers/customers.coffee'
-ExpenseModule = require '../../../api/collections/expenses/expenses.coffee'
-ProviderModule = require '../../../api/collections/providers/providers.coffee'
-YieldModule = require '../../../api/collections/yields/yields.coffee'
-UnitModule = require '../../../api/collections/units/units.coffee'
-ProductModule = require '../../../api/collections/products/products.coffee'
-InventoryModule = require '../../../api/collections/inventories/inventories.coffee'
-EventModule = require '../../../api/collections/events/events.coffee'
-SellModule = require '../../../api/collections/sells/sells.coffee'
-IngredientModule = require '../../../api/collections/ingredients/ingredients.coffee'
-
-lists = {}
-lists.ingredients = IngredientModule.Ingredients
-lists.providers = ProviderModule.Providers
-lists.units = UnitModule.Units
 
 
 class SelectList extends BlazeComponent
   @register 'selectList'
 
   onCreated: ->
+    super
     organization_id = FlowRouter.getParam 'organization_id'
     @sitem = {}
     @autorun =>
@@ -37,7 +25,7 @@ class SelectList extends BlazeComponent
 
 
   items: ->
-    lists[@data().subscription].find()
+    mlists[@data().subscription].find()
 
   itemIsSelected: (item_id) ->
     return true for item in @data().currentList when item._id is item_id
