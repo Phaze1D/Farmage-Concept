@@ -1,36 +1,37 @@
 paper-input(class="paper-input #{classes}" disabled=disabled)
   unless hideTop
     div(class='floated-label-container') &nbsp;
-  div(class='prefix')
-    | #{prefix}
-  div(class='input-container')
-    label(class="input-label #{float.get} #{size}" style="color: #{colorL.get}; ")
-      | #{label}
-      span
-        | #{span}
-    if textarea
-      textarea(type=type
-                name=name
-                data-id="textarea"
-                class="pinput-textarea pinput #{size}"
-                disabled=disabled
-                rows="1"
-                placeholder=placeholder
-                autocomplete='off'
-                readonly=readonly)= value 
-    else
-      input(type=type
-            name=name
-            data-id="input"
-            class="pinput #{size}"
-            value=value
-            disabled=disabled
-            placeholder=placeholder
-            readonly=readonly
-            max=max
-            min=min
-            autocomplete='off'
-            step=step)/
+  div(class='input-content')
+    div(class='prefix')
+      | #{prefix}
+    div(class='input-container #{size}')
+      label(class="input-label #{float.get} #{size}" style="color: #{colorL.get}; ")
+        | #{label}
+        span
+          | #{span}
+      if textarea
+        textarea(type=type
+                  name=name
+                  data-id="textarea"
+                  class="pinput-textarea pinput #{size}"
+                  disabled=disabled
+                  rows="1"
+                  placeholder=placeholder
+                  autocomplete='off'
+                  readonly=readonly)= value 
+      else
+        input(type=type
+              name=name
+              data-id="input"
+              class="pinput #{size}"
+              value=value
+              disabled=disabled
+              placeholder=placeholder
+              readonly=readonly
+              max=max
+              min=min
+              autocomplete='off'
+              step=step)/
     div(class='defix')
       | #{defix}
   div(class='underline-container')

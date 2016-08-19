@@ -15,11 +15,21 @@
   letter-spacing: 0.011em;
   line-height: 20px;
 
-.input-container
+.input-content
   display: flex;
   flex-direction: row;
   align-items: center;
   position: relative;
+
+.input-container
+  flex: 1 1 auto;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+
+  &.size-small
+    line-height: 10px
+
 
 .input-label
   position: absolute;
@@ -139,12 +149,12 @@
 
 
 .prefix
-  float: left;
+  flex: none
   line-height: 24px
   margin-right: 1px
   font-weight: 300
 
 .defix
-  float: right;
+  flex: none
   line-height: 24px
   font-weight: 300
