@@ -16,6 +16,7 @@ class EventMixin extends BlazeComponent
   showEvent: ->
     @eventTitle.set 'Undo'
     ebox = $(@find '.event-box')
+    ebox.css visibility: 'visible'
     ebox.velocity
       p:
         height: '68px'
@@ -23,19 +24,25 @@ class EventMixin extends BlazeComponent
         duration: 250
         easing: 'ease-in-out'
         complete: ->
-          ebox.css(height: '')
+          ebox.css height: ''
 
   hideEvent: ->
     @eventTitle.set 'Change'
     form = $('.js-form-event')
-    form.find('[name=amount]').val('0')
-    form.find('[name=event_amount]').val('0')
-    $(@find '.event-box').velocity
+    form.find('[name=amount]').val(0)
+    form.find('[name=event_amount]').val(0)
+    form.find('[name=event_description]').val('')
+    ebox = $(@find '.event-box')
+    ebox.velocity
       p:
         height: '0px'
       o:
         duration: 250
         easing: 'ease-in-out'
+        complete: ->
+          ebox.css visibility: 'hidden'
+
+
 
 
   onAmountChange: (event) ->

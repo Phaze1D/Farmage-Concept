@@ -1,0 +1,18 @@
+template(name='sellsNew')
+  div(class="sells-new")
+    +dialogMixin
+        
+    form(class="js-sell-new-form")
+      +PaperHeaderPanel id="right"
+        +PaperHeader id="right" title="New Sell"
+          +PaperButton classes="save-icon-div js-submit-new-sell" raise=0 rippleOn=true submit=true
+            i(class="material-icons")
+              | check
+              
+          +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+            i(class="material-icons")
+              | clear
+        
+        +PaperHeaderMain id="right"
+          div(class='organization-bottom')
+            div(class='input-area')

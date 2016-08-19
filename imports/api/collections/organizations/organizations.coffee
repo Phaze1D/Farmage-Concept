@@ -22,6 +22,7 @@ PermissionSchema = exports.PermissionSchema =
     founder:
       type: Boolean
       defaultValue: false
+      optional: true
 
     owner:
       type: Boolean

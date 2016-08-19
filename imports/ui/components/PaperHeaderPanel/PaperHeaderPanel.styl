@@ -45,5 +45,44 @@
   width: 100%
   z-index: 2
 
+  & .title
+    position: absolute;
+    bottom: 34px
+    z-index: -1
+    margin-left: 64px
+    transition: .2s margin-left ease-in-out
+
+    @media (max-width:1023px) and (min-width:768px){
+      margin-left: 108px
+    }
+
+    & h1
+      font-size: 32px
+      font-weight: 400;
+
+
+
+  & .sm-title
+    display: none;
+    position: absolute;
+    bottom: 34px
+    z-index: -1
+    transform: translate(-20px, 46px) scale(.7,.7);
+    margin-left: 64px
+    transition: .2s margin-left ease-in-out
+
+    @media (max-width:1023px) and (min-width:768px){
+      margin-left: 108px
+      transform: translate(-65px, 46px) scale(.7,.7);
+    }
+
+    & h1
+      font-size: 32px
+      font-weight: 400;
+
+
+
+
+
 .header-main.content
   padding: 15px 8px 0

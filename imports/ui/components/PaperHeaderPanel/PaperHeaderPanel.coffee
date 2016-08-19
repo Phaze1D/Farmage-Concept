@@ -14,13 +14,13 @@ class PaperHeaderPanel extends BlazeComponent
     @down = false
     @goingUp = false
     @crossed = false
-
     @throttle = @throttle.bind(@)
 
   onRendered: ->
     super
     main = document.getElementById("#{@data().id}-paper-header-panel") # Need to change id
     main.addEventListener('scroll', @throttle)
+    @header = $('#' + @data().id + '-paper-header')
 
 
   onDestroyed: ->
@@ -61,21 +61,29 @@ class PaperHeaderPanel extends BlazeComponent
 
     smallY = if yPosition > 148 then 148 else yPosition
     if smallY < 149
-      $(@find '.header-small').css transform: "translate3d(0px, #{smallY}px, 0px)"
+      @find('.header-small').style.transform = "translate3d(0px, #{smallY}px, 0px)"
 
     if yPosition < 212 || @lastY < 212
-      header = $('#' + @data().id + '-paper-header')
       if @goingUp && yPosition > 148 && @down
-        header.css transform: "translate3d(0px, -148px, 0px)"
+        @header[0].style.transform = "translate3d(0px, -148px, 0px)"
       else
-        header.addClass('elevation-0').removeClass('elevation-2')
+        @header.addClass('elevation-0').removeClass('elevation-2')
         if mainY <= 148
-          header.find('.header-content').css height: "#{212 - mainY}px"
+          @header.find('.sm-title')[0].style.display = 'none'
+          @header.find('.header-content')[0].style.height = "#{212 - mainY}px"
+          scale = 1+mainY*(-0.002)
+          title = @header.find('.title')
+          title[0].style.display= 'block'
+          x = if title.css('margin-left') is '64px' then -0.135 else -0.439
+          title[0].style.transform = "translate(#{mainY * x}px, #{mainY * 0.311}px) scale(#{scale}, #{scale})"
+
         else
-          header.find('.header-content').css height: "64px"
-          
+          @header.find('.title')[0].style.display = 'none'
+          @header.find('.sm-title')[0].style.display = 'block'
+          @header.find('.header-content')[0].style.height = "64px"
+
         mainY = if mainY > 212 then 212 else mainY
-        header.css transform: "translate3d(0px, -#{mainY}px, 0px)"
+        @header[0].style.transform= "translate3d(0px, -#{mainY}px, 0px)"
         @down = false
 
     @lastY = yPosition
@@ -84,26 +92,24 @@ class PaperHeaderPanel extends BlazeComponent
     unless @down
       duration = if duration > 250 then 250 else duration
       @down = true
-      header = $('#' + @data().id + '-paper-header')
-      header.addClass('elevation-2').removeClass('elevation-0')
+      @header.addClass('elevation-2').removeClass('elevation-0')
       p =
         translateY: ["-148px", "-212px"]
       o =
         duration: duration
         easing: 'linear'
-      header.velocity p, o
+      @header.velocity p, o
 
 
   moveUp: (duration) ->
     if @down
       duration = if duration > 250 then 250 else duration
       @down = false
-      header = $('#' + @data().id + '-paper-header')
       p =
         translateY: "-212px"
       o =
         duration: duration
         easing: 'linear'
-        complete: ->
-          header.addClass('elevation-0').removeClass('elevation-2')
-      header.velocity p,o
+        complete: =>
+          @header.addClass('elevation-0').removeClass('elevation-2')
+      @header.velocity p,o

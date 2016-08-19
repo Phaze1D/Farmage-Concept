@@ -2,8 +2,8 @@ template(name='ousersNew')
   div(class="ousers-new")
         
     form(class="js-ousers-new-form js-form-event")    
-      +PaperHeaderPanel id="right" title="New Resource"
-        +PaperHeader id="right"
+      +PaperHeaderPanel id="right" 
+        +PaperHeader id="right" title="Invite User"
           +PaperButton classes="save-icon-div js-submit-new-ouser" raise=0 rippleOn=true submit=true
             i(class="material-icons")
               | check
@@ -32,7 +32,7 @@ template(name='ousersNew')
                   div(class='ou-title')
                     | Permissions
                   
-              div(class='grid-wrapper js-toggle-grid js-toggle-box')
+              div(class='grid-wrapper js-toggle-grid js-toggle-box' permission='owner')
                 div(class='col-9 p-left')
                   div(class='ou-label')
                     label
@@ -45,7 +45,7 @@ template(name='ousersNew')
                     div(class='ou-toggle')
                       +PaperToggle onColor='#00008b' offColor='lightgrey' 
                       
-              div(class='grid-wrapper js-toggle-grid js-toggle-box')
+              div(class='grid-wrapper js-toggle-grid js-toggle-box' permission='viewer')
                 div(class='col-9 p-left')
                   div(class='ou-label')
                     label
@@ -58,7 +58,7 @@ template(name='ousersNew')
                     div(class='ou-toggle')
                       +PaperToggle onColor='#00008b' offColor='lightgrey'
                       
-              div(class='grid-wrapper js-toggle-grid js-toggle-box')
+              div(class='grid-wrapper js-toggle-grid js-toggle-box' permission='expenses_manager')
                 div(class='col-9 p-left')
                   div(class='ou-label')
                     label
@@ -71,7 +71,7 @@ template(name='ousersNew')
                     div(class='ou-toggle')
                       +PaperToggle onColor='#00008b' offColor='lightgrey' 
                 
-              div(class='grid-wrapper js-toggle-grid js-toggle-box')
+              div(class='grid-wrapper js-toggle-grid js-toggle-box' permission='sells_manager')
                 div(class='col-9 p-left')
                   div(class='ou-label')
                     label 
@@ -84,7 +84,7 @@ template(name='ousersNew')
                     div(class='ou-toggle')
                       +PaperToggle onColor='#00008b' offColor='lightgrey' 
                       
-              div(class='grid-wrapper js-toggle-grid js-toggle-box')
+              div(class='grid-wrapper js-toggle-grid js-toggle-box' permission='units_manager')
                 div(class='col-9 p-left')
                   div(class='ou-label')
                     label
@@ -97,7 +97,7 @@ template(name='ousersNew')
                     div(class='ou-toggle')
                       +PaperToggle onColor='#00008b' offColor='lightgrey' 
                     
-              div(class='grid-wrapper js-toggle-grid js-toggle-box')
+              div(class='grid-wrapper js-toggle-grid js-toggle-box' permission='inventories_manager')
                 div(class='col-9 p-left')
                   div(class='ou-label')
                     label
@@ -110,7 +110,7 @@ template(name='ousersNew')
                     div(class='ou-toggle')
                       +PaperToggle onColor='#00008b' offColor='lightgrey' 
                       
-              div(class='grid-wrapper js-toggle-grid js-toggle-box')
+              div(class='grid-wrapper js-toggle-grid js-toggle-box' permission='users_manager')
                 div(class='col-9 p-left')
                   div(class='ou-label')
                     label 

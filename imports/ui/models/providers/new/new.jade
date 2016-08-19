@@ -1,8 +1,8 @@
 template(name='providersNew')
   div(class="providers-new")
     form(class="js-providers-new-form")
-      +PaperHeaderPanel id="right" title="New Resource"
-        +PaperHeader id="right"
+      +PaperHeaderPanel id="right"
+        +PaperHeader id="right" title="New Provider"
           +PaperButton classes="save-icon-div js-submit-new-provider" raise=0 rippleOn=true submit=true
             i(class="material-icons")
               | check
@@ -22,7 +22,10 @@ template(name='providersNew')
                 div(class='col-12 p-right p-left')
                   +PaperInput type="text" name="last_name" label="Last Name" focusColor="darkblue" size="size-small"
               
-                                      
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperInput type="text" name="email" label="Email" focusColor="darkblue" size="size-small"
+                      
               div(class="grid-wrapper")
                 div(class="col-7 p-left")
                   +PaperInput type="text" name="company" label="Company" focusColor="darkblue" size="size-small"
@@ -30,9 +33,7 @@ template(name='providersNew')
                 div(class='col-5 p-left p-right')
                   +PaperInput type="text" name="date_of_birth" label="Birthday" focusColor="darkblue" size="size-small"
                   
-              div(class='grid-wrapper')
-                div(class='col-7 p-left')
-                  +PaperInput type="text" name="email" label="Email" focusColor="darkblue" size="size-small"
+              
                   
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')

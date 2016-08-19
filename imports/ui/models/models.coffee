@@ -31,6 +31,7 @@ require './providers/index/index.coffee'
 require './providers/new/new.coffee'
 
 require './sells/index/index.coffee'
+require './sells/new/new.coffee'
 
 require './units/index/index.coffee'
 require './units/new/new.coffee'
