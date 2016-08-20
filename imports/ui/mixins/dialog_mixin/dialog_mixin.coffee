@@ -10,7 +10,9 @@ class DialogMixin extends BlazeComponent
     @showDialog = new ReactiveVar(false)
     @clists = new ReactiveDict()
     @subscription = new ReactiveVar('')
-    @many = new ReactiveVar ('')
+    @many = new ReactiveVar('')
+    @parent = new ReactiveVar('')
+    @parentID = new ReactiveVar('')
 
 
   dialogCB: ->
@@ -24,8 +26,10 @@ class DialogMixin extends BlazeComponent
 
 
   onShowDialog: (event) ->
-    resourcesB = $(event.currentTarget).find('.resources-b')
-    @subscription.set( resourcesB.attr('data-sub') )
+    resourcesB = $(event.currentTarget).find('.js-dialog-b')
+    @subscription.set resourcesB.attr('data-sub')
+    @parent.set(resourcesB.attr('data-parent')) if resourcesB.attr('data-parent')?
+    @parentID.set(resourcesB.attr('data-parentid')) if resourcesB.attr('data-parent')?
     if resourcesB.attr('data-many') is 'true'
       @many.set true
     else
@@ -35,8 +39,8 @@ class DialogMixin extends BlazeComponent
 
 
   currentList: (sub) ->
-    sub = @subscription.get() unless sub?
-    cl = @clists.get sub
+    sub = @subscription.get() + @parentID.get() unless sub?
+    cl = @clists.get(sub)
     return cl if cl?
     return []
 
@@ -48,7 +52,12 @@ class DialogMixin extends BlazeComponent
       item_id = $(@).attr('data-id')
       list.push mlists[sub].findOne item_id
 
-    @clists.set @subscription.get(), list
+    @clists.set @subscription.get() + @parentID.get(), list
+
+    if @mixinParent().onCloseDialogCallback?
+      @mixinParent().onCloseDialogCallback()
+
+
 
 
   events: ->[

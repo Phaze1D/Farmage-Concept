@@ -26,6 +26,7 @@ require './ousers/new/new.coffee'
 
 require './products/index/index.coffee'
 require './products/new/new.coffee'
+require './products/selector/selector.coffee'
 
 require './providers/index/index.coffee'
 require './providers/new/new.coffee'
@@ -35,8 +36,12 @@ require './sells/new/new.coffee'
 
 require './units/index/index.coffee'
 require './units/new/new.coffee'
+require './units/selector/selector.coffee'
 
 require './yields/index/index.coffee'
 require './yields/new/new.coffee'
+require './yields/selector/selector.coffee'
+
+
 
 require './select_list/select_list.coffee'

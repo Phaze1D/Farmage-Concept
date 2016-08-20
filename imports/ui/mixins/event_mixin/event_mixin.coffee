@@ -8,10 +8,12 @@ class EventMixin extends BlazeComponent
 
 
   onToggleEvent: (event) ->
-    if @eventTitle.get() is 'Undo'
-      @hideEvent()
-    else
-      @showEvent()
+    console.log $(event.currentTarget).attr('disabled')
+    unless $(event.currentTarget).attr('disabled')?
+      if @eventTitle.get() is 'Undo'
+        @hideEvent()
+      else
+        @showEvent()
 
   showEvent: ->
     @eventTitle.set 'Undo'
@@ -19,12 +21,13 @@ class EventMixin extends BlazeComponent
     ebox.css visibility: 'visible'
     ebox.velocity
       p:
-        height: '68px'
+        height: '115px'
       o:
         duration: 250
         easing: 'ease-in-out'
         complete: ->
           ebox.css height: ''
+          ebox.velocity("scroll", { container: $('#right-paper-header-panel')});
 
   hideEvent: ->
     @eventTitle.set 'Change'

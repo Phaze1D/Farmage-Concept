@@ -18,7 +18,7 @@ template(name='yieldsNew')
             div(class='input-area')
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperInput type="text" name="name" label="Name" focusColor="darkblue" size="size-medium"
+                  +PaperInput type="text" name="name" label="Identifier" focusColor="darkblue" size="size-medium"
                   
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
@@ -38,7 +38,7 @@ template(name='yieldsNew')
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
-                    div(class="resources-b" data-sub='units' data-many='false')
+                    div(class="resources-b js-dialog-b" data-sub='units' data-many='false')
                       div(class="text-div") Unit
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
@@ -46,7 +46,7 @@ template(name='yieldsNew')
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
-                    div(class="resources-b" data-sub='ingredients' data-many='false')
+                    div(class="resources-b js-dialog-b" data-sub='ingredients' data-many='false')
                       div(class="text-div") Resource
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle

@@ -40,8 +40,7 @@ class PaperDialog extends BlazeComponent
           skrim.addClass('closed').removeClass('opened')
           $('#paper-drawer-main').css overflow: 'hidden', 'z-index': 0
           skrim.removeClass('js-skrim')
-          rphp = $('#right-paper-header-panel')
-          rphp.scrollTop(rphp[0].scrollHeight)
+          $('#dialog-scrollTo').velocity("scroll", { container: $('#right-paper-header-panel')});
 
   events: ->
     super.concat

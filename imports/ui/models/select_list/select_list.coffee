@@ -12,7 +12,7 @@ class SelectList extends BlazeComponent
     organization_id = FlowRouter.getParam 'organization_id'
     @sitem = {}
     @autorun =>
-      @subscribe @data().subscription, organization_id,
+      @subscribe @data().subscription, organization_id, @data().parent, @data().parent_id,
         onStop: (err) ->
           console.log "sub stop #{err}"
         onReady: ->

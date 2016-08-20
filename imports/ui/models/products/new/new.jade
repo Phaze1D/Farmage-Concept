@@ -43,14 +43,14 @@ template(name="productsNew")
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
-                    div(class="resources-b" data-sub='ingredients' data-many='true')
+                    div(class="resources-b js-dialog-b" data-sub='ingredients' data-many='true')
                       div(class="text-div") Resources
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
                         
               
               each ingredient in clists.get 'ingredients'
-                div(class='grid-wrapper')
+                div(id='dialog-scrollTo' class='grid-wrapper')
                   div(class='col-7 p-left')
                     div(class='ing-info')
                       div(class='ing-img')

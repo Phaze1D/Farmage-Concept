@@ -2,4 +2,4 @@ template(name='dialogMixin')
   +PaperDialog callbacks=dialogCB
     div(class="js-open-dialog")
     if showDialog.get
-      +selectList subscription=subscription.get many=many.get params="" currentList=currentList
+      +selectList subscription=subscription.get many=many.get parent=parent.get parent_id=parentID.get currentList=currentList

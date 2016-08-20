@@ -1,0 +1,14 @@
+template(name='productsSelector')
+  div(class='js-list-item list-item' data-id="#{item._id}" selected='#{isChecked.get}')
+    div(class="circle-image" selected='#{isChecked.get}')
+      //- img(src='/no_image.png')
+      
+    div(class='info-div')
+      div
+        div(class="main")
+          | #{item.name}
+        div(class="sub")
+          | #{item.price}
+      
+    div(class="checker-div")
+      +PaperCheckbox classes="checkbox" rippleFill='darkblue' fcolor='darkblue' clickCallback=onItemClickCallback checked=isChecked.get

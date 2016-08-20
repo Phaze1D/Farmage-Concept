@@ -1,6 +1,7 @@
-div(class="paper-button #{classes} elevation-#{elevation}")
-  if rippleOn 
-    +PaperRipple fill=rippleFill
+div(class="paper-button #{classes} elevation-#{elevation}" disabled=disabled)
+  unless disabled
+    if rippleOn
+      +PaperRipple fill=rippleFill
   
   +Template.contentBlock
   

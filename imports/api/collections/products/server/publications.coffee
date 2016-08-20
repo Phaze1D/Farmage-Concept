@@ -12,7 +12,7 @@ collections.ingredient = IngredientModule.Ingredients
 
 # Missing permissions and pagenation
 Meteor.publish "products", (organization_id, parent, parent_id) ->
-
+  
   info = publicationInfo organization_id, parent, parent_id
   parentDoc = info.parentDoc
   organization = info.organization
@@ -29,7 +29,7 @@ Meteor.publish "products", (organization_id, parent, parent_id) ->
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
 
-  if @userId? && parentDoc? && (permissions.viwer || permissions.inventories_manager || permissions.owner)
+  if @userId? && parentDoc? && (permissions.viewer || permissions.inventories_manager || permissions.owner)
     return parentDoc.products()
   else
     @ready();
@@ -50,7 +50,7 @@ Meteor.publish 'product.ingredients', (organization_id, product_id) ->
   unless(product? && product.organization_id is organization._id)
     throw new Meteor.Error 'notAuthorized', 'not authorized'
 
-  if @userId? && (permissions.viwer || permissions.inventories_manager || permissions.owner)
+  if @userId? && (permissions.viewer || permissions.inventories_manager || permissions.owner)
     return product.ingredients()
   else
     @ready()
