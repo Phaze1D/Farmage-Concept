@@ -50,7 +50,6 @@ class PaperRightPanel extends BlazeComponent
       o:
         duration: 350
         easing: 'ease-in-out'
-        mobileHA: false
         progress: (elements, complete, remaining, start, tweenValue) =>
           if @data().callbacks? && @data().callbacks.progressCallback?
             @data().callbacks.progressCallback()
@@ -65,7 +64,6 @@ class PaperRightPanel extends BlazeComponent
         'padding-right': (window.innerWidth * .35).toFixed(0)
       o:
         duration: 350
-        mobileHA: false
         easing: 'ease-in-out'
         complete: =>
           @headerMain.css 'padding-right': '35%'
@@ -106,7 +104,6 @@ class PaperRightPanel extends BlazeComponent
       o:
         duration: 250
         easing: 'ease-in-out'
-        mobileHA: false
         progress: (elements, complete, remaining, start, tweenValue) =>
           if @data().callbacks? && @data().callbacks.progressCallback?
             @data().callbacks.progressCallback()
@@ -122,7 +119,6 @@ class PaperRightPanel extends BlazeComponent
         'padding-right': 0
       o:
         duration: 250
-        mobileHA: false
         easing: 'ease-in-out'
 
 
