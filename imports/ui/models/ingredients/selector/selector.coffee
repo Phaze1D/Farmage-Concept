@@ -12,7 +12,15 @@ class IngredientSelector extends BlazeComponent
     @data().isChecked = new ReactiveVar(@data().isChecked)
 
   onItemClick: (event) ->
-    $(event.currentTarget).find('.js-checkbox').trigger('click')
+    if @data().many
+      $(event.currentTarget).find('.js-checkbox').trigger('click')
+    else
+
+      if $(event.currentTarget).find('.radio-mark').hasClass('checked')
+        $('.radio-mark.checked').trigger('click')
+      else
+        $('.radio-mark.checked').trigger('click')
+        $(event.currentTarget).find('.js-radio').trigger('click')
 
   color: ->
     if @data().isChecked

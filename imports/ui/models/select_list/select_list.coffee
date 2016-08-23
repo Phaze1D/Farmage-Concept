@@ -64,6 +64,7 @@ class SelectList extends BlazeComponent
     ret =
       item:@sitem
       isChecked: @itemIsSelected(@sitem._id)
+      many: @data().many
 
 
   events: ->

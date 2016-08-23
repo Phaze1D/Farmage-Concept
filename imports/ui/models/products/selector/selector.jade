@@ -10,5 +10,9 @@ template(name='productsSelector')
         div(class="sub")
           | #{item.price}
       
-    div(class="checker-div")
-      +PaperCheckbox classes="checkbox" rippleFill='darkblue' fcolor='darkblue' clickCallback=onItemClickCallback checked=isChecked.get
+    if many
+      div(class="checker-div")
+        +PaperCheckbox classes="checkbox" rippleFill='darkblue' fcolor='darkblue' clickCallback=onItemClickCallback checked=isChecked.get
+    else
+      div(class='checker-div')
+        +PaperRadio classes="checkbox" rippleFill='darkblue' fcolor='darkblue' clickCallback=onItemClickCallback checked=isChecked.get
