@@ -28,15 +28,6 @@ template(name='inventoriesNew')
                 div(class='col-12 p-right p-left')
                   +PaperInput type="textarea" name="notes" label="Notes" focusColor="darkblue" charMax='512' showCount=true
                   
-                  
-              div(class='grid-wrapper')
-                div(class='col-6 p-left')
-                  +PaperInput type="number" name="amount" label="Amount" focusColor="darkblue" size="size-small" disabled='true' value='0' min='0' step='any'
-                
-                div(class='col-6 p-right p-left')
-                  div(class='b-change-wrapper')
-                    +PaperButton raise=1 elevation=1 submit=false rippleOn=true classes='b-change js-event-b'
-                      | #{eventTitle.get}
                       
               +eventMixin
                 
@@ -44,7 +35,7 @@ template(name='inventoriesNew')
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
-                    div(class="resources-b js-dialog-b" data-sub='products' data-many='false')
+                    div(class="resources-b js-dialog-b" data-sub='products' data-many='false' data-reset='true')
                       div(class="text-div-lg") Product
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
@@ -71,17 +62,18 @@ template(name='inventoriesNew')
                         div(class='col-12')
                           div(class='ing-subtitle')
                             | Product Resources
-                      
+                      {{setMainAmount}}
                       each ping in product.pingredients
                         with ingredient ping
+                          
                           div(class='yield-b-wrapper')
                             div(class='grid-wrapper')
-                              div(class='col-12')
+                              div(class='col-12 ing-section' data-ingredient="#{_id}")
                                 +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d yield-b"
                                   div(class="js-dialog-b" data-sub='yields' data-many='true' data-parent='ingredient' data-parentid="#{_id}")
                                     div(class='y-divider')
                                       div(class='y-subtitle')
-                                        | Inventory Amount - 0
+                                        | Inventory Amount - {{ingyields ping.ingredient_id ping.amount}}
                                       div(class="icon-div")
                                         i(class="material-icons icon") add_circle
                                         
@@ -95,8 +87,9 @@ template(name='inventoriesNew')
                                           | #{ping.amount} #{measurement_unit}
                                           span
                                             | pre product
-                                                                          
-                            each yield in yields ping
+
+                            each yield in yields ping.ingredient_id
+                              {{addYield ping.ingredient_id yield._id}}
                               div(class='grid-wrapper')
                                 div(class='col-12')
                                   div(class='yield-section')
@@ -110,14 +103,15 @@ template(name='inventoriesNew')
                                       div(class='yield-subtitle')
                                         | Current Yield Amount
                                       div(class='yield-amount')
-                                        | #{yield.amount}
+                                        {{currentYieldAmount ping.ingredient_id yield._id yield.amount}}
                               
-                                  div(class='yield-input-sec')
+                                  div(class='yield-input-sec' data-yield='#{yield._id}' data-ingredient='#{ping.ingredient_id}')
                                     div(class='yield-max-div')
-                                      +PaperButton raise=1 elevation=1 submit=false rippleOn=true classes="max-b"
-                                        | Max
+                                      
                                       
                                     div(class='yield-input-div')
-                                      +PaperInput type="number" name="amount_taken" label="Amount Taken" focusColor="darkblue" size="size-small" min='0' step='any' defix=measurement_unit labelFloat=false hideTop=true
-
+                                      +PaperInput classes="js-amount-taken" type="number" name="amount_taken" label="Amount Taken" focusColor="darkblue" size="size-small" min='0' max=yield.amount step='any' defix=measurement_unit labelFloat=false hideTop=true
+                                  
+                                  
+                                  
                                     

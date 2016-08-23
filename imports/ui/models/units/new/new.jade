@@ -23,15 +23,7 @@ template(name='unitsNew')
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperInput type="textarea" name="description" label="Description" focusColor="darkblue" charMax='512' showCount=true
-              
-              div(class='grid-wrapper')
-                div(class='col-6 p-left')
-                  +PaperInput type="number" name="amount" label="Amount" focusColor="darkblue" size="size-small" disabled='true' value='0' min='0' step='any'
-                
-                div(class='col-6 p-right p-left')
-                  div(class='b-change-wrapper')
-                    +PaperButton raise=1 elevation=1 submit=false rippleOn=true classes='b-change js-event-b'
-                      | #{eventTitle.get}
+            
                       
               +eventMixin
                   

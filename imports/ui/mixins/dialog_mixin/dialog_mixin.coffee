@@ -19,14 +19,15 @@ class DialogMixin extends BlazeComponent
     ret =
       showClick: =>
         @showDialog.set true
-      hideClick: =>
-        @showDialog.set false
-
+      hideClick: @onHideCallback
       beforeHide: @onCloseDialogCallback
 
 
   onShowDialog: (event) ->
+    @parent.set('')
+    @parentID.set('')
     resourcesB = $(event.currentTarget).find('.js-dialog-b')
+    @clists.clear() if resourcesB.attr('data-reset')?
     @subscription.set resourcesB.attr('data-sub')
     @parent.set(resourcesB.attr('data-parent')) if resourcesB.attr('data-parent')?
     @parentID.set(resourcesB.attr('data-parentid')) if resourcesB.attr('data-parent')?
@@ -44,6 +45,13 @@ class DialogMixin extends BlazeComponent
     return cl if cl?
     return []
 
+  clistsDict: ->
+    @clists
+
+  onHideCallback: =>
+    @showDialog.set false
+    if @mixinParent().onHideCallback?
+      @mixinParent().onHideCallback()
 
   onCloseDialogCallback: =>
     list = []

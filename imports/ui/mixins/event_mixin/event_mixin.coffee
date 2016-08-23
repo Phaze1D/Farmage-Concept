@@ -5,18 +5,21 @@ class EventMixin extends BlazeComponent
 
   onCreated: ->
     @eventTitle = new ReactiveVar('Change')
+    @eventHidden = true
+    @mainAmount = new ReactiveVar(0)
 
 
   onToggleEvent: (event) ->
-    console.log $(event.currentTarget).attr('disabled')
     unless $(event.currentTarget).attr('disabled')?
-      if @eventTitle.get() is 'Undo'
-        @hideEvent()
-      else
+      if @eventHidden
         @showEvent()
+      else
+        @hideEvent()
 
   showEvent: ->
+    @eventHidden = false
     @eventTitle.set 'Undo'
+    @mainAmount.set 0
     ebox = $(@find '.event-box')
     ebox.css visibility: 'visible'
     ebox.velocity
@@ -25,15 +28,17 @@ class EventMixin extends BlazeComponent
       o:
         duration: 250
         easing: 'ease-in-out'
-        complete: ->
+        complete: =>
           ebox.css height: ''
           ebox.velocity("scroll", { container: $('#right-paper-header-panel')});
+    if @mixinParent().onShowEvent?
+      @mixinParent().onShowEvent()
 
   hideEvent: ->
+    @eventHidden = true
     @eventTitle.set 'Change'
+    @mainAmount.set 0
     form = $('.js-form-event')
-    form.find('[name=amount]').val(0)
-    form.find('[name=event_amount]').val(0)
     form.find('[name=event_description]').val('')
     ebox = $(@find '.event-box')
     ebox.velocity
@@ -46,11 +51,18 @@ class EventMixin extends BlazeComponent
           ebox.css visibility: 'hidden'
 
 
+  getMainAmount: ->
+    @mainAmount.get()
 
+  setMainAmount: (amount) ->
+    @mainAmount.set amount
+
+  isEventHidden: ->
+    @eventHidden
 
   onAmountChange: (event) ->
     input = $(event.currentTarget)
-    input.closest('.js-form-event').find('[name=amount]').val(input.val())
+    @mainAmount.set input.val()
 
 
   events: -> [

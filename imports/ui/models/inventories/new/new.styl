@@ -103,13 +103,16 @@
 
     & .yield-sub-sec
       padding-right: 5px
-      flex-grow: 1
+      width: 50%;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
       &.ml
         width: 50%
-        max-width: 142px
+        // max-width: 142px
         padding-left: 5px
-        flex-grow: 0
+        margin-left: auto;
 
     & .yield-subtitle
       font-size: 11px
@@ -119,6 +122,9 @@
     & .yield-name
       font-size: 17px
       color: #737373
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
 
     & .yield-amount
       font-size: 17px
@@ -145,4 +151,4 @@
     flex-grow: 0
     padding-left: 5px
     width: 50%
-    max-width: 142px
+    // max-width: 142px
