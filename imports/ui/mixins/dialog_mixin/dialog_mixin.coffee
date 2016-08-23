@@ -22,6 +22,11 @@ class DialogMixin extends BlazeComponent
       hideClick: @onHideCallback
       beforeHide: @onCloseDialogCallback
 
+  getParent: ->
+    @parent.get()
+
+  getParentID: ->
+    @parentID.get()
 
   onShowDialog: (event) ->
     @parent.set('')
@@ -37,6 +42,9 @@ class DialogMixin extends BlazeComponent
       @many.set false
 
     $(@find('.js-open-dialog')).trigger('click')
+
+    if @mixinParent().onShowDialog?
+      @mixinParent().onShowDialog()
 
 
   currentList: (sub) ->

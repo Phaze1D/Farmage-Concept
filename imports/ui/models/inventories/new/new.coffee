@@ -3,6 +3,8 @@ EventMixin = require '../../../mixins/event_mixin/event_mixin.coffee'
 
 IngredientModule= require '../../../../api/collections/ingredients/ingredients.coffee'
 IMethods= require '../../../../api/collections/inventories/methods.coffee'
+EMethods = require '../../../../api/collections/events/methods.coffee'
+
 
 
 Big = require 'big.js'
@@ -79,9 +81,10 @@ class InventoriesNew extends BlazeComponent
 
   addYield: (ingredient_id, yield_id) ->
     ingObj = @iAmounts.get(ingredient_id)
-    unless ingObj.yields[yield_id]?
+    if ingObj? && !ingObj.yields[yield_id]?
       ingObj.yields[yield_id] = 0
     @iAmounts.set(ingredient_id, ingObj)
+    return
 
 
   currentYieldAmount: (ingredient_id, yield_id, amount) ->
@@ -89,18 +92,40 @@ class InventoriesNew extends BlazeComponent
 
 
   onHideCallback: =>
-    all = @iAmounts.all()
-    for ikey, ivalue of all
-      ivalue.inv_amount = 0
-      if @find(".ing-section[data-ingredient='#{ikey}']")
-        for ykey, yvalue of ivalue.yields
-          if @find(".yield-input-sec[data-yield='#{ykey}']")?
-            ivalue.inv_amount += Number( new Big(yvalue).div(ivalue.amountPre) )
-          else
-            delete ivalue.yields[ykey]
-        @iAmounts.set ikey, ivalue
-      else
-        @iAmounts.delete(ikey)
+
+
+
+  onCloseDialogCallback: =>
+    list = @callFirstWith(@, 'currentList')
+    parentID = @callFirstWith(@, 'getParentID')
+    listDict = @convertToDict(list, '_id')
+
+    ingObj = @iAmounts.get(parentID)
+    if ingObj?
+      ingObj.inv_amount = 0
+
+      for _yield in list
+        @addYield(parentID, _yield._id)
+
+      for key, value of ingObj.yields
+        if listDict[key]?
+          ingObj.inv_amount += Number( new Big(value).div(ingObj.amountPre) )
+        else
+          delete ingObj.yields[key]
+
+      @iAmounts.set(parentID, ingObj)
+    else
+      @iAmounts.clear()
+
+
+
+
+  convertToDict: (array, key) ->
+    dic = {}
+    for item in array
+      if item[key]?
+        dic[item[key]] = item
+    dic
 
   isEventHidden: ->
     @callFirstWith(@, 'isEventHidden')
@@ -116,6 +141,7 @@ class InventoriesNew extends BlazeComponent
     clists.clear()
     clists.set('products', products)
     @iAmounts.clear()
+    console.log 'showEvent'
 
 
   onInputAT: (event) ->
@@ -137,7 +163,6 @@ class InventoriesNew extends BlazeComponent
   onSubmit: (event) ->
     event.preventDefault()
     form = $('.js-inventories-new-form')
-
     yield_objects = []
     for ik, iv of @iAmounts.all()
       for yk, yv of iv.yields
@@ -149,7 +174,7 @@ class InventoriesNew extends BlazeComponent
       expiration_date: form.find('[name=expiration_date]').val()
       notes: form.find('[name=notes]').val()
       yield_objects: yield_objects
-      product_id: @product()._id
+      product_id: if @product()? then @product()._id else null
 
     event_doc = null
     unless @isEventHidden()
@@ -159,28 +184,49 @@ class InventoriesNew extends BlazeComponent
 
     @insert inventory_doc, event_doc
 
+
   insert: (inventory_doc, event_doc) ->
     amount = inventory_doc.amount
     yield_objects = inventory_doc.yield_objects
     delete inventory_doc.amount
     delete inventory_doc.yield_objects
     inventory_doc.organization_id = FlowRouter.getParam('organization_id')
-    
     IMethods.insert.call {inventory_doc}, (err, res) =>
       console.log err
       if res?
         if yield_objects.length > 0
           @packEvent(amount, yield_objects, res, inventory_doc.organization_id)
-        else if @event.get()? && @event.get().amount > 0
-          @userEvent(res)
+        else if event_doc?
+          event_doc.organization_id = inventory_doc.organization_id
+          @userEvent(event_doc, res)
         else
-          params =
-            organization_id: inventory_doc.organization_id
-          FlowRouter.go('inventories.index', params ) unless err?
+          $('.js-hide-new').trigger('click') unless err?
 
+
+  packEvent: (amount, yield_objects, inventory_id, organization_id) =>
+    EMethods.pack.call {organization_id, inventory_id, yield_objects, amount}, (err, res) =>
+      console.log err
+      @delete(organization_id, inventory_id) if err?
+      $('.js-hide-new').trigger('click') unless err?
+
+
+  userEvent: (event_doc, inventory_id) =>
+    event_doc.for_type = 'inventory'
+    event_doc.for_id = inventory_id
+
+    EMethods.userEvent.call {event_doc}, (err, res) =>
+      console.log err
+      @delete(event_doc.organization_id, inventory_id) if err?
+      $('.js-hide-new').trigger('click') unless err?
+
+
+  delete: (organization_id, inventory_id) =>
+    IMethods.delete.call {organization_id, inventory_id}, (err, res) =>
+      console.log err
 
 
   events: ->
     super.concat
       'input .js-amount-taken': @onInputAT
       'submit .js-inventories-new-form': @onSubmit
+      'click .js-submit-new-inventory': @onSubmit

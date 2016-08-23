@@ -205,7 +205,7 @@ takeFromYields = (yield_objects, inventory_id, organization_id) ->
 addToInventory = (inventory, amount, organization_id, yield_objects) ->
   ievent_doc =
     amount: amount
-    description: "auto added to inventory #{inventory._id} from yields #{yield_objects}"
+    description: "auto added to inventory #{inventory._id} from yields #{JSON.stringify(yield_objects)}"
     is_user_event: false
     for_type: "inventory"
     for_id: inventory._id
