@@ -5,6 +5,7 @@
 { CreateByUserSchema } = require '../../shared/created_by_user.coffee'
 { BelongsOrganizationSchema } = require '../../shared/belong_organization.coffee'
 
+# NOT Finished add Unqiue ignore case
 
 
 class IngredientsCollection extends Mongo.Collection

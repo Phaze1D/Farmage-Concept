@@ -58,6 +58,7 @@ YieldSchema =
 
     # Possible Add update yield date
 
+
   , CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 
 Yields = exports.Yields = new YieldsCollection('yields')

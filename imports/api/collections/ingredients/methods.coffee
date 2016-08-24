@@ -14,7 +14,7 @@ IngredientModule = require './ingredients.coffee'
 } = require '../../mixins/mixins.coffee'
 
 
-# Insert 
+# Insert
 module.exports.insert = new ValidatedMethod
   name: 'ingredient.insert'
   validate: ({ingredient_doc}) ->
@@ -30,3 +30,6 @@ module.exports.insert = new ValidatedMethod
       throw new Meteor.Error 'nameNotUnique', 'name must be unqiue'
 
     IngredientModule.Ingredients.insert ingredient_doc
+
+
+# Add Update Method
