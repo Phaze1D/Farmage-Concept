@@ -51,7 +51,7 @@
   line-height: 24px;
 
   &.label-floating
-    transform: translateY(-75%) scale(0.75);
+    transform: translate3d(0, -75%, 0) scale(0.75);
     width: 133%;
 
   &.label-hidden
@@ -150,9 +150,16 @@
 
 .prefix
   flex: none
+  font-size: 14px
   line-height: 24px
   margin-right: 1px
   font-weight: 300
+
+  &.size-small
+    font-size: 14px
+
+  &.size-medium
+    font-size: 22px
 
 .defix
   flex: none

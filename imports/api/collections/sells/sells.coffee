@@ -165,10 +165,10 @@ SellSchema =
       type: String
       optional: true
 
-    note:
+    notes:
       type: String
-      label: 'note'
-      max: 256
+      label: 'notes'
+      max: 512
       optional: true
 
     customer_id:
@@ -177,6 +177,9 @@ SellSchema =
       sparse: true
       optional: true
 
+    billing_address:
+      type: ContactExports.AddressSchema
+      optional: true
 
     shipping_address:
       type: ContactExports.AddressSchema

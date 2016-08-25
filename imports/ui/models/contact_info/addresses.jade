@@ -24,7 +24,7 @@ template(name="address_single")
             i(class="material-icons icon") remove_circle
 
 
-template(name="addresses.add")
+template(name="addressesAdd")
 
   div(class="contact-div" style="height: #{initHeight}")
     each addresses.get
@@ -32,7 +32,7 @@ template(name="addresses.add")
 
   +PaperButton raise=0 submit=false rippleOn=true classes="js-add-address-b button-wrapper"
     div(class="add-telephone-b")
-      div(class="text-div") Address
+      div(class="text-div") #{title}
       div(class="icon-div")
         i(class="material-icons icon") add_circle
           

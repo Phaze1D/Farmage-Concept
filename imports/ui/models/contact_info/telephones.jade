@@ -14,7 +14,7 @@ template(name="telephone_single")
 
 
       
-template(name="telephones.add")
+template(name="telephonesAdd")
   
   div(class="contact-div" style="height: #{initHeight}")
     each telephones.get
@@ -24,7 +24,7 @@ template(name="telephones.add")
       
   +PaperButton raise=0 submit=false rippleOn=true classes="js-add-telephone-b button-wrapper"
     div(class="add-telephone-b")
-      div(class="text-div") Telephone
+      div(class="text-div") #{title}
       div(class="icon-div")
         i(class="material-icons icon") add_circle
   

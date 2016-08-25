@@ -16,3 +16,92 @@ template(name='sellsNew')
         +PaperHeaderMain id="right"
           div(class='organization-bottom')
             div(class='input-area')
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  div(class='detail-title-wrapper')
+                    div(class='detail-title')
+                      | Details 
+                      
+                    div(class='db-wrapper')
+                      +PaperButton classes="add-detail" raise=0 rippleOn=true submit=false
+                        i(class="material-icons")
+                          | camera_alt
+                    
+                    div(class='db-wrapper')
+                      +PaperButton classes="add-detail" raise=0 rippleOn=true submit=false
+                        i(class="material-icons")
+                          | add
+              
+            
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperInput type="number" name="total_price" label="Total" value="0.00" focusColor="darkblue" prefix="$" step="any" min='0' disabled="true" size="size-medium"
+              
+              div(class='grid-wrapper')
+                div(class='col-6 p-left')
+                  +PaperInput type="number" name="sub_total" label="Sub Total" value="0.00" focusColor="darkblue" prefix="$" step="any" min='0' disabled="true"
+
+                div(class='col-6 p-right p-left')
+                  +PaperInput type="number" name="tax_total" label="Tax Total" value="0.00" focusColor="darkblue" prefix="$" step="any" min='0' disabled="true"
+
+              
+              div(class='grid-wrapper')
+                div(class='col-6 p-left')
+                  +PaperInput type="text" name="status" label="Status" focusColor="darkblue"
+                  
+                div(class='col-6 p-left p-right')
+                  +PaperInput type="number" classes="discount-input" name="discount" label="Discount" focusColor="darkblue" step="any" min='0'
+                  
+                  +PaperButton classes='js-discount-select discount-select' elevation=1 raise=0 submit=false rippleOn=true
+                    div(class='discount-icon' type='#{discountType.value}')
+                      | #{discountType.option} 
+                  
+                  
+
+              
+              
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperInput type="textarea" name="notes" label="Notes" focusColor="darkblue" charMax='512' showCount=true
+                  
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
+                    div(class="resources-b js-dialog-b" data-sub='customers' data-many='false')
+                      div(class="text-div-sm") Customer
+                      div(class="icon-div")
+                        i(class="material-icons icon") add_circle
+              
+              
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
+                    div(class="resources-b js-dialog-b" data-sub='customers' data-many='false')
+                      div(class="text-div-sm") Telephone
+                      div(class="icon-div")
+                        i(class="material-icons icon") add_circle
+
+
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
+                    div(class="resources-b js-dialog-b" data-sub='customers' data-many='false')
+                      div(class="text-div-sm") Shipping Address
+                      div(class="icon-div")
+                        i(class="material-icons icon") add_circle
+                        
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
+                    div(class="resources-b js-dialog-b" data-sub='customers' data-many='false')
+                      div(class="text-div-sm") Billing Address
+                      div(class="icon-div")
+                        i(class="material-icons icon") add_circle
+                        
+              
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperButton raise=1 elevation=1 submit=false rippleOn=true classes='pay-button' 
+                    | Paid
+                        
+            

@@ -8,6 +8,7 @@ class PaperRightPanel extends BlazeComponent
     @throttle = @throttle.bind(@)
     @ticking = false
 
+
   onRendered: ->
     @headerMain = $("#paper-drawer-main")
     @rightPanel = $('#paper-right-panel')
@@ -51,6 +52,7 @@ class PaperRightPanel extends BlazeComponent
         duration: 350
         easing: 'ease-in-out'
         progress: (elements, complete, remaining, start, tweenValue) =>
+
           if @data().callbacks? && @data().callbacks.progressCallback?
             @data().callbacks.progressCallback()
 

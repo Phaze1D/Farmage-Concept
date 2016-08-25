@@ -18,6 +18,7 @@ mlists.units = UnitModule.Units
 mlists.products = ProductModule.Products
 mlists.yields = YieldModule.Yields
 mlists.inventories = InventoryModule.Inventories
+mlists.customers = CustomerModule.Customers
 
 
 

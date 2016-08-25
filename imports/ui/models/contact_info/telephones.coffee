@@ -4,13 +4,15 @@ require './telephones.jade'
 
 
 class TelephoneAdd extends BlazeComponent
-  @register 'telephones.add'
+  @register 'telephonesAdd'
 
   constructor: (args) ->
+    super
+
 
   onCreated: ->
-    super
     @telephones = new ReactiveVar([])
+    @data().title = 'Telephone' unless @data().title?
 
   onRendered: ->
     super
@@ -38,7 +40,7 @@ class TelephoneAdd extends BlazeComponent
     temp.push name: '', number: ''
     @telephones.set temp
 
-    if temp.length is 5
+    if temp.length is @data().max
       $('.js-add-telephone-b').velocity
         p:
           opacity: 0
@@ -68,7 +70,7 @@ class TelephoneAdd extends BlazeComponent
 
 
   removeTelephone: (index) ->
-    if @telephones.get().length is 5
+    if @telephones.get().length is @data().max
       $('.js-add-telephone-b').css display: 'inline-block'
       $('.js-add-telephone-b').velocity
         p:

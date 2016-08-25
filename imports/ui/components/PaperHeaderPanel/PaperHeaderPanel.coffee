@@ -29,12 +29,12 @@ class PaperHeaderPanel extends BlazeComponent
 
 
   throttle: (e) ->
-    unless @ticking
-      window.requestAnimationFrame( () =>
-        @scrolling(e.target.scrollTop)
-        @ticking = false
-      )
-    @ticking = true;
+    # unless @ticking
+    #   window.requestAnimationFrame( () =>
+    @scrolling(e.target.scrollTop)
+    #     @ticking = false
+    #   )
+    # @ticking = true;
 
   scrolling: (yPosition) ->
     mainY = yPosition
@@ -52,6 +52,7 @@ class PaperHeaderPanel extends BlazeComponent
 
 
     if yPosition > 212 + 148
+
       if @down && !@goingUp && yPosition > @yChange
         @moveUp Date.now() - @startTime
 
@@ -75,7 +76,7 @@ class PaperHeaderPanel extends BlazeComponent
           title = @header.find('.title')
           title[0].style.display= 'block'
           x = if title.css('margin-left') is '64px' then -0.135 else -0.439
-          title[0].style.transform = "translate(#{mainY * x}px, #{mainY * 0.311}px) scale(#{scale}, #{scale})"
+          title[0].style.transform = "translate3d(#{mainY * x}px, #{mainY * 0.311}px,0) scale(#{scale}, #{scale})"
 
         else
           @header.find('.title')[0].style.display = 'none'
@@ -95,6 +96,7 @@ class PaperHeaderPanel extends BlazeComponent
       @header.addClass('elevation-2').removeClass('elevation-0')
       p =
         translateY: ["-148px", "-212px"]
+        translateZ: 0
       o =
         duration: duration
         easing: 'linear'
@@ -107,6 +109,7 @@ class PaperHeaderPanel extends BlazeComponent
       @down = false
       p =
         translateY: "-212px"
+        translateZ: 0
       o =
         duration: duration
         easing: 'linear'

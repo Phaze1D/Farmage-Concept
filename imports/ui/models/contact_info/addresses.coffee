@@ -1,14 +1,18 @@
 
+# Show Animation is weird pls fix
+
 require './addresses.jade'
 
 class AddressAdd extends BlazeComponent
-  @register 'addresses.add'
+  @register 'addressesAdd'
 
   constructor: (args) ->
 
+
   onCreated: ->
-    super
     @addresses = new ReactiveVar([])
+    @data().title = 'Address' unless @data().title?
+
 
   onRendered: ->
     super
@@ -36,7 +40,7 @@ class AddressAdd extends BlazeComponent
     temp.push name: '', number: ''
     @addresses.set temp
 
-    if temp.length is 5
+    if temp.length is @data().max
       $('.js-add-address-b').velocity
         p:
           opacity: 0
@@ -45,14 +49,14 @@ class AddressAdd extends BlazeComponent
           complete: ->
             $('.js-add-address-b').css display: 'none'
 
-    if temp.length is 1
-      $('.js-add-address-b').css 'margin-top': '0'
+    # if temp.length is 1
+    #   $('.js-add-address-b').css 'margin-top': '0'
 
 
 
   hideAddress: (event) ->
-    if @addresses.get().length is 1
-      $('.js-add-address-b').css 'margin-top': '20px'
+    # if @addresses.get().length is 1
+    #   # $('.js-add-address-b').css 'margin-top': '20px'
 
     $(@find '.contact-div').css height: 'auto'
     target = $(event.target).closest('.contact-single')
@@ -73,7 +77,7 @@ class AddressAdd extends BlazeComponent
 
   removeAddress: (index) ->
 
-    if @addresses.get().length is 5
+    if @addresses.get().length is @data().max
       $('.js-add-address-b').css display: 'inline-block'
       $('.js-add-address-b').velocity
         p:
