@@ -1,35 +1,53 @@
 template(name="selectList")
         
   div(class="list")
-    div(class="header elevation-1")
-      
-      div(class="search-bar")
-        +PaperButton elevation=0 raise=0 classes="js-search-icon b-wrap" rippleOn=false
-          i(class="material-icons") search
-          
-        div(class='search-input-div' style='width: 0;')
-          div(class='cross-div js-cross-search')
-            i(class='material-icons') clear
-          +PaperInput type="text" name="search" label="" focusColor="darkblue" classes="search-input" labelFloat=false placeholder="Search" hideTop=true
-
-        +PaperButton elevation=0 raise=0 classes="b-wrap" rippleOn=true
-          i(class="material-icons") camera_alt
-          
-        +PaperButton elevation=0 raise=0 classes="b-wrap" rippleOn=true
-          i(class="material-icons") more_vert
-          
-      div(class="title-div")
+    
+    div(class='header-panel elevation-2 tabs-#{tabs}')
+    
+      div(class='options-panel tabs-#{tabs}')
         +PaperButton elevation=0 raise=0 classes="b-wrap js-close-dialog close-dialog" rippleOn=true
           i(class="material-icons") arrow_back
+        
+        div(class='search-tools')
+          +PaperButton elevation=0 raise=0 classes="js-search-icon b-wrap" rippleOn=false
+            i(class="material-icons") search
+            
+          div(class='search-input-div' style='width: 0')
+            div(class='cross-div js-cross-search')
+              i(class='material-icons') clear
+            +PaperInput type="text" name="search" label="" focusColor="darkblue" classes="search-input" labelFloat=false placeholder="Search" hideTop=true
+      
+            
+          +PaperButton elevation=0 raise=0 classes="b-wrap" rippleOn=true
+            i(class="material-icons") more_vert
+            
+    
           
-        div(class='title')
-          | #{title}
+      if tabs
+        div(class='tab-panel')
+          div(class='tab-underline')
+          each tab in tabSubs
+            div(class='tab #{tab.active} js-tab' data-sub=tab.subscription)
+              +PaperRipple fill='lightgrey'
+              div(class='tab-title')
+                = title(tab.subscription)
+      else
+        div(class='one-title')
+          = title(subscription)
         
     
-    div(class="items")
-      each item in items
-        if selectorItem item
-          +Template.dynamic template=selector data=selectorData
+    if subscriptionsReady
+      if tabs 
+        each tab in tabSubs
+          div(class="tab-items #{tab.active}" style='left: #{tab.left}' data-sub=tab.subscription)          
+            each item in items tab.subscription
+              {{>Template.dynamic template=(selector tab.subscription) data=(selectorData item tab.subscription)}}
+      else
+        div(class="items")
+          each item in items subscription
+            {{>Template.dynamic template=(selector subscription) data=(selectorData item subscription)}}
+                
+    
         
       
             

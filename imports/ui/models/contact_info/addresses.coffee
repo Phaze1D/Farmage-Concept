@@ -40,14 +40,14 @@ class AddressAdd extends BlazeComponent
     temp.push name: '', number: ''
     @addresses.set temp
 
-    if temp.length is @data().max
-      $('.js-add-address-b').velocity
-        p:
-          opacity: 0
-        o:
-          duration: 200
-          complete: ->
-            $('.js-add-address-b').css display: 'none'
+    # if temp.length is @data().max
+    #   $('.js-add-address-b').velocity
+    #     p:
+    #       opacity: 0
+    #     o:
+    #       duration: 200
+    #       complete: ->
+    #         $('.js-add-address-b').css display: 'none'
 
     # if temp.length is 1
     #   $('.js-add-address-b').css 'margin-top': '0'

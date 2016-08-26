@@ -20,6 +20,7 @@ require './expenses/new/new.coffee'
 
 require './inventories/index/index.coffee'
 require './inventories/new/new.coffee'
+require './inventories/selector/selector.coffee'
 
 require './ousers/index/index.coffee'
 require './ousers/new/new.coffee'

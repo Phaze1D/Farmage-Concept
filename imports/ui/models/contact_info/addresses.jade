@@ -26,15 +26,17 @@ template(name="address_single")
 
 template(name="addressesAdd")
 
+  +PaperButton raise=0 submit=false rippleOn=true classes="js-add-address-b button-wrapper"
+    div(class="resources-b")
+      div(class="text-div-sm") #{title}
+      div(class="icon-div")
+        i(class="material-icons icon") add_circle
+
   div(class="contact-div" style="height: #{initHeight}")
     each addresses.get
       +address_single index=@index name=name street=street street2=street2 city=city state=state zip_code=zip_code country=country
 
-  +PaperButton raise=0 submit=false rippleOn=true classes="js-add-address-b button-wrapper"
-    div(class="add-telephone-b")
-      div(class="text-div") #{title}
-      div(class="icon-div")
-        i(class="material-icons icon") add_circle
+  
           
   
     

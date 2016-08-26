@@ -28,7 +28,8 @@ template(name='sellsNew')
                           | camera_alt
                     
                     div(class='db-wrapper')
-                      +PaperButton classes="add-detail" raise=0 rippleOn=true submit=false
+                      +PaperButton classes="add-detail js-show-d" raise=0 rippleOn=true submit=false
+                        div(class="js-dialog-b" data-tab1='products' data-tab2='inventories' data-many='true' tabs='true')
                         i(class="material-icons")
                           | add
               

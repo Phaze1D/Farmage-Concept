@@ -40,14 +40,14 @@ class TelephoneAdd extends BlazeComponent
     temp.push name: '', number: ''
     @telephones.set temp
 
-    if temp.length is @data().max
-      $('.js-add-telephone-b').velocity
-        p:
-          opacity: 0
-        o:
-          duration: 200
-          complete: ->
-            $('.js-add-telephone-b').css display: 'none'
+    # if temp.length is @data().max
+      # $('.js-add-telephone-b').velocity
+      #   p:
+      #     opacity: 0
+      #   o:
+      #     duration: 200
+      #     complete: ->
+      #       $('.js-add-telephone-b').css display: 'none'
 
 
 

@@ -8,7 +8,7 @@
   &[selected='true']
     color: darkblue
 
-  & .circle-image
+  .circle-image
     width: 64px
     height: 64px
     border-radius: 50%
@@ -16,6 +16,7 @@
     background-size:     cover;                      /* <------ */
     background-repeat:   no-repeat;
     background-position: center center;
+    flex-shrink: 0
 
     &[selected='true']
       border: 1px solid darkblue
@@ -25,14 +26,14 @@
     //   height: 56px
 
 
-  & .checker-div
+  .checker-div
     height: 100%
     float: right;
     align-self: center;
     margin-left: auto;
 
 
-  & .info-div
+  .info-div
     flex-grow: 1
     padding: 5px 18px
     display: flex;
@@ -40,11 +41,11 @@
     & div
       align-self: center;
 
-      & .main
+      .main
         font-size: 16px
         font-weight: 300
 
-      & .sub
+      .sub
         font-size: 14px
         color: #9E9E9E
         font-weight: 300

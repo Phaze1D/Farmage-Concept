@@ -9,6 +9,7 @@ class DialogMixin extends BlazeComponent
   onCreated: ->
     @showDialog = new ReactiveVar(false)
     @clists = new ReactiveDict()
+    @tabs = new ReactiveVar([])
     @subscription = new ReactiveVar('')
     @many = new ReactiveVar('')
     @parent = new ReactiveVar('')
@@ -31,9 +32,27 @@ class DialogMixin extends BlazeComponent
   onShowDialog: (event) ->
     @parent.set('')
     @parentID.set('')
+    @tabs.set([])
     resourcesB = $(event.currentTarget).find('.js-dialog-b')
+
     @clists.clear() if resourcesB.attr('data-reset')?
     @subscription.set resourcesB.attr('data-sub')
+
+    if resourcesB.attr('tabs')?
+      @tabs.set [
+        {
+          subscription: resourcesB.attr('data-tab1')
+          active: 'active'
+          left: 0
+        },
+        {
+          subscription: resourcesB.attr('data-tab2')
+          active: ''
+          left: '100%'
+        }
+      ]
+
+
     @parent.set(resourcesB.attr('data-parent')) if resourcesB.attr('data-parent')?
     @parentID.set(resourcesB.attr('data-parentid')) if resourcesB.attr('data-parent')?
     if resourcesB.attr('data-many') is 'true'
@@ -62,6 +81,31 @@ class DialogMixin extends BlazeComponent
       @mixinParent().onHideCallback()
 
   onCloseDialogCallback: =>
+
+    if @tabs.get().length > 0
+      @closeWithTabs()
+    else
+      @closeWithSubscription()
+
+    if @mixinParent().onCloseDialogCallback?
+      @mixinParent().onCloseDialogCallback()
+
+
+  closeWithTabs: ->
+    tabList = {}
+    tabList[@tabs.get()[0].subscription] = []
+    tabList[@tabs.get()[1].subscription] = []
+
+    $(".list-item[selected='true']").each ->
+      item_id = $(@).attr('data-id')
+      sub = $(@).closest('.tab-items').attr('data-sub')
+      tabList[sub].push mlists[sub].findOne item_id
+
+    for key, value of tabList
+      @clists.set(key, value)
+
+
+  closeWithSubscription: ->
     list = []
     sub = @subscription.get()
     $(".list-item[selected='true']").each ->
@@ -69,10 +113,6 @@ class DialogMixin extends BlazeComponent
       list.push mlists[sub].findOne item_id
 
     @clists.set @subscription.get() + @parentID.get(), list
-
-    if @mixinParent().onCloseDialogCallback?
-      @mixinParent().onCloseDialogCallback()
-
 
 
 
