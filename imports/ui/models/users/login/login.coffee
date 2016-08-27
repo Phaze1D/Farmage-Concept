@@ -61,9 +61,9 @@ class Login extends BlazeComponent
     Meteor.loginWithPassword email, password, (err) =>
       console.log err
       unless err?
-        Meteor.logoutOtherClients( (er) =>
-          @exitAnimation() unless err?
-        )
+        # Meteor.logoutOtherClients( (er) =>
+        @exitAnimation() unless err?
+        # )
 
   signup: (email, password, profile) ->
     Accounts.createUser {email, password, profile}, (err) =>

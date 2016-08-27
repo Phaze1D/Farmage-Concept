@@ -33,7 +33,48 @@ template(name='sellsNew')
                         i(class="material-icons")
                           | add
               
-            
+              div(class='grid-wrapper sell-detail')
+                div(class='col-12 p-right p-left')
+                  each product in products
+                    div(class='product-info')
+                      img(src='/no_image0.png')
+                      div(class='p-nsk')
+                        div(class='p-name')
+                          | #{product.name} 
+                          
+                        span
+                          | #{product.size}
+                        
+                        span(class='p-sku')
+                          | SKU: #{product.sku}
+                          
+                        div(class='p-description')
+                          | #{product.description}
+                    
+                    div(class='detail-info')
+                      div(class='col')
+                        label(class='label')
+                          | Unit Price
+                        div(class='value')
+                          | $#{product.unit_price}
+                      
+                      div(class='col')
+                        label(class='label')
+                          | Tax Rate
+                        div(class='value')
+                          | #{product.tax_rate}%
+                      
+                      div(class='col')
+                        label(class='label')
+                          | SubTotal 
+                        div(class='value')
+                          | $#{product.unit_price}
+                        
+                      div(class='col-3')
+                        +PaperInput type="number" name="quantity" label="Quantity" value="1" focusColor="darkblue" min='0'
+
+                  
+                  
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperInput type="number" name="total_price" label="Total" value="0.00" focusColor="darkblue" prefix="$" step="any" min='0' disabled="true" size="size-medium"

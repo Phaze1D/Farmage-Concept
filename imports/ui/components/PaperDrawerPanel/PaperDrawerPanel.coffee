@@ -75,14 +75,14 @@ class PaperDrawerPanel extends BlazeComponent
     drawer.attr 'opened', 'false'
     drawer.removeClass('move-foward').addClass('move-back')
     $("#paper-drawer-main").removeClass('move-back').addClass('move-foward')
-    $('#scrim').removeClass('show').addClass('hide')
+    $('#scrim').removeClass('mshow').addClass('mhide')
 
   moveDrawerFoward: ->
     drawer = $("#paper-drawer")
     drawer.attr 'opened', 'true'
     drawer.removeClass('move-back').addClass('move-foward')
     $("#paper-drawer-main").removeClass('move-foward').addClass('move-back')
-    $('#scrim').addClass('show').removeClass('hide') if @isWide.get()? && !@isWide.get()
+    $('#scrim').addClass('mshow').removeClass('mhide') if @isWide.get()? && !@isWide.get()
 
   handleResize: (duration = 250) ->
     if window.innerWidth < 1024 && (!@isWide.get()? || @isWide.get())
@@ -97,7 +97,7 @@ class PaperDrawerPanel extends BlazeComponent
       @closeDrawer()
 
     if window.innerWidth >= 1024 && (!@isWide.get()? || !@isWide.get())
-      $('#scrim').removeClass('show').addClass('hide')
+      $('#scrim').removeClass('mshow').addClass('mhide')
       $("#paper-drawer").addClass('elevation-0')
       p =
         left: "240px"
@@ -123,7 +123,7 @@ class PaperDrawerPanel extends BlazeComponent
     $("#paper-drawer").velocity p, o
 
   closeDrawer: (event) ->
-    $('#scrim').addClass('hide')
+    $('#scrim').addClass('mhide')
     p =
       left: "-240px"
     o =
@@ -182,4 +182,4 @@ class PaperDrawerPanel extends BlazeComponent
 
   events: ->
     super.concat
-      'click .toggle-drawer, click #scrim.show': @toggleDrawer
+      'click .toggle-drawer, click #scrim.mshow': @toggleDrawer

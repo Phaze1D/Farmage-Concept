@@ -23,6 +23,9 @@ class SellsNew extends BlazeComponent
   currentList: (subscription)->
     return @callFirstWith(@, 'currentList', subscription);
 
+  products: ->
+    @currentList('products')
+
   discountType: ->
     @discountDict.all()
 

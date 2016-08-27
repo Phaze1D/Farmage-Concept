@@ -40,17 +40,18 @@
   left: 0
   right: 0
   bottom: 0
+  opacity: 0
   background-color: rgba(0, 0, 0, 0.5)
   transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1)
   transition-property: opacity, visibility
   transition-duration: 0.25s
   transition-delay: 0.1s
 
-  &.show
+  &.mshow
     visibility: visible;
     opacity: 1
 
-  &.hide
+  &.mhide
     visibility: hidden;
     opacity: 0
 
