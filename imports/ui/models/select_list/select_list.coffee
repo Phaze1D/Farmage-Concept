@@ -33,9 +33,9 @@ class SelectList extends BlazeComponent
   items: (subscription) ->
     mlists[subscription].find()
 
-  itemIsSelected: (item_id, subscription) ->
-    if @data().clists.get(subscription + @data().parent_id)?
-      return true for item in @data().clists.get(subscription + @data().parent_id) when item._id is item_id
+  itemIsSelected: (item_id, subscription, parent_id) ->
+    if @data().clists.get(subscription + parent_id)?
+      return true for item in @data().clists.get(subscription + parent_id) when item._id is item_id
     return false
 
   onShowSearch: (event) ->
@@ -66,9 +66,10 @@ class SelectList extends BlazeComponent
     subscription + 'Selector'
 
   selectorData: (item, subscription) ->
+    parent_id = if item.product_id? then item.product_id else @data().parent_id
     ret =
       item:item
-      isChecked: @itemIsSelected(item._id, subscription)
+      isChecked: @itemIsSelected(item._id, subscription, parent_id)
       many: @data().many
 
 

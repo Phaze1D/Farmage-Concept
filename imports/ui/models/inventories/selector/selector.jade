@@ -1,5 +1,5 @@
 template(name='inventoriesSelector')
-  div(class='js-list-item list-item' data-id="#{item._id}" selected='#{isChecked.get}')
+  div(class='js-list-item list-item' data-id="#{item._id}" selected='#{isChecked.get}' data-parent='#{item.product_id}' data-parentsub='products')
     div(class="circle-image" selected='#{isChecked.get}')
       //- img(src='/no_image.png')
       

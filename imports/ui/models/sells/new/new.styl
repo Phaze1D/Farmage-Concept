@@ -65,7 +65,11 @@
     font-size: 18px;
     align-self: center;
 
-.sell-detail
+.product-box
+  border-bottom: 1px solid #e0e0e0
+  margin: 0 0 15px 0
+  padding-bottom: 30px
+
   .product-info
     padding-top: 5px
     display: flex;
@@ -113,9 +117,7 @@
 
 
   .detail-info
-    margin: 0 0 15px 0
-    padding: 15px 0
-    border-bottom: 1px solid #e0e0e0
+    padding: 15px 0 0
     display: flex;
 
     .col
@@ -130,8 +132,104 @@
         -webkit-font-smoothing: antialiased;
 
       .value
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
         padding-top: 1px
         font-size: 16px;
         font-weight: 300;
         -webkit-font-smoothing: antialiased;
         line-height: 24px;
+
+
+.inv-b
+  display: flex;
+  min-width: 130px
+  background-color: transparent;
+  justify-content: flex-start;
+
+  .text-div
+    align-self: center;
+    color: black
+    font-weight: 300
+    font-size: 18px
+
+
+
+  .text-div-sm
+    align-self: center;
+    color: #757575
+    font-weight: 300
+    font-size: 16px
+
+  .icon-div
+    margin-left: 20px
+    align-self: center;
+    display: flex;
+    justify-content: center;
+
+    .icon
+      color: #00E676
+      font-size: 24px
+      align-self: center;
+
+
+.inv-button-wrapper
+  @extend .button-wrapper
+  margin-top: 15px
+  width: auto;
+
+
+.inventory-box
+  margin-top: 10px
+  border: solid 1px #eee
+  padding: 10px
+  border-radius: 3px
+
+  .inventory-info
+    font-size: 12px
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    padding-top: 10px;
+
+    .info
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      .label
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 12px
+        font-weight: 300;
+        color: #737373
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+
+      .value
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding-top: 1px
+        font-size: 16px;
+        font-weight: 300;
+        -webkit-font-smoothing: antialiased;
+        line-height: 24px;
+
+  .inventory-amount
+    padding-top: 7px
+
+    .label
+      font-size: 12px
+      font-weight: 300;
+      color: #737373
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+
+    .value
+      padding-top: 1px
+      font-size: 16px;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+      line-height: 24px;

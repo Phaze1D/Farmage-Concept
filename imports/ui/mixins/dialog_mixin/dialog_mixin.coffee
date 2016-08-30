@@ -93,16 +93,31 @@ class DialogMixin extends BlazeComponent
 
   closeWithTabs: ->
     tabList = {}
-    tabList[@tabs.get()[0].subscription] = []
-    tabList[@tabs.get()[1].subscription] = []
 
+    @clists.clear()
     $(".list-item[selected='true']").each ->
-      item_id = $(@).attr('data-id')
-      sub = $(@).closest('.tab-items').attr('data-sub')
-      tabList[sub].push mlists[sub].findOne item_id
+      tis = $(@)
+      item_id = tis.attr('data-id')
+      parentid = if tis.attr('data-parent')? then tis.attr('data-parent') else ''
+      parentSub = tis.attr('data-parentsub')
+      sub = tis.closest('.tab-items').attr('data-sub')
+      if tabList[sub+parentid]?
+        tabList[sub+parentid].push mlists[sub].findOne item_id
+      else
+        tabList[sub+parentid] = [mlists[sub].findOne item_id]
+
+      if parentSub?
+        parentTraped = false
+        if tabList[parentSub]?
+          parentTraped = true for item in tabList[parentSub] when item._id is parentid
+        unless parentTraped
+          tabList[parentSub].push mlists[parentSub].findOne(parentid) if tabList[parentSub]?
+          tabList[parentSub] = [mlists[parentSub].findOne(parentid)] unless tabList[parentSub]?
 
     for key, value of tabList
       @clists.set(key, value)
+
+
 
 
   closeWithSubscription: ->

@@ -26,6 +26,15 @@ class SellsNew extends BlazeComponent
   products: ->
     @currentList('products')
 
+  inventories: (product_id) ->
+    @currentList("inventories#{product_id}")
+
+  invIdentifier: (inventory) ->
+    if inventory.name?
+      return inventory.name
+    else
+      return inventory._id
+
   discountType: ->
     @discountDict.all()
 
