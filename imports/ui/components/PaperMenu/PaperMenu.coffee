@@ -7,7 +7,17 @@ class PaperMenu extends BlazeComponent
 
   onCreated: ->
 
+  onRendered: ->
+    if @data().opened
+      paperItem = $(@find('.paper-item'))
+      subMenu = paperItem.closest('.sub-menu')
+      while subMenu.length > 0
+        @showSub(subMenu)
+        subMenu = subMenu.closest('.menu-item').closest('.sub-menu')
+      paperItem.trigger('click')
+
   toggleSubMenu: (event) ->
+
     subMenu = $(event.target).closest('.menu-item').find('.sub-menu:first')
     if subMenu.length > 0
       @showSub(subMenu) if subMenu.height() <= 0

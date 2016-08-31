@@ -47,6 +47,10 @@ class Structure extends BlazeComponent
     ouser = OrganizationModule.Organizations.findOne(organization_id).hasUser(Meteor.userId())
     ouser.permission[type] || ouser.permission['owner'] || ouser.permission['viewer']
 
+  isOpened: (routeName, params) ->
+    routeName is FlowRouter.getRouteName() and params is FlowRouter.getParam('organization_id')
+
+
   onLogout: (event) ->
     @onExitAnimation()
 
