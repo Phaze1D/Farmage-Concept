@@ -18,12 +18,13 @@ class PaperInput extends BlazeComponent
     @data().labelFloat = true unless @data().labelFloat?
 
 
-
   onRendered: ->
     $(@find('.pinput')).trigger('input')
     $(@find('.pinput')).trigger('focusout')
     $(@find('textarea')).textareaAutoSize();
-    @onInput @find('.pinput')
+
+    @float.set('label-floating') if @data().alwaysFloating
+
 
 
   onFocusIn: (event) ->
@@ -35,7 +36,7 @@ class PaperInput extends BlazeComponent
       if @data().prefix?
         $(@find '.input-label').css left: "-#{$(@find('.prefix')).outerWidth() + 1}px"
     else
-      @float.set('label-hidden')
+      @float.set('label-hidden') unless @data().alwaysFloating
 
     @colorL.set @data().focusColor
 
@@ -52,15 +53,20 @@ class PaperInput extends BlazeComponent
   onInput: (input) ->
 
     if input.value.length <= 0
-      @float.set ''
       @colorL.set ''
-      $(@find '.input-label').css left: '0px'
+      if @data().alwaysFloating
+        if @data().prefix?
+          $(@find '.input-label').css left: "-#{$(@find('.prefix')).outerWidth() + 1}px"
+      else
+        $(@find '.input-label').css left: '0px'
+        @float.set ''
+
     else if @data().labelFloat
       @float.set('label-floating')
       if @data().prefix?
         $(@find '.input-label').css left: "-#{$(@find('.prefix')).outerWidth() + 1}px"
     else
-      @float.set('label-hidden')
+      @float.set('label-hidden') unless @data().alwaysFloating
 
 
   onCharInput: (event) ->

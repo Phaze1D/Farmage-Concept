@@ -20,14 +20,21 @@ class SellsNew extends BlazeComponent
     @discountDict.set('option', '%')
     @discountDict.set('value', true)
 
+    @sellDoc = new ReactiveVar {total_price: '0.00', sub_total: '0.00', tax_total: '0.00', discount: 0}
+    @pDetails = new ReactiveDict
+
+
   currentList: (subscription)->
     return @callFirstWith(@, 'currentList', subscription);
+
 
   products: ->
     @currentList('products')
 
+
   inventories: (product_id) ->
     @currentList("inventories#{product_id}")
+
 
   invIdentifier: (inventory) ->
     if inventory.name?
@@ -35,8 +42,144 @@ class SellsNew extends BlazeComponent
     else
       return inventory._id
 
+
   discountType: ->
     @discountDict.all()
+
+
+  initPDetails: (products) ->
+    productDict = @convertToDict products, '_id'
+
+    for key, value of productDict
+      pdetail =
+        quantity: 1
+        unit_price: value.unit_price
+        tax_rate: value.tax_rate
+        inventories: {}
+
+      unless @pDetails.get(key)?
+        @pDetails.set key, pdetail
+
+    for key, value of @pDetails.all()
+      unless productDict[key]?
+        @pDetails.delete(key)
+
+
+  convertToDict: (array, key) ->
+    dic = {}
+    for item in array
+      if item[key]?
+        dic[item[key]] = item
+    dic
+
+
+  subTotal: (product_id) ->
+    pd = @pDetails.get(product_id)
+    if pd?
+      st = pd.unit_price * pd.quantity * (1 + (pd.tax_rate/100))
+      '$'+ st.toFixed(2)
+
+
+  calculateSell: ->
+    sd =
+      sub_total: 0
+      tax_total: 0
+      total_price: 0
+      discount: @sellDoc.get().discount
+
+    for key, value of @pDetails.all()
+      sd.sub_total += (value.unit_price * value.quantity)
+      sd.tax_total += (value.unit_price * value.quantity) * (value.tax_rate/100)
+
+    sd.total_price = sd.sub_total + sd.tax_total
+
+    if @discountDict.get('value')
+      sd.discount = if sd.discount <= 100 then sd.discount else 100
+      sd.total_price = sd.total_price - (sd.total_price * sd.discount/100)
+    else if sd.total_price > sd.discount
+        sd.total_price = sd.total_price - sd.discount
+    else if sd.total_price < sd.discount
+      sd.total_price = 0
+
+    sd.total_price = sd.total_price.toFixed(2)
+    sd.sub_total = sd.sub_total.toFixed(2)
+    sd.tax_total = sd.tax_total.toFixed(2)
+    @sellDoc.set sd
+
+
+  sell: ->
+    @sellDoc.get()
+
+  pdetailQuantity: (product_id) ->
+    if @pDetails.get(product_id)?
+      @pDetails.get(product_id).quantity
+
+  initInventories: ->
+    for pdkey, pdvalue of @pDetails.all()
+      cInvDict = @convertToDict @currentList("inventories#{pdkey}"), '_id'
+
+      for cikey, civalue of cInvDict
+        unless pdvalue.inventories[cikey]?
+          pdvalue.inventories[cikey] = 1
+
+      quantity = 0
+      for pikey, pivalue of pdvalue.inventories
+        if cInvDict[pikey]?
+            quantity += pdvalue.inventories[pikey]
+        else
+          delete pdvalue.inventories[pikey]
+
+      if Object.keys(pdvalue.inventories).length > 0
+        pdvalue.quantity = quantity
+      else if pdvalue.quantity <= 0
+        pdvalue.quantity = 1
+
+      @pDetails.set(pdkey, pdvalue)
+
+  invAvailable: (inventory) ->
+    if @pDetails.get(inventory.product_id)?
+      return inventory.amount - @pDetails.get(inventory.product_id).inventories[inventory._id]
+
+
+  removeProduct: (product_id) ->
+    clistsDict = @callFirstWith(@, 'clistsDict');
+    products = clistsDict.get('products')
+    np = []
+    np.push prod for prod in products when prod._id isnt product_id
+    clistsDict.set('products', np)
+    @onCloseDialogCallback()
+
+  removeInventory: (product_id, inventory_id) ->
+    clistsDict = @callFirstWith(@, 'clistsDict');
+    inventories = clistsDict.get("inventories#{product_id}")
+    np = []
+    np.push inv for inv in inventories when inv._id isnt inventory_id
+    clistsDict.set("inventories#{product_id}", np)
+    @onCloseDialogCallback()
+
+
+  disableDetail: (product_id) ->
+    if @pDetails.get(product_id)? && Object.keys(@pDetails.get(product_id).inventories).length > 0
+      return 'true'
+    return
+
+  onCloseDialogCallback: =>
+    products = @currentList('products')
+    @initPDetails(products)
+    @initInventories()
+    @calculateSell()
+
+
+
+  onDetailQuantity: (event) ->
+    tar = $(event.currentTarget)
+    id = tar.closest('.product-box').attr('data-id')
+    pd = @pDetails.get(id)
+    value = if tar.val().length > 0 then Number tar.val() else 0
+    pd.quantity = value
+    @pDetails.set id, pd
+    @calculateSell()
+
 
   onToggleDiscount: (event) ->
     if @discountDict.get('value')
@@ -45,7 +188,56 @@ class SellsNew extends BlazeComponent
     else
       @discountDict.set('option', '%')
       @discountDict.set('value', true)
+    @calculateSell()
+
+
+  onInputDiscount: (event) ->
+    sd = @sellDoc.get()
+    value = if event.currentTarget.value.length > 0 then Number event.currentTarget.value else 0
+    sd.discount = value
+    @sellDoc.set(sd)
+    @calculateSell()
+
+
+  onDetailFocusOut: (event) ->
+    tar = $(event.currentTarget)
+    value = tar.val()
+    product_id = tar.closest('.product-box').attr('data-id')
+    if (value.length > 0 && Number value <= 0) or value.length is 0
+      @removeProduct(product_id)
+
+
+  onInputInventory: (event) ->
+    tar = $(event.currentTarget)
+    value = if tar.val().length > 0 then Number tar.val() else 0
+    inv_id = tar.closest('.inventory-box').attr('data-id')
+    product_id = tar.closest('.product-box').attr('data-id')
+    pd = @pDetails.get(product_id)
+    pd.inventories[inv_id] = Number value
+
+    quantity = 0
+    for key, value of pd.inventories
+      quantity+= value
+
+    pd.quantity = quantity
+    @pDetails.set(product_id, pd)
+    @calculateSell()
+
+
+  onInventoryFocusOut: (event) ->
+    tar = $(event.currentTarget)
+    value = tar.val()
+    product_id = tar.closest('.product-box').attr('data-id')
+    inv_id = tar.closest('.inventory-box').attr('data-id')
+    if (value.length > 0 && Number value <= 0) or value.length is 0
+      @removeInventory(product_id, inv_id)
+
 
   events: ->
     super.concat
       'click .js-discount-select': @onToggleDiscount
+      'input .js-detail-quantity .pinput': @onDetailQuantity
+      'focusout .js-detail-quantity .pinput': @onDetailFocusOut
+      'focusout .js-inventory-input .pinput': @onInventoryFocusOut
+      'input .js-discount-input .pinput': @onInputDiscount
+      'input .js-inventory-input .pinput': @onInputInventory

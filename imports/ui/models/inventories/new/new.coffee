@@ -118,8 +118,6 @@ class InventoriesNew extends BlazeComponent
       @iAmounts.clear()
 
 
-
-
   convertToDict: (array, key) ->
     dic = {}
     for item in array
@@ -141,7 +139,6 @@ class InventoriesNew extends BlazeComponent
     clists.clear()
     clists.set('products', products)
     @iAmounts.clear()
-    console.log 'showEvent'
 
 
   onInputAT: (event) ->

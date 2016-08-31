@@ -36,7 +36,7 @@ template(name='sellsNew')
               div(class='grid-wrapper sell-detail')
                 div(class='col-12 p-right p-left')
                   each product in products
-                    div(class='product-box')
+                    div(class='product-box' data-id='#{product._id}')
                       div(class='product-info')
                         img(src='/no_image0.png')
                         div(class='p-nsk')
@@ -69,10 +69,10 @@ template(name='sellsNew')
                           label(class='label')
                             | SubTotal 
                           div(class='value')
-                            | $#{product.unit_price}
+                            =subTotal(product._id)
                           
                         div(class='col-3')
-                          +PaperInput type="number" name="quantity" label="Quantity" value="1" focusColor="darkblue" min='0'
+                          +PaperInput classes='js-detail-quantity' disabled=(disableDetail product._id) type="number" name="quantity" label="Quantity" value=(pdetailQuantity product._id) focusColor="darkblue" min='0' labelFloat=true
 
                       div(class='grid-wrapper')
                         div(class='col-12')
@@ -83,7 +83,7 @@ template(name='sellsNew')
                                 i(class="material-icons icon") add_circle
                   
                       each inventory in inventories product._id
-                        div(class='inventory-box grid-wrapper')
+                        div(class='inventory-box grid-wrapper' data-id='#{inventory._id}')
                           div(class='inventory-info col-5 p-right')
                             div(class='info')
                               label(class='label')
@@ -102,22 +102,22 @@ template(name='sellsNew')
                             label(class='label')
                               | Available
                             div(class='value')
-                              | #{inventory.amount}
+                              = invAvailable(inventory)
                           
                           div(class='inventory-input col-3')
-                            +PaperInput type="number" name="amount_taken" value="1" label="Taken" focusColor="darkblue" min='0'
+                            +PaperInput classes='js-inventory-input' type="number" name="amount_taken" value="1" label="Taken" focusColor="darkblue" min='0' max=inventory.amount labelFloat=true
 
                           
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperInput type="number" name="total_price" label="Total" value="0.00" focusColor="darkblue" prefix="$" step="any" min='0' disabled="true" size="size-medium"
+                  +PaperInput type="number" alwaysFloating=true name="total_price" label="Total" value=sell.total_price focusColor="darkblue" prefix="$" step="any" min='0' disabled="true" size="size-medium"
               
               div(class='grid-wrapper')
                 div(class='col-6 p-left')
-                  +PaperInput type="number" name="sub_total" label="Sub Total" value="0.00" focusColor="darkblue" prefix="$" step="any" min='0' disabled="true"
+                  +PaperInput type="number" alwaysFloating=true name="sub_total" label="Sub Total" value=sell.sub_total focusColor="darkblue" prefix="$" step="any" min='0' disabled="true"
 
                 div(class='col-6 p-right p-left')
-                  +PaperInput type="number" name="tax_total" label="Tax Total" value="0.00" focusColor="darkblue" prefix="$" step="any" min='0' disabled="true"
+                  +PaperInput type="number" alwaysFloating=true name="tax_total" label="Tax Total" value=sell.tax_total focusColor="darkblue" prefix="$" step="any" min='0' disabled="true"
 
               
               div(class='grid-wrapper')
@@ -125,7 +125,7 @@ template(name='sellsNew')
                   +PaperInput type="text" name="status" label="Status" focusColor="darkblue"
                   
                 div(class='col-6 p-left p-right')
-                  +PaperInput type="number" classes="discount-input" name="discount" label="Discount" focusColor="darkblue" step="any" min='0'
+                  +PaperInput type="number" classes="js-discount-input discount-input" name="discount" label="Discount" focusColor="darkblue" step="any" min='0'
                   
                   +PaperButton classes='js-discount-select discount-select' elevation=1 raise=0 submit=false rippleOn=true
                     div(class='discount-icon' type='#{discountType.value}')
@@ -161,7 +161,7 @@ template(name='sellsNew')
                 div(class='col-12 p-right p-left')
                   +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
                     div(class="resources-b js-dialog-b" data-sub='customers' data-many='false')
-                      div(class="text-div-sm") Shipping Address
+                      div(class="text-div-sm") Billing Address
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
                         
@@ -169,7 +169,7 @@ template(name='sellsNew')
                 div(class='col-12 p-right p-left')
                   +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
                     div(class="resources-b js-dialog-b" data-sub='customers' data-many='false')
-                      div(class="text-div-sm") Billing Address
+                      div(class="text-div-sm") Shipping Address
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
                         
