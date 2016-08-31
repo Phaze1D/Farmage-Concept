@@ -407,7 +407,7 @@ updateInventories = (inventories, sign, sell) ->
   for inv in inventories
     ievent_doc =
       amount: inv.quantity_taken * sign
-      description: "put back to inventory #{inv.inventory_id} from sell #{sell._id} "
+      description: "inventory #{inv.inventory_id} move sell #{sell._id} sign #{sign}"
       is_user_event: false
       for_type: "inventory"
       for_id: inv.inventory_id

@@ -8,11 +8,12 @@ template(name='sellsNew')
           +PaperButton classes="save-icon-div js-submit-new-sell" raise=0 rippleOn=true submit=true
             i(class="material-icons")
               | check
-              
+            
           +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
             i(class="material-icons")
               | clear
-        
+              
+                  
         +PaperHeaderMain id="right"
           div(class='organization-bottom')
             div(class='input-area')
@@ -176,7 +177,8 @@ template(name='sellsNew')
               
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperButton raise=1 elevation=1 submit=false rippleOn=true classes='pay-button' 
-                    | Paid
+                  +PaperButton raise=1 elevation=1 submit=false rippleOn=true classes='pay-button'  disabled=canPay
+                    i(class="material-icons")
+                      | monetization_on
                         
             

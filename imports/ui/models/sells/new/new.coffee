@@ -1,5 +1,7 @@
 
 DialogMixin = require '../../../mixins/dialog_mixin/dialog_mixin.coffee'
+SMethods = require '../../../../api/collections/sells/methods.coffee'
+
 
 require './new.jade'
 
@@ -129,7 +131,7 @@ class SellsNew extends BlazeComponent
         else
           delete pdvalue.inventories[pikey]
 
-      if Object.keys(pdvalue.inventories).length > 0
+      if !_.isEmpty(pdvalue.inventories)
         pdvalue.quantity = quantity
       else if pdvalue.quantity <= 0
         pdvalue.quantity = 1
@@ -159,9 +161,14 @@ class SellsNew extends BlazeComponent
 
 
   disableDetail: (product_id) ->
-    if @pDetails.get(product_id)? && Object.keys(@pDetails.get(product_id).inventories).length > 0
+    if @pDetails.get(product_id)? && !_.isEmpty(@pDetails.get(product_id).inventories)
       return 'true'
     return
+
+  canPay: ->
+    disabled = false
+    disabled = true for key, value of @pDetails.all() when _.isEmpty value.inventories
+    return 'true' if disabled || _.isEmpty @pDetails.all()
 
   onCloseDialogCallback: =>
     products = @currentList('products')
@@ -233,6 +240,59 @@ class SellsNew extends BlazeComponent
       @removeInventory(product_id, inv_id)
 
 
+  onSubmit: (event) ->
+    event.preventDefault()
+    inventories = []
+    details = []
+    for pkey, pdetail of @pDetails.all()
+      detdoc =
+        product_id: pkey
+        quantity: pdetail.quantity
+      details.push detdoc
+      for ikey, value of pdetail.inventories
+        invdoc =
+          inventory_id: ikey
+          quantity_taken: value
+        inventories.push invdoc
+
+    $form = $('.js-sell-new-form')
+    sell_doc =
+      discount: @sellDoc.get().discount
+      discount_type: @discountDict.get('value')
+      # currency: $form.find('[name=currency]').val()
+      details: details
+      status: $form.find('[name=status]').val()
+      notes: $form.find('[name=notes]').val()
+      # customer_id:
+      # shipping_address:
+      # billing_address:
+      # telephone:
+
+    @insert sell_doc, inventories
+
+
+  insert: (sell_doc, inventories) ->
+    sell_doc.organization_id = FlowRouter.getParam('organization_id')
+    SMethods.insert.call {sell_doc}, (err, res) =>
+      console.log err
+      if inventories.length > 0 and res?
+        @addItems(sell_doc.organization_id, res, inventories)
+      else
+        $('.js-hide-new').trigger('click') unless err?
+
+  addItems: (organization_id, sell_id, inventories) ->
+    SMethods.addItems.call {organization_id, sell_id, inventories}, (err, res) =>
+      console.log err
+      if err?
+        @remove(organization_id, sell_id)
+      else
+        $('.js-hide-new').trigger('click') unless err?
+
+  remove: (organization_id, sell_id) =>
+    SMethods.remove.call {organization_id, sell_id}, (err, res) ->
+      console.log err
+
+
   events: ->
     super.concat
       'click .js-discount-select': @onToggleDiscount
@@ -241,3 +301,5 @@ class SellsNew extends BlazeComponent
       'focusout .js-inventory-input .pinput': @onInventoryFocusOut
       'input .js-discount-input .pinput': @onInputDiscount
       'input .js-inventory-input .pinput': @onInputInventory
+      'submit .js-sell-new-form': @onSubmit
+      'click .js-submit-new-sell': @onSubmit
