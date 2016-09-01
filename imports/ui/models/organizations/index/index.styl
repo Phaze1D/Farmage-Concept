@@ -38,66 +38,70 @@
     }
 
 
-
-.organizations
-  .card-margin
-    margin-bottom: 10px
-    padding: 0 5px
-    float: left
-    width: 1px
-    transition: width .20s ease-in-out
+.card-wrapper
+  display: flex
+  flex-wrap: wrap;
+  justify-content: center;
 
   .card
-    padding: 0 15px
-    margin: auto;
+    width: 330px
+    margin: 0 8px 16px
+    height: 460px
+    max-width: calc(100% - 16px);
 
-
-    .title
-      font-weight: 400
-      font-size: 24px
-      margin: 24px 0 8px
-
-    .subtitle
-      font-weight: 300
-      font-size: 14px
-      color: #9E9E9E
-
-    .divider
-      background-color: lightgrey
-      height: 1px
-      margin: 16px 0
-
-    .action-button
-      padding: 8px 8px
-      background-color: transparent;
-      margin: 0 8px 6px -8px
-      font-weight: 400
-      color: rgba(0, 0, 0, 0.7);
-
-    .image-col
-      padding: 0
-
-    .image-header
+    .content
       width: 100%
-      height: 200px
-      overflow: hidden;
-      background-image:    url('/no_image.png');
-      background-size:     cover;                      /* <------ */
-      background-repeat:   no-repeat;
-      background-position: center center;
+      height: 100%
+
+      .top
+        padding: 25px 15px 10px
+        height: 35%
+        background-color: #EEEEEE
+
+      .options-b
+        position: absolute;
+        top: 0
+        right: 0
+        width: 36px
+        height: 36px
+        margin: 24px 5px 0 0
+        display: flex;
+        justify-content: center;
+        margin-left: auto;
+        border-radius: 50%
+        background-color: transparent;
+
+        i
+          color: #757575
+          align-self: center;
+
+      .divider
+        background-color: lightgrey
+        height: 1px
+        margin: 16px 0
+
+      .action-button
+        padding: 8px 8px
+        background-color: transparent;
+        margin: -8px 8px -8px 0px
+        font-weight: 400
+        font-size: 14px
+        color: black
 
 
-    .icon-div
-      position: absolute;
-      border-radius: 50px
-      right: 0
-      bottom: 0
-      padding: 10px
-      margin: 0 5px 5px 0
-      background-color: transparent;
-      color: black
-      display: flex;
-      justify-content: center;
+.organ-card-title
+  font-size: 24px
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  margin-bottom: 8px
+  width: calc(100% - 48px)
 
-      & i
-        align-self: center;
+.organ-founder
+  color: #757575
+  font-size: 13px
+  font-weight: 300
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;

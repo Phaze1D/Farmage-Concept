@@ -24,5 +24,4 @@ class IngredientsIndex extends IndexMixin
 
 
   ingredients: ->
-    @resizeCard()
     IngredientModule.Ingredients.find()

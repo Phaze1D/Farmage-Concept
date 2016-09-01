@@ -49,6 +49,7 @@
     position: absolute;
     bottom: 34px
     z-index: -1
+    width: calc(100% - 98px);
     margin-left: 64px
     transition: .2s margin-left ease-in-out
 
@@ -57,6 +58,9 @@
     }
 
     & h1
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
       font-size: 32px
       font-weight: 400;
 

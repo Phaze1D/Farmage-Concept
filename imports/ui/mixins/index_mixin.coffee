@@ -4,7 +4,6 @@ class IndexMixin extends BlazeComponent
 
   constructor: (args) ->
     super
-    @throttle = @throttle.bind(@)
 
   onCreated: ->
     super
@@ -14,25 +13,6 @@ class IndexMixin extends BlazeComponent
 
   onRendered: ->
     super
-    Meteor.setTimeout( =>
-      @resizeCard()
-    , 200)
-
-    window.addEventListener 'resize', @throttle
-
-
-  throttle: ->
-    unless @ticking
-      window.requestAnimationFrame =>
-        @resizeCard()
-        @ticking = false;
-    @ticking = true;
-
-
-  onDestroyed: ->
-    super
-    window.removeEventListener 'resize', @throttle
-
 
   onShow: (event) ->
     @fabShrink()
@@ -69,33 +49,8 @@ class IndexMixin extends BlazeComponent
 
   rightCallbacks: ->
     ret =
-      progressCallback: =>
-        @resizeCard()
-
-      showCallBack: =>
-        @resizeCard()
-
       hideCallBack: =>
-        @resizeCard()
         @expanded.set false
-
-
-  resizeCard: ()->
-    card = $(@findAll '.card-margin')
-    mainContent = $(@find '.main-content')
-
-    count = 0
-    while count - 1 > 0 && mainContent.innerWidth() * ( 1/(count - 1)) < 290
-      count--
-      @size = count
-
-    count = 0
-    while mainContent.innerWidth() * ( 1/(count + 1) ) >= 290
-      count++
-      @size = count
-
-
-    card.css width: "#{100/@size}%"
 
 
   events: ->

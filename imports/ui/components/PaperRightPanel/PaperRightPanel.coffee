@@ -28,11 +28,6 @@ class PaperRightPanel extends BlazeComponent
       o:
         duration: 350
         easing: 'ease-in-out'
-        progress: (elements, complete, remaining, start, tweenValue) =>
-
-          if @data().callbacks? && @data().callbacks.progressCallback?
-            @data().callbacks.progressCallback()
-
         complete: =>
           @rightPanel.css(transform: '')
           if @data().callbacks? && @data().callbacks.showCallBack?
@@ -81,10 +76,6 @@ class PaperRightPanel extends BlazeComponent
       o:
         duration: 250
         easing: 'ease-in-out'
-        progress: (elements, complete, remaining, start, tweenValue) =>
-          if @data().callbacks? && @data().callbacks.progressCallback?
-            @data().callbacks.progressCallback()
-
         complete: =>
           if @data().callbacks? && @data().callbacks.hideCallBack?
             @data().callbacks.hideCallBack()

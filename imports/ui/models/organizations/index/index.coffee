@@ -15,7 +15,6 @@ class OrganizationsIndex extends IndexMixin
 
 
   organizations: ->
-    @resizeCard()
     OrganizationModule.Organizations.find()
 
   founder: (organization) ->
