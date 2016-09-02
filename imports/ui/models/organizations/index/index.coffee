@@ -19,3 +19,6 @@ class OrganizationsIndex extends IndexMixin
 
   founder: (organization) ->
     Meteor.users.findOne organization.founder().user_id
+
+  tabs: ->
+    ['Sells', 'Expenses']

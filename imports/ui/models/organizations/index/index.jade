@@ -24,6 +24,9 @@ template(name="organizations.index")
                 div(class='organ-founder card-shrink-action')
                   with founder organization
                     | By #{profile.first_name} #{profile.last_name}
+                    
+              
+              +PaperTabPanel tabs=tabs
                 
               //- div(class='divider')
               

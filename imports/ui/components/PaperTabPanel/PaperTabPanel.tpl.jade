@@ -1,0 +1,12 @@
+paper-tab-panel
+  div(class='tab-bar #{classes}')
+    div(class='underline' style='width: #{tabWidth}%')
+    each title in tabs
+      div(class='tab-title-wrapper')
+        +PaperRipple fill='lightgrey'
+        div(class='tab-title')
+          | #{title}
+      
+  
+  div(class='tab-panel-main #{classes}')
+    +Template.contentBlock

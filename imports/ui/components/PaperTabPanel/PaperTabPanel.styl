@@ -1,0 +1,36 @@
+paper-tab-panel
+  position: relative;
+  box-sizing: border-box;
+  width: 100%
+  height: 100%
+
+  .tab-bar
+    position: relative;
+    width: 100%
+    height: 48px
+    display: flex;
+    background-color: #eee
+
+
+    .underline
+      position: absolute;
+      left: 0
+      bottom: 0
+      height: 2px
+      background-color: black
+
+
+    .tab-title-wrapper
+      flex-basis: 0
+      align-self: center;
+      height: 100%
+      flex-grow: 1
+      position: relative;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      cursor: pointer;
+
+      .tab-title
+        align-self: center;
+        display: block;
