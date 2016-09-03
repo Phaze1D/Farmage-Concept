@@ -2,11 +2,11 @@ paper-tab-panel
   div(class='tab-bar #{classes}')
     div(class='underline' style='width: #{tabWidth}%')
     each title in tabs
-      div(class='tab-title-wrapper')
+      div(class="bar-tab js-bar-tab {{active @index}}" data-index="{{@index}}" style='width: #{tabWidth}%')
         +PaperRipple fill='lightgrey'
         div(class='tab-title')
           | #{title}
       
-  
-  div(class='tab-panel-main #{classes}')
-    +Template.contentBlock
+  div(class="tab-main-wrapper")
+    div(class='tab-panel-main #{classes}')
+      +Template.contentBlock

@@ -25,8 +25,17 @@ template(name="organizations.index")
                   with founder organization
                     | By #{profile.first_name} #{profile.last_name}
                     
-              
-              +PaperTabPanel tabs=tabs
+                div(class='info-amount')
+                  | $234.46
+                  
+              div(class='bottom')
+                +PaperTabPanel tabs=tabs
+                  +PaperTab 
+                    canvas(class='chart')
+                  
+                  +PaperTab 
+                    canvas(class='chart')
+                  
                 
               //- div(class='divider')
               

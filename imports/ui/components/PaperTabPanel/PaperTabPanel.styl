@@ -3,6 +3,8 @@ paper-tab-panel
   box-sizing: border-box;
   width: 100%
   height: 100%
+  display: flex;
+  flex-direction: column;
 
   .tab-bar
     position: relative;
@@ -20,7 +22,8 @@ paper-tab-panel
       background-color: black
 
 
-    .tab-title-wrapper
+    .bar-tab
+      padding: 0 10px
       flex-basis: 0
       align-self: center;
       height: 100%
@@ -30,7 +33,36 @@ paper-tab-panel
       display: flex;
       justify-content: center;
       cursor: pointer;
+      color: #757575
+
+      &.active
+        color: black
 
       .tab-title
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-weight: 300
         align-self: center;
-        display: block;
+        display: block
+
+  .tab-main-wrapper
+    overflow: hidden;
+    flex-grow: 1
+    display: flex;
+
+  .tab-panel-main
+    flex-grow: 1
+    display: flex;
+    width: 100%
+    max-width: 100%
+    // overflow: hidden;
+
+    .single-tab-main
+      padding: 15px 10px 5px 5px;
+      flex-grow: 1
+      flex-shrink: 0
+      width: 100%
+      max-width: 100%
+      display: flex;
+      flex-direction: column;
