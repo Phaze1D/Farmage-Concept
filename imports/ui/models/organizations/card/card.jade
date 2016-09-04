@@ -1,0 +1,33 @@
+template(name='OrganizationCard')
+  div(class='organ-card')
+    +PaperCard elevation=1
+      div(class='content')
+        div(class='top')
+          div(class='organ-card-title card-expand-action')
+            | #{organization.name}
+          div(class='organ-founder card-shrink-action')
+            with founder organization
+              | By #{profile.first_name} #{profile.last_name}
+              
+          div(class='info-amount')
+            | $234.46
+            //- Add Total Amount for the las 5 Days
+            
+        div(class='bottom')
+          +PaperTabPanel tabs=tabs
+            +PaperTab 
+              canvas(class='chart')
+            
+            +PaperTab 
+              canvas(class='chart')
+            
+          
+        //- div(class='divider')
+        
+        //- +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
+        //-   | SETTINGS
+      
+        
+        +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
+          i(class='material-icons')
+           | more_vert
