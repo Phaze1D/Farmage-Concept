@@ -15,42 +15,50 @@ class OrganizationCard extends BlazeComponent
 
   onRendered: ->
     super
-    Chart.defaults.global.title.display = false;
-    Chart.defaults.global.legend.display = false;
-    # Chart.defaults.global.tooltips.enabled = false;
-    Chart.defaults.global.defaultFontSize = 10
-    # ctx = $('.chart-1')
-    # $('.chart').each () ->
-    #   options =
-    #     maintainAspectRatio: false
-    #     borderWidth: 0
-    #     scales:
-    #       xAxes: [
-    #               gridLines:
-    #                 display: false
-    #              ]
-    #
-    #       yAxes: [
-    #               gridLines:
-    #                 drawBorder: false
-    #               ]
-    #
-    #   data =
-    #     labels: ["08/30", "08/30", "09/01", "09/02", "09/03"],
-    #     datasets: [
-    #         {
-    #           borderColor: "rgba(75,192,192,1)",
-    #           data: [65, 59, 80, 81, 56],
-    #         }
-    #   ]
-    #
-    #   myLineChart = new Chart(@,
-    #     {
-    #       type: 'line'
-    #       data: data
-    #       options: options
-    #     }
-    #   )
+    sellsChart = $(@find '.sells-chart')
+    expensesChart = $(@find '.expenses-chart')
+    options =
+      legend:
+        display: false
+      title:
+        display: false
+      maintainAspectRatio: false
+      scales:
+        xAxes: [
+                ticks:
+                  fontSize: 10
+                gridLines:
+                  display: false
+               ]
+
+        yAxes: [
+                ticks:
+                  fontSize: 10
+                gridLines:
+                  drawBorder: false
+                ]
+
+    data =
+      labels: ["Nov 30", "Nov 31", "Sep 01", "Sep 02", "Sep 03"]
+      datasets: [
+                  data: [65, 59, 80, 81, 56]
+                ]
+
+    sellsLine = new Chart(sellsChart,
+      {
+        type: 'line'
+        data: data
+        options: options
+      }
+    )
+
+    expensesLine = new Chart(expensesChart,
+      {
+        type: 'line'
+        data: data
+        options: options
+      }
+    )
 
 
   founder:  ->

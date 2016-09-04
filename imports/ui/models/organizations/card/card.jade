@@ -8,18 +8,20 @@ template(name='OrganizationCard')
           div(class='organ-founder card-shrink-action')
             with founder organization
               | By #{profile.first_name} #{profile.last_name}
-              
-          div(class='info-amount')
-            | $234.46
-            //- Add Total Amount for the las 5 Days
+          
+          div(class='info-div')
+            div(class='info-amount')
+              | $234.46
+            div(class='info')
+              | Last 5 Days
             
         div(class='bottom')
           +PaperTabPanel tabs=tabs
             +PaperTab 
-              canvas(class='chart')
+              canvas(class='sells-chart chart')
             
             +PaperTab 
-              canvas(class='chart')
+              canvas(class='expenses-chart chart')
             
           
         //- div(class='divider')
