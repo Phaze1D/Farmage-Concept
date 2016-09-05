@@ -13,6 +13,7 @@ require './ingredients/selector/selector.coffee'
 
 require './customers/index/index.coffee'
 require './customers/new/new.coffee'
+require './customers/card/card.coffee'
 
 require './events/index/index.coffee'
 
