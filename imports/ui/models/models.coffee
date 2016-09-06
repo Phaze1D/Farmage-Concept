@@ -33,6 +33,7 @@ require './products/selector/selector.coffee'
 
 require './providers/index/index.coffee'
 require './providers/new/new.coffee'
+require './providers/card/card.coffee'
 
 require './sells/index/index.coffee'
 require './sells/new/new.coffee'

@@ -14,10 +14,6 @@ template(name='customers.index')
         
   if subscriptionsReady
     div(class='customers main-content')
-      div(class='container-fluid')
-        div(class='row')
-          each customer in customers
-            div(class='card-margin')
-              +PaperCard elevation=1 classes="card"
-                div(class="not-done")
-                  | Not Done
+      div(class='card-wrapper')
+        each customer in customers
+          +CustomerCard customer=customer

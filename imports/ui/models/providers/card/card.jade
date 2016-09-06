@@ -1,4 +1,4 @@
-template(name='CustomerCard')
+template(name='ProviderCard')
   div(class='cust-card')
     +PaperCard elevation=1 classes="no-height"
       div(class='content')
@@ -11,10 +11,10 @@ template(name='CustomerCard')
 
           div(class='info-div')
             div(class='main-title')
-              | #{customer.first_name} #{customer.last_name}
+              | #{provider.first_name} #{provider.last_name}
               
             div(class='sub-title')
-              | #{customer.company}
+              | #{provider.company}
         
         div(class='middle')
           +PaperButton elevation=0 raise=0 classes="js-toggle-contact contact-title"
@@ -30,9 +30,9 @@ template(name='CustomerCard')
               div(class='contact')
                 div(class='label')
                   | Email
-                if customer.email
+                if provider.email
                   div(class='info')
-                    | #{customer.email}
+                    | #{provider.email}
                 else
                   div(class='info-none')
                     | None

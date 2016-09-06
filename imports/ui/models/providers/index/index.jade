@@ -13,10 +13,6 @@ template(name='providers.index')
 
   if subscriptionsReady
     div(class='providers main-content')
-      div(class='container-fluid')
-        div(class='row')
-          each provider in providers
-            div(class='card-margin')
-              +PaperCard elevation=1 classes="card"
-                div(class="not-done")
-                  | Not Done
+      div(class='card-wrapper')
+        each provider in providers
+          +ProviderCard provider=provider

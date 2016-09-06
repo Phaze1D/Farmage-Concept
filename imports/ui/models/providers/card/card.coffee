@@ -2,8 +2,8 @@
 
 require './card.jade'
 
-class CustomerCard extends BlazeComponent
-  @register 'CustomerCard'
+class ProviderCard extends BlazeComponent
+  @register 'ProviderCard'
 
   constructor: (args) ->
     # body...
@@ -12,14 +12,13 @@ class CustomerCard extends BlazeComponent
     if $(@find '.height-div').height() <= 300
       $(@find '.js-toggle-contact').trigger('click')
 
-
   telephones: ->
-    tele = @data().customer.telephones
+    tele = @data().provider.telephones
     if tele? and tele.length > 0
       tele
 
   addresses: ->
-    address = @data().customer.addresses
+    address = @data().provider.addresses
     if address? and address.length > 0
       address
 
