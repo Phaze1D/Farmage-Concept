@@ -37,11 +37,7 @@ template(name='CustomerCard')
               
               if telephones
                   div(class='contact nav-wrapper' data-type='telephones')
-                    
-                    div(class="nav left {{disableLeft 'telephones'}} js-nav-left")
-                      i(class='material-icons')
-                        | keyboard_arrow_left
-                        
+                          
                     div(class='nav-info-wrapper')
                       div(class='nav-info-mover')
                         each telephone in telephones
@@ -53,6 +49,10 @@ template(name='CustomerCard')
                                   | Telephone
                               div(class='info')
                                 | #{telephone.number}
+                                
+                    div(class="nav left {{disableLeft 'telephones'}} js-nav-left")
+                      i(class='material-icons')
+                        | keyboard_arrow_left
                     
                     div(class="nav right js-nav-right {{disableRight 'telephones'}}")
                       i(class='material-icons')
@@ -68,9 +68,6 @@ template(name='CustomerCard')
               
               if addresses
                 div(class='contact nav-wrapper' data-type='addresses')
-                  div(class="nav left {{disableLeft 'addresses'}} js-nav-left")
-                    i(class='material-icons')
-                      | keyboard_arrow_left
                       
                   div(class='nav-info-wrapper')
                     div(class='nav-info-mover')
@@ -93,6 +90,9 @@ template(name='CustomerCard')
                                 | #{address.zip_code}
                               div(class='add-info')
                                 | #{address.country}
+                  div(class="nav left {{disableLeft 'addresses'}} js-nav-left")
+                    i(class='material-icons')
+                      | keyboard_arrow_left
                   
                   div(class="nav right {{disableRight 'addresses'}} js-nav-right")
                     i(class='material-icons')
