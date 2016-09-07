@@ -15,10 +15,6 @@ template(name='products.index')
         
   if subscriptionsReady
     div(class='products main-content')
-      div(class='container-fluid')
-        div(class='row')
-          each product in products
-            div(class='card-margin')
-              +PaperCard elevation=1 classes="card"
-                div(class="not-done")
-                  | Not Done
+      div(class='card-wrapper')
+        each product in products
+          +ProductCard product=product

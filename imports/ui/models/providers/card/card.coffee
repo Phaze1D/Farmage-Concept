@@ -6,11 +6,13 @@ class ProviderCard extends BlazeComponent
   @register 'ProviderCard'
 
   constructor: (args) ->
-    # body...
+    super
+    @positions = new ReactiveDict()
+    @positions.set('telephones', 0)
+    @positions.set('addresses', 0)
 
   onRendered: ->
-    if $(@find '.height-div').height() <= 300
-      $(@find '.js-toggle-contact').trigger('click')
+
 
   telephones: ->
     tele = @data().provider.telephones
@@ -22,53 +24,49 @@ class ProviderCard extends BlazeComponent
     if address? and address.length > 0
       address
 
-  showContact: (tar) ->
 
-    cd = tar.closest('.middle').find('.contact-div')
-    cd.velocity
-      p:
-        height: cd.find('.height-div').height() + 40
-      o:
-        duration: 250
-        easing: 'ease-in-out'
+  disableLeft: (type) ->
+    if @positions.get(type) is 0
+      'disabled'
 
-    tar.find('.more-b').velocity
-      p:
-        rotateZ: "180deg"
-      o:
-        duration: 250
+  disableRight: (type) ->
+    if @positions.get(type) is @data().provider[type].length - 1
+      'disabled'
 
-    tar.attr('shown', true)
+  onLeft: (event) ->
+      tar = $(event.currentTarget)
 
-  hideContact: (tar) ->
-      cd = tar.closest('.middle').find('.contact-div')
-      cd.velocity
-        p:
-          height: '0'
-        o:
-          duration: 250
-          easing: 'ease-in-out'
-
-      tar.find('.more-b').velocity
-        p:
-          rotateZ: "0deg"
-        o:
-          duration: 250
-
-      tar.attr('shown', false)
+      unless tar.hasClass('disabled')
+        wrap = tar.closest('.nav-wrapper')
+        type =  wrap.attr 'data-type'
+        position = @positions.get(type) - 1
+        wrap.find('.nav-info-mover').velocity
+          p:
+            translateX: -100*position + "%"
+          o:
+            duration: 250
+        @positions.set(type, position)
 
 
-  onToggleContact: (event) ->
+
+  onRight: (event) ->
     tar = $(event.currentTarget)
 
-    if tar.attr('shown') is 'true'
-      @hideContact(tar)
-    else
-      @showContact(tar)
+    unless tar.hasClass('disabled')
+      wrap = tar.closest('.nav-wrapper')
+      type =  wrap.attr 'data-type'
+      position = @positions.get(type) + 1
+      wrap.find('.nav-info-mover').velocity
+        p:
+          translateX: -100*position + "%"
+        o:
+          duration: 250
 
+      @positions.set(type, position)
 
 
 
   events: ->
     super.concat
-      'click .js-toggle-contact': @onToggleContact
+      'click .js-nav-left': @onLeft
+      'click .js-nav-right': @onRight

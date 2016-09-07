@@ -1,6 +1,6 @@
 template(name='ProviderCard')
   div(class='cust-card')
-    +PaperCard elevation=1 classes="no-height"
+    +PaperCard elevation=1
       div(class='content')
         +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
           i(class='material-icons')
@@ -17,15 +17,12 @@ template(name='ProviderCard')
               | #{provider.company}
         
         div(class='middle')
-          +PaperButton elevation=0 raise=0 classes="js-toggle-contact contact-title"
+          div.contact-title
             div.table
               | Contact Information
-            div.table
-              div(class="more-b")
-                i(class='material-icons')
-                 | keyboard_arrow_down
+            
                  
-          div(class ="contact-div" style="height: 0")
+          div(class ="contact-div")
             div(class='height-div')
               div(class='contact')
                 div(class='label')
@@ -38,51 +35,76 @@ template(name='ProviderCard')
                     | None
                   
               
-              if telephones
-                each telephone in telephones
-                  div(class='contact')
-                    div(class="label")
-                      if telephone.name
-                        | #{telephone.name}
-                      else
-                        | Telephone
-                    div(class='info')
-                      | #{telephone.number}
-              else
-                div(class='contact')
-                  div(class='label')
-                    | Telephones
-                  div(class='info-none')
-                    | None
-                    
-              
-              if addresses
-                each address in addresses
-                  div(class='contact')
-                    div(class="label")
-                      if address.name
-                        | #{address.name}
-                      else
-                        | Address
-                    div(class='info')
-                      div(class='add-info')
-                        | #{address.street}
-                      div(class='add-info')
-                        | #{address.street2}
-                      div(class='add-info')
-                        if address.city
-                          | #{address.city}, #{address.state}
-                      div(class='add-info')
-                        | #{address.zip_code}
-                      div(class='add-info')
-                        | #{address.country}
+            if telephones
+                div(class='contact nav-wrapper' data-type='telephones')
+                  
+                  div(class="nav left {{disableLeft 'telephones'}} js-nav-left")
+                    i(class='material-icons')
+                      | keyboard_arrow_left
                       
-              else
-                div(class='contact')
-                  div(class='label')
-                    | Addresses
-                  div(class='info-none')
-                    | None
+                  div(class='nav-info-wrapper')
+                    div(class='nav-info-mover')
+                      each telephone in telephones
+                          div(class='nav-info')
+                            div(class="label")
+                              if telephone.name
+                                | #{telephone.name}
+                              else
+                                | Telephone
+                            div(class='info')
+                              | #{telephone.number}
+                  
+                  div(class="nav right js-nav-right {{disableRight 'telephones'}}")
+                    i(class='material-icons')
+                      | keyboard_arrow_right
+                      
+            else
+              div(class='contact')
+                div(class='label')
+                  | Telephones
+                div(class='info-none')
+                  | None
+                  
+            
+            if addresses
+              div(class='contact nav-wrapper' data-type='addresses')
+                div(class="nav left {{disableLeft 'addresses'}} js-nav-left")
+                  i(class='material-icons')
+                    | keyboard_arrow_left
+                    
+                div(class='nav-info-wrapper')
+                  div(class='nav-info-mover')
+                    each address in addresses
+                        div(class='nav-info')
+                          div(class="label")
+                            if address.name
+                              | #{address.name}
+                            else
+                              | Address
+                          div(class='info')
+                            div(class='add-info')
+                              | #{address.street}
+                            div(class='add-info')
+                              | #{address.street2}
+                            div(class='add-info')
+                              if address.city
+                                | #{address.city}, #{address.state}
+                            div(class='add-info')
+                              | #{address.zip_code}
+                            div(class='add-info')
+                              | #{address.country}
+                
+                div(class="nav right {{disableRight 'addresses'}} js-nav-right")
+                  i(class='material-icons')
+                    | keyboard_arrow_right
+                
+                    
+            else
+              div(class='contact')
+                div(class='label')
+                  | Addresses
+                div(class='info-none')
+                  | None
                   
             
         //- div(class='bottom')

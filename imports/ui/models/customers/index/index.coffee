@@ -1,7 +1,6 @@
 IndexMixin = require '../../../mixins/index_mixin.coffee'
 CustomerModule = require '../../../../api/collections/customers/customers.coffee'
 
-
 require './index.jade'
 
 class CustomersIndex extends IndexMixin

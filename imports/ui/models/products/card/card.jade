@@ -1,0 +1,30 @@
+template(name="ProductCard")
+  div(class='prod-card')
+    +PaperCard elevation=1
+      div(class='content')
+        +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
+          i(class='material-icons')
+           | more_vert
+           
+        div(class='upper')
+          div(class='top')
+            img(src='/no_image0.png')
+            
+            div(class='info-div')
+              div(class='main-title card-expand-action')
+                | #{product.name} 
+                
+              div(class='sub-title')
+                | Unit Price - $#{product.unit_price}
+          
+          
+          div(class='middle')
+            div(class='main')
+              | 56
+              span
+                | In Stock
+
+            
+        div(class='chart-wrapper')
+          div(class='chart-main')
+            canvas(class='canvas')

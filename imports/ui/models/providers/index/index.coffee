@@ -2,6 +2,7 @@ IndexMixin = require '../../../mixins/index_mixin.coffee'
 ProviderModule = require '../../../../api/collections/providers/providers.coffee'
 
 
+
 require './index.jade'
 
 class ProvidersIndex extends IndexMixin
@@ -18,6 +19,8 @@ class ProvidersIndex extends IndexMixin
         onStop: (err) ->
           console.log "sub stop #{err}"
         onReady: ->
+
+
 
 
   providers: ->

@@ -1,0 +1,37 @@
+template(name='IngredientCard')
+  div(class='ing-card')
+    +PaperCard elevation=1
+      div(class='content')
+        +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
+          i(class='material-icons')
+           | more_vert
+        div(class='top')
+          img(src='/no_image0.png')
+          
+          div(class='info-div')
+            div(class='main-title card-expand-action')
+              | #{ingredient.name} 
+              
+            div(class='sub-title')
+              | Measurement Unit - #{ingredient.measurement_unit}
+        
+        
+        div(class='middle')
+          div(class='main')
+            | 239.23 
+            span
+              | #{ingredient.measurement_unit}
+          div(class='sub')
+            | In Stock
+              
+          //- div(class='bottom')
+          //-   div(class='bar')
+          //-     | Last 5 Yields
+            
+        //- div(class='chart-wrapper')
+        //-   div(class='chart-main')
+        //-     canvas(class='canvas')
+            
+            
+  //- Total Currently Available 
+  //- Last 5 Yields x yield Intifer y amount

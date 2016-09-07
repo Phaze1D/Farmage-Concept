@@ -72,10 +72,12 @@
 
       .contact-div
         height: 100%
-        padding: 0px 15px
+        padding: 0px 15px 20px
 
         .contact
           margin-top: 20px
+          border-bottom: 1px solid #eee
+
 
           .label
             font-size: 13px
@@ -86,14 +88,12 @@
             padding: 5px 0 0
             font-size: 16px
             font-weight: 300
-            border-bottom: 1px solid #eee
 
           .info-none
             padding: 5px 0 0
             font-size: 14px
             font-weight: 300
             color: #BDBDBD
-            border-bottom: 1px solid #eee
 
 
     .bottom
@@ -107,8 +107,6 @@
 .add-info
   display: flex
 
-.no-height
-  height: auto;
 
 .more-b
   background-color: transparent;
@@ -117,3 +115,45 @@
 
   i
     align-self: center;
+
+
+
+.nav-wrapper
+  display: flex;
+
+  .nav
+    align-self: center;
+    height: 36px
+    width: 36px
+    display: flex;
+    cursor: pointer;
+    flex-shrink: 0
+
+    &.disabled
+      color: #eee
+
+    &.left
+      justify-content: flex-start;
+    &.right
+      justify-content: flex-end;
+
+    i
+      align-self: center;
+
+    // &.left
+    //   padding-right: 10px
+    //
+    // &.right
+    //   padding-left: 10px
+
+  .nav-info-wrapper
+    overflow: hidden;
+    flex-grow: 1
+
+    .nav-info-mover
+      flex-grow: 1
+      display: flex
+
+      .nav-info
+        width: 100%
+        flex-shrink: 0

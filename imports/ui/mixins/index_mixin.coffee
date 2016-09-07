@@ -1,5 +1,4 @@
 
-
 class IndexMixin extends BlazeComponent
 
   constructor: (args) ->
@@ -13,6 +12,7 @@ class IndexMixin extends BlazeComponent
 
   onRendered: ->
     super
+
 
   onShow: (event) ->
     @fabShrink()
