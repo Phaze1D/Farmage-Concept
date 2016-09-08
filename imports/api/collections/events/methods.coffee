@@ -45,6 +45,7 @@ module.exports.userEvent = new ValidatedMethod
     unless @isSimulation
       switch event_doc.for_type
         when 'unit'
+
           transcation event_doc, @userId, "unitBelongsToOrgan", "Units", "units_manager"
         when 'yield'
           transcation event_doc, @userId, "yieldBelongsToOrgan", "Yields", "units_manager"
@@ -61,6 +62,9 @@ transcation = (event_doc, userId, belongsToM, collection, permission) ->
   type = collections[collection].findOne event_doc.for_id
   if type.amount + event_doc.amount < 0
     throw new Meteor.Error "amountError", "amount cannot be less then 0"
+
+  if collection is 'Units' && !type.tracking
+    throw new Meteor.Error "trackingError", "turn on tracking before updating a unit amount"
 
   # Trans
   col = collections[collection].findOne(event_doc.for_id)

@@ -47,6 +47,13 @@ UnitSchema =
       optional: true
       defaultValue: 0
 
+    # Add Tracking Boolean option
+    tracking:
+      type: Boolean
+      label: 'tracking'
+      optional: true
+      defaultValue: true
+
     unit_id: # Parent Id
       type: String
       index: true

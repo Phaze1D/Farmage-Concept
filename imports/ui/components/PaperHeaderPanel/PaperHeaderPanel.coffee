@@ -18,24 +18,24 @@ class PaperHeaderPanel extends BlazeComponent
 
   onRendered: ->
     super
-    # main = document.getElementById("#{@data().id}-paper-header-panel") # Need to change id
-    # main.addEventListener('scroll', @throttle)
+    main = document.getElementById("#{@data().id}-paper-header-panel")
+    main.addEventListener('scroll', @throttle)
     @header = $('#' + @data().id + '-paper-header')
-    $("##{@data().id}-paper-header-panel").scroll(@throttle)
+    # $("##{@data().id}-paper-header-panel").scroll(@throttle)
 
 
   onDestroyed: ->
-    # main = document.getElementById("#{@data().id}-paper-header-panel") # Need to change id
-    # main.removeEventListener('scroll', @throttle) if main?
+    main = document.getElementById("#{@data().id}-paper-header-panel")
+    main.removeEventListener('scroll', @throttle) if main?
 
 
   throttle: (e) ->
-    # unless @ticking
-    #   window.requestAnimationFrame( () =>
-    @scrolling(e.target.scrollTop)
-    #     @ticking = false
-    #   )
-    # @ticking = true;
+    unless @ticking
+      window.requestAnimationFrame( () =>
+        @scrolling(e.target.scrollTop)
+        @ticking = false
+      )
+    @ticking = true;
 
   scrolling: (yPosition) ->
     mainY = yPosition

@@ -6,14 +6,23 @@ class PaperToggle extends BlazeComponent
   constructor: (args) ->
     # body...
 
+  onRendered: ->
+    if @data().toggled is 'on'
+      $(@find '.js-toggle').trigger('click')
+
+
   onToggle: (event) ->
     event.stopImmediatePropagation()
     qcircle = $(@find '.circle')
     backBar = $(@find '.back-bar')
     if $(event.currentTarget).attr('toggled') is 'on'
+      if @data().callbacks? && @data().callbacks.onToggleOff?
+        @data().callbacks.onToggleOff()
       $(event.currentTarget).attr('toggled', 'off')
       @toggleOff(qcircle, backBar)
     else
+      if @data().callbacks? && @data().callbacks.onToggleOn?
+        @data().callbacks.onToggleOn()
       $(event.currentTarget).attr('toggled', 'on')
       @toggleOn(qcircle, backBar)
 

@@ -10,3 +10,10 @@ template(name='units.index')
     div(class='plus-icon-div')
       i(class="material-icons plus-icon")
         | add
+
+
+  if subscriptionsReady
+    div(class='units main-content')
+      div(class='card-wrapper')
+        each unit in units
+          +UnitCard unit=unit

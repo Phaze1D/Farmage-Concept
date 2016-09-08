@@ -43,6 +43,7 @@ require './sells/new/new.coffee'
 require './units/index/index.coffee'
 require './units/new/new.coffee'
 require './units/selector/selector.coffee'
+require './units/card/card.coffee'
 
 require './yields/index/index.coffee'
 require './yields/new/new.coffee'

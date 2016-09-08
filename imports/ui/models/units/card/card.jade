@@ -1,0 +1,26 @@
+template(name='UnitCard')
+  div(class='unit-card')
+    +PaperCard elevation=1
+      div(class='content')
+        +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
+          i(class='material-icons')
+           | more_vert
+        
+        div(class='top')
+           img(src='/no_image0.png')
+           
+           div(class='info-div')
+             div(class='main-title card-expand-action')
+               | #{unit.name} 
+          
+        div(class='middle')
+                        
+                  
+
+      
+       
+  //- Amount
+  //- Amount change option
+  //- Total Child Units ( All Sub as well )
+  //- Total Child Units Amounts ( All Sub as well )
+  //- Tracking

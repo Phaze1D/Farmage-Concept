@@ -3,7 +3,7 @@
   padding: 8px 0
 
   &[disabled]
-    opacity: .65
+    // opacity: .65
 
 .floated-label-container
   -webkit-font-smoothing: antialiased;
@@ -48,6 +48,9 @@
   font-weight: 300;
   line-height: 24px;
 
+  &[disabled]
+    color: #9E9E9E
+
   &.label-floating
     transform: translate3d(0, -75%, 0) scale(0.75);
     width: 133%;
@@ -73,6 +76,9 @@
   font-weight: 300;
   line-height: 24px;
 
+  &[disabled]
+    color: #9E9E9E
+
 .pinput-textarea
   resize: none;
 
@@ -90,7 +96,7 @@
 
   &[disabled]
     border-bottom: 1px dashed;
-    border-color: #737373;
+    border-color: #9E9E9E;
     background: transparent;
 
 .underline-focused

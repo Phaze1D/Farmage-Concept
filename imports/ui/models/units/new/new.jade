@@ -23,9 +23,23 @@ template(name='unitsNew')
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperInput type="textarea" name="description" label="Description" focusColor="darkblue" charMax='512' showCount=true
-            
+                          
+              div(class='event-div')
+                +eventMixin amountLabel="Amount"
+              
+                  
+              div(class='grid-wrapper js-toggle-grid js-toggle-box' track)
+                div(class='col-9 p-left')
+                  div(class='ou-label')
+                    label
+                      | Tracking
+                    div(class='ou-info')
+                      | Track the changes in the unit's amount
                       
-              +eventMixin
+                div(class='col-3 p-right')
+                  div(class='u-toggle-div')
+                    div(class='ou-toggle')
+                      +PaperToggle onColor='#00008b' offColor='lightgrey' toggled='on' callbacks=toggleCallbacks
                   
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')

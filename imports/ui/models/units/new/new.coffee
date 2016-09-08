@@ -27,6 +27,10 @@ class UnitsNew extends BlazeComponent
     return {} unless punit?
     punit
 
+  convert: (value) ->
+    return true if value is 'on'
+    return false if value is 'off'
+
   insert: (unit_doc, event_doc) ->
     amount = event_doc.amount
     unit_doc.amount = 0
@@ -55,6 +59,7 @@ class UnitsNew extends BlazeComponent
       name: form.find('[name=name]').val()
       description: form.find('[name=description]').val()
       amount: Number form.find('[name=event_amount]').val()
+      tracking: @convert form.find('.js-toggle-box[track]').find('.js-toggle').attr('toggled')
       unit_id: @parentUnit()._id
 
     event_doc =
@@ -64,7 +69,44 @@ class UnitsNew extends BlazeComponent
     @insert unit_doc, event_doc
 
 
+  onToggleGrid: (event) ->
+    tar = $(event.currentTarget)
+    tar.find('.js-toggle').trigger('click')
+    if tar.find('.js-toggle').attr('toggled') is 'on'
+      @onToggleOnCallback()
+    else
+      @onToggleOffCallback()
+
+
+
+  onToggleOnCallback: =>
+    ed = $(@find '.event-div')
+    ed.velocity
+      p:
+        height: '68px'
+      o:
+        duration: 250
+        easing: 'ease-in-out'
+        complete: ->
+          ed.css height: 'auto'
+
+  onToggleOffCallback: =>
+    @callFirstWith(@, 'hideEvent');
+    $(@find '.event-div').velocity
+      p:
+        height: '0'
+      o:
+        duration: 250
+        easing: 'ease-in-out'
+
+
+  toggleCallbacks: ->
+    ret =
+      onToggleOn: @onToggleOnCallback
+      onToggleOff: @onToggleOffCallback
+
   events: ->
     super.concat
+      'click .js-toggle-grid': @onToggleGrid
       'submit .js-units-new-form': @onSubmit
       'click .js-submit-new-unit': @onSubmit
