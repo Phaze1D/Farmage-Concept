@@ -9,7 +9,13 @@ class PaperTabPanel extends BlazeComponent
 
 
   tabWidth: ->
-    100/@data().tabs.length
+    tw = 100/@data().tabs.length
+    if tw is 100
+      tw = 50
+    tw
+
+  showLine: ->
+    @data().tabs.length > 1
 
 
   active: (index) ->

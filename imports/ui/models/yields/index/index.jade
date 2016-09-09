@@ -10,3 +10,10 @@ template(name='yields.index')
     div(class='plus-icon-div')
       i(class="material-icons plus-icon")
         | add
+
+
+  if subscriptionsReady
+    div(class='yields main-content')
+      div(class='card-wrapper')
+        each yield in yields
+          +YieldCard yield=yield

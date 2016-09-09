@@ -1,4 +1,4 @@
-.unit-card
+.yield-card
   width: 330px
   margin: 0 8px 16px
   max-width: calc(100% - 16px);
@@ -9,9 +9,8 @@
   //   height: 100%
 
   .top
-    padding: 6px 15px 0px
-    height: 65px
-    background-color: #eee
+    padding: 16px 15px 0
+    background-color: #e0e0e0
     display: flex;
 
     img
@@ -27,6 +26,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+      padding-left: 10px
 
       .main-title
         font-size: 18px
@@ -48,54 +48,46 @@
         white-space: nowrap;
         overflow: hidden;
 
-        div
-          align-self: center;
-          display: block;
-          width: 10px
-          height: 10px
-          border-radius: 50%
-          margin-left: 5px
-
-          &[tracking="on"]
-            background-color: #616161
-
-          &[tracking="off"]
-            background-color: #9E9E9E
 
   .middle
-    width: 100%
-    background-color: #eee
+    background-color: #e0e0e0
+    padding: 0 16px 10px
+    display: flex;
 
-    .total-info
-      display: flex
-      width: 100%
-      overflow: hidden;
+    .amount
+      align-self: center;
+      flex-grow: 1
+      font-size: 34px
+      font-weight: 300
 
-      .wrapper
-        min-width: 100%
-        display: flex
+      span
+        font-size: 12px
+        font-weight: 300
+
+    .contact
+      padding: 5px 0
+
+      .label
+        font-size: 10px
+        font-weight: 300
+        color: #757575
 
       .info
-        min-width: 100%
-        font-size: 34px
-        flex-grow: 1
-        padding: 0 16px
+        font-size: 14px
+        font-weight: 300
 
 
-        span
-          font-size: 12px
-          font-weight: 300
+  .bar
+    background-color: #e0e0e0 !important
 
+  .tpanel
+    background-color: white
+    padding: 16px 0
 
-    .tpanel
-      height: 266px
-      background-color: white
-
-      .title
-        padding: 16px 16px 0
-        color: #757575
-        font-size: 13px
-
+    .title
+      padding-left: 16px
+      font-size: 14px
+      color: #757575
 
     .e-div
       padding: 10px 16px
@@ -144,13 +136,3 @@
           font-size: 25px
           padding-right: 5px
           font-weight: 300
-
-  .bottom
-    border-top: 1px solid #E0E0E0
-    padding: 5px 16px
-    display: flex;
-
-    .action-button
-      align-self: center;
-      color: darkblue
-      // font-weight: 300

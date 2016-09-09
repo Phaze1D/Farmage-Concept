@@ -38,6 +38,7 @@ Meteor.publish "yields", (organization_id, parent, parent_id) ->
 # Missing permissions and pagenation
 Meteor.publish 'yield.parents', (organization_id, yield_id) ->
   info = publicationInfo organization_id, 'yield', yield_id
+  organization = info.organization
 
   if organization? &&  organization.hasUser(@userId)?
     permissions = organization.hasUser(@userId).permission

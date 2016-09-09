@@ -48,7 +48,7 @@ require './units/card/card.coffee'
 require './yields/index/index.coffee'
 require './yields/new/new.coffee'
 require './yields/selector/selector.coffee'
-
+require './yields/card/card.coffee'
 
 
 require './select_list/select_list.coffee'

@@ -1,8 +1,9 @@
 paper-tab-panel
   div(class='tab-bar #{classes}')
-    div(class='underline' style='width: #{tabWidth}%')
+    if showLine
+      div(class='underline' style='width: #{tabWidth}%')
     each title in tabs
-      div(class="bar-tab js-bar-tab {{active @index}}" data-index="{{@index}}" style='width: #{tabWidth}%')
+      div(class="bar-tab js-bar-tab {{active @index}} {{barClasses}}" data-index="{{@index}}" style='width: #{tabWidth}%' data-title=title)
         +PaperRipple fill='lightgrey'
         div(class='tab-title')
           | #{title}

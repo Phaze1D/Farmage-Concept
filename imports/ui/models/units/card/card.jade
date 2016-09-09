@@ -7,20 +7,68 @@ template(name='UnitCard')
            | more_vert
         
         div(class='top')
-           img(src='/no_image0.png')
+          //- img(src='/no_image0.png')
            
-           div(class='info-div')
-             div(class='main-title card-expand-action')
-               | #{unit.name} 
+          div(class='info-div')
+            div(class='main-title card-expand-action')
+              | #{unit.name} 
+            div(class='sub-title')
+              | Tracking
+              div(tracking="#{isTracking}")
+                
           
         div(class='middle')
+          div(class='total-info')
+            div(class='wrapper')
+              if unit.tracking
+                div(class='info')
+                  | #{unit.amount}
+                  span 
+                    | Active
+              
+              div(class='info')
+                | $239.23
+                span 
+                  | Last 5 Days
+              
+          +PaperTabPanel tabs=tabs barClasses="js-card-bar"
+            if unit.tracking
+              +PaperTab
+                div(class='tpanel')
+                  div(class='title')
+                    | Past 4
+                    
+                  each event in mEvents
+                    div(class='e-div')
+                      div(class='event-info')
+                        img(src='/default_avatar.png')
                         
-                  
-
+                        div(class='einfo-div')
+                          div(class='main-title')
+                            | User Lastname 
+                          div(class='sub-title')
+                            | Nov 16, 2016
+                            
+                        div(class='event-amount')
+                          | #{event.amount}
+            +PaperTab
+              div(class='tpanel chart-div')
+                canvas(class='expenses-chart chart')
+            
+        
+        div(class='bottom')
+          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
+            | View Children
       
        
   //- Amount
-  //- Amount change option
-  //- Total Child Units ( All Sub as well )
-  //- Total Child Units Amounts ( All Sub as well )
   //- Tracking
+  //- View Childern Action Button
+
+      
+    
+  //- small user pic
+  //- user full name 
+  //- user email
+  //-  amount 
+  //- date
