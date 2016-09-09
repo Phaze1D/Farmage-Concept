@@ -1,0 +1,62 @@
+template(name='InventoryCard')
+  div(class='yield-card')
+    +PaperCard elevation=1
+      div(class='content')
+        +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
+          i(class='material-icons')
+           | more_vert
+        
+        div(class='top')   
+          img(src='/no_image0.png')
+          
+          div(class='info-div')
+            div(class='main-title')
+              | #{product.name} 
+            div(class='sub-title')
+              | Inventory: #{identifer}
+        
+        div(class='middle')
+    
+          div(class='amount')
+            | #{inventory.amount} 
+            span 
+              | Stock
+        
+          div(class='info')
+            div(class='contact')
+              div(class='label')
+                | Created At
+              div(class='info')
+                =date(inventory.createdAt)
+            
+            if inventory.expiration_date
+              div(class='contact')
+                div(class='label')
+                  | Expiration Date
+                div(class='info')
+                  =date(inventory.expiration_date)
+                
+            //- div(class='contact')
+            //-   div(class='label')
+            //-     | From Unit
+            //-   div(class='info')
+            //-     | #{unit.name}
+            
+        div(class='tpanel')
+          div(class='title') 
+            | Pass 4 Events
+          
+          each event in mEvents
+            div(class='e-div')
+              div(class='event-info')
+                img(src='/default_avatar.png')
+                
+                div(class='einfo-div')
+                  div(class='main-title')
+                    | User Lastname 
+                  div(class='sub-title')
+                    | Nov 16, 2016
+
+                    
+                div(class='event-amount')
+                  | #{event.amount} 

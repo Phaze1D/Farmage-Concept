@@ -12,11 +12,8 @@ template(name='inventories.index')
         | add
     
   if subscriptionsReady
-    div(class='products main-content')
-      div(class='container-fluid')
-        div(class='row')
-          each inventory in inventories
-            div(class='card-margin')
-              +PaperCard elevation=1 classes="card"
-                div(class="not-done")
-                  | Not Done
+    div(class='inventories main-content')
+      div(class='card-wrapper')
+        each inventory in inventories
+          +InventoryCard inventory=inventory
+        

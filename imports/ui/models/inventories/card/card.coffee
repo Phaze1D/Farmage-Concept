@@ -1,12 +1,9 @@
-UnitModule = require '../../../../api/collections/units/units.coffee'
-IngredientModule = require '../../../../api/collections/ingredients/ingredients.coffee'
-
+ProductModule = require '../../../../api/collections/products/products.coffee'
 
 require './card.jade'
 
-class YieldCard extends BlazeComponent
-  @register 'YieldCard'
-
+class InventoryCard extends BlazeComponent
+  @register 'InventoryCard'
 
   constructor: (args) ->
     # body...
@@ -15,16 +12,14 @@ class YieldCard extends BlazeComponent
     super
     organization_id = FlowRouter.getParam("organization_id")
     @autorun =>
-      @subscribe "yield.parents", organization_id, @data().yield._id,
+      @subscribe "inventory.parents", organization_id, @data().inventory._id,
         onStop: (err) ->
           console.log "sub stop #{err}"
         onReady: ->
 
-  ingredient: ->
-    IngredientModule.Ingredients.findOne @data().yield.ingredient_id
+  product: ->
+    ProductModule.Products.findOne @data().inventory.product_id
 
-  unit: ->
-    UnitModule.Units.findOne @data().yield.unit_id
 
   mEvents: ->
     events = []
@@ -34,14 +29,12 @@ class YieldCard extends BlazeComponent
       }
     events
 
-
-  date: ->
+  date: (date)->
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
-    date = @data().yield.createdAt
     "#{months[date.getMonth()]} #{date.getDate()}, #{date.getFullYear()}"
 
   identifer: ->
-    if @data().yield.name?
-      @data().yield.name
+    if @data().inventory.name?
+      @data().inventory.name
     else
-      @data().yield._id
+      @data().inventory._id
