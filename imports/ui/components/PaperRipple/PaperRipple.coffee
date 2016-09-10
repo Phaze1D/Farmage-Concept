@@ -73,4 +73,4 @@ class PaperRipple extends BlazeComponent
     super.concat
       'mousedown .js-ripple-action': @rippleAnimation
       'mouseup .js-ripple-action': @opacityAnimation
-      'mouseout .js-ripple-action': @opacityAnimation
+      # 'mouseout .js-ripple-action': @opacityAnimation

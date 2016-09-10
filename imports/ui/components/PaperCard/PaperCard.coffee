@@ -59,7 +59,7 @@ class PaperCard extends BlazeComponent
         pacard.velocity
           p:
             left: 0
-            top: $(event.target).closest('.paper-header-panel').scrollTop()
+            top: 0
             width: '100%'
             height: '100vh'
           o:
@@ -126,4 +126,4 @@ class PaperCard extends BlazeComponent
       'click .card-shrink-action': @shrink
       'mousedown .card-expand-action, mousedown .card-shrink-action': @mouseDown
       'mouseup .card-expand-action, mouseup .card-shrink-action': @mouseUp
-      'mouseout .card-expand-action, mouseout .card-shrink-action': @mouseUp
+      # 'mouseout .card-expand-action, mouseout .card-shrink-action': @mouseUp

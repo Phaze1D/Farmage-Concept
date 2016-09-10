@@ -1,15 +1,4 @@
 
 div(id="#{id}-paper-header" class="paper-header {{classes}}")
-  div(class="header-small")
   
-  div(class="header-large")
-  
-  .header-content
-    div(class='title')
-      h1
-        | #{title}
-    
-    div(class='sm-title')
-      h1
-        | #{title}
-    +Template.contentBlock
+div(id='#{id}-paper-header-small' class='paper-header-small')
