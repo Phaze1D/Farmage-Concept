@@ -59,24 +59,25 @@ class PaperHeaderPanel extends BlazeComponent
     yPosition = event.target.scrollTop
 
     if yPosition > 212
+      # console.log "yP #{yPosition} ----- lP #{@lastP}"
       if yPosition > @lastP
         unless @goingDown
           @dChange.position = yPosition
-          @dChange.time = event.timeStamp
+          @dChange.time = Date.now()
         @goingDown = true
 
-      else
+      if yPosition < @lastP
         if @goingDown
           @dChange.position = yPosition
-          @dChange.time = event.timeStamp
+          @dChange.time = Date.now()
         @goingDown = false
 
 
       if !@goingDown && yPosition < @dChange.position - 64 && !@showed
-        @showSmall event.timeStamp - @dChange.time
+        @showSmall Date.now() - @dChange.time
 
       if @goingDown && yPosition > @dChange.position + 64 && @showed
-        @hideSmall event.timeStamp - @dChange.time
+        @hideSmall Date.now() - @dChange.time
 
     if yPosition < 148 && @showed
       @hideSmall(0)
