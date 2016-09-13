@@ -3,7 +3,17 @@ template(name='ousersNew')
         
     form(class="js-ousers-new-form js-form-event")    
       +PaperHeaderPanel id="right" 
-        +PaperHeader id="right" title="Invite User"
+        +PaperHeaderSmall id='right'
+          +PaperButton classes="save-icon-div js-submit-new-ouser" raise=0 rippleOn=true submit=true
+            i(class="material-icons")
+              | check
+              
+          +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+            i(class="material-icons")
+              | clear
+        
+        
+        +PaperHeaderBig id="right"
           +PaperButton classes="save-icon-div js-submit-new-ouser" raise=0 rippleOn=true submit=true
             i(class="material-icons")
               | check
@@ -34,11 +44,11 @@ template(name='ousersNew')
                   
               div(class='grid-wrapper js-toggle-grid js-toggle-box' permission='owner')
                 div(class='col-9 p-left')
-                  div(class='ou-label')
+                  div(class='js-ou-label ou-label')
                     label
                       | Owner
                     div(class='ou-info')
-                      | View and edit everything (inc resources and events)
+                      | View and edit everything
                       
                 div(class='col-3 p-right')
                   div(class='ou-toggle-div')
@@ -47,7 +57,7 @@ template(name='ousersNew')
                       
               div(class='grid-wrapper js-toggle-grid js-toggle-box' permission='viewer')
                 div(class='col-9 p-left')
-                  div(class='ou-label')
+                  div(class='js-ou-label ou-label')
                     label
                       | Viewer
                     div(class='ou-info')
@@ -60,7 +70,7 @@ template(name='ousersNew')
                       
               div(class='grid-wrapper js-toggle-grid js-toggle-box' permission='expenses_manager')
                 div(class='col-9 p-left')
-                  div(class='ou-label')
+                  div(class='js-ou-label ou-label')
                     label
                       | Expenses Manager
                     div(class='ou-info')
@@ -73,7 +83,7 @@ template(name='ousersNew')
                 
               div(class='grid-wrapper js-toggle-grid js-toggle-box' permission='sells_manager')
                 div(class='col-9 p-left')
-                  div(class='ou-label')
+                  div(class='js-ou-label ou-label')
                     label 
                       | Sells Manager
                     div(class='ou-info')
@@ -86,7 +96,7 @@ template(name='ousersNew')
                       
               div(class='grid-wrapper js-toggle-grid js-toggle-box' permission='units_manager')
                 div(class='col-9 p-left')
-                  div(class='ou-label')
+                  div(class='js-ou-label ou-label')
                     label
                       | Units Manager
                     div(class='ou-info')
@@ -99,7 +109,7 @@ template(name='ousersNew')
                     
               div(class='grid-wrapper js-toggle-grid js-toggle-box' permission='inventories_manager')
                 div(class='col-9 p-left')
-                  div(class='ou-label')
+                  div(class='js-ou-label ou-label')
                     label
                       | Inventories Manager
                     div(class='ou-info')
@@ -112,7 +122,7 @@ template(name='ousersNew')
                       
               div(class='grid-wrapper js-toggle-grid js-toggle-box' permission='users_manager')
                 div(class='col-9 p-left')
-                  div(class='ou-label')
+                  div(class='js-ou-label ou-label')
                     label 
                       | Users Manager
                     div(class='ou-info')

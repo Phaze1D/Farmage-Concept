@@ -4,7 +4,17 @@ template(name='inventoriesNew')
         
     form(class="js-inventories-new-form js-form-event")    
       +PaperHeaderPanel id="right" 
-        +PaperHeader id="right" title="New Inventory"
+        +PaperHeaderSmall id='right'
+          +PaperButton classes="save-icon-div js-submit-new-inventory" raise=0 rippleOn=true submit=true
+            i(class="material-icons")
+              | check
+              
+          +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+            i(class="material-icons")
+              | clear
+        
+        
+        +PaperHeaderBig id="right"
           +PaperButton classes="save-icon-div js-submit-new-inventory" raise=0 rippleOn=true submit=true
             i(class="material-icons")
               | check
@@ -34,7 +44,7 @@ template(name='inventoriesNew')
               
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
+                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
                     div(class="resources-b js-dialog-b" data-sub='products' data-many='false' data-reset='true')
                       div(class="text-div") Product
                       div(class="icon-div")

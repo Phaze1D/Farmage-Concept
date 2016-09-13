@@ -1,0 +1,105 @@
+template(name='OUserCard')
+  div(class='mCard')
+    +PaperCard elevation=1
+      div(class='mCard-content')
+        +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
+          i(class='material-icons')
+           | more_vert
+        
+        div(class='upper')
+          div(class='top')   
+            img(src='/default_avatar.png')
+            
+            div(class='titles')
+              div(class='main-title text-overflow')
+                | #{ouser.profile.first_name} #{ouser.profile.last_name} 
+              div(class='sub-title text-overflow')
+                | #{email}
+                
+          div(class='upper-mid')
+            div(class='main-info')
+        
+            div(class='fake-tab')
+              div(class='fake-tab-title')
+                | Permissions
+                
+        
+        div(class='middle')
+          div(class='e-div')
+            div(class='event-info js-toggle-box')              
+              div(class='einfo-div')
+                div(class='main-title js-ou-label')
+                  | Owner
+                div(class='sub-title')
+                  | View and edit everything
+                  
+              div(class='event-amount')
+                +PaperToggle onColor='#00008b' offColor='lightgrey' toggled=(permission 'owner') callbacks=toggleCallbacks
+                
+                
+          div(class='e-div')
+            div(class='event-info js-toggle-box')              
+              div(class='einfo-div')
+                div(class='main-title js-ou-label')
+                  | Viewer
+                div(class='sub-title')
+                  | View everything
+                  
+              div(class='event-amount')
+                +PaperToggle onColor='#00008b' offColor='lightgrey' toggled=(permission 'viewer') callbacks=toggleCallbacks
+              
+              
+          div(class='e-div')
+            div(class='event-info js-toggle-box')              
+              div(class='einfo-div')
+                div(class='main-title js-ou-label')
+                  | Expenses Manager
+                div(class='sub-title')
+                  | View and edit expenses and providers
+                  
+              div(class='event-amount')
+                +PaperToggle onColor='#00008b' offColor='lightgrey' toggled=(permission 'expenses_manager') callbacks=toggleCallbacks
+                
+          div(class='e-div')
+            div(class='event-info js-toggle-box')              
+              div(class='einfo-div')
+                div(class='main-title js-ou-label')
+                  | Sells Manager
+                div(class='sub-title')
+                  | View and edit sells and clients
+                  
+              div(class='event-amount')
+                +PaperToggle onColor='#00008b' offColor='lightgrey' toggled=(permission 'sells_manager') callbacks=toggleCallbacks
+                
+          div(class='e-div')
+            div(class='event-info js-toggle-box')              
+              div(class='einfo-div')
+                div(class='main-title js-ou-label')
+                  | Units Manager
+                div(class='sub-title')
+                  | View and edit units and yields
+                  
+              div(class='event-amount')
+                +PaperToggle onColor='#00008b' offColor='lightgrey' toggled=(permission 'units_manager') callbacks=toggleCallbacks
+                
+          div(class='e-div')
+            div(class='event-info js-toggle-box')              
+              div(class='einfo-div')
+                div(class='main-title js-ou-label')
+                  | Inventories Manager
+                div(class='sub-title')
+                  | View and edit inventories and products
+                  
+              div(class='event-amount')
+                +PaperToggle onColor='#00008b' offColor='lightgrey' toggled=(permission 'inventories_manager') callbacks=toggleCallbacks
+                
+          div(class='e-div')
+            div(class='event-info js-toggle-box')              
+              div(class='einfo-div')
+                div(class='main-title js-ou-label')
+                  | Users Manager
+                div(class='sub-title')
+                  | Invite and remove users
+                  
+              div(class='event-amount')
+                +PaperToggle onColor='#00008b' offColor='lightgrey' toggled=(permission 'users_manager') callbacks=toggleCallbacks

@@ -29,7 +29,7 @@ class PaperToggle extends BlazeComponent
 
   toggleOn: (qcircle, backBar) ->
     gird = qcircle.closest('.js-toggle-box')
-    gird.find('.ou-label').css color: 'darkblue'
+    gird.find('.js-ou-label').css color: 'darkblue'
     qcircle.velocity
       p:
         left: '100%'
@@ -49,7 +49,7 @@ class PaperToggle extends BlazeComponent
 
   toggleOff: (qcircle, backBar) ->
     gird = qcircle.closest('.js-toggle-box')
-    gird.find('.ou-label').css color: ''
+    gird.find('.js-ou-label').css color: ''
     qcircle.velocity
       p:
         left: '0'

@@ -1,26 +1,33 @@
 template(name='ProviderCard')
-  div(class='cust-card')
+  div(class='mCard')
     +PaperCard elevation=1
-      div(class='content')
+      div(class='mCard-content')
         +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
           i(class='material-icons')
            | more_vert
-           
-        div(class='top')
-          img(src='/default_avatar.png')
-
-          div(class='info-div')
-            div(class='main-title')
-              | #{provider.first_name} #{provider.last_name}
-              
-            div(class='sub-title')
-              | #{provider.company}
         
-        div(class='middle')
-          div.contact-title
-            div.table
-              | Contact Information
+           
+        div(class='upper')
+          div(class='top')
+            img(src='/default_avatar.png')
+
+            div(class='titles')
+              div(class='main-title text-overflow')
+                | #{provider.first_name} #{provider.last_name}
+                
+              div(class='sub-title text-overflow')
+                | #{provider.company}
             
+            
+          div(class='upper-mid')
+            div(class='main-info')
+        
+            div(class='fake-tab')
+              div(class='fake-tab-title')
+                | Contact Information
+                
+                
+        div(class='middle')
                  
           div(class ="contact-div")
             div(class='height-div')
@@ -35,80 +42,78 @@ template(name='ProviderCard')
                     | None
                   
               
-            if telephones
-                div(class='contact nav-wrapper' data-type='telephones')
+              if telephones
+                  div(class='contact nav-wrapper' data-type='telephones')
+                          
+                    div(class='nav-info-wrapper')
+                      div(class='nav-info-mover')
+                        each telephone in telephones
+                            div(class='nav-info')
+                              div(class="label")
+                                if telephone.name
+                                  | #{telephone.name}
+                                else
+                                  | Telephone
+                              div(class='info')
+                                | #{telephone.number}
+                                
+                    div(class="nav left {{disableLeft 'telephones'}} js-nav-left")
+                      i(class='material-icons')
+                        | keyboard_arrow_left
+                    
+                    div(class="nav right js-nav-right {{disableRight 'telephones'}}")
+                      i(class='material-icons')
+                        | keyboard_arrow_right
+                        
+              else
+                div(class='contact')
+                  div(class='label')
+                    | Telephones
+                  div(class='info-none')
+                    | None
+                    
+              
+              if addresses
+                div(class='contact nav-wrapper' data-type='addresses')
                       
                   div(class='nav-info-wrapper')
                     div(class='nav-info-mover')
-                      each telephone in telephones
+                      each address in addresses
                           div(class='nav-info')
                             div(class="label")
-                              if telephone.name
-                                | #{telephone.name}
+                              if address.name
+                                | #{address.name}
                               else
-                                | Telephone
+                                | Address
                             div(class='info')
-                              | #{telephone.number}
-                            
-                  div(class="nav left {{disableLeft 'telephones'}} js-nav-left")
+                              div(class='add-info')
+                                | #{address.street}
+                              div(class='add-info')
+                                | #{address.street2}
+                              div(class='add-info')
+                                if address.city
+                                  | #{address.city}, #{address.state}
+                              div(class='add-info')
+                                | #{address.zip_code}
+                              div(class='add-info')
+                                | #{address.country}
+                  div(class="nav left {{disableLeft 'addresses'}} js-nav-left")
                     i(class='material-icons')
                       | keyboard_arrow_left
                   
-                  div(class="nav right js-nav-right {{disableRight 'telephones'}}")
+                  div(class="nav right {{disableRight 'addresses'}} js-nav-right")
                     i(class='material-icons')
                       | keyboard_arrow_right
+                  
                       
-            else
-              div(class='contact')
-                div(class='label')
-                  | Telephones
-                div(class='info-none')
-                  | None
-                  
+              else
+                div(class='contact')
+                  div(class='label')
+                    | Addresses
+                  div(class='info-none')
+                    | None
             
-            if addresses
-              div(class='contact nav-wrapper' data-type='addresses')
-                    
-                div(class='nav-info-wrapper')
-                  div(class='nav-info-mover')
-                    each address in addresses
-                        div(class='nav-info')
-                          div(class="label")
-                            if address.name
-                              | #{address.name}
-                            else
-                              | Address
-                          div(class='info')
-                            div(class='add-info')
-                              | #{address.street}
-                            div(class='add-info')
-                              | #{address.street2}
-                            div(class='add-info')
-                              if address.city
-                                | #{address.city}, #{address.state}
-                            div(class='add-info')
-                              | #{address.zip_code}
-                            div(class='add-info')
-                              | #{address.country}
-                              
-                div(class="nav left {{disableLeft 'addresses'}} js-nav-left")
-                  i(class='material-icons')
-                    | keyboard_arrow_left
-                
-                div(class="nav right {{disableRight 'addresses'}} js-nav-right")
-                  i(class='material-icons')
-                    | keyboard_arrow_right
-                
-                    
-            else
-              div(class='contact')
-                div(class='label')
-                  | Addresses
-                div(class='info-none')
-                  | None
-                  
-            
-        //- div(class='bottom')
-        //-   +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
-        //-     | NEW SELL
+      
               
+        div(class='bottom' style='border: none')
+          

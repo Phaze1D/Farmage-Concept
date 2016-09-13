@@ -8,8 +8,8 @@ class UnitCard extends BlazeComponent
 
   onCreated: ->
     super
-    @barSelected = new ReactiveVar('Expenses')
-
+    @barSelected = new ReactiveVar
+    @barSelected.set info: '$12.98', span: 'Last 5 Days'
 
   onRendered: ->
     super
@@ -60,20 +60,13 @@ class UnitCard extends BlazeComponent
     tabs = []
     if @data().unit.tracking
       tabs.push "Events"
-      @barSelected.set 'Events'
+      @barSelected.set info: @data().unit.amount, span: 'Active'
 
     tabs.push "Expenses"
     tabs
 
-  getInfo: (label) ->
-    if label is 'Events'
-      ret =
-        info: @data().unit.amount
-        label: 'Active'
-    else
-      ret =
-        info: "$21.23"
-        label: 'Last 5 Days'
+  mainInfo: ->
+    @barSelected.get()
 
   mEvents: ->
     events = []
@@ -83,14 +76,13 @@ class UnitCard extends BlazeComponent
       }
     events
 
+
   onBarClick: (event) ->
-    index = $(event.currentTarget).attr('data-index')
-    $(@find '.total-info .wrapper').velocity
-      p:
-        translateX: "#{-100*index}%"
-      o:
-        duration: 250
-        easing: 'ease-in-out'
+    title = $(event.currentTarget).attr('data-title')
+    if title is 'Events'
+      @barSelected.set info: @data().unit.amount, span: 'Active'
+    else
+      @barSelected.set info: '$12.98', span: 'Last 5 Days'
 
 
 

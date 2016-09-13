@@ -1,45 +1,49 @@
-.unit-card
-  width: 350px
-  margin: 0 8px 16px
-  max-width: calc(100% - 16px);
-  // height: 485px
+.tpanel
+  height: 266px
+  background-color: white
 
-  // .content
-  //   width: 100%
-  //   height: 100%
+  .title
+    padding: 16px 16px 0
+    color: #757575
+    font-size: 13px
 
-  .top
-    padding: 6px 15px 0px
-    height: 65px
-    background-color: #eee
+
+.e-div
+  padding: 10px 16px
+  // border-bottom: 1px solid #eee
+
+  .event-date
+    font-size: 9px
+    font-weight: 300
+    color: #BDBDBD
+    // text-align: right;
+
+  .event-info
     display: flex;
 
     img
       flex-shrink: 0
-      width: 56px
-      height: 56px
+      width: 38px
+      height: 38px
       border-radius: 50%
+      margin-right: 16px
 
-    .info-div
+    .einfo-div
       flex-grow: 1
-      max-width: 100%;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      align-self: center;
 
       .main-title
-        font-size: 18px
+        font-size: 14px
         max-width: 100%
+        font-weight: 300
         align-self: flex-start;
         text-overflow: ellipsis;
         white-space: nowrap;
         overflow: hidden;
 
       .sub-title
-        display: flex
         padding-left: 2px
-        font-size: 12px
+        font-size: 11px
         max-width: 100%
         color: #757575
         font-weight: 300
@@ -48,109 +52,8 @@
         white-space: nowrap;
         overflow: hidden;
 
-        div
-          align-self: center;
-          display: block;
-          width: 10px
-          height: 10px
-          border-radius: 50%
-          margin-left: 5px
-
-          &[tracking="on"]
-            background-color: #616161
-
-          &[tracking="off"]
-            background-color: #9E9E9E
-
-  .middle
-    width: 100%
-    background-color: #eee
-
-    .total-info
-      display: flex
-      width: 100%
-      overflow: hidden;
-
-      .wrapper
-        min-width: 100%
-        display: flex
-
-      .info
-        min-width: 100%
-        font-size: 34px
-        flex-grow: 1
-        padding: 0 16px
-
-
-        span
-          font-size: 12px
-          font-weight: 300
-
-
-    .tpanel
-      height: 266px
-      background-color: white
-
-      .title
-        padding: 16px 16px 0
-        color: #757575
-        font-size: 13px
-
-
-    .e-div
-      padding: 10px 16px
-      // border-bottom: 1px solid #eee
-
-      .event-date
-        font-size: 9px
-        font-weight: 300
-        color: #BDBDBD
-        // text-align: right;
-
-      .event-info
-        display: flex;
-
-        img
-          flex-shrink: 0
-          width: 38px
-          height: 38px
-          border-radius: 50%
-
-        .einfo-div
-          padding-left: 16px
-          flex-grow: 1
-
-          .main-title
-            font-size: 14px
-            max-width: 100%
-            font-weight: 300
-            align-self: flex-start;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-
-          .sub-title
-            padding-left: 2px
-            font-size: 11px
-            max-width: 100%
-            color: #757575
-            font-weight: 300
-            align-self: flex-start;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            overflow: hidden;
-
-        .event-amount
-          font-size: 25px
-          padding-right: 5px
-          font-weight: 300
-
-  .bottom
-    border-top: 1px solid #E0E0E0
-    padding: 5px 16px
-    display: flex;
-
-    .action-button
+    .event-amount
       align-self: center;
-      color: darkblue
-      // font-weight: 300
+      font-size: 25px
+      padding-right: 5px
+      font-weight: 300

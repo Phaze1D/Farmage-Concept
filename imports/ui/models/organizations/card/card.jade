@@ -1,35 +1,36 @@
 template(name='OrganizationCard')
-  div(class='organ-card')
+  div(class='mCard')
     +PaperCard elevation=1
-      div(class='content')
-        div(class='top')
-          div(class='organ-card-title card-expand-action')
-            | #{organization.name}
-          div(class='organ-founder card-shrink-action')
-            with founder organization
-              | By #{profile.first_name} #{profile.last_name}
-          
-          div(class='info-div')
-            div(class='info-amount')
-              | $234.46
-            div(class='info')
-              | Last 5 Days
+      div(class='mCard-content')
+        +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
+          i(class='material-icons')
+           | more_vert
+      
+        div(class='upper')
+          div(class='top')
+            div(class='titles')
+              div(class='main-title')
+                | #{organization.name}
+              div(class='sub-title')
+                with founder organization
+                  | By #{profile.first_name} #{profile.last_name}
             
-        div(class='bottom')
-          +PaperTabPanel tabs=tabs
+          div(class='upper-mid')
+            div(class='main')
+              div(class='info')
+                | $234.46
+              div(class='sub')
+                | Last 5 Days
+
+        div(class='middle')
+          +PaperTabPanel tabs=tabs barClasses='card-bar'
             +PaperTab classes="chart-div"
               canvas(class='sells-chart chart')
             
             +PaperTab classes="chart-div"
               canvas(class='expenses-chart chart')
             
-          
-        //- div(class='divider')
-        
-        //- +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
-        //-   | SETTINGS
+
       
         
-        +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
-          i(class='material-icons')
-           | more_vert
+        

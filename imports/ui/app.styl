@@ -6,7 +6,8 @@ $smallHeaderHeight = 217px
 @import "models/models"
 @import "layouts/structure"
 
-
+div
+  box-sizing: border-box;
 
 .elevation-0
   box-shadow: none
@@ -26,9 +27,11 @@ $smallHeaderHeight = 217px
 .elevation-5
   box-shadow: 0 15px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
 
-.not-done
-  font-size: 20px
-  padding: 8px
+.text-overflow
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
 
 .grid-wrapper
   position: relative;

@@ -10,3 +10,9 @@ template(name='ousers.index')
     div(class='plus-icon-div')
       i(class="material-icons plus-icon")
         | add
+
+  if subscriptionsReady
+    div(class='ousers main-content')
+      div(class='card-wrapper')
+        each ouser in ousers
+          +OUserCard ouser=ouser

@@ -1,0 +1,149 @@
+
+.mCard
+  width: 330px
+  margin: 8px 8px
+
+  .mCard-content
+    .card-bar
+      background-color: #eee
+
+    .options-b
+      position: absolute;
+      right: 10px
+      top: 15px
+      display: flex;
+      background-color: transparent;
+      justify-content: center;
+      height: 32px
+      width: 32px
+      color: #757575
+      border-radius: 50%
+
+      i
+        align-self: center;
+
+  .upper
+    padding: 16px 16px 0
+    background-color: #eee
+
+    .top
+      display: flex
+      height: 56px
+      width: 100%;
+
+      img
+        flex-shrink: 0
+        border-radius: 50%
+        height: 48px
+        width: 48px
+        margin-right: 16px
+        align-self: center;
+
+      .titles
+
+        flex-grow: 1
+        align-self: center;
+        max-width: calc(100% - 80px)
+
+        .main-title
+          font-size: 18px
+
+        .sub-title
+          font-size: 12px
+          font-weight: 300
+          color: #757575
+
+          div
+            display: inline-block;
+            width: 10px
+            height: 10px
+            border-radius: 50%
+            margin-left: 5px
+            margin-bottom: -1px
+
+            &[tracking="on"]
+              background-color: #616161
+
+            &[tracking="off"]
+              background-color: #9E9E9E
+
+
+
+
+    .upper-mid
+      width: 100%
+
+      .main
+        display: flex;
+        margin: 10px 0 0px;
+        padding-bottom: 16px
+
+        .info
+          align-self: center;
+          flex-grow: 1
+          font-size: 34px
+
+
+          span
+            font-weight: 300
+            font-size: 18px
+
+        .sub
+          font-size: 14px
+          font-weight: 300
+          align-self: flex-end;
+          padding-bottom: 4px
+          color: #757575
+
+          .sub-unit
+            margin: 5px 0 0
+
+            .label
+              font-size: 10px
+              font-weight: 300
+              color: #757575
+
+            .sub-info
+              font-size: 14px
+              font-weight: 300
+
+
+      .fake-tab
+        display: table;
+        height: 48px
+
+        .fake-tab-title
+          font-size: 16px
+          font-weight: 300
+          display: table-cell;
+          vertical-align: middle;
+
+
+  .middle
+    width: 100%
+    background-color: white
+    &[with-tabs]
+      margin-top: -10px
+
+  .bottom
+    display: flex
+    align-content: center;
+    padding: 8px 16px
+    border-top: 1px solid #eee
+
+  .chart-div
+    min-height: 270px
+    display: flex;
+    flex-direction: column;
+    padding: 15px 15px 5px 5px;
+
+    .chart
+      flex-grow: 1
+
+
+.action-button
+  padding: 8px 8px
+  letter-spacing: 0px;
+  font-weight: 500
+  color: darkblue
+  align-self: center;

@@ -28,6 +28,7 @@ require './inventories/card/card.coffee'
 
 require './ousers/index/index.coffee'
 require './ousers/new/new.coffee'
+require './ousers/card/card.coffee'
 
 require './products/index/index.coffee'
 require './products/new/new.coffee'

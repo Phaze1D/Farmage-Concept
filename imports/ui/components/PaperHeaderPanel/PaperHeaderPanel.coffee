@@ -1,6 +1,7 @@
 
 require './PaperHeaderPanel.tpl.jade'
-require './PaperHeader.tpl.jade'
+require './PaperHeaderSmall.tpl.jade'
+require './PaperHeaderBig.tpl.jade'
 require './PaperHeaderMain.tpl.jade'
 
 
@@ -8,12 +9,10 @@ class PaperHeaderPanel extends BlazeComponent
   @register('PaperHeaderPanel')
 
   constructor: (args) ->
-    @throttle = @throttle.bind(@)
 
 
   onCreated: ->
     super
-
 
 
   onRendered: ->
@@ -24,33 +23,23 @@ class PaperHeaderPanel extends BlazeComponent
     @goingDown = true
     @showed = false
 
-    main = document.getElementById("#{@data().id}-paper-header-panel")
-    main.addEventListener('scroll', @throttle)
-
-  throttle: (e) ->
-    unless @ticking
-      window.requestAnimationFrame( () =>
-        @onScroll(e)
-        @ticking = false
-      )
-    @ticking = true;
 
   showSmall: (duration) ->
-    duration = if duration > 250 then 250 else duration
+    duration = if duration > 350 then 350 else duration
     @showed = true
     @smallH.velocity
       p:
-        top: ['0', '-64px']
+        top: ['0', '-70px']
       o:
         duration: duration
 
 
   hideSmall: (duration) ->
-    duration = if duration > 250 then 250 else duration
+    duration = if duration > 350 then 350 else duration
     @showed = false
     @smallH.velocity
       p:
-        top: '-64px'
+        top: '-70px'
       o:
         duration: duration
 
@@ -59,7 +48,6 @@ class PaperHeaderPanel extends BlazeComponent
     yPosition = event.target.scrollTop
 
     if yPosition > 212
-      # console.log "yP #{yPosition} ----- lP #{@lastP}"
       if yPosition > @lastP
         unless @goingDown
           @dChange.position = yPosition
@@ -86,6 +74,6 @@ class PaperHeaderPanel extends BlazeComponent
 
 
 
-  # events: ->
-  #   super.concat
-  #     "scroll ##{@data().id}-paper-header-panel": @onScroll
+  events: ->
+    super.concat
+      "scroll ##{@data().id}-paper-header-panel": @onScroll

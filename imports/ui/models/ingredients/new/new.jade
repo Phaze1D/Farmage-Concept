@@ -1,7 +1,17 @@
 template(name="ingredientsNew")
   form(class="js-ingredient-new-form")
     +PaperHeaderPanel id="right" 
-      +PaperHeader id="right" title="New Resource"
+      +PaperHeaderSmall id='right'
+        +PaperButton classes="save-icon-div js-submit-new-ingredient" raise=0 rippleOn=true submit=true
+          i(class="material-icons")
+            | check
+            
+        +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+          i(class="material-icons")
+            | clear
+      
+      
+      +PaperHeaderBig id="right"
         +PaperButton classes="save-icon-div js-submit-new-ingredient" raise=0 rippleOn=true submit=true
           i(class="material-icons")
             | check

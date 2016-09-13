@@ -1,72 +1,58 @@
-template(name="YieldCard")
-  div(class='yield-card')
+template(name='YieldCard')
+  div(class='mCard')
     +PaperCard elevation=1
-      div(class='content')
+      div(class='mCard-content')
         +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
           i(class='material-icons')
            | more_vert
         
-        div(class='top')   
-          img(src='/no_image0.png')
-          
-          div(class='info-div')
-            div(class='main-title')
-              | #{ingredient.name} 
-            div(class='sub-title')
-              | Yield: #{identifer}
+        div(class='upper')
+          div(class='top')   
+            img(src='/no_image0.png')
+            
+            div(class='titles')
+              div(class='main-title text-overflow')
+                | #{ingredient.name} 
+              div(class='sub-title text-overflow')
+                | Yield: #{identifer}
         
-        div(class='middle')
-    
-          div(class='amount')
-            | #{yield.amount} 
-            span 
-              | #{ingredient.measurement_unit}
-        
-          div(class='info')
-            div(class='contact')
-              div(class='label')
-                | Created At
+          div(class='upper-mid')
+            div(class='main')
               div(class='info')
-                | #{date}
-                
-            //- div(class='contact')
-            //-   div(class='label')
-            //-     | From Unit
-            //-   div(class='info')
-            //-     | #{unit.name}
-            
-        div(class='tpanel')
-          div(class='title') 
-            | Pass 4 Events
-          
-          each event in mEvents
-            div(class='e-div')
-              div(class='event-info')
-                img(src='/default_avatar.png')
-                
-                div(class='einfo-div')
-                  div(class='main-title')
-                    | User Lastname 
-                  div(class='sub-title')
-                    | Nov 16, 2016
-
-                    
-                div(class='event-amount')
-                  | #{event.amount} 
-
-                
-            
-                
+                | #{yield.amount} 
+                span
+                  | #{ingredient.measurement_unit}
               
+              div(class='sub')
+                div(class='sub-unit')
+                  div(class='label')
+                    | Created At
+                  div(class='sub-info')
+                    =date(yield.createdAt)
+                
+                if yield.expiration_date
+                  div(class='sub-unit')
+                    div(class='label')
+                      | Expiration Date
+                    div(class='sub-info')
+                      =date(yield.expiration_date)
+        
+        div(class='middle')    
+          div(class='tpanel')
+            div(class='title') 
+              | Pass 4 Events
             
-            
-        
-        
-        //- Yield Identier 3 jjj
-        //- Date createdAt 3
-        //- Ingredient Name 1 jjj
-        //- Ingredient Measurement Unit 4
-        //- Yield Amount 2
-        //- Unit Name 3
-        
-      
+            each event in mEvents
+              div(class='e-div')
+                div(class='event-info')
+                  img(src='/default_avatar.png')
+                  
+                  div(class='einfo-div')
+                    div(class='main-title')
+                      | User Lastname 
+                    div(class='sub-title')
+                      | Nov 16, 2016
+          
+                      
+                  div(class='event-amount')
+                    | #{event.amount} 
