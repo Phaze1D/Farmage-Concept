@@ -18,7 +18,7 @@ class Structure extends BlazeComponent
         onReady: ->
 
   onRendered: ->
-    @onEnterAnimation()
+    # @onEnterAnimation()
 
   headermain: ->
     FlowRouter.getRouteName()
@@ -28,7 +28,7 @@ class Structure extends BlazeComponent
     if user?
       return user
     else
-      @onExitAnimation()
+      # @onExitAnimation()
 
   email: ->
     user = Meteor.user()
@@ -52,7 +52,7 @@ class Structure extends BlazeComponent
 
 
   onLogout: (event) ->
-    @onExitAnimation()
+    # @onExitAnimation()
 
   onEnterAnimation: () ->
 
