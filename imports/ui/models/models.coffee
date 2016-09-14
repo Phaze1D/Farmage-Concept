@@ -17,9 +17,11 @@ require './customers/new/new.coffee'
 require './customers/card/card.coffee'
 
 require './events/index/index.coffee'
+require './events/card/card.coffee'
 
 require './expenses/index/index.coffee'
 require './expenses/new/new.coffee'
+require './expenses/card/card.coffee'
 
 require './inventories/index/index.coffee'
 require './inventories/new/new.coffee'

@@ -4,7 +4,7 @@ template(name="expensesNew")
         
     form(class="js-expenses-new-form")    
       +PaperHeaderPanel id="right"
-        +PaperHeaderSmall id='right'
+        +PaperHeaderSmall id='right' width='35%'
           +PaperButton classes="save-icon-div js-submit-new-expense" raise=0 rippleOn=true submit=true
             i(class="material-icons")
               | check
@@ -32,10 +32,13 @@ template(name="expensesNew")
                   
               div(class='grid-wrapper')
                 div(class='col-6 p-left')
-                  +PaperInput type="number" name="price" label="Price" focusColor="darkblue" prefix="$" step="0.01" min='0'
+                  +PaperInput classes='js-value-changed unit-price' type="number" name="price" label="Unit Price" focusColor="darkblue" prefix="$" step="0.01" min='0'
 
                 div(class='col-6 p-right p-left')
-                  +PaperInput type="number" name="quantity" label="Quantity" focusColor="darkblue" min='0'
+                  +PaperInput classes='js-value-changed quantity' type="number" name="quantity" label="Quantity" focusColor="darkblue" min='0'
+                  
+                div(class='col-6 p-left')
+                  +PaperInput type="number" alwaysFloating=true name="total_price" label="Total" value=totalPrice.get focusColor="darkblue" prefix="$" step="any" min='0' disabled="true"
 
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')

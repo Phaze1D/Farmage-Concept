@@ -12,6 +12,7 @@ class ExpensesNew extends BlazeComponent
 
   onCreated: ->
     super
+    @totalPrice = new ReactiveVar('0.00')
 
   currentList: (subscription)->
     return @callFirstWith(@, 'currentList', subscription);
@@ -25,6 +26,7 @@ class ExpensesNew extends BlazeComponent
     unit = @currentList('units')[0]
     return {} unless unit?
     unit
+
 
   insert: (expense_doc) ->
     expense_doc.organization_id = FlowRouter.getParam('organization_id')
@@ -46,8 +48,15 @@ class ExpensesNew extends BlazeComponent
       unit_id: @unit()._id
     @insert expense_doc
 
+  onChange: (event) ->
+    up = if @find('.unit-price .pinput')? then @find('.unit-price .pinput').value else 0
+    q = if @find('.quantity .pinput')? then @find('.quantity .pinput').value else 0
+    tot = up * q
+    @totalPrice.set tot.toFixed(2)
+
 
   events: ->
     super.concat
+      'input .js-value-changed': @onChange
       'submit .js-expenses-new-form': @onSubmit
       'click .js-submit-new-expense': @onSubmit

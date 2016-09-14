@@ -22,6 +22,7 @@ class PaperHeaderPanel extends BlazeComponent
     @dChange = position: 0, time: 0
     @goingDown = true
     @showed = false
+    @fabFirst = true
 
 
   showSmall: (duration) ->
@@ -44,6 +45,26 @@ class PaperHeaderPanel extends BlazeComponent
         duration: duration
 
 
+  showFAB: ->
+    if @data().hasFAB
+      $('.new-action').velocity
+        p:
+          scaleX: 1
+          scaleY : 1
+        o:
+          duration: 125
+
+
+  hideFAB: ->
+    if @data().hasFAB
+      $('.new-action').velocity
+        p:
+          scaleX: 0
+          scaleY : 0
+        o:
+          duration: 125
+
+
   onScroll: (event) ->
     yPosition = event.target.scrollTop
 
@@ -61,14 +82,22 @@ class PaperHeaderPanel extends BlazeComponent
         @goingDown = false
 
 
-      if !@goingDown && yPosition < @dChange.position - 64 && !@showed
+      if !@goingDown && yPosition < @dChange.position - 128 && !@showed
         @showSmall Date.now() - @dChange.time
+        @showFAB()
 
-      if @goingDown && yPosition > @dChange.position + 64 && @showed
+      if @goingDown && yPosition > @dChange.position + 128 && @showed
         @hideSmall Date.now() - @dChange.time
+        @hideFAB()
 
-    if yPosition < 148 && @showed
+      if @goingDown && @fabFirst
+        @hideFAB()
+        @fabFirst = false
+
+    if yPosition <= 148 && (@showed || !@fabFirst)
+      @showFAB()
       @hideSmall(0)
+      @fabFirst = true
 
     @lastP = yPosition
 

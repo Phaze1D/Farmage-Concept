@@ -15,13 +15,18 @@ class IndexMixin extends BlazeComponent
 
 
   onShow: (event) ->
+    @parentComponent().data().hasFAB = false
     @fabShrink()
     @expanded.set true
     $('.js-show-right').trigger('click')
+    if window.innerWidth < 1023
+      $('#root-paper-header-panel').css overflow: 'hidden'
 
 
   onHide: (event) ->
+    @parentComponent().data().hasFAB = true
     @fabExpand()
+    $('#root-paper-header-panel').css overflow: ''
 
 
   onCardExpand: (event) ->

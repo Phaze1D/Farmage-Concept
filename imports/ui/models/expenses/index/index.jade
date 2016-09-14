@@ -10,3 +10,9 @@ template(name='expenses.index')
     div(class='plus-icon-div')
       i(class="material-icons plus-icon")
         | add
+
+  if subscriptionsReady
+    div(class='expenses main-content')
+      div(class='card-wrapper')
+        each expense in expenses
+          +ExpenseCard expense=expense

@@ -11,6 +11,7 @@ class PaperRightPanel extends BlazeComponent
   onRendered: ->
     @headerMain = $("#paper-drawer-main")
     @rightPanel = $('#paper-right-panel')
+    # Missing on window resize event
 
 
   onShow: (event) ->
@@ -24,7 +25,6 @@ class PaperRightPanel extends BlazeComponent
     @rightPanel.velocity
       p:
         translateX: ['0', '100%']
-        translateZ: 0
       o:
         duration: 350
         easing: 'ease-in-out'
@@ -50,7 +50,6 @@ class PaperRightPanel extends BlazeComponent
     @rightPanel.velocity
       p:
         translateX: ['0', '100%']
-        translateZ: 0
       o:
         duration: 350
         easing: 'ease-in-out'
@@ -72,7 +71,6 @@ class PaperRightPanel extends BlazeComponent
     @rightPanel.velocity
       p:
         translateX: '100%'
-        translateZ: 0
       o:
         duration: 250
         easing: 'ease-in-out'
@@ -96,7 +94,6 @@ class PaperRightPanel extends BlazeComponent
     @rightPanel.velocity
       p:
         translateX: '100%'
-        translateZ: 0
       o:
         duration: 250
         easing: 'ease-in-out'
