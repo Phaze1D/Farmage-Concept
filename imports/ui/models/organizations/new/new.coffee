@@ -9,6 +9,10 @@ class OrganizationsNew extends BlazeComponent
 
   constructor: (args) ->
 
+  onRendered: ->
+    super
+    $('#right-paper-header-panel').addClass('touchScroll')
+
 
   insert: (organization_doc) ->
     organization_doc

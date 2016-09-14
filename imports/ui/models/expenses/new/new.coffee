@@ -14,6 +14,10 @@ class ExpensesNew extends BlazeComponent
     super
     @totalPrice = new ReactiveVar('0.00')
 
+  onRendered: ->
+    super
+    $('#right-paper-header-panel').addClass('touchScroll')
+
   currentList: (subscription)->
     return @callFirstWith(@, 'currentList', subscription);
 

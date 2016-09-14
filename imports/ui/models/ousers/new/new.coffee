@@ -8,6 +8,10 @@ class OUsersNew extends BlazeComponent
   constructor: (args) ->
     # body...
 
+  onRendered: ->
+    super
+    $('#right-paper-header-panel').addClass('touchScroll')
+
   convert: (value) ->
     return true if value is 'on'
     return false if value is 'off'
@@ -17,7 +21,6 @@ class OUsersNew extends BlazeComponent
     UMethods.inviteUser.call {invited_user_doc, organization_id, permission}, (err, res) =>
       console.log err
       $('.js-hide-new').trigger('click')  unless err?
-
 
 
   onToggleGrid: (event) ->

@@ -27,6 +27,10 @@ class InventoriesNew extends BlazeComponent
 
   onRendered: ->
     super
+    $('#right-paper-header-panel').addClass('touchScroll')
+
+  onRendered: ->
+    super
     @autorun =>
       product = @product()
       if product?

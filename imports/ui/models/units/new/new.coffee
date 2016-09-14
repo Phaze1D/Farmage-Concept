@@ -19,6 +19,11 @@ class UnitsNew extends BlazeComponent
     super
 
 
+  onRendered: ->
+    super
+    $('#right-paper-header-panel').addClass('touchScroll')
+
+
   currentList: (subscription)->
     return @callFirstWith(@, 'currentList', subscription);
 

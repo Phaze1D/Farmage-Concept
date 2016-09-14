@@ -9,6 +9,10 @@ class IngredientsNew extends BlazeComponent
 
   constructor: (args) ->
 
+  onRendered: ->
+    super
+    $('#right-paper-header-panel').addClass('touchScroll')
+
   insert: (ingredient_doc) ->
     ingredient_doc.organization_id = FlowRouter.getParam('organization_id')
     IMethods.insert.call {ingredient_doc}, (err, res) =>

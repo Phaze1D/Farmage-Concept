@@ -16,6 +16,10 @@ class SellsNew extends BlazeComponent
   constructor: (args) ->
     # body...
 
+  onRendered: ->
+    super
+    $('#right-paper-header-panel').addClass('touchScroll')
+
   onCreated: ->
     super
     @discountDict = new ReactiveDict

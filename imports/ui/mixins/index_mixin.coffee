@@ -19,14 +19,15 @@ class IndexMixin extends BlazeComponent
     @fabShrink()
     @expanded.set true
     $('.js-show-right').trigger('click')
-    if window.innerWidth < 1023
-      $('#root-paper-header-panel').css overflow: 'hidden'
+    rootphp = $('#root-paper-header-panel')
+    rootphp.removeClass('touchScroll')
+    rootphp.css overflow: 'hidden' if window.innerWidth < 1023
 
 
   onHide: (event) ->
     @parentComponent().data().hasFAB = true
     @fabExpand()
-    $('#root-paper-header-panel').css overflow: ''
+
 
 
   onCardExpand: (event) ->
@@ -56,6 +57,9 @@ class IndexMixin extends BlazeComponent
     ret =
       hideCallBack: =>
         @expanded.set false
+        rootphp = $('#root-paper-header-panel')
+        rootphp.addClass('touchScroll')
+        rootphp.css overflow: ''
 
 
   events: ->

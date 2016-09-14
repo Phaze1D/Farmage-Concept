@@ -15,6 +15,10 @@ class YieldsNew extends BlazeComponent
     EventMixin, DialogMixin
   ]
 
+  onRendered: ->
+    super
+    $('#right-paper-header-panel').addClass('touchScroll')
+
   currentList: (subscription)->
     return @callFirstWith(@, 'currentList', subscription);
 

@@ -14,6 +14,10 @@ class ProductsNew extends BlazeComponent
   constructor: (args) ->
     super
 
+  onRendered: ->
+    super
+    $('#right-paper-header-panel').addClass('touchScroll')
+
   onCreated: ->
     super
 

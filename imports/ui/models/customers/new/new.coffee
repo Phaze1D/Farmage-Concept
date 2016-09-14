@@ -9,6 +9,10 @@ class CustomersNew extends BlazeComponent
   constructor: (args) ->
     # body...
 
+  onRendered: ->
+    super
+    $('#right-paper-header-panel').addClass('touchScroll')
+
   insert: (customer_doc) ->
     customer_doc.organization_id = FlowRouter.getParam('organization_id')
     CMethods.insert.call {customer_doc}, (err, res) ->
