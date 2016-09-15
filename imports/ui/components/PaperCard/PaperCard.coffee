@@ -17,13 +17,14 @@ class PaperCard extends BlazeComponent
 
 
   mouseDown: (event) ->
-    $(event.target)
+    tar = $(event.target)
+    tar
     .closest('.paper-card')
     .find('.card-ripple:first')
     .trigger 'mousedown',
       [
-        ( $(event.target).position().left + event.offsetX + parseInt $(event.target).css('margin-left') ),
-        ( $(event.target).position().top  + event.offsetY + parseInt $(event.target).css('margin-top') )
+        ( tar.position().left + event.offsetX + parseInt tar.css('margin-left') ),
+        ( tar.position().top  + event.offsetY + parseInt tar.css('margin-top') )
       ]
 
 
@@ -37,21 +38,23 @@ class PaperCard extends BlazeComponent
   expand: (event) ->
 
     unless @expanded
-      $(@find('.card-ghost')).css height: $(@find('.paper-card')).innerHeight()
+      tar = $(event.target)
+      ghost = $(@find('.card-ghost'))
+      ghost.css height: $(@find('.paper-card')).innerHeight()
       @expanded = true
-      pacard = $(event.target).closest('.paper-card')
-      $(event.target).closest('.paper-header-panel').css overflow: 'hidden'
+      pacard = tar.closest('.paper-card')
+      headerPanel = tar.closest('.paper-header-panel')
+      headerPanel.css overflow: 'hidden'
       @borderR = pacard.css('border-radius')
       pacard.css
         position: 'absolute'
         'z-index': 1
-        top: "#{pacard.position().top}px"
+        top: "#{pacard.position().top + headerPanel.scrollTop()}px"
         left: "#{pacard.position().left}px"
         width: "#{pacard.innerWidth()}px"
         height: "#{pacard.innerHeight()}px"
 
-
-      pacard.closest('paper-card').find('.card-ghost').css display: 'block'
+      ghost.css display: 'block'
 
       Meteor.setTimeout =>
         # @data().callbacks.onExpandCallback()
@@ -59,7 +62,7 @@ class PaperCard extends BlazeComponent
         pacard.velocity
           p:
             left: 0
-            top: 0
+            top: headerPanel.scrollTop()
             width: '100%'
             height: '100vh'
           o:
@@ -83,29 +86,30 @@ class PaperCard extends BlazeComponent
 
   shrink: (event) ->
     if @expanded
+      tar = $(event.target)
       @expanded = false
       $('.paper-card').css visibility: 'visible'
-      $(event.target).closest('.paper-header-panel').css overflow: 'auto'
-      pacard = $(event.target).closest('.paper-card')
+      headerPanel = tar.closest('.paper-header-panel')
+      headerPanel.css overflow: ''
+      pacard = tar.closest('.paper-card')
 
       pacard.find('.card-ripple:first').trigger 'click', [
-        $(event.target).position().left + event.offsetX + parseInt $(event.target).css('margin-left'),
-        $(event.target).position().top  + event.offsetY + parseInt $(event.target).css('margin-top')
+        tar.position().left + event.offsetX + parseInt tar.css('margin-left'),
+        tar.position().top  + event.offsetY + parseInt tar.css('margin-top')
       ]
 
 
       Meteor.setTimeout( =>
-        pacard.velocity("reverse")
+        ghost = $(@find('.card-ghost'))
         pacard.velocity
           p:
-            'border-radius': @borderR
+            left: ghost.position().left
+            top: ghost.position().top + headerPanel.scrollTop()
+            width: ghost.innerWidth() + 'px'
+            height: ghost.innerHeight() + 'px'
           o:
             duration: 250
-            easing: 'easeInBack'
-            queue: false
-            complete: (elements) =>
-              # @data().callbacks.onShinkedCallback()
-              pacard.closest('paper-card').find('.card-ghost').css display: 'none'
+            complete: =>
               pacard.css
                 position: ''
                 'z-index': ''
@@ -116,6 +120,8 @@ class PaperCard extends BlazeComponent
                 height: ''
                 'box-shadow': ''
                 'border-radius': ''
+              ghost.css display: 'none'
+
       , 250)
 
 

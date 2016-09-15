@@ -6,7 +6,8 @@ class IndexMixin extends BlazeComponent
 
   onCreated: ->
     super
-    @expanded = new ReactiveVar(false)
+    @cardExpand = new ReactiveVar(false)
+    @rightShown = new ReactiveVar(false)
     @size = 1
     @ticking = false
 
@@ -17,7 +18,7 @@ class IndexMixin extends BlazeComponent
   onShow: (event) ->
     @parentComponent().data().hasFAB = false
     @fabShrink()
-    @expanded.set true
+    @rightShown.set true
     $('.js-show-right').trigger('click')
     rootphp = $('#root-paper-header-panel')
     rootphp.removeClass('touchScroll')
@@ -26,15 +27,17 @@ class IndexMixin extends BlazeComponent
 
   onHide: (event) ->
     @parentComponent().data().hasFAB = true
-    @fabExpand()
+    @fabExpand() unless @cardExpand.get()
 
 
 
   onCardExpand: (event) ->
-    @fabShrink() unless @expanded.get()
+    @cardExpand.set true
+    @fabShrink() unless @rightShown.get()
 
   onCardShrink: (event) ->
-    @fabExpand() unless @expanded.get()
+    @cardExpand.set false
+    @fabExpand() unless @rightShown.get()
 
 
   fabShrink: (event) ->
@@ -56,7 +59,7 @@ class IndexMixin extends BlazeComponent
   rightCallbacks: ->
     ret =
       hideCallBack: =>
-        @expanded.set false
+        @rightShown.set false
         rootphp = $('#root-paper-header-panel')
         rootphp.addClass('touchScroll')
         rootphp.css overflow: ''

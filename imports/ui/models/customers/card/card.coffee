@@ -7,6 +7,7 @@ class CustomerCard extends BlazeComponent
 
   constructor: (args) ->
     super
+    @show = new ReactiveVar(false)
     @positions = new ReactiveDict()
     @positions.set('telephones', 0)
     @positions.set('addresses', 0)
@@ -67,9 +68,36 @@ class CustomerCard extends BlazeComponent
 
       @positions.set(type, position)
 
+  onExpand: (event) ->
+    @show.set(true)
+    $(@find '.show').css display: 'block'
+    $(@find '.show').velocity
+      p:
+        opacity: 1
+      o:
+        delay: 250
+        duration: 250
+        complete: =>
+          $(@find '.mCard-content').css visibility: 'hidden'
+
+  onShrink: (event) ->
+    @show.set(false)
+    $(@find '.mCard-content').css visibility: ''
+    $(@find '.show').velocity
+      p:
+        opacity: 0
+      o:
+        delay: 250
+        duration: 250
+        complete: =>
+          $(@find '.show').css display: 'none'
+
+
 
 
   events: ->
     super.concat
       'click .js-nav-left': @onLeft
       'click .js-nav-right': @onRight
+      'click .card-expand-action': @onExpand
+      'click .card-shrink-action': @onShrink

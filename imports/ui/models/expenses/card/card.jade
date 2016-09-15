@@ -13,10 +13,10 @@ template(name='ExpenseCard')
                 | #{expense.name} 
 
               div(class='sub-title text-overflow')
-                | #{unit.name}
+                | #{expense._id}
               
           div(class='upper-mid')
-            div(class='main' style='margin: 0; padding: 0')
+            div(class='main' style='margin: 0;')
               div(class='info')
                 | $#{totalPrice} 
                 
@@ -25,7 +25,7 @@ template(name='ExpenseCard')
                   div(class='label')
                     | Unit Price
                   div(class='sub-info')
-                    | #{expense.price}
+                    | $#{expense.price}
                 
                 div(class='sub-unit')
                   div(class='label')
@@ -33,27 +33,39 @@ template(name='ExpenseCard')
                   div(class='sub-info')
                     | #{expense.quantity}
                     
-            div(class='fake-tab')
-              div(class='fake-tab-title')
-                | Provider
-        
-        div(class='middle')
-          if provider
-            div(class='e-div')
-              div(class='event-info')
-                img(src='/default_avatar.png')
-                
-                div(class='einfo-div' style='max-width: calc(100% - 120px)')
-                  div(class='main-title text-overflow')
-                    | #{provider.first_name} #{provider.last_name}
-                  div(class='sub-title text-overflow')
-                    | #{provider.company}
-          else
-            div(class='provider-empty')
-              div
-                | None
                     
+        div(class='middle')
+          div(class ="contact-div")
+            div(class='height-div')
+              div(class='contact')
+                div(class='label')
+                  | Provider
+                if expense.provider_id
+                  div(class='cinfo-div')
+                    img(src='/default_avatar.png')
+                    div(class='cinfo')
+                      div(class='info')
+                        | #{provider.first_name} #{provider.last_name}
+                      div(class='info')
+                        | #{provider.company}
+                else
+                  div(class='info-none')
+                    | None
               
+              div(class='contact')
+                div(class='label')
+                  | Unit
+                div(class='info')
+                  | #{unit.name}
+                  
+              div(class='contact')
+                div(class='label')
+                  | Created At
+                div(class='info')
+                  =date(expense.createdAt)
+                  
+        div(class='bottom' style='border: none')    
+  
 //- Item Name
 //- Unit Price
 //- Quantity

@@ -14,6 +14,7 @@ require './ingredients/card/card.coffee'
 
 require './customers/index/index.coffee'
 require './customers/new/new.coffee'
+require './customers/show/show.coffee'
 require './customers/card/card.coffee'
 
 require './events/index/index.coffee'
@@ -43,6 +44,7 @@ require './providers/card/card.coffee'
 
 require './sells/index/index.coffee'
 require './sells/new/new.coffee'
+require './sells/card/card.coffee'
 
 require './units/index/index.coffee'
 require './units/new/new.coffee'

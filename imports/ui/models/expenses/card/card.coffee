@@ -30,3 +30,7 @@ class ExpenseCard extends BlazeComponent
   totalPrice: ->
     tp = @data().expense.price * @data().expense.quantity
     tp.toFixed(2)
+
+  date: (date) ->
+    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    "#{months[date.getMonth()]} #{date.getDate()}, #{date.getFullYear()}"

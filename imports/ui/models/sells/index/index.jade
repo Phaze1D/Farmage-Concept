@@ -2,7 +2,7 @@ template(name='sells.index')
   +PaperRightPanel callbacks=rightCallbacks
     div(class='js-show-right')
     div(class="js-right-content")
-      if expanded.get
+      if rightShown.get
         +sellsNew
     
 
@@ -10,3 +10,9 @@ template(name='sells.index')
     div(class='plus-icon-div')
       i(class="material-icons plus-icon")
         | add
+
+  if subscriptionsReady
+    div(class='sells main-content')
+      div(class='card-wrapper')
+        each sell in sells
+          +SellCard sell=sell

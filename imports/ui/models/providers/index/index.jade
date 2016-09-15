@@ -2,7 +2,7 @@ template(name='providers.index')
   +PaperRightPanel callbacks=rightCallbacks
     div(class='js-show-right')
     div(class="js-right-content")
-      if expanded.get
+      if rightShown.get
         +providersNew
     
 
