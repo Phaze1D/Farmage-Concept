@@ -70,7 +70,7 @@ class CustomerCard extends BlazeComponent
 
   onExpand: (event) ->
     @show.set(true)
-    $(@find '.show').css display: 'block'
+    $(@find '.show').css display: 'flex'
     $(@find '.show').velocity
       p:
         opacity: 1
@@ -81,7 +81,6 @@ class CustomerCard extends BlazeComponent
           $(@find '.mCard-content').css visibility: 'hidden'
 
   onShrink: (event) ->
-    @show.set(false)
     $(@find '.mCard-content').css visibility: ''
     $(@find '.show').velocity
       p:
@@ -91,6 +90,7 @@ class CustomerCard extends BlazeComponent
         duration: 250
         complete: =>
           $(@find '.show').css display: 'none'
+          @show.set(false)
 
 
 

@@ -2,9 +2,19 @@
   height: 100%
   padding: 0px 15px
 
-  .contact
+  .section
+    display: flex;
+    align-items: center;
     margin-top: 20px
+
+    .icon
+      color: #757575
+      margin-right: 15px
+
+  .contact
+    max-width: calc(100% - 39px);
     border-bottom: 1px solid #eee
+    flex-grow: 1
 
 
     .label
@@ -70,11 +80,14 @@
   .nav-info-wrapper
     overflow: hidden;
     flex-grow: 1
+    width: 0
 
     .nav-info-mover
-      flex-grow: 1
-      display: flex
+      // flex-grow: 1
+      // display: flex
+      white-space: nowrap;
 
       .nav-info
+        display: inline-block;
         width: 100%
         flex-shrink: 0

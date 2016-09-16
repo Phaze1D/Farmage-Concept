@@ -12,6 +12,12 @@ paper-tab-panel
     height: 48px
     display: flex;
     background-color: #eee
+    overflow-x: scroll;
+    // justify-content: flex-end;
+
+    &::-webkit-scrollbar
+      display: none;
+
 
 
     .underline
@@ -24,7 +30,7 @@ paper-tab-panel
 
 
     .bar-tab
-      padding: 0 10px
+      padding: 0 16px
       flex-basis: 0
       align-self: center;
       height: 100%
@@ -35,6 +41,11 @@ paper-tab-panel
       justify-content: center;
       cursor: pointer;
       color: #757575
+
+      &[scrollable='true']
+        flex-grow: 0
+        flex-basis: auto;
+        margin: 0 2px
 
       &.active
         color: black
@@ -63,3 +74,7 @@ paper-tab-panel
       flex-shrink: 0
       width: 100%
       max-width: 100%
+
+
+.extra-scroll
+  min-width: 84px

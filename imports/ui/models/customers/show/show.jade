@@ -1,5 +1,34 @@
 template(name='CustomerShow')
-  div(class='show-tool')
-    +PaperButton classes="back-button card-shrink-action" raise=0 rippleOn=true submit=false
-      i(class="material-icons")
-        | arrow_back
+  div(class='show-area elevation-2')
+    +PaperButton classes="show-fab" elevation=2 rippleOn='true' rippleFill='white'
+      div(class='plus-icon-div')
+        i(class="material-icons plus-icon")
+          | edit
+          
+    div(class='show-tool')
+      +PaperButton classes="back-button card-shrink-action" raise=0 rippleOn=true submit=false
+        i(class="material-icons")
+          | arrow_back
+          
+      
+          
+    div(class='top')
+      img(src='/default_avatar.png')
+      h3
+        | #{customer.first_name} #{customer.last_name}
+      h4
+        | #{customer.company}
+        
+    
+    div(class='middle')
+      +PaperTabPanel tabs=tabs scrollable=true barClasses='show-tab' classes='show-tab'
+        +PaperTab
+          
+        +PaperTab
+          
+        
+        
+//- Addresses
+//- Telephones
+//- Edit
+//- Sells

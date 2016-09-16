@@ -126,6 +126,7 @@ class Structure extends BlazeComponent
     unless FlowRouter.getRouteName() is $(event.target).attr 'href'
       # Animate page change
       $("#paper-drawer-main").css 'padding-right': ''
+      $("#root-paper-header-panel").css overflow: ''
       a = $(event.target)
       params = {}
 

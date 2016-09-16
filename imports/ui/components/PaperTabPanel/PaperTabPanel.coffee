@@ -7,12 +7,19 @@ class PaperTabPanel extends BlazeComponent
 
   constructor: (args) ->
 
+  onRendered: ->
+    super
+    underline = $(@find('.underline'))
+    bar = $(@find('.bar-tab'))
+    underline.css width: bar.innerWidth()
+    underline.css left: bar.position().left
+
 
   tabWidth: ->
-    tw = 100/@data().tabs.length
-    if tw is 100
-      tw = 50
-    tw
+    unless @data().scrollable
+      100/@data().tabs.length + '%'
+
+
 
   showLine: ->
     @data().tabs.length > 1
@@ -27,9 +34,11 @@ class PaperTabPanel extends BlazeComponent
     unless tar.hasClass('active')
       $(@findAll '.bar-tab').removeClass('active')
       tar.addClass('active')
-      $(@find '.underline').velocity
+      underline = $(@find '.underline')
+      underline.velocity
         p:
-          translateX: "#{100 * tar.attr('data-index')}%"
+          left: tar.position().left + $(@find('.tab-bar')).scrollLeft() + 2
+          width: tar.innerWidth()
         o:
           duration: 250
           easing: 'ease-in-out'

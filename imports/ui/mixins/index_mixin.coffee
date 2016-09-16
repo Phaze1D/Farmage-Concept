@@ -62,7 +62,7 @@ class IndexMixin extends BlazeComponent
         @rightShown.set false
         rootphp = $('#root-paper-header-panel')
         rootphp.addClass('touchScroll')
-        rootphp.css overflow: ''
+        rootphp.css overflow: '' unless @cardExpand.get()
 
 
   events: ->

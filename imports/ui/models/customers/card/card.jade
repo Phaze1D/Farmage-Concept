@@ -33,20 +33,25 @@ template(name='CustomerCard')
                    
             div(class ="contact-div")
               div(class='height-div')
-                div(class='contact')
-                  div(class='label')
-                    | Email
-                  if customer.email
-                    div(class='info')
-                      | #{customer.email}
-                  else
-                    div(class='info-none')
-                      | None
+                div(class='section')
+                  i(class='material-icons icon')
+                    | email
+                  div(class='contact')
+                    div(class='label')
+                      | Email
+                    if customer.email
+                      div(class='info')
+                        | #{customer.email}
+                    else
+                      div(class='info-none')
+                        | None
                     
                 
                 if telephones
+                  div(class='section')
+                    i(class='material-icons icon')
+                      | phone
                     div(class='contact nav-wrapper' data-type='telephones')
-                            
                       div(class='nav-info-wrapper')
                         div(class='nav-info-mover')
                           each telephone in telephones
@@ -68,52 +73,60 @@ template(name='CustomerCard')
                           | keyboard_arrow_right
                           
                 else
-                  div(class='contact')
-                    div(class='label')
-                      | Telephones
-                    div(class='info-none')
-                      | None
+                  div(class='section')
+                    i(class='material-icons icon')
+                      | phone
+                    div(class='contact')
+                      div(class='label')
+                        | Telephones
+                      div(class='info-none')
+                        | None
                       
                 
                 if addresses
-                  div(class='contact nav-wrapper' data-type='addresses')
-                        
-                    div(class='nav-info-wrapper')
-                      div(class='nav-info-mover')
-                        each address in addresses
-                            div(class='nav-info')
-                              div(class="label")
-                                if address.name
-                                  | #{address.name}
-                                else
-                                  | Address
-                              div(class='info')
-                                div(class='add-info')
-                                  | #{address.street}
-                                div(class='add-info')
-                                  | #{address.street2}
-                                div(class='add-info')
-                                  if address.city
-                                    | #{address.city}, #{address.state}
-                                div(class='add-info')
-                                  | #{address.zip_code}
-                                div(class='add-info')
-                                  | #{address.country}
-                    div(class="nav left {{disableLeft 'addresses'}} js-nav-left")
-                      i(class='material-icons')
-                        | keyboard_arrow_left
-                    
-                    div(class="nav right {{disableRight 'addresses'}} js-nav-right")
-                      i(class='material-icons')
-                        | keyboard_arrow_right
+                  div(class='section')
+                    i(class='material-icons icon')
+                      | location_on
+                    div(class='contact nav-wrapper' data-type='addresses')
+                      div(class='nav-info-wrapper')
+                        div(class='nav-info-mover')
+                          each address in addresses
+                              div(class='nav-info')
+                                div(class="label")
+                                  if address.name
+                                    | #{address.name}
+                                  else
+                                    | Address
+                                div(class='info')
+                                  div(class='add-info')
+                                    | #{address.street}
+                                  div(class='add-info')
+                                    | #{address.street2}
+                                  div(class='add-info')
+                                    if address.city
+                                      | #{address.city}, #{address.state}
+                                  div(class='add-info')
+                                    | #{address.zip_code}
+                                  div(class='add-info')
+                                    | #{address.country}
+                      div(class="nav left {{disableLeft 'addresses'}} js-nav-left")
+                        i(class='material-icons')
+                          | keyboard_arrow_left
+                      
+                      div(class="nav right {{disableRight 'addresses'}} js-nav-right")
+                        i(class='material-icons')
+                          | keyboard_arrow_right
                     
                         
                 else
-                  div(class='contact')
-                    div(class='label')
-                      | Addresses
-                    div(class='info-none')
-                      | None
+                  div(class='section')
+                    i(class='material-icons icon')
+                      | location_on
+                    div(class='contact')
+                      div(class='label')
+                        | Addresses
+                      div(class='info-none')
+                        | None
               
         
                 
