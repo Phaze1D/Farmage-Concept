@@ -32,7 +32,7 @@ template(name="addressesAdd")
       div(class="icon-div")
         i(class="material-icons icon") add_circle
 
-  div(class="contact-div" style="height: #{initHeight}")
+  div(class="atcontact-div" style="height: #{initHeight}")
     each addresses.get
       +address_single index=@index name=name street=street street2=street2 city=city state=state zip_code=zip_code country=country
 

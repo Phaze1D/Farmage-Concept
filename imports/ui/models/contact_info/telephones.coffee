@@ -24,7 +24,7 @@ class TelephoneAdd extends BlazeComponent
 
   showTelephone: (event) ->
     @addTelephone()
-    target = $(@find '.contact-div')
+    target = $(@find '.atcontact-div')
     target.velocity
       p:
         height: target.height() + 60
@@ -52,7 +52,7 @@ class TelephoneAdd extends BlazeComponent
 
 
   hideTelephone: (event) ->
-    $(@find '.contact-div').css height: 'auto'
+    $(@find '.atcontact-div').css height: 'auto'
     target = $(event.target).closest('.contact-single')
     index = target.attr('data-index')
     target.velocity
@@ -62,7 +62,7 @@ class TelephoneAdd extends BlazeComponent
         duration: 250
         easing: 'linear'
         complete: =>
-          $(@find '.contact-div').css height: $(@find '.contact-div').height()
+          $(@find '.atcontact-div').css height: $(@find '.atcontact-div').height()
           target.css height: 'auto'
           @removeTelephone(index)
 

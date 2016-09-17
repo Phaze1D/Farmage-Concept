@@ -21,7 +21,7 @@ template(name="telephonesAdd")
       div(class="icon-div")
         i(class="material-icons icon") add_circle
   
-  div(class="contact-div" style="height: #{initHeight}")
+  div(class="atcontact-div" style="height: #{initHeight}")
     each telephones.get
       +telephone_single index=@index name=name number=number
     

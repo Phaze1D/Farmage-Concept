@@ -24,7 +24,7 @@ class AddressAdd extends BlazeComponent
 
   showAddress: (event) ->
     @addAddress()
-    target = $(@find '.contact-div')
+    target = $(@find '.atcontact-div')
     target.velocity
       p:
         height: target.height() + 270
@@ -58,7 +58,7 @@ class AddressAdd extends BlazeComponent
     # if @addresses.get().length is 1
     #   # $('.js-add-address-b').css 'margin-top': '20px'
 
-    $(@find '.contact-div').css height: 'auto'
+    $(@find '.atcontact-div').css height: 'auto'
     target = $(event.target).closest('.contact-single')
     index = target.attr('data-index')
     target.velocity
@@ -68,7 +68,7 @@ class AddressAdd extends BlazeComponent
         duration: 250
         easing: 'linear'
         complete: =>
-          $(@find '.contact-div').css height: $(@find '.contact-div').height()
+          $(@find '.atcontact-div').css height: $(@find '.atcontact-div').height()
           target.css height: 'auto'
           @removeAddress(index)
 

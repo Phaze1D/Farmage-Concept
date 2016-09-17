@@ -1,5 +1,5 @@
 template(name='CustomerShow')
-  div(class='show-area elevation-2')
+  div(class='show-area elevation-0')
     +PaperButton classes="show-fab" elevation=2 rippleOn='true' rippleFill='white'
       div(class='plus-icon-div')
         i(class="material-icons plus-icon")
@@ -26,14 +26,15 @@ template(name='CustomerShow')
           div(class='flex-grid')
             div(class='section')
               div(class='it')
-                div(class='title')
-                  | Notes
-                if customer.notes
-                  div(class='info')
-                    | #{customer.notes}
-                else
-                  div(class='info-none')
-                    | None
+                div(class='info-div')
+                  div(class='title')
+                    | Notes
+                  if customer.notes
+                    div(class='info')
+                      | #{customer.notes}
+                  else
+                    div(class='info-none')
+                      | None
                   
           div(class='flex-grid')
             div(class='section')
@@ -41,45 +42,47 @@ template(name='CustomerShow')
                 | email
               
               div(class='it')
-                div(class='title')
-                  | Email
-                if customer.email
-                  div(class='info')
-                    | #{customer.email}
-                else
-                  div(class='info-none')
-                    | None
+                div(class='info-div')
+                  div(class='title')
+                    | Email
+                  if customer.email
+                    div(class='info')
+                      | #{customer.email}
+                  else
+                    div(class='info-none')
+                      | None
                     
             div(class='section')
               i(class='material-icons')
                 | location_on
                 
               div(class='it')
-                if addresses
-                  each address in addresses
+                div(class='info-div')
+                  if addresses
+                    each address in addresses
+                      div(class='title')
+                        if address.name
+                          | #{address.name}
+                        else
+                          | Address
+                      div(class='info')
+                        div(class='add-info')
+                          | #{address.street}
+                        div(class='add-info')
+                          | #{address.street2}
+                        div(class='add-info')
+                          if address.city
+                            | #{address.city}, #{address.state}
+                        div(class='add-info')
+                          | #{address.zip_code}
+                        div(class='add-info')
+                          | #{address.country}
+                  
+                  else
                     div(class='title')
-                      if address.name
-                        | #{address.name}
-                      else
-                        | Address
-                    div(class='info')
-                      div(class='add-info')
-                        | #{address.street}
-                      div(class='add-info')
-                        | #{address.street2}
-                      div(class='add-info')
-                        if address.city
-                          | #{address.city}, #{address.state}
-                      div(class='add-info')
-                        | #{address.zip_code}
-                      div(class='add-info')
-                        | #{address.country}
-                
-                else
-                  div(class='title')
-                    | Addresses
-                  div(class='info-none')
-                    | None
+                      | Addresses
+                    div(class='info-none')
+                      | None
                   
                   
             div(class='section')
@@ -87,21 +90,22 @@ template(name='CustomerShow')
                 | phone
                 
               div(class='it')
-                if telephones
-                  each telephone in telephones
+                div(class='info-div')
+                  if telephones
+                    each telephone in telephones
+                      div(class='title')
+                        if telephone.name
+                          | #{telephone.name}
+                        else
+                          | Telephone
+                      div(class='info')
+                          | #{telephone.number}
+                  
+                  else
                     div(class='title')
-                      if telephone.name
-                        | #{telephone.name}
-                      else
-                        | Telephone
-                    div(class='info')
-                        | #{telephone.number}
-                
-                else
-                  div(class='title')
-                    | Telephones
-                  div(class='info-none')
-                    | None
+                      | Telephones
+                    div(class='info-none')
+                      | None
       
                 
             
