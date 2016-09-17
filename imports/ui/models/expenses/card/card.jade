@@ -35,9 +35,9 @@ template(name='ExpenseCard')
                     
                     
         div(class='middle')
-          div(class ="contact-div")
+          div(class ="se-section-div")
             div(class='height-div')
-              div(class='contact')
+              div(class='se-section')
                 div(class='label')
                   | Provider
                 if expense.provider_id
@@ -52,13 +52,13 @@ template(name='ExpenseCard')
                   div(class='info-none')
                     | None
               
-              div(class='contact')
+              div(class='se-section')
                 div(class='label')
                   | Unit
                 div(class='info')
                   | #{unit.name}
                   
-              div(class='contact')
+              div(class='se-section')
                 div(class='label')
                   | Created At
                 div(class='info')

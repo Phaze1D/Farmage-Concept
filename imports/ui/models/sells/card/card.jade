@@ -41,9 +41,9 @@ template(name='SellCard')
                       | $#{sell.discount}  
                       
         div(class='middle')
-          div(class ="contact-div")
+          div(class ="se-section-div")
             div(class='height-div')
-              div(class='contact')
+              div(class='se-section')
                 div(class='label')
                   | Customer
                 if sell.customer_id
@@ -52,20 +52,20 @@ template(name='SellCard')
                     div(class='cinfo')
                       div(class='info')
                         | #{customer.first_name} #{customer.last_name}
-                      div(class='info')
+                      div(class='info-sm')
                         | #{customer.company}
                 else
                   div(class='info-none')
                     | None
               
-              div(class='contact')
+              div(class='se-section')
                 div(class='label')
                   | Status
                 div(class='info')
                   | #{sell.status}
 
                                   
-              div(class='contact')
+              div(class='se-section')
                 div(class='label')
                   | Paid
                 if sell.paid

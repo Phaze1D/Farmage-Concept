@@ -100,21 +100,22 @@ class PaperDrawerPanel extends BlazeComponent
       $('#scrim').removeClass('mshow').addClass('mhide')
       $("#paper-drawer").addClass('elevation-0')
       p =
-        left: "240px"
+        left: [240, 0]
       o =
         duration: duration
         easing: 'ease-in-out'
 
+
       $("#paper-drawer-main").velocity p, o
       @isWide.set true
-      @openDrawer()
+      @openDrawer(null, duration)
 
-  openDrawer: (event) ->
+  openDrawer: (event, duration = 250) ->
     @moveDrawerFoward()
     p =
       left: "0px"
     o =
-      duration: 250
+      duration: duration
       easing: "ease-in-out"
       complete: =>
         @scrimAddEvents()
