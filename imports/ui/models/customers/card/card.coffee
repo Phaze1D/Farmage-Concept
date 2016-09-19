@@ -33,8 +33,8 @@ class CustomerCard extends BlazeComponent
     if @positions.get(type) is @data().customer[type].length - 1
       'disabled'
 
-
-
+  showTitle: ->
+    @data().customer.first_name + " " + @data().customer.last_name
 
   onLeft: (event) ->
       tar = $(event.currentTarget)

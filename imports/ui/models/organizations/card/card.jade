@@ -23,11 +23,11 @@ template(name='OrganizationCard')
                 | Last 5 Days
 
         div(class='middle')
-          +PaperTabPanel tabs=tabs barClasses='card-bar'
-            +PaperTab classes="chart-div"
+          +PaperTabPanel tabs=tabs tabClasses='card-bar'
+            +PaperTab classes="chart-div active-panel" index=0
               canvas(class='sells-chart chart')
             
-            +PaperTab classes="chart-div"
+            +PaperTab classes="chart-div" index=1
               canvas(class='expenses-chart chart')
             
 

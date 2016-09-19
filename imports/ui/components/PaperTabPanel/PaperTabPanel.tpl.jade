@@ -3,7 +3,7 @@ paper-tab-panel
     if showLine
       div(class='underline' style='width: {{tabWidth}}')
     each title in tabs
-      div(class="bar-tab js-bar-tab {{active @index}} {{barClasses}}" data-index="{{@index}}" data-title=title scrollable=scrollable)
+      div(class="bar-tab js-bar-tab {{active @index}} {{tabClasses}}" data-index="{{@index}}" data-title=title scrollable=scrollable)
         +PaperRipple fill='lightgrey'
         div(class='tab-title')
           | #{title}

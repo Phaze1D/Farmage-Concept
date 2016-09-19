@@ -1,14 +1,19 @@
 template(name='CustomerShow')
-  div(class='show-area elevation-0')
-    +PaperButton classes="show-fab" elevation=2 rippleOn='true' rippleFill='white'
-      div(class='plus-icon-div')
-        i(class="material-icons plus-icon")
-          | edit
-          
+  div(class='show-area elevation-0') 
+    
+        
     div(class='show-tool')
-      +PaperButton classes="back-button card-shrink-action" raise=0 rippleOn=true submit=false
+      +PaperButton classes="so-button back card-shrink-action" raise=0 rippleOn=true submit=false elevation=0
         i(class="material-icons")
           | arrow_back
+          
+      div(class='tool-title text-overflow')
+        div
+          | #{toolT}
+        
+      +PaperButton classes="so-button more-ver card-shrink-action" raise=0 rippleOn=true submit=false elevation=0
+        i(class="material-icons")
+          | more_vert
           
       
           
@@ -19,97 +24,101 @@ template(name='CustomerShow')
       h4
         | #{customer.company}
         
+    div(class='scroll-section')
     
-    div(class='middle')
-      +PaperTabPanel tabs=tabs scrollable=true barClasses='show-tab' classes='show-tab'
-        +PaperTab
-          div(class='flex-grid')
-            div(class='section')
-              div(class='it')
-                div(class='info-div')
-                  div(class='title')
-                    | Notes
-                  if customer.notes
-                    div(class='info')
-                      | #{customer.notes}
-                  else
-                    div(class='info-none')
-                      | None
-                  
-          div(class='flex-grid')
-            div(class='section')
-              i(class='material-icons')
-                | email
-              
-              div(class='it')
-                div(class='info-div')
-                  div(class='title')
-                    | Email
-                  if customer.email
-                    div(class='info')
-                      | #{customer.email}
-                  else
-                    div(class='info-none')
-                      | None
+      +PaperButton classes="show-fab" elevation=2 rippleOn='true' rippleFill='white'
+        div(class='plus-icon-div')
+          i(class="material-icons plus-icon")
+            | #{fabT}
+    
+      div(class='middle')
+        +PaperTabPanel tabs=tabs scrollable=true tabClasses='show-tab'     
+          +PaperTab classes='active-panel' index=0
+            div(class='flex-grid')
+              div(class='section')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Notes
+                    if customer.notes
+                      div(class='info')
+                        | #{customer.notes}
+                    else
+                      div(class='info-none')
+                        | None
                     
-            div(class='section')
-              i(class='material-icons')
-                | location_on
+            div(class='flex-grid')
+              div(class='section')
+                i(class='material-icons')
+                  | email
                 
-              div(class='it')
-                div(class='info-div')
-                  if addresses
-                    each address in addresses
-                      div(class='title')
-                        if address.name
-                          | #{address.name}
-                        else
-                          | Address
-                      div(class='info')
-                        div(class='add-info')
-                          | #{address.street}
-                        div(class='add-info')
-                          | #{address.street2}
-                        div(class='add-info')
-                          if address.city
-                            | #{address.city}, #{address.state}
-                        div(class='add-info')
-                          | #{address.zip_code}
-                        div(class='add-info')
-                          | #{address.country}
-                  
-                  else
+                div(class='it')
+                  div(class='info-div')
                     div(class='title')
-                      | Addresses
-                    div(class='info-none')
-                      | None
-                  
-                  
-            div(class='section')
-              i(class='material-icons')
-                | phone
-                
-              div(class='it')
-                div(class='info-div')
-                  if telephones
-                    each telephone in telephones
-                      div(class='title')
-                        if telephone.name
-                          | #{telephone.name}
-                        else
-                          | Telephone
+                      | Email
+                    if customer.email
                       div(class='info')
-                          | #{telephone.number}
+                        | #{customer.email}
+                    else
+                      div(class='info-none')
+                        | None
+                      
+              div(class='section')
+                i(class='material-icons')
+                  | location_on
                   
-                  else
-                    div(class='title')
-                      | Telephones
-                    div(class='info-none')
-                      | None
-      
-                
-            
-        +PaperTab
+                div(class='it')
+                  div(class='info-div')
+                    if addresses
+                      each address in addresses
+                        div(class='title')
+                          if address.name
+                            | #{address.name}
+                          else
+                            | Address
+                        div(class='info')
+                          div(class='add-info')
+                            | #{address.street}
+                          div(class='add-info')
+                            | #{address.street2}
+                          div(class='add-info')
+                            if address.city
+                              | #{address.city}, #{address.state}
+                          div(class='add-info')
+                            | #{address.zip_code}
+                          div(class='add-info')
+                            | #{address.country}
+                    
+                    else
+                      div(class='title')
+                        | Addresses
+                      div(class='info-none')
+                        | None
+                    
+                    
+              div(class='section')
+                i(class='material-icons')
+                  | phone
+                  
+                div(class='it')
+                  div(class='info-div')
+                    if telephones
+                      each telephone in telephones
+                        div(class='title')
+                          if telephone.name
+                            | #{telephone.name}
+                          else
+                            | Telephone
+                        div(class='info')
+                            | #{telephone.number}
+                    
+                    else
+                      div(class='title')
+                        | Telephones
+                      div(class='info-none')
+                        | None
+        
+          +PaperTab index=1
           
         
         

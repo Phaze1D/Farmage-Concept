@@ -47,6 +47,8 @@ class PaperCard extends BlazeComponent
       headerPanel.css overflow: 'hidden'
       @borderR = pacard.css('border-radius')
       pacard.css
+        'border-radius': 0
+        overflow: 'hidden'
         position: 'absolute'
         'z-index': 1
         top: "#{pacard.position().top + headerPanel.scrollTop()}px"
@@ -56,7 +58,7 @@ class PaperCard extends BlazeComponent
 
       ghost.css display: 'block'
 
-      Meteor.setTimeout =>
+      Meteor.setTimeout( ->
         # @data().callbacks.onExpandCallback()
         pacard.css 'box-shadow': 'none'
         pacard.velocity
@@ -71,17 +73,10 @@ class PaperCard extends BlazeComponent
             complete: (elements) =>
               $('.paper-card').css visibility: 'hidden'
               pacard.css visibility: 'visible'
+      , 250)
 
 
-        pacard.velocity
-          p:
-            'border-radius': 0
-          o:
-            duration: 50
-            easing: 'linear'
-            queue: false
 
-      , 250
 
 
   shrink: (event) ->
@@ -99,30 +94,29 @@ class PaperCard extends BlazeComponent
       ]
 
 
-      Meteor.setTimeout( =>
-        ghost = $(@find('.card-ghost'))
-        pacard.velocity
-          p:
-            left: ghost.position().left
-            top: ghost.position().top + headerPanel.scrollTop()
-            width: ghost.innerWidth() + 'px'
-            height: ghost.innerHeight() + 'px'
-          o:
-            duration: 250
-            complete: =>
-              pacard.css
-                position: ''
-                'z-index': ''
-                top: ""
-                left: ""
-                width: ""
-                overflow: ''
-                height: ''
-                'box-shadow': ''
-                'border-radius': ''
-              ghost.css display: 'none'
+      ghost = $(@find('.card-ghost'))
+      pacard.velocity
+        p:
+          left: ghost.position().left
+          top: ghost.position().top + headerPanel.scrollTop()
+          width: ghost.innerWidth() + 'px'
+          height: ghost.innerHeight() + 'px'
+        o:
+          duration: 250
+          delay: 250
+          complete: =>
+            pacard.css
+              position: ''
+              'z-index': ''
+              top: ""
+              left: ""
+              width: ""
+              overflow: ''
+              height: ''
+              'box-shadow': ''
+              'border-radius': ''
+            ghost.css display: 'none'
 
-      , 250)
 
 
 

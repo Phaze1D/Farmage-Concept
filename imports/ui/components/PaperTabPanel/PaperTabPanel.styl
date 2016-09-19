@@ -8,10 +8,12 @@ paper-tab-panel
   flex-direction: column;
 
   .tab-bar
+    z-index: 1
     position: relative;
     width: 100%
     height: 48px
     display: flex;
+    margin-top: -1px
     background-color: #eee
     overflow-x: scroll;
     // justify-content: flex-end;
@@ -75,6 +77,10 @@ paper-tab-panel
       flex-shrink: 0
       width: 100%
       max-width: 100%
+      height: 0
+
+    .active-panel
+      height: 100%
 
 
 .extra-scroll

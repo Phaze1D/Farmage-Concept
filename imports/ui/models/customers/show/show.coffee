@@ -1,10 +1,18 @@
+ShowMixin = require '../../../mixins/show_mixin.coffee'
 require './show.jade'
 
-class CustomerShow extends BlazeComponent
+class CustomerShow extends ShowMixin
   @register 'CustomerShow'
 
   constructor: (args) ->
     # body...
+
+  onCreated: ->
+    super
+
+  onRendered: ->
+    super
+
 
   tabs: ->
     ['Information', 'Sells']

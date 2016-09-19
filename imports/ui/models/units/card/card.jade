@@ -25,9 +25,9 @@ template(name='UnitCard')
                   
                 
         div(class='middle' with-tabs)
-          +PaperTabPanel tabs=tabs barClasses="js-card-bar card-bar"
+          +PaperTabPanel tabs=tabs tabClasses="js-card-bar card-bar"
             if unit.tracking
-              +PaperTab
+              +PaperTab classes='active-panel' index=0
                 div(class='tpanel')
                   div(class='title')
                     | Past 4
@@ -45,8 +45,11 @@ template(name='UnitCard')
                             
                         div(class='event-amount')
                           | #{event.amount}
-            +PaperTab classes='chart-div'
-              canvas(class='expenses-chart chart')
+              +PaperTab classes='chart-div active-panel' index=1
+                canvas(class='expenses-chart chart')
+            else 
+              +PaperTab classes='chart-div active-panel' index=0
+                canvas(class='expenses-chart chart')
             
         
         div(class='bottom')

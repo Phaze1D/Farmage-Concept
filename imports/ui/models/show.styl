@@ -11,22 +11,43 @@
 
 .show-tool
   position: absolute;
+  width: 100%
+  background-color: #eee
   left: 0;
   height: 64px
   padding: 5px 0 0 5px
+  z-index: 2
 
-  .back-button
-    z-index: 1
+  .tool-title
+    height: 100%
+    padding: 0 70px
+    display: table
+
+    div
+      display: table-cell;
+      vertical-align: middle;
+      font-size: 18px
+      font-weight: 300
+
+  .so-button
+    position: absolute;
     height: 56px
     width: 56px
     display: flex;
     justify-content: center;
     background-color: transparent;
     border-radius: 50px
+    align-items: center;
+    top: 5px
+
+  .back
+    left: 5px
+
+  .more-ver
+    right: 5pxpx
 
 
-    i
-      align-self: center;
+
 
 .show-area
   position: relative;
@@ -36,7 +57,7 @@
 
   .top
     position: absolute;
-    padding-top: 56px
+    padding-top: 64px
     width: 100%
     height: 276px
     display: flex;
@@ -65,7 +86,18 @@
       color: #757575
       margin: 0
 
+  .scroll-section
+    overflow: auto;
+    height: 100vh
+    position: absolute;
+    top: 0
+    width: 100%
+    
+    &::-webkit-scrollbar
+      display: none;
+
   .middle
+    background-color: transparent;
     padding-top: 276px
     @media (max-width: 1024px)
       padding-top: 246px

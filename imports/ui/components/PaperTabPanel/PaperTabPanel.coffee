@@ -32,7 +32,9 @@ class PaperTabPanel extends BlazeComponent
   onBarTabClick: (event) ->
     tar = $(event.currentTarget)
     unless tar.hasClass('active')
-      $(@findAll '.bar-tab').removeClass('active')
+      pre = $(@find '.bar-tab.active')
+      pre.removeClass('active')
+      $(@find ".single-tab-main[data-index='#{pre.attr('data-index')}']").removeClass('active-panel')
       tar.addClass('active')
       underline = $(@find '.underline')
       underline.velocity
@@ -43,9 +45,11 @@ class PaperTabPanel extends BlazeComponent
           duration: 250
           easing: 'ease-in-out'
 
+      index = tar.attr('data-index')
+      $(@find ".single-tab-main[data-index='#{index}']").addClass('active-panel')
       $(@find '.tab-panel-main').velocity
         p:
-          translateX: "#{-100 * tar.attr('data-index')}%"
+          translateX: "#{-100 * index}%"
         o:
           duration: 250
           easing: 'ease-in-out'

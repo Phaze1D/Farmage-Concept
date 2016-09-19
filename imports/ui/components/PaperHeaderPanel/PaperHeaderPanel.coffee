@@ -94,7 +94,7 @@ class PaperHeaderPanel extends BlazeComponent
         @hideFAB()
         @fabFirst = false
 
-    if yPosition <= 148 && (@showed || !@fabFirst)
+    if yPosition <= 168 && (@showed || !@fabFirst)
       @showFAB()
       @hideSmall(0)
       @fabFirst = true
