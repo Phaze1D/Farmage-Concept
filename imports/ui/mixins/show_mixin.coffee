@@ -58,7 +58,7 @@ class ShowMixin extends BlazeComponent
       @fabTitle.set('title', 'add')
 
   onScroll: (event) ->
-    topHit = if window.innerWidth >= 1024 then 202 else 172
+    topHit = if window.innerWidth >= 1024 then 207 else 177
 
     if event.target.scrollTop < topHit && @fabHidden && @previous > event.target.scrollTop
       @showFab(250)
