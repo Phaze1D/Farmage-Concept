@@ -1,9 +1,15 @@
 OrganizationModule = require '../../../../api/collections/organizations/organizations.coffee'
+CardEvents = require '../../../mixins/card_events_mixin.coffee'
+
 
 require './card.jade'
 
 class OUserCard extends BlazeComponent
   @register 'OUserCard'
+
+  mixins: -> [
+    CardEvents
+  ]
 
   constructor: (args) ->
     # body...

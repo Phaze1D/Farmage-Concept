@@ -1,9 +1,13 @@
-
+CardEvents = require '../../../mixins/card_events_mixin.coffee'
 
 require './card.jade'
 
 class ProviderCard extends BlazeComponent
   @register 'ProviderCard'
+
+  mixins: -> [
+    CardEvents
+  ]
 
   constructor: (args) ->
     super
@@ -12,6 +16,7 @@ class ProviderCard extends BlazeComponent
     @positions.set('addresses', 0)
 
   onRendered: ->
+    super
 
 
   telephones: ->
@@ -23,6 +28,11 @@ class ProviderCard extends BlazeComponent
     address = @data().provider.addresses
     if address? and address.length > 0
       address
+
+  showTitle: ->
+    f = if @data().provider.first_name? then @data().provider.first_name else ''
+    l = if @data().provider.last_name? then @data().provider.last_name else ''
+    "#{f} #{l}"
 
 
   disableLeft: (type) ->
@@ -63,7 +73,6 @@ class ProviderCard extends BlazeComponent
           duration: 250
 
       @positions.set(type, position)
-
 
 
   events: ->

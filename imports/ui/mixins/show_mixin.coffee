@@ -1,8 +1,5 @@
 class ShowMixin extends BlazeComponent
 
-  constructor: (args) ->
-    # body...
-
   onCreated: ->
     super
     @toolTitle = new ReactiveDict()

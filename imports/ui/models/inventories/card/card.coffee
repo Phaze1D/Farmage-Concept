@@ -1,13 +1,15 @@
 ProductModule = require '../../../../api/collections/products/products.coffee'
+CardEvents = require '../../../mixins/card_events_mixin.coffee'
 
 require './card.jade'
 
 class InventoryCard extends BlazeComponent
   @register 'InventoryCard'
 
-  constructor: (args) ->
-    # body...
-
+  mixins: -> [
+    CardEvents
+  ]
+    
   onCreated: ->
     super
     organization_id = FlowRouter.getParam("organization_id")

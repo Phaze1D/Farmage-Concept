@@ -1,6 +1,10 @@
 template(name='OrganizationCard')
   div(class='mCard')
     +PaperCard elevation=1
+      div(class='show' style='display: none; opacity: 0')
+        if show.get
+          +OrganizationShow organization=organization title=showTitle
+          
       div(class='mCard-content')
         +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
           i(class='material-icons')
@@ -9,7 +13,7 @@ template(name='OrganizationCard')
         div(class='upper')
           div(class='top')
             div(class='titles')
-              div(class='main-title')
+              div(class='main-title card-expand-action')
                 | #{organization.name}
               div(class='sub-title')
                 with founder organization

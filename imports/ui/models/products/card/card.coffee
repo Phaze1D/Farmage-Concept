@@ -1,8 +1,13 @@
+CardEvents = require '../../../mixins/card_events_mixin.coffee'
 
 require './card.jade'
 
 class ProductCard extends BlazeComponent
   @register 'ProductCard'
+
+  mixins: -> [
+    CardEvents
+  ]
 
   constructor: (args) ->
 

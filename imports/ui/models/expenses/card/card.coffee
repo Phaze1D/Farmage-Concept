@@ -1,15 +1,15 @@
 UnitModule = require '../../../../api/collections/units/units.coffee'
 ProviderModule = require '../../../../api/collections/providers/providers.coffee'
-
-
+CardEvents = require '../../../mixins/card_events_mixin.coffee'
 
 require './card.jade'
 
 class ExpenseCard extends BlazeComponent
   @register 'ExpenseCard'
 
-  constructor: (args) ->
-    # body...
+  mixins: -> [
+    CardEvents
+  ]
 
   onCreated: ->
     super

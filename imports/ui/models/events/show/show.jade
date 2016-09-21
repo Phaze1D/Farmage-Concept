@@ -1,0 +1,44 @@
+template(name='EventShow')
+  div(class='show-area elevation-0') 
+    
+    div(class='show-tool')
+      +PaperButton classes="so-button back card-shrink-action" raise=0 rippleOn=true submit=false elevation=0
+        i(class="material-icons")
+          | arrow_back
+          
+      div(class='tool-title text-overflow')
+        div
+          | #{toolT}
+        
+      +PaperButton classes="so-button more-ver card-shrink-action" raise=0 rippleOn=true submit=false elevation=0
+        i(class="material-icons")
+          | more_vert
+          
+      
+          
+    div(class='top')
+      img(src='/default_avatar.png')
+      h3
+        | #{customer.first_name} #{customer.last_name}
+      h4
+        | #{customer.company}
+        
+    div(class='scroll-section')
+    
+      +PaperButton classes="show-fab" elevation=2 rippleOn='true' rippleFill='white'
+        div(class='plus-icon-div')
+          i(class="material-icons plus-icon")
+            | #{fabT}
+    
+      div(class='middle')
+        +PaperTabPanel tabs=tabs scrollable=true tabClasses='show-tab'     
+          +PaperTab classes='active-panel' index=0
+            
+          +PaperTab index=1
+          
+        
+        
+//- Addresses
+//- Telephones
+//- Edit
+//- Sells

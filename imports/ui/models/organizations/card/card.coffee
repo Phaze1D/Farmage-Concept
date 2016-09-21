@@ -1,4 +1,4 @@
-
+CardEvents = require '../../../mixins/card_events_mixin.coffee'
 Chart = require 'chart.js'
 
 require './card.jade'
@@ -6,8 +6,9 @@ require './card.jade'
 class OrganizationCard extends BlazeComponent
   @register 'OrganizationCard'
 
-  constructor: (args) ->
-    # body...
+  mixins: -> [
+    CardEvents
+  ]
 
   onCreated: ->
     super

@@ -1,9 +1,15 @@
 CustomerModule = require '../../../../api/collections/customers/customers.coffee'
+CardEvents = require '../../../mixins/card_events_mixin.coffee'
+
 
 require './card.jade'
 
 class SellCard extends BlazeComponent
   @register 'SellCard'
+
+  mixins: -> [
+    CardEvents
+  ]
 
   constructor: (args) ->
 

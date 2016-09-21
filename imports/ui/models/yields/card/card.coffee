@@ -1,11 +1,17 @@
 UnitModule = require '../../../../api/collections/units/units.coffee'
 IngredientModule = require '../../../../api/collections/ingredients/ingredients.coffee'
+CardEvents = require '../../../mixins/card_events_mixin.coffee'
+
 
 
 require './card.jade'
 
 class YieldCard extends BlazeComponent
   @register 'YieldCard'
+
+  mixins: -> [
+    CardEvents
+  ]
 
 
   constructor: (args) ->

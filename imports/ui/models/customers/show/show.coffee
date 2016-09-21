@@ -5,8 +5,8 @@ class CustomerShow extends ShowMixin
   @register 'CustomerShow'
 
   constructor: (args) ->
-    # body...
-
+    super
+    
   onCreated: ->
     super
 

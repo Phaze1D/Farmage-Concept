@@ -50,7 +50,7 @@ class PaperCard extends BlazeComponent
         'border-radius': 0
         overflow: 'hidden'
         position: 'absolute'
-        'z-index': 1
+        'z-index': 2
         top: "#{pacard.position().top + headerPanel.scrollTop()}px"
         left: "#{pacard.position().left}px"
         width: "#{pacard.innerWidth()}px"

@@ -1,10 +1,13 @@
+CardEvents = require '../../../mixins/card_events_mixin.coffee'
+
 require './card.jade'
 
 class EventCard extends BlazeComponent
   @register 'EventCard'
 
-  constructor: (args) ->
-    # body...
+  mixins: -> [
+    CardEvents
+  ]
 
   isManual: ->
     if @data().event.is_user_event
