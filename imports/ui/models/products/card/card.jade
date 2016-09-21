@@ -5,7 +5,7 @@ template(name="ProductCard")
         if show.get
           +ProductShow product=product title=showTitle
           
-      div(class='mCard-content')
+      div(class='mCard-content with-bottom')
         +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
           i(class='material-icons')
            | more_vert
@@ -33,3 +33,10 @@ template(name="ProductCard")
         div(class='middle')
           div(class='chart-div')
             canvas(class='canvas')
+
+        div(class='bottom')
+          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
+            | Inventories
+            
+          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
+            | Sells

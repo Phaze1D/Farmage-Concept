@@ -14,4 +14,4 @@ class IngredientShow extends ShowMixin
     super
 
   tabs: ->
-    ['Information']
+    ['Information', 'Analytics', 'Reports']

@@ -1,9 +1,14 @@
 
 .mCard
+  min-width: 290px
   width: 330px
+  max-width: 330px
   margin: 8px 8px
 
   .mCard-content
+    &.with-bottom
+      padding-bottom: 56px
+
     .card-bar
       background-color: #eee
 
@@ -127,9 +132,13 @@
       margin-top: -10px
 
   .bottom
+    position: absolute;
+    width: 100%
+    bottom: 0
+    height: 56px
     display: flex
     align-content: center;
-    padding: 8px 16px
+    padding: 0px 16px
     border-top: 1px solid #eee
 
   .chart-div
@@ -137,14 +146,15 @@
     display: flex;
     flex-direction: column;
     padding: 15px 15px 5px 5px;
+    width: 100%
 
     .chart
       flex-grow: 1
 
 
 .action-button
-  padding: 8px 8px
-  letter-spacing: 0px;
+  margin-right: 5px
+  padding: 8px
   font-weight: 500
   color: darkblue
   align-self: center;

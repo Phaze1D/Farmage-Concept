@@ -30,7 +30,7 @@ class PaperHeaderPanel extends BlazeComponent
     @showed = true
     @smallH.velocity
       p:
-        top: ['0', '-70px']
+        translateY: ['0', '-70px']
       o:
         duration: duration
 
@@ -40,7 +40,7 @@ class PaperHeaderPanel extends BlazeComponent
     @showed = false
     @smallH.velocity
       p:
-        top: '-70px'
+        translateY: '-70px'
       o:
         duration: duration
 

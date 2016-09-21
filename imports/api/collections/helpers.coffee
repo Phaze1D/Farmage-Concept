@@ -171,9 +171,9 @@ ExpenseModule.Expenses.helpers
 EventModule.Events.helpers
   for_doc: ->
     switch @for_type
-      when 'unit' then  UnitModule.Units.findOnd { _id: @for_id}
-      when 'yield' then YieldModule.Yields.findOne { _id: @for_id }
-      when 'inventory' then InventoryModule.Inventories.findOne { _id: @for_id}
+      when 'unit' then  UnitModule.Units.find { _id: @for_id}
+      when 'yield' then YieldModule.Yields.find { _id: @for_id }
+      when 'inventory' then InventoryModule.Inventories.find { _id: @for_id}
       else
         return
 

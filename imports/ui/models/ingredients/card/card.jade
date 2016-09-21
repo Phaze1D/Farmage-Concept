@@ -5,7 +5,7 @@ template(name='IngredientCard')
         if show.get
           +IngredientShow ingredient=ingredient title=showTitle
           
-      div(class='mCard-content')
+      div(class='mCard-content with-bottom')
         +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
           i(class='material-icons')
            | more_vert
@@ -31,6 +31,11 @@ template(name='IngredientCard')
               div(class='sub')
                 | In Stock
               
+        div(class='bottom')
+          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
+            | Yields
             
+          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
+            | Products
   //- Total Currently Available 
   //- Last 5 Yields x yield Intifer y amount

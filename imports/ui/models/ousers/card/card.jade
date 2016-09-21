@@ -5,7 +5,7 @@ template(name='OUserCard')
         if show.get
           +OUserShow ouser=ouser title=showTitle
           
-      div(class='mCard-content')
+      div(class='mCard-content with-bottom')
         +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
           i(class='material-icons')
            | more_vert
@@ -107,3 +107,14 @@ template(name='OUserCard')
                   
               div(class='event-amount')
                 +PaperToggle onColor='#00008b' offColor='lightgrey' toggled=(permission 'users_manager') callbacks=toggleCallbacks
+
+
+        div(class='bottom')
+          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
+            | Created
+          
+          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
+            | Updated
+            
+          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
+            | Events

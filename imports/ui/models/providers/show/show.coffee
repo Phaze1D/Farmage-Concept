@@ -15,7 +15,7 @@ class ProviderShow extends ShowMixin
 
 
   tabs: ->
-    ['Information', 'Expenses']
+    ['Information', 'Analytics', 'Reports']
 
   addresses: ->
     if @data().provider.addresses.length > 0

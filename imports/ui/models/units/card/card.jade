@@ -5,7 +5,7 @@ template(name='UnitCard')
         if show.get
           +UnitShow unit=unit title=showTitle
           
-      div(class='mCard-content')
+      div(class='mCard-content with-bottom')
         +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
           i(class='material-icons')
            | more_vert
@@ -57,8 +57,19 @@ template(name='UnitCard')
             
         
         div(class='bottom')
+          if unit.tracking
+            +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
+              | Events
+            
           +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
-            | View Children
+            | Children
+            
+          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
+            | Expenses
+          
+          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
+            | Yields
+            
       
        
   //- Amount

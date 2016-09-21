@@ -6,16 +6,21 @@ class CustomerShow extends ShowMixin
 
   constructor: (args) ->
     super
-    
+
   onCreated: ->
     super
+    organization_id = FlowRouter.getParam("organization_id")
+    @autorun =>
+      @subscribe "sells", organization_id, 'customer', @data().customer._id,
+        onStop: (err) ->
+          console.log "sub stop #{err}"
+        onReady: ->
 
   onRendered: ->
     super
 
-
   tabs: ->
-    ['Information', 'Sells']
+    ['Information', 'Analytics', 'Reports']
 
   addresses: ->
     if @data().customer.addresses.length > 0
@@ -24,3 +29,6 @@ class CustomerShow extends ShowMixin
   telephones: ->
     if @data().customer.telephones.length > 0
       @data().customer.telephones
+
+  sells: ->
+    @data().customer.sells()

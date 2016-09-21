@@ -14,4 +14,4 @@ class ProductShow extends ShowMixin
     super
 
   tabs: ->
-    ['Information']
+    ['Information', 'Analytics', 'Reports']

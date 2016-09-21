@@ -7,6 +7,7 @@ class CardEvents extends BlazeComponent
 
   onExpand: (event) ->
     @show.set(true)
+    $(@findAll '.chart-div').css display: 'none'
     $(@find '.show').css display: 'flex'
     $(@find '.show').velocity
       p:
@@ -26,6 +27,7 @@ class CardEvents extends BlazeComponent
         delay: 250
         duration: 250
         complete: =>
+          $(@findAll '.chart-div').css display: ''
           $(@find '.show').css display: 'none'
           @show.set(false)
 

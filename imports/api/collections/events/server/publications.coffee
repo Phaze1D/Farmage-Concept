@@ -4,6 +4,8 @@
 UnitModule = require '../../units/units.coffee'
 YieldModule = require '../../yields/yields.coffee'
 InventoryModule = require '../../inventories/inventories.coffee'
+EventModule = require '../events.coffee'
+
 
 collections = {}
 collections.yield = YieldModule.Yields
@@ -31,3 +33,26 @@ Meteor.publish "events", (organization_id, parent, parent_id) ->
     return parentDoc.events()
   else
     @ready();
+
+
+Meteor.publish 'event.parents', (organization_id, event_id) ->
+
+  info = publicationInfo organization_id, 'event', event_id
+  organization = info.organization
+
+  if organization? && organization.hasUser(@userId)?
+    permissions = organization.hasUser(@userId).permission
+
+  unless permissions?
+    throw new Meteor.Error 'notAuthorized', 'not authorized'
+
+  event = EventModule.Events.findOne(event_id)
+
+  unless(event? && event.organization_id is organization._id)
+    throw new Meteor.Error 'notAuthorized', 'not authorized'
+
+  if @userId? && (permissions.viewer || permissions.events_manager || permissions.owner)
+    return event.for_doc()
+
+  else
+    @ready()

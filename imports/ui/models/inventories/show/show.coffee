@@ -14,4 +14,4 @@ class InventoryShow extends ShowMixin
     super
 
   tabs: ->
-    ['Information']
+    ['Information', 'Analytics', 'Reports']

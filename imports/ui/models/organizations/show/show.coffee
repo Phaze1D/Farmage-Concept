@@ -14,4 +14,4 @@ class OrganizationShow extends ShowMixin
     super
 
   tabs: ->
-    ['Information']
+    ['Information', 'Analytics', 'Reports']
