@@ -1,5 +1,5 @@
 template(name='IngredientShow')
-  div(class='show-area elevation-0') 
+  div(class='show-area elevation-1') 
     
     div(class='show-tool')
       +PaperButton classes="so-button back card-shrink-action" raise=0 rippleOn=true submit=false elevation=0
@@ -17,11 +17,9 @@ template(name='IngredientShow')
       
           
     div(class='top')
-      img(src='/default_avatar.png')
+      img(src='/no_image0.png')
       h3
-        | #{customer.first_name} #{customer.last_name}
-      h4
-        | #{customer.company}
+        | #{ingredient.name}
         
     div(class='scroll-section')
     
@@ -31,14 +29,72 @@ template(name='IngredientShow')
             | #{fabT}
     
       div(class='middle')
-        +PaperTabPanel tabs=tabs scrollable=true tabClasses='show-tab'     
-          +PaperTab classes='active-panel' index=0
+        +PaperTabPanel tabs=tabs scrollable=true classes='show-bar'     
+          +PaperTab classes='active-panel show-panel' index=0
+            div(class='flex-grid')
+              div(class='section elevation-1')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Name
+                    div(class='info')
+                      | #{ingredient.name}
+                  div(class='info-div')
+                    div(class='title')
+                      | Measurement Unit
+                    div(class='info')
+                      | #{ingredient.measurement_unit}
+                      
+              div(class='section elevation-1')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | In Stock
+                    div(class='info-big')
+                      | 123
+                      
+              div(class='section elevation-1')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Yields Produced
+                    div(class='info')
+                      | 12 
+                  div(class='info-div')
+                    div(class='title')
+                      | Yields Available
+                    div(class='info')
+                      | 4
             
+            div(class='sub-title')
+              | Products Containing #{ingredient.name}
+              
+            div(class='flex-grid')
+              each product in products
+                div(class='section elevation-1')
+                  div(class='it')
+                    div(class='info-div')
+                      div(class='title')
+                        | Product
+                      +PaperButton classes="flex-info" raise=0 rippleOn=true submit=false elevation=0
+                        img(src='/no_image0.png')
+                        
+                        div(class='info-flex-sec')
+                          div(class='info text-overflow')
+                            | #{product.name} 
+                          div(class='info-small text-overflow')
+                            | Contains
+                            =pAmount(product) 
+                      
+                            
+                        i(class='material-icons' style='margin: 0 0 0 15px')
+                          | menu
+    
           +PaperTab index=1
           
         
         
-//- Addresses
-//- Telephones
-//- Edit
-//- Sells
+//- Name MU
+//- In Stock
+//- Products and there Amount and picture (Indival section for each product)
+//- Total Number Of Yields

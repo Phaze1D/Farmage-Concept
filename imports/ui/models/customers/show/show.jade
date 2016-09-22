@@ -1,8 +1,8 @@
 template(name='CustomerShow')
-  div(class='show-area elevation-0') 
+  div(class='show-area elevation-1') 
     
     div(class='show-tool')
-      +PaperButton classes="so-button back card-shrink-action" raise=0 rippleOn=true submit=false elevation=0
+      +PaperButton classes="so-button back card-shrink-action" raise=0 rippleOn=false submit=false elevation=0
         i(class="material-icons")
           | arrow_back
           
@@ -31,10 +31,10 @@ template(name='CustomerShow')
             | #{fabT}
     
       div(class='middle')
-        +PaperTabPanel tabs=tabs scrollable=true tabClasses='show-tab'     
+        +PaperTabPanel tabs=tabs scrollable=true classes='show-bar'     
           +PaperTab classes='active-panel show-panel' index=0    
             div(class='flex-grid')
-              div(class='section')
+              div(class='section elevation-1')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -47,7 +47,22 @@ template(name='CustomerShow')
                         | None
                     
             div(class='flex-grid')
-              div(class='section')
+              div(class='section elevation-1')
+                i(class='material-icons')
+                  | card_giftcard
+                
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Date Of Birth
+                    if customer.date_of_birth
+                      div(class='info')
+                        | #{customer.date_of_birth}
+                    else
+                      div(class='info-none')
+                        | None
+                        
+              div(class='section elevation-1')
                 i(class='material-icons')
                   | email
                 
@@ -61,15 +76,38 @@ template(name='CustomerShow')
                     else
                       div(class='info-none')
                         | None
-                      
-              div(class='section')
+                                  
+              div(class='section elevation-1')
+                i(class='material-icons')
+                  | phone
+                  
+                div(class='it')
+                  if telephones
+                    each telephone in telephones
+                      div(class='info-div')
+                        div(class='title')
+                          if telephone.name
+                            | #{telephone.name}
+                          else
+                            | Telephone
+                        div(class='info')
+                            | #{telephone.number}
+                  
+                  else
+                    div(class='info-div')
+                      div(class='title')
+                        | Telephones
+                      div(class='info-none')
+                        | None
+      
+              div(class='section elevation-1')
                 i(class='material-icons')
                   | location_on
                   
                 div(class='it')
-                  div(class='info-div')
-                    if addresses
-                      each address in addresses
+                  if addresses
+                    each address in addresses
+                      div(class='info-div')
                         div(class='title')
                           if address.name
                             | #{address.name}
@@ -87,36 +125,13 @@ template(name='CustomerShow')
                             | #{address.zip_code}
                           div(class='add-info')
                             | #{address.country}
-                    
-                    else
+                  
+                  else
+                    div(class='info-div')
                       div(class='title')
                         | Addresses
                       div(class='info-none')
                         | None
-                    
-                    
-              div(class='section')
-                i(class='material-icons')
-                  | phone
-                  
-                div(class='it')
-                  div(class='info-div')
-                    if telephones
-                      each telephone in telephones
-                        div(class='title')
-                          if telephone.name
-                            | #{telephone.name}
-                          else
-                            | Telephone
-                        div(class='info')
-                            | #{telephone.number}
-                    
-                    else
-                      div(class='title')
-                        | Telephones
-                      div(class='info-none')
-                        | None
-      
                   
           +PaperTab index=1
             

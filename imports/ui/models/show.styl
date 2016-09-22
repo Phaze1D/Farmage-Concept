@@ -6,13 +6,20 @@
   right: 0
   z-index: 2
   min-height: 100%
-  background-color: white
+  background-color: #fafafa
   justify-content: center;
+
+.show-panel
+  background-color: #eee
+  padding-top: 40px
+
+.show-bar
+  background-color: #fafafa !important
 
 .show-tool
   position: absolute;
   width: 100%
-  background-color: #eee
+  background-color: #fafafa
   left: 0;
   height: 64px
   padding: 5px 0 0 5px
@@ -52,6 +59,7 @@
   position: relative;
   min-height: 100%
   width: 100%
+  background-color: #eee
   // max-width: 820px
 
   .top
@@ -60,7 +68,7 @@
     width: 100%
     height: 276px
     display: flex;
-    background-color: #eee
+    background-color: #fafafa
     flex-direction: column;
     align-items: center;
     justify-content: center;
@@ -103,18 +111,30 @@
     @media (max-width: 1024px)
       padding-top: 246px
 
+    .sub-title
+      color: #757575
+      font-size: 14px
+      font-weight: 300;
+      padding: 16px 20px 5px
+
 
 .flex-grid
+  background-color: #eee
   display: flex;
-  padding: 8px 8px 0
+  padding: 0px 8px
   flex-wrap: wrap;
 
 
+
+
   .section
+    background-color: #fafafa
+    border-radius: 3px
     flex-grow: 1
-    min-width: 210px
-    margin: 16px
-    padding: 10px 0
+    flex-basis: 0
+    min-width: 230px
+    margin: 8px
+    padding: 5px 15px 10px
     display: flex
     align-items: center
 
@@ -124,15 +144,24 @@
 
 
     .it
-      border-bottom: 1px solid #BDBDBD
+      // border-bottom: 1px solid #BDBDBD
       flex-grow: 1
-      padding-bottom: 5px
       height: 100%;
       display: flex;
+      flex-wrap: wrap;
+      max-width: 100%
 
       .info-div
         align-self: center;
         flex-grow: 1
+        max-width: 100%
+        margin: 0 8px
+
+      .info-flex-sec
+        max-width: calc(100% - 96px)
+        align-self: center;
+        flex-grow: 1
+        margin: 0
 
       .title
         font-size: 14px
@@ -158,6 +187,7 @@
       .flex-info
         display: flex
         align-items: center;
+        background-color: #fafafa
 
         img
           height: 42px

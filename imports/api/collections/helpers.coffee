@@ -134,7 +134,7 @@ InventoryModule.Inventories.helpers
 # Ingredient Helpers
 IngredientModule.Ingredients.helpers
   products: ->
-    ProductModule.Products.find {'ingredients.ingredient_id': @_id} # possible error
+    ProductModule.Products.find {'pingredients.ingredient_id': @_id} # possible error
 
   yields: ->
     YieldModule.Yields.find {ingredient_id: @_id}

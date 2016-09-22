@@ -3,7 +3,7 @@ template(name='IngredientCard')
     +PaperCard elevation=1
       div(class='show' style='display: none; opacity: 0')
         if show.get
-          +IngredientShow ingredient=ingredient title=showTitle
+          +IngredientShow ingredient=ingredient title=ingredient.name
           
       div(class='mCard-content with-bottom')
         +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0

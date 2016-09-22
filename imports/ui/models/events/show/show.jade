@@ -1,8 +1,8 @@
 template(name='EventShow')
-  div(class='show-area elevation-0') 
+  div(class='show-area elevation-1') 
     
     div(class='show-tool')
-      +PaperButton classes="so-button back card-shrink-action" raise=0 rippleOn=true submit=false elevation=0
+      +PaperButton classes="so-button back card-shrink-action" raise=0 rippleOn=false submit=false elevation=0
         i(class="material-icons")
           | arrow_back
           
@@ -29,10 +29,10 @@ template(name='EventShow')
             | #{fabT}
     
       div(class='middle')
-        +PaperTabPanel tabs=tabs scrollable=true tabClasses='show-tab'     
-          +PaperTab classes='active-panel' index=0
+        +PaperTabPanel tabs=tabs scrollable=true classes='show-bar'     
+          +PaperTab classes='active-panel show-panel' index=0
             div(class='flex-grid')
-              div(class='section')
+              div(class='section elevation-1')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -45,43 +45,44 @@ template(name='EventShow')
                         | None
               
             div(class='flex-grid')
-              div(class='section')
+              div(class='section elevation-1')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
                       | #{amountTitle}
-                    div(class='info-big')
+                    div(class='info')
                       | #{event.amount}
                       
-              div(class='section')
-                div(class='it')                  
-                  div(class='info-div')
-                    div(class='title')
-                      | From #{type} 
-                    +PaperButton classes="flex-info" raise=0 rippleOn=true submit=false elevation=0
-                      div(class='info-div')
-                        div(class='info')
-                          | #{identifer}
-                      i(class='material-icons' style='margin: 0 0 0 15px')
-                        | menu
-                            
-              div(class='section')
-                div(class='it')
-                  div(class='info-div')
-                    div(class='title')
-                      | Created At
-                    div(class='info')
-                      =date(event.createdAt)
-                      
-              div(class='section')
-                div(class='it')                  
-                  div(class='info-div')
                     div(class='title')
                       | Is Manual
                     div(class='info')
                       | #{isManual}
                       
-              div(class='section')
+              div(class='section elevation-1')
+                div(class='it')                  
+                  div(class='info-div')
+                    div(class='title')
+                      | From #{type} 
+                    +PaperButton classes="flex-info" raise=0 rippleOn=true submit=false elevation=0
+                      div(class='info-div' style='margin: 0')
+                        div(class='info')
+                          | #{identifer}
+                      i(class='material-icons' style='margin: 0 0 0 15px')
+                        | menu
+                          
+                      
+                              
+                  
+                      
+            div(class='flex-grid')
+              div(class='section elevation-1')
+                  div(class='it')
+                    div(class='info-div')
+                      div(class='title')
+                        | Created At
+                      div(class='info')
+                        =date(event.createdAt)
+              div(class='section elevation-1')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -89,19 +90,16 @@ template(name='EventShow')
                     +PaperButton classes="flex-info" raise=0 rippleOn=true submit=false elevation=0
                       img(src='/default_avatar.png')
                       
-                      div(class='info-div')
-                        div(class='info')
-                          | #{createdBy.profile.first_name} #{createdBy.profile.last_name}
-                        div(class='info-small')
+                      div(class='info-flex-sec')
+                        div(class='info text-overflow')
+                          | #{createdBy.profile.first_name} #{createdBy.profile.last_name} 
+                        div(class='info-small text-overflow')
                           | #{createdByEmail}
                           
                       i(class='material-icons' style='margin: 0 0 0 15px')
                         | menu
                       
               
-              
-              
-                        
                       
                     
             

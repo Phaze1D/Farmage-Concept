@@ -9,12 +9,6 @@ class CustomerShow extends ShowMixin
 
   onCreated: ->
     super
-    organization_id = FlowRouter.getParam("organization_id")
-    @autorun =>
-      @subscribe "sells", organization_id, 'customer', @data().customer._id,
-        onStop: (err) ->
-          console.log "sub stop #{err}"
-        onReady: ->
 
   onRendered: ->
     super
