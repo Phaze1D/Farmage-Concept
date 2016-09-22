@@ -52,7 +52,10 @@ Meteor.publish 'event.parents', (organization_id, event_id) ->
     throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   if @userId? && (permissions.viewer || permissions.events_manager || permissions.owner)
-    return event.for_doc()
+    return [
+      event.for_doc(),
+      event.created_by()
+    ]
 
   else
     @ready()

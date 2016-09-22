@@ -106,13 +106,13 @@
 
 .flex-grid
   display: flex;
-  padding: 8px
+  padding: 8px 8px 0
   flex-wrap: wrap;
 
 
   .section
     flex-grow: 1
-    min-width: 189px
+    min-width: 210px
     margin: 16px
     padding: 10px 0
     display: flex
@@ -126,12 +126,13 @@
     .it
       border-bottom: 1px solid #BDBDBD
       flex-grow: 1
-      padding-bottom: 15px
+      padding-bottom: 5px
       height: 100%;
       display: flex;
 
       .info-div
         align-self: center;
+        flex-grow: 1
 
       .title
         font-size: 14px
@@ -143,6 +144,29 @@
         font-size: 16px
         font-weight: 300;
         color: black
+
+      .info-big
+        font-size: 24px
+        font-weight: 300;
+        color: black
+
+      .info-small
+        font-size: 14px
+        font-weight: 300;
+        color: #616161
+
+      .flex-info
+        display: flex
+        align-items: center;
+
+        img
+          height: 42px
+          width: 42px
+          border-radius: 40px
+          flex-shrink: 0
+          margin-right: 15px
+
+
 
       .info-none
         font-size: 12px

@@ -14,17 +14,16 @@ template(name='EventShow')
         i(class="material-icons")
           | more_vert
           
-      
           
     div(class='top')
       h3
-        | #{type} Event
+        | Event For #{type} 
       h4
         | #{identifer}
         
     div(class='scroll-section')
     
-      +PaperButton classes="show-fab" elevation=2 rippleOn='true' rippleFill='white'
+      +PaperButton classes="show-fab js-show-new" elevation=2 rippleOn='true' rippleFill='white'
         div(class='plus-icon-div')
           i(class="material-icons plus-icon")
             | #{fabT}
@@ -32,6 +31,79 @@ template(name='EventShow')
       div(class='middle')
         +PaperTabPanel tabs=tabs scrollable=true tabClasses='show-tab'     
           +PaperTab classes='active-panel' index=0
+            div(class='flex-grid')
+              div(class='section')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Description
+                    if event.description
+                      div(class='info')
+                        | #{event.description}
+                    else
+                      div(class='info-none')
+                        | None
+              
+            div(class='flex-grid')
+              div(class='section')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | #{amountTitle}
+                    div(class='info-big')
+                      | #{event.amount}
+                      
+              div(class='section')
+                div(class='it')                  
+                  div(class='info-div')
+                    div(class='title')
+                      | From #{type} 
+                    +PaperButton classes="flex-info" raise=0 rippleOn=true submit=false elevation=0
+                      div(class='info-div')
+                        div(class='info')
+                          | #{identifer}
+                      i(class='material-icons' style='margin: 0 0 0 15px')
+                        | menu
+                            
+              div(class='section')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Created At
+                    div(class='info')
+                      =date(event.createdAt)
+                      
+              div(class='section')
+                div(class='it')                  
+                  div(class='info-div')
+                    div(class='title')
+                      | Is Manual
+                    div(class='info')
+                      | #{isManual}
+                      
+              div(class='section')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Created By
+                    +PaperButton classes="flex-info" raise=0 rippleOn=true submit=false elevation=0
+                      img(src='/default_avatar.png')
+                      
+                      div(class='info-div')
+                        div(class='info')
+                          | #{createdBy.profile.first_name} #{createdBy.profile.last_name}
+                        div(class='info-small')
+                          | #{createdByEmail}
+                          
+                      i(class='material-icons' style='margin: 0 0 0 15px')
+                        | menu
+                      
+              
+              
+              
+                        
+                      
+                    
             
           +PaperTab index=1
           

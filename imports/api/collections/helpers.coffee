@@ -181,10 +181,10 @@ EventModule.Events.helpers
     OrganizationModule.Organizations.findOne { _id: @organization_id }
 
   created_by: ->
-    Meteor.users.findOne { _id: @created_user_id}
+    Meteor.users.find { _id: @created_user_id}
 
   updated_by: ->
-    Meteor.users.findOne { _id: @updated_user_id}
+    Meteor.users.find { _id: @updated_user_id}
 
 
 # Customer Helpers

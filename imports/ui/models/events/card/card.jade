@@ -14,11 +14,10 @@ template(name="EventCard")
           div(class='top')             
             div(class='titles')
               div(class='main-title text-overflow card-expand-action')
-                | #{forType} 
-
-              div(class='sub-title text-overflow card-shrink-action')
-                | #{identifer}
-                
+                | Event For #{forType}
+              if subscriptionsReady
+                div(class='sub-title text-overflow card-shrink-action')
+                  | #{identifer}
                 
           div(class='upper-mid')
             div(class='main' style='margin: 0;')
@@ -43,9 +42,9 @@ template(name="EventCard")
               
               div(class='einfo-div' style='max-width: calc(100% - 120px)')
                 div(class='main-title text-overflow')
-                  | User Lastname
+                  | #{createdBy.profile.first_name} #{createdBy.profile.last_name}
                 div(class='sub-title text-overflow')
-                  | footdaid@hotmail.com
+                  | #{createdByEmail}
                   
               div(class='einfo-div' style='flex-grow: 0; padding: 0')
                 div(class='main-title')
