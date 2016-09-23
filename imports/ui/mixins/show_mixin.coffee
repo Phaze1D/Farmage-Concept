@@ -68,7 +68,8 @@ class ShowMixin extends BlazeComponent
       @tabBar.css
         position: 'fixed'
         top: '64px'
-      @tabBar.addClass('elevation-2')
+        width: @tabBar.innerWidth() + 'px'
+      @tabBar.addClass('bottom-shadow')
 
     else if event.target.scrollTop < topHit && @topShown
       @topShown = false
@@ -76,7 +77,8 @@ class ShowMixin extends BlazeComponent
       @tabBar.css
         position: ''
         top: ''
-      @tabBar.removeClass('elevation-2')
+        width: ''
+      @tabBar.removeClass('bottom-shadow')
 
     if event.target.scrollTop >= 57 && !@toolTitle.get('shown')
       @toolTitle.set 'shown', true
