@@ -77,6 +77,4 @@ require './yields/selector/selector.coffee'
 require './yields/card/card.coffee'
 require './yields/show/show.coffee'
 
-
-
 require './select_list/select_list.coffee'

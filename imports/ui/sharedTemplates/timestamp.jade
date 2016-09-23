@@ -1,0 +1,58 @@
+template(name='Timestamp')
+  div(class='sub-title')
+    | Created Info 
+    
+  div(class='flex-grid')
+    div(class='section elevation-1')
+        div(class='it')
+          div(class='info-div')
+            div(class='title')
+              | Created At
+            div(class='info')
+              =date(item.createdAt)
+    div(class='section elevation-1')
+      div(class='it')
+        div(class='info-div')
+          div(class='title')
+            | Created By
+          +PaperButton classes="flex-info" raise=0 rippleOn=true submit=false elevation=0
+            img(src='/default_avatar.png')
+            
+            div(class='info-flex-sec')
+              div(class='info text-overflow')
+                | #{createdBy.profile.first_name} #{createdBy.profile.last_name} 
+              div(class='info-small text-overflow')
+                | #{createdByEmail}
+                
+            i(class='material-icons' style='margin: 0 0 0 15px')
+              | menu
+            
+  if item.updatedAt
+    div(class='sub-title')
+      | Updated Info 
+      
+    div(class='flex-grid')
+      div(class='section elevation-1')
+          div(class='it')
+            div(class='info-div')
+              div(class='title')
+                | Updated At
+              div(class='info')
+                =date(item.updatedAt)
+                
+      div(class='section elevation-1')
+        div(class='it')
+          div(class='info-div')
+            div(class='title')
+              | Updated By
+            +PaperButton classes="flex-info" raise=0 rippleOn=true submit=false elevation=0
+              img(src='/default_avatar.png')
+              
+              div(class='info-flex-sec')
+                div(class='info text-overflow')
+                  | #{createdBy.profile.first_name} #{createdBy.profile.last_name} 
+                div(class='info-small text-overflow')
+                  | #{createdByEmail}
+                  
+              i(class='material-icons' style='margin: 0 0 0 15px')
+                | menu

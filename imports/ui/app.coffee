@@ -1,7 +1,6 @@
 require './app.jade'
 
 
-
 class App extends BlazeComponent
   @register 'App'
 

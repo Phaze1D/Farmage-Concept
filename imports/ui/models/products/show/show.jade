@@ -17,11 +17,11 @@ template(name='ProductShow')
       
           
     div(class='top')
-      img(src='/default_avatar.png')
+      img(src='/no_image0.png')
       h3
-        | #{customer.first_name} #{customer.last_name}
+        | #{product.name}
       h4
-        | #{customer.company}
+        | #{product.sku}
         
     div(class='scroll-section')
     
@@ -31,8 +31,23 @@ template(name='ProductShow')
             | #{fabT}
     
       div(class='middle')
-        +PaperTabPanel tabs=tabs scrollable=true tabClasses='show-tab'     
-          +PaperTab classes='active-panel' index=0
+        +PaperTabPanel tabs=tabs scrollable=true classes='show-bar'     
+          +PaperTab classes='active-panel show-panel' index=0
+            div(class='flex-grid')
+              div(class='section elevation-1')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Description
+                    if product.description
+                      div(class='info')
+                        | #{product.description}
+                    else
+                      div(class='info-none')
+                        | None
+            
+            div(class='flex-grid')
+              div(class='section elevation-1')
             
           +PaperTab index=1
           

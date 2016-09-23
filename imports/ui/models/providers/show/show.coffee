@@ -9,6 +9,12 @@ class ProviderShow extends ShowMixin
 
   onCreated: ->
     super
+    organization_id = FlowRouter.getParam("organization_id")
+    @autorun =>
+      @subscribe "timestamp", organization_id, @data().provider.created_user_id, @data().provider.updated_user_id,
+        onStop: (err) ->
+          console.log "sub stop #{err}"
+        onReady: ->
 
   onRendered: ->
     super

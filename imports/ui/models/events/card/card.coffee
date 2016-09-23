@@ -13,6 +13,11 @@ class EventCard extends BlazeComponent
     super
     organization_id = FlowRouter.getParam("organization_id")
     @autorun =>
+      @subscribe "timestamp", organization_id, @data().event.created_user_id, @data().event.updated_user_id,
+        onStop: (err) ->
+          console.log "sub stop #{err}"
+        onReady: ->
+
       @subscribe "event.parents", organization_id, @data().event._id,
         onStop: (err) ->
           console.log "sub stop #{err}"

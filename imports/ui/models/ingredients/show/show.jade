@@ -23,7 +23,7 @@ template(name='IngredientShow')
         
     div(class='scroll-section')
     
-      +PaperButton classes="show-fab" elevation=2 rippleOn='true' rippleFill='white'
+      +PaperButton classes="show-fab js-show-new" elevation=2 rippleOn='true' rippleFill='white'
         div(class='plus-icon-div')
           i(class="material-icons plus-icon")
             | #{fabT}
@@ -89,7 +89,9 @@ template(name='IngredientShow')
                             
                         i(class='material-icons' style='margin: 0 0 0 15px')
                           | menu
-    
+            
+            +Timestamp item=ingredient
+            
           +PaperTab index=1
           
         

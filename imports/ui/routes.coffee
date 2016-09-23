@@ -6,6 +6,7 @@ require 'velocity-animate'
 require 'textarea-autosize'
 
 require './app.coffee'
+require './sharedTemplates/timestamp.coffee'
 require './components/components.coffee'
 require './models/models.coffee'
 require './layouts/structure.coffee'

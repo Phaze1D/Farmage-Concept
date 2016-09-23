@@ -53,8 +53,7 @@ Meteor.publish 'event.parents', (organization_id, event_id) ->
 
   if @userId? && (permissions.viewer || permissions.events_manager || permissions.owner)
     return [
-      event.for_doc(),
-      event.created_by()
+      event.for_doc()
     ]
 
   else

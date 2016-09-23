@@ -21,3 +21,22 @@ Meteor.publish "ousers", (organization_id, parent, parent_id) ->
     return parentDoc.o_users()
   else
     @ready();
+
+
+Meteor.publish 'timestamp', (organization_id, created_by, updated_by) ->
+  new SimpleSchema(
+    organization_id:
+      type: String
+    created_by:
+      type: String
+      optional: true
+    updated_by:
+      type: String
+      optional: true
+
+  ).validate({organization_id, created_by, updated_by})
+
+  if @userId?
+    return Meteor.users.find($or: [_id: created_by, _id: updated_by])
+  else
+    @ready()

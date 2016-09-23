@@ -57,13 +57,13 @@ SellModule.Sells.helpers
     InventoryModule.Inventories.find { _id: $in: id_array }
 
   organization: ->
-    OrganizationModule.Organizations.findOne { _id: @organization_id }
+    OrganizationModule.Organizations.find { _id: @organization_id }
 
   created_by: ->
-    Meteor.users.findOne { _id: @created_user_id }
+    Meteor.users.find { _id: @created_user_id }
 
   updated_by: ->
-    Meteor.users.findOne { _id: @updated_user_id }
+    Meteor.users.find { _id: @updated_user_id }
 
 
 # Provider Helpers
@@ -72,13 +72,13 @@ ProviderModule.Providers.helpers
       ExpenseModule.Expenses.find { provider_id: @_id}
 
     organization: ->
-      OrganizationModule.Organizations.findOne { _id: @organization_id }
+      OrganizationModule.Organizations.find { _id: @organization_id }
 
     created_by: ->
-      Meteor.users.findOne { _id: @created_user_id}
+      Meteor.users.find { _id: @created_user_id}
 
     updated_by: ->
-      Meteor.users.findOne { _id: @updated_user_id}
+      Meteor.users.find { _id: @updated_user_id}
 
 
 # Product Helpers
@@ -94,13 +94,13 @@ ProductModule.Products.helpers
     InventoryModule.Inventories.find product_id: @_id
 
   organization: ->
-    OrganizationModule.Organizations.findOne { _id: @organization_id }
+    OrganizationModule.Organizations.find { _id: @organization_id }
 
   created_by: ->
-    Meteor.users.findOne { _id: @created_user_id}
+    Meteor.users.find { _id: @created_user_id}
 
   updated_by: ->
-    Meteor.users.findOne { _id: @updated_user_id}
+    Meteor.users.find { _id: @updated_user_id}
 
 # Inventories Helpers
 InventoryModule.Inventories.helpers
@@ -122,13 +122,13 @@ InventoryModule.Inventories.helpers
     return yieldO.amount_taken for yieldO in @yield_objects when yield_id is yieldO.yield_id
 
   organization: ->
-    OrganizationModule.Organizations.findOne { _id: @organization_id }
+    OrganizationModule.Organizations.find { _id: @organization_id }
 
   created_by: ->
-    Meteor.users.findOne { _id: @created_user_id}
+    Meteor.users.find { _id: @created_user_id}
 
   updated_by: ->
-    Meteor.users.findOne { _id: @updated_user_id}
+    Meteor.users.find { _id: @updated_user_id}
 
 
 # Ingredient Helpers
@@ -140,13 +140,13 @@ IngredientModule.Ingredients.helpers
     YieldModule.Yields.find {ingredient_id: @_id}
 
   organization: ->
-    OrganizationModule.Organizations.findOne { _id: @organization_id }
+    OrganizationModule.Organizations.find { _id: @organization_id }
 
   created_by: ->
-    Meteor.users.findOne { _id: @created_user_id}
+    Meteor.users.find { _id: @created_user_id}
 
   updated_by: ->
-    Meteor.users.findOne { _id: @updated_user_id}
+    Meteor.users.find { _id: @updated_user_id}
 
 
 # Expense Helpers
@@ -158,13 +158,13 @@ ExpenseModule.Expenses.helpers
     UnitModule.Units.find @unit_id
 
   organization: ->
-    OrganizationModule.Organizations.findOne @organization_id
+    OrganizationModule.Organizations.find @organization_id
 
   created_by: ->
-    Meteor.users.findOne @created_user_id
+    Meteor.users.find @created_user_id
 
   updated_by: ->
-    Meteor.users.findOne @updated_user_id
+    Meteor.users.find @updated_user_id
 
 
 # Event Helpers
@@ -178,7 +178,7 @@ EventModule.Events.helpers
         return
 
   organization: ->
-    OrganizationModule.Organizations.findOne { _id: @organization_id }
+    OrganizationModule.Organizations.find { _id: @organization_id }
 
   created_by: ->
     Meteor.users.find { _id: @created_user_id}
@@ -193,13 +193,13 @@ CustomerModule.Customers.helpers
     SellModule.Sells.find {customer_id: @_id},  sort: created_at: -1
 
   organization: ->
-    OrganizationModule.Organizations.findOne { _id: @organization_id }
+    OrganizationModule.Organizations.find { _id: @organization_id }
 
   created_by: ->
-    Meteor.users.findOne { _id: @created_user_id}
+    Meteor.users.find { _id: @created_user_id}
 
   updated_by: ->
-    Meteor.users.findOne { _id: @updated_user_id}
+    Meteor.users.find { _id: @updated_user_id}
 
 
 # Organization Helpers
@@ -259,13 +259,13 @@ UnitModule.Units.helpers
     ExpenseModule.Expenses.find { unit_id: @_id }
 
   organization: ->
-    OrganizationModule.Organizations.findOne { _id: @organization_id }
+    OrganizationModule.Organizations.find { _id: @organization_id }
 
   created_by: ->
-    Meteor.users.findOne { _id: @created_user_id}
+    Meteor.users.find { _id: @created_user_id}
 
   updated_by: ->
-    Meteor.users.findOne { _id: @updated_user_id}
+    Meteor.users.find { _id: @updated_user_id}
 
 
 # Yield Helpers
@@ -283,10 +283,10 @@ YieldModule.Yields.helpers
     EventModule.Events.find for_id: @_id
 
   organization: ->
-    OrganizationModule.Organizations.findOne _id: @organization_id
+    OrganizationModule.Organizations.find _id: @organization_id
 
   created_by: ->
-    Meteor.users.findOne _id: @created_user_id
+    Meteor.users.find _id: @created_user_id
 
   updated_by: ->
-    Meteor.users.findOne _id: @updated_user_id
+    Meteor.users.find _id: @updated_user_id
