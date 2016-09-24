@@ -33,7 +33,7 @@ template(name='ProviderShow')
     
       div(class='middle')
         +PaperTabPanel tabs=tabs scrollable=true classes='show-bar'     
-          +PaperTab classes='active-panel show-panel' index=0
+          +PaperTab classes='active-panel show-panel' index=0    
             div(class='flex-grid')
               div(class='section elevation-1')
                 div(class='it')
@@ -50,6 +50,21 @@ template(name='ProviderShow')
             div(class='flex-grid')
               div(class='section elevation-1')
                 i(class='material-icons')
+                  | card_giftcard
+                
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Date Of Birth
+                    if provider.date_of_birth
+                      div(class='info')
+                        | #{provider.date_of_birth}
+                    else
+                      div(class='info-none')
+                        | None
+                        
+              div(class='section elevation-1')
+                i(class='material-icons')
                   | email
                 
                 div(class='it')
@@ -62,7 +77,7 @@ template(name='ProviderShow')
                     else
                       div(class='info-none')
                         | None
-                      
+                                  
               div(class='section elevation-1')
                 i(class='material-icons')
                   | phone
@@ -118,8 +133,7 @@ template(name='ProviderShow')
                         | Addresses
                       div(class='info-none')
                         | None
-        
-        
+            
             +Timestamp item=provider
             
           +PaperTab index=1

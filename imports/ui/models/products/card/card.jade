@@ -3,7 +3,7 @@ template(name="ProductCard")
     +PaperCard elevation=1
       div(class='show' style='display: none; opacity: 0')
         if show.get
-          +ProductShow product=product title=showTitle
+          +ProductShow product=product title=product.name
           
       div(class='mCard-content with-bottom')
         +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0

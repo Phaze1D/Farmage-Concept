@@ -17,7 +17,7 @@ template(name='ProductShow')
       
           
     div(class='top')
-      img(src='/no_image0.png')
+      img(src='/no_image2.jpg')
       h3
         | #{product.name}
       h4
@@ -48,12 +48,94 @@ template(name='ProductShow')
             
             div(class='flex-grid')
               div(class='section elevation-1')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Name
+                    div(class='info')
+                      | #{product.name}
+                  if product.size
+                    div(class='info-div')
+                      div(class='title')
+                        | Size
+                      div(class='info')
+                        | #{product.size}
+                  div(class='info-div')
+                    div(class='title')
+                      | SKU
+                    div(class='info')
+                      | #{product.sku}
+                      
+              div(class='section elevation-1')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Price
+                      span 
+                        | (Tax Exc)
+                    div(class='info')
+                      | $#{product.unit_price}
+                      
+                    div(class='title')
+                      | Tax Rate
+                    div(class='info')
+                      | #{product.tax_rate}%
+                    
+                  div(class='info-div')
+                    div(class='title')
+                      | Price
+                      span 
+                        | (Tax Inc)
+                    div(class='info')
+                      | $#{totalPrice}
+                      
+            div(class='flex-grid')
+              div(class='section elevation-1')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Stock
+                    div(class='info')
+                      | 123
+              div(class='section elevation-1')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Inventories Produced
+                    div(class='info')
+                      | 12 
+                  div(class='info-div')
+                    div(class='title')
+                      | Inventories Available
+                    div(class='info')
+                      | 4
+                   
+                
+            div(class='sub-title')
+              | Ingredients
+            if subscriptionsReady
+              div(class='flex-grid')
+                each ingredient in ingredients
+                  +PaperButton classes="section" raise=true rippleOn=true submit=false elevation=1
+                    div(class='it')
+                      div(class='info-div' style='padding-top: 5px')
+                        div(class='flex-info')
+                          img(src='/no_image2.jpg')
+                          
+                          div(class='info-flex-sec')
+                            div(class='info text-overflow')
+                              | #{ingredient.name}
+                            div(class='info-small text-overflow')
+                              =ingAmount(ingredient._id)
+                              | #{ingredient.measurement_unit}
+                              
+                          i(class='material-icons' style='margin: 0 0 0 15px')
+                            | menu
+              
+              +Timestamp item=product
+              
             
           +PaperTab index=1
           
         
         
-//- Addresses
-//- Telephones
-//- Edit
-//- Sells

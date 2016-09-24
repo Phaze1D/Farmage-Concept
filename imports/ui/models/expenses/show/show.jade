@@ -17,11 +17,10 @@ template(name='ExpenseShow')
       
           
     div(class='top')
-      img(src='/default_avatar.png')
       h3
-        | #{customer.first_name} #{customer.last_name}
+        | #{expense.name}
       h4
-        | #{customer.company}
+        | #{expense._id}
         
     div(class='scroll-section')
     
@@ -31,8 +30,101 @@ template(name='ExpenseShow')
             | #{fabT}
     
       div(class='middle')
-        +PaperTabPanel tabs=tabs scrollable=true tabClasses='show-tab'     
-          +PaperTab classes='active-panel' index=0
+        +PaperTabPanel tabs=tabs scrollable=true classes='show-bar'     
+          +PaperTab classes='active-panel show-panel' index=0
+            div(class='flex-grid')
+              div(class='section elevation-1')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Description
+                    if expense.description
+                      div(class='info')
+                        | #{expense.description}
+                    else
+                      div(class='info-none')
+                        | None
+                        
+            div(class='flex-grid')
+              div(class='section elevation-1')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Item Name
+                    div(class='info')
+                      | #{expense.name}
+                  div(class='info-div')
+                    div(class='title')
+                      | Reference ID
+                    div(class='info')
+                      | #{expense._id}
+                      
+              div(class='section elevation-1')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Unit Cost
+                    div(class='info')
+                      | $#{expense.price}
+                  div(class='info-div')
+                    div(class='title')
+                      | Quantity
+                    div(class='info')
+                      | #{expense.quantity}
+                  div(class='info-div')
+                    div(class='title')
+                      | Total Cost
+                    div(class='info')
+                      | $#{totalCost}
+            
+            div(class='flex-grid')
+              div(class='section elevation-1')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Unit
+                    +PaperButton classes="flex-info" raise=0 rippleOn=true submit=false elevation=0
+                      div(class='info-div' style='margin: 0')
+                        div(class='info')
+                          | #{unit.name}
+                      i(class='material-icons' style='margin: 0 0 0 15px')
+                        | menu
+                    
+              
+              div(class='section elevation-1')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Provider
+                    if provider
+                      +PaperButton classes="flex-info" raise=0 rippleOn=true submit=false elevation=0
+                        img(src='/default_avatar.png')
+                        
+                        div(class='info-flex-sec')
+                          div(class='info text-overflow')
+                            | #{provider.first_name} #{provider.last_name}
+                          div(class='info-small text-overflow')
+                            | #{provider.company}
+                            
+                        i(class='material-icons' style='margin: 0 0 0 15px')
+                          | menu
+                    else
+                      div(class='info-none')
+                        | None
+            
+            div(class='sub-title')
+              | Receipt
+            div(class='flex-grid')
+              +PaperButton classes="section no-padding" raise=true rippleOn=true submit=false elevation=1
+                if expense.receipt_url
+                  div(class='receipt-div' style='background-image: url(/receipt.jpg)')
+                else
+                  div(class='receipt-div')
+                    i(class='material-icons')
+                      | camera_alt
+                  
+            
+            +Timestamp item=expense
             
           +PaperTab index=1
           

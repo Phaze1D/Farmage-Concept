@@ -71,8 +71,8 @@ class PaperCard extends BlazeComponent
             duration: 250
             easing: 'ease-in-out'
             complete: (elements) =>
-              $('.paper-card').css visibility: 'hidden'
-              pacard.css visibility: 'visible'
+              $('.paper-card').css display: 'none'
+              pacard.css display: 'block'
       , 250)
 
 
@@ -83,7 +83,7 @@ class PaperCard extends BlazeComponent
     if @expanded
       tar = $(event.target)
       @expanded = false
-      $('.paper-card').css visibility: 'visible'
+      $('.paper-card').css display: ''
       headerPanel = tar.closest('.paper-header-panel')
       headerPanel.css overflow: ''
       pacard = tar.closest('.paper-card')

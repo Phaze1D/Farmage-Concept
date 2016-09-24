@@ -17,6 +17,7 @@ class ShowMixin extends BlazeComponent
     @tabBar = $('.tab-bar')
     @tabPanel = $('.tab-main-wrapper')
     @fab = $('.show-fab')
+    @topT = $('.top h3')
 
   toolT: ->
     @toolTitle.get('title')
@@ -68,7 +69,6 @@ class ShowMixin extends BlazeComponent
       @tabBar.css
         position: 'fixed'
         top: '64px'
-        width: @tabBar.innerWidth() + 'px'
       @tabBar.addClass('bottom-shadow')
 
     else if event.target.scrollTop < topHit && @topShown
@@ -77,13 +77,13 @@ class ShowMixin extends BlazeComponent
       @tabBar.css
         position: ''
         top: ''
-        width: ''
       @tabBar.removeClass('bottom-shadow')
 
-    if event.target.scrollTop >= 57 && !@toolTitle.get('shown')
+    tpo = topHit + 64 - @topT.position().top
+    if event.target.scrollTop >= tpo && !@toolTitle.get('shown')
       @toolTitle.set 'shown', true
       @toolTitle.set 'title', @data().title
-    else if event.target.scrollTop < 57 && @toolTitle.get('shown')
+    else if event.target.scrollTop < tpo && @toolTitle.get('shown')
       @toolTitle.set 'shown', false
       @toolTitle.set 'title', ''
 
