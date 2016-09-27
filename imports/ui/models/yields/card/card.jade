@@ -3,7 +3,7 @@ template(name='YieldCard')
     +PaperCard elevation=1
       div(class='show' style='display: none; opacity: 0')
         if show.get
-          +YieldShow yield=yield title=showTitle
+          +YieldShow yield=yield title=identifer
           
       div(class='mCard-content with-bottom')
         +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0

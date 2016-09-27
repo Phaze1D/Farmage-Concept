@@ -15,3 +15,6 @@ class UnitShow extends ShowMixin
 
   tabs: ->
     ['Information', 'Analytics', 'Reports']
+
+  tracking: ->
+    if @data().unit.tracking then "On" else "Off"

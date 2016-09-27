@@ -14,10 +14,10 @@ class ShowMixin extends BlazeComponent
 
   onRendered: ->
     super
-    @tabBar = $('.tab-bar')
-    @tabPanel = $('.tab-main-wrapper')
-    @fab = $('.show-fab')
-    @topT = $('.top h3')
+    @tabBar = $(@find '.tab-bar')
+    @tabPanel = $(@find '.tab-main-wrapper')
+    @fab = $(@find '.show-fab')
+    @topT = $(@find '.top h3')
 
   toolT: ->
     @toolTitle.get('title')

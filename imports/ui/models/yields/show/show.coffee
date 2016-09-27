@@ -15,3 +15,12 @@ class YieldShow extends ShowMixin
 
   tabs: ->
     ['Information', 'Analytics', 'Reports']
+
+  identifer: ->
+    if @data().yield.name? then @data().yield.name else @data().yield._id
+
+  ingredient: ->
+    @data().yield.ingredient().fetch()[0]
+
+  unit: ->
+    @data().yield.unit().fetch()[0]

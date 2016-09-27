@@ -95,13 +95,13 @@ template(name='ProductShow')
                   div(class='info-div')
                     div(class='title')
                       | Stock
-                    div(class='info')
+                    div(class='info-big')
                       | 123
               div(class='section elevation-1')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
-                      | Inventories Produced
+                      | Total Inventories
                     div(class='info')
                       | 12 
                   div(class='info-div')
@@ -130,7 +130,7 @@ template(name='ProductShow')
                               | #{ingredient.measurement_unit}
                               
                           i(class='material-icons' style='margin: 0 0 0 15px')
-                            | menu
+                            | keyboard_arrow_right
               
               +Timestamp item=product
               
