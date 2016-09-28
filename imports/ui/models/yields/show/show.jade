@@ -17,6 +17,7 @@ template(name='YieldShow')
       
           
     div(class='top')
+      img(src='/no_image0.png')
       h3
         | #{identifer}
       h4
@@ -33,7 +34,7 @@ template(name='YieldShow')
         +PaperTabPanel tabs=tabs scrollable=true classes='show-bar'     
           +PaperTab classes='active-panel show-panel' index=0
             div(class='flex-grid')
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -46,7 +47,7 @@ template(name='YieldShow')
                         | None
             
             div(class='flex-grid')
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -62,7 +63,7 @@ template(name='YieldShow')
                       span
                         | #{ingredient.measurement_unit}
                   
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -75,9 +76,9 @@ template(name='YieldShow')
                           | #{ingredient.name}
                       
                       i(class='material-icons' style='margin: 0 0 0 15px')
-                        | keyboard_arrow_right
+                        | open_in_new
                         
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -88,13 +89,11 @@ template(name='YieldShow')
                           | #{unit.name}
                       
                       i(class='material-icons' style='margin: 0 0 0 15px')
-                        | keyboard_arrow_right
+                        | open_in_new
             
-            div(class='sub-title')
-              | Events Info 
             
             div(class='flex-grid') 
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -108,7 +107,7 @@ template(name='YieldShow')
                     div(class='info')
                       | 49
               
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -122,7 +121,7 @@ template(name='YieldShow')
                     div(class='info')
                       | 112
               
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')

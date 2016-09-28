@@ -66,7 +66,9 @@ template(name='sellsNew')
                       div(class='detail-info')
                         div(class='col p-right')
                           label(class='label')
-                            | Unit Price
+                            | Price
+                            span
+                              | (Tax Exc)
                           div(class='value')
                             | $#{product.unit_price}
                         
@@ -78,7 +80,9 @@ template(name='sellsNew')
                         
                         div(class='col p-right')
                           label(class='label')
-                            | SubTotal 
+                            | Price 
+                            span
+                              | (Tax Inc)
                           div(class='value')
                             =subTotal(product._id)
                           

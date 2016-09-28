@@ -52,6 +52,10 @@ YieldSchema =
       index: true
       denyUpdate: true
 
+    measurement_unit:
+      type: String
+      denyUpdate: true
+
     unit_id:
       type: String
       index: true

@@ -34,7 +34,7 @@ class InventoriesNew extends BlazeComponent
     @autorun =>
       product = @product()
       if product?
-        @subscribe "product.ingredients", product.organization_id, product._id,
+        @subscribe "ingredients", product.organization_id, 'product', product._id,
           onStop: (err) ->
             console.log "sub stop #{err}"
           onReady: ->

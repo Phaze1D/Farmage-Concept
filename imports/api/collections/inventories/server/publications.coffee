@@ -30,15 +30,7 @@ Meteor.publish "inventories", (organization_id, parent, parent_id) ->
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   if @userId? && parentDoc? && (permissions.viewer || permissions.inventories_manager || permissions.owner)
-    invcursor = parentDoc.inventories()
-    parry = []
-    invcursor.forEach (doc) ->
-      parry.push doc.product_id
-
-    return [
-      invcursor,
-      ProductModule.Products.find(_id: $in: parry)
-    ]
+    return parentDoc.inventories()
   else
     @ready();
 

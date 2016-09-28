@@ -19,15 +19,33 @@ template(name="ProductCard")
                 | #{product.name} 
                 
               div(class='sub-title')
-                | Unit Price - $#{product.unit_price}
+                | #{product.sku}
           
           
           div(class='upper-mid')
             div(class='main')
               div(class='info')
                 | 56
+                span 
+                 | Stock
+                 
               div(class='sub')
-                | In Stock
+                div(class='sub-unit')
+                  div(class='label')
+                    | Unit Price
+                  div(class='sub-info')
+                    | $#{product.unit_price}   
+                div(class='sub-unit')
+                  div(class='label')
+                    | Tax Rate
+                  div(class='sub-info')
+                    | #{product.tax_rate}%
+                div(class='sub-unit')
+                  div(class='label')
+                    | Total Price
+                  div(class='sub-info')
+                    | $#{totalPrice}        
+                  
 
             
         div(class='middle')

@@ -52,3 +52,7 @@ class ProductCard extends BlazeComponent
         options: options
       }
     )
+
+  totalPrice: ->
+    tp = @data().product.unit_price * (1 + (@data().product.tax_rate/100))
+    tp.toFixed(2)

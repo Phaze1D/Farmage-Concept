@@ -17,11 +17,10 @@ template(name='SellShow')
       
           
     div(class='top')
-      img(src='/default_avatar.png')
       h3
-        | #{customer.first_name} #{customer.last_name}
+        | #{sell.status}
       h4
-        | #{customer.company}
+        | #{sell._id}
         
     div(class='scroll-section')
     
@@ -31,9 +30,218 @@ template(name='SellShow')
             | #{fabT}
     
       div(class='middle')
-        +PaperTabPanel tabs=tabs scrollable=true tabClasses='show-tab'     
-          +PaperTab classes='active-panel' index=0
+        +PaperTabPanel tabs=tabs scrollable=true classes='show-bar'     
+          +PaperTab classes='active-panel show-panel' index=0
+            div(class='flex-grid')
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Notes
+                    if sell.notes 
+                      div(class='info')
+                        | #{sell.notes}
+                    else
+                      div(class='info-none')
+                        | None
+                      
+            div(class='flex-grid')
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Identifer
+                    div(class='info')
+                      | #{sell._id}
+                      
+                  div(class='info-div')
+                    div(class='title')
+                      | Status
+                    div(class='info' style='text-transform: capitalize')
+                      | #{sell.status}
+              
+              div(class='section elevation-0')
+                div(class='it')  
+                  div(class='info-div')
+                    div(class='title')
+                      | Payment Method
+                    if sell.paid
+                      div(class='info')
+                        | #{sell.payment_method}
+                    else
+                      div(class='info-none')
+                        | Not Paid
+                          
+                  div(class='info-div')
+                    div(class='title')
+                      | Paid Date
+                    if sell.paid
+                      div(class='info')
+                        =date(sell.paid_date)
+                    else
+                      div(class='info-none')
+                        | Not Paid
+                        
+
+            div(class='flex-grid')
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Customer 
+                    if sell.customer_id
+                      +PaperButton classes="flex-info" raise=0 rippleOn=true submit=false elevation=0
+                        img(src='/default_avatar.png')
+                        
+                        div(class='info-flex-sec')
+                          div(class='info text-overflow')
+                            | #{customer.first_name} #{customer.last_name} 
+                          div(class='info-small text-overflow')
+                            | #{customer.company}
+                            
+                        i(class='material-icons' style='margin: 0 0 0 15px')
+                          | open_in_new
+                        
+                    else
+                      div(class='info-none')
+                        | None
+        
+              div(class='section elevation-0')
+                i(class='material-icons')
+                  | phone
+                
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Telephone
+                    if sell.telephone
+                      div(class='info')
+                        | #{sell.telephone.number}
+                    else
+                      div(class='info-none')
+                        | None
+          
+            div(class='flex-grid')
+              div(class='section elevation-0')
+                i(class='material-icons')
+                  | location_on
+                
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Shipping Address
+                    if sell.shipping_address
+                      div(class='info')
+                        | MISSING
+                    else
+                      div(class='info-none')
+                        | None
+                        
+              div(class='section elevation-0')
+                i(class='material-icons')
+                  | location_on
+                
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Billing Address
+                    if sell.billing_address
+                      div(class='info')
+                        | MISSING
+                    else
+                      div(class='info-none')
+                        | None
             
+            div(class='sub-title')
+              | Details 
+            
+            each detail in sell.details
+              div(class='flex-grid')
+                div(class='section elevation-0' style='border-bottom: none')
+                  div(class='it')
+                    div(class='info-div')
+                      div(class='title')
+                      +PaperButton classes="flex-info" raise=0 rippleOn=true submit=false elevation=0
+                        img(src='/no_image2.jpg')
+                        
+                        div(class='info-flex-sec')
+                          with product detail.product_id
+                            div(class='info text-overflow')
+                              | #{name}
+                            div(class='info-small text-overflow')
+                              | #{sku}
+                            
+                    div(class='info-div')
+                      div(class='title')
+                        | Price
+                        span
+                          | ( Tax Exc )
+                      div(class='info')
+                        | $#{detail.unit_price}
+                        
+                    
+                    div(class='info-div')
+                      div(class='title')
+                        | Tax Rate
+                      div(class='info')
+                        | #{detail.tax_rate}%
+                        
+                    div(class='info-div')
+                      div(class='title')
+                        | Price 
+                        span
+                          | ( Tax Inc )
+                      div(class='info')
+                        | $
+                        =detailTotal(detail)
+                      
+              //- if hasInventories detail 
+              //-   +PaperButton classes="js-expand-button expand-button" raise=0 rippleOn=true submit=false elevation=0                  
+              //-     div(class='title')
+              //-       | Inventories
+              //-       
+              //-     i(class='material-icons')
+              //-       | expand_more
+              //-       
+              //-   
+              //-   div(class='flex-grid expandable')
+              //-     each inventory in inventories detail
+              //-       div(class='section elevation-0')
+              
+            div(class='flex-grid' style='flex-wrap: wrap-reverse')
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Total
+                    div(class='info-big')
+                      | $#{sell.total_price}
+                    
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Sub Total
+                    div(class='info')
+                      | $#{sell.sub_total}
+                  div(class='info-div')
+                    div(class='title')
+                      | Tax Total
+                    div(class='info')
+                      | $#{sell.tax_total}
+                  div(class='info-div')
+                    div(class='title')
+                      | Discount
+                    if sell.discount_type
+                      div(class='info')
+                        | #{sell.discount}%        
+                    else
+                      div(class='info')
+                        | $#{sell.discount}  
+                    
+            
+            +Timestamp item=sell
+                      
           +PaperTab index=1
           
         

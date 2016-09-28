@@ -4,7 +4,7 @@ template(name='CustomerCard')
       div(class='show' style='display: none; opacity: 0')
         if show.get
           +CustomerShow customer=customer title=showTitle
-        
+      
       div(class='mCard-content with-bottom')
           +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
             i(class='material-icons')
@@ -70,7 +70,7 @@ template(name='CustomerCard')
                       
                       div(class="nav right js-nav-right {{disableRight 'telephones'}}")
                         i(class='material-icons')
-                          | keyboard_arrow_right
+                          | open_in_new
                           
                 else
                   div(class='section')
@@ -115,7 +115,7 @@ template(name='CustomerCard')
                       
                       div(class="nav right {{disableRight 'addresses'}} js-nav-right")
                         i(class='material-icons')
-                          | keyboard_arrow_right
+                          | open_in_new
                     
                         
                 else

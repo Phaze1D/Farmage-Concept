@@ -17,7 +17,7 @@ template(name='ProductShow')
       
           
     div(class='top')
-      img(src='/no_image2.jpg')
+      img(src='/no_image0.png')
       h3
         | #{product.name}
       h4
@@ -34,7 +34,7 @@ template(name='ProductShow')
         +PaperTabPanel tabs=tabs scrollable=true classes='show-bar'     
           +PaperTab classes='active-panel show-panel' index=0
             div(class='flex-grid')
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -47,7 +47,7 @@ template(name='ProductShow')
                         | None
             
             div(class='flex-grid')
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -66,7 +66,7 @@ template(name='ProductShow')
                     div(class='info')
                       | #{product.sku}
                       
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -90,14 +90,14 @@ template(name='ProductShow')
                       | $#{totalPrice}
                       
             div(class='flex-grid')
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
-                      | Stock
-                    div(class='info-big')
+                      | Total Stock
+                    div(class='info')
                       | 123
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -116,7 +116,7 @@ template(name='ProductShow')
             if subscriptionsReady
               div(class='flex-grid')
                 each ingredient in ingredients
-                  +PaperButton classes="section" raise=true rippleOn=true submit=false elevation=1
+                  +PaperButton classes="section" raise=true rippleOn=true submit=false elevation=0
                     div(class='it')
                       div(class='info-div' style='padding-top: 5px')
                         div(class='flex-info')
@@ -130,7 +130,7 @@ template(name='ProductShow')
                               | #{ingredient.measurement_unit}
                               
                           i(class='material-icons' style='margin: 0 0 0 15px')
-                            | keyboard_arrow_right
+                            | open_in_new
               
               +Timestamp item=product
               

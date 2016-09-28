@@ -31,7 +31,7 @@ template(name='UnitShow')
         +PaperTabPanel tabs=tabs scrollable=true classes='show-bar'     
           +PaperTab classes='active-panel show-panel' index=0
             div(class='flex-grid')
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -44,7 +44,7 @@ template(name='UnitShow')
                         | None
             
             div(class='flex-grid')
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -65,11 +65,11 @@ template(name='UnitShow')
                       div(class='info')
                         | #{unit.amount}
                   
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
-                      | Number of Child Units
+                      | Total Child Units
                     div(class='info')
                       | 23
 
@@ -84,13 +84,13 @@ template(name='UnitShow')
                             | Granja
                             
                         i(class='material-icons' style='margin: 0 0 0 15px')
-                          | keyboard_arrow_right
+                          | open_in_new
                     else
                       div(class='info-none')
                         | None
                   
             div(class='flex-grid')
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -104,7 +104,7 @@ template(name='UnitShow')
                     div(class='info')
                       | Eggs
               
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -113,11 +113,9 @@ template(name='UnitShow')
                       | $122.12
                       
             if unit.tracking
-              div(class='sub-title')
-                | Events Info
-              
+            
               div(class='flex-grid') 
-                div(class='section elevation-1')
+                div(class='section elevation-0')
                   div(class='it')
                     div(class='info-div')
                       div(class='title')
@@ -125,7 +123,7 @@ template(name='UnitShow')
                       div(class='info')
                         | 23
                         
-                div(class='section elevation-1')
+                div(class='section elevation-0')
                   div(class='it')
                     div(class='info-div')
                       div(class='title')
@@ -139,7 +137,7 @@ template(name='UnitShow')
                       div(class='info')
                         | 112
                 
-                div(class='section elevation-1')
+                div(class='section elevation-0')
                   div(class='it')
                     div(class='info-div')
                       div(class='title')
@@ -160,8 +158,4 @@ template(name='UnitShow')
           +PaperTab index=1
           
         
-        
-//- Addresses
-//- Telephones
-//- Edit
-//- Sells
+      

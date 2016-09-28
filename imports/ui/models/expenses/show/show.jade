@@ -33,7 +33,7 @@ template(name='ExpenseShow')
         +PaperTabPanel tabs=tabs scrollable=true classes='show-bar'     
           +PaperTab classes='active-panel show-panel' index=0
             div(class='flex-grid')
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -46,7 +46,7 @@ template(name='ExpenseShow')
                         | None
                         
             div(class='flex-grid')
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -59,7 +59,7 @@ template(name='ExpenseShow')
                     div(class='info')
                       | #{expense._id}
                       
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -78,7 +78,7 @@ template(name='ExpenseShow')
                       | $#{totalCost}
             
             div(class='flex-grid')
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -88,10 +88,10 @@ template(name='ExpenseShow')
                         div(class='info')
                           | #{unit.name}
                       i(class='material-icons' style='margin: 0 0 0 15px')
-                        | keyboard_arrow_right
+                        | open_in_new
                     
               
-              div(class='section elevation-1')
+              div(class='section elevation-0')
                 div(class='it')
                   div(class='info-div')
                     div(class='title')
@@ -107,7 +107,7 @@ template(name='ExpenseShow')
                             | #{provider.company}
                             
                         i(class='material-icons' style='margin: 0 0 0 15px')
-                          | keyboard_arrow_right
+                          | open_in_new
                     else
                       div(class='info-none')
                         | None
@@ -115,7 +115,7 @@ template(name='ExpenseShow')
             div(class='sub-title')
               | Receipt
             div(class='flex-grid')
-              +PaperButton classes="section no-padding" raise=true rippleOn=true submit=false elevation=1
+              +PaperButton classes="section no-padding" raise=false rippleOn=true submit=false elevation=0
                 if expense.receipt_url
                   div(class='receipt-div' style='background-image: url(/receipt.jpg)')
                 else
