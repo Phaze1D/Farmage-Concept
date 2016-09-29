@@ -29,6 +29,3 @@ class CustomerShow extends ShowMixin
   telephones: ->
     if @data().customer.telephones.length > 0
       @data().customer.telephones
-
-  sells: ->
-    @data().customer.sells()

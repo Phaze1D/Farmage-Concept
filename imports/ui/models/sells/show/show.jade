@@ -82,7 +82,6 @@ template(name='SellShow')
                       div(class='info-none')
                         | Not Paid
                         
-
             div(class='flex-grid')
               div(class='section elevation-0')
                 div(class='it')
@@ -157,7 +156,7 @@ template(name='SellShow')
             
             each detail in sell.details
               div(class='flex-grid')
-                div(class='section elevation-0' style='border-bottom: none')
+                div(class='section elevation-0' style='border: 1px solid white; padding-bottom: 0; margin-bottom: 0')
                   div(class='it')
                     div(class='info-div')
                       div(class='title')
@@ -170,10 +169,11 @@ template(name='SellShow')
                               | #{name}
                             div(class='info-small text-overflow')
                               | #{sku}
-                            
+                    
+                  div(class='it')      
                     div(class='info-div')
                       div(class='title')
-                        | Price
+                        | Unit Price
                         span
                           | ( Tax Exc )
                       div(class='info')
@@ -188,25 +188,53 @@ template(name='SellShow')
                         
                     div(class='info-div')
                       div(class='title')
-                        | Price 
+                        | Sub Total 
                         span
                           | ( Tax Inc )
                       div(class='info')
                         | $
                         =detailTotal(detail)
-                      
-              //- if hasInventories detail 
-              //-   +PaperButton classes="js-expand-button expand-button" raise=0 rippleOn=true submit=false elevation=0                  
-              //-     div(class='title')
-              //-       | Inventories
-              //-       
-              //-     i(class='material-icons')
-              //-       | expand_more
-              //-       
-              //-   
-              //-   div(class='flex-grid expandable')
-              //-     each inventory in inventories detail
-              //-       div(class='section elevation-0')
+                        
+                    div(class='info-div')
+                      div(class='title')
+                        | Quantity
+                      div(class='info')
+                        | #{detail.quantity}
+                    
+                    
+              div(class='expandable' expanded='false')
+                div(class='js-wrapper')
+                  each inventory in inventories detail
+                    div(class='flex-grid')
+                      div(class='section elevation-0' style='min-height: 0; border: none')
+                        div(class='it')
+                          div(class='info-div')
+                            div(class='title')
+                              | Identifer
+                            div(class='info')
+                              =invIdentifer(inventory)
+                          div(class='info-div')
+                            div(class='title')
+                              | Quantity Taken
+                            div(class='info')
+                              | #{inventory.quantity_taken}
+                        
+              if hasInventories detail
+                +PaperButton classes="js-expand-button expand-button" raise=0 rippleOn=false submit=false elevation=0      
+                  div(class='title')
+                    | Inventories
+                  i(class='material-icons')
+                    | expand_more
+              else
+                +PaperButton classes="expand-button" raise=0 rippleOn=false submit=false elevation=0   
+                  div(class='title' disabled)
+                    | Inventories
+                  i(class='material-icons' disabled)
+                    | expand_more
+                    
+                
+              
+                    
               
             div(class='flex-grid' style='flex-wrap: wrap-reverse')
               div(class='section elevation-0')

@@ -19,9 +19,9 @@ template(name='OUserShow')
     div(class='top')
       img(src='/default_avatar.png')
       h3
-        | #{customer.first_name} #{customer.last_name}
+        | #{ouser.profile.first_name} #{ouser.profile.last_name}
       h4
-        | #{customer.company}
+        | #{email}
         
     div(class='scroll-section')
     
@@ -31,14 +31,195 @@ template(name='OUserShow')
             | #{fabT}
     
       div(class='middle')
-        +PaperTabPanel tabs=tabs scrollable=true tabClasses='show-tab'     
-          +PaperTab classes='active-panel' index=0
+        +PaperTabPanel tabs=tabs scrollable=true classes='show-bar'     
+          +PaperTab classes='active-panel show-panel' index=0    
+            div(class='flex-grid')
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Notes
+                    if ouser.profile.notes
+                      div(class='info')
+                        | #{ouser.profile.notes}
+                    else
+                      div(class='info-none')
+                        | None
+                    
+            div(class='flex-grid')
+              div(class='section elevation-0')
+                i(class='material-icons')
+                  | card_giftcard
+                
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Date Of Birth
+                    if ouser.profile.date_of_birth
+                      div(class='info')
+                        | #{ouser.profile.date_of_birth}
+                    else
+                      div(class='info-none')
+                        | None
+                        
+              div(class='section elevation-0')
+                i(class='material-icons')
+                  | email
+                
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Email
+                    if email
+                      div(class='info')
+                        | #{email}
+                    else
+                      div(class='info-none')
+                        | None
+                                  
+              div(class='section elevation-0')
+                i(class='material-icons')
+                  | phone
+                  
+                div(class='it')
+                  if telephones
+                    each telephone in telephones
+                      div(class='info-div')
+                        div(class='title')
+                          if telephone.name
+                            | #{telephone.name}
+                          else
+                            | Telephone
+                        div(class='info')
+                            | #{telephone.number}
+                  
+                  else
+                    div(class='info-div')
+                      div(class='title')
+                        | Telephones
+                      div(class='info-none')
+                        | None
+      
+              div(class='section elevation-0')
+                i(class='material-icons')
+                  | location_on
+                  
+                div(class='it')
+                  if addresses
+                    each address in addresses
+                      div(class='info-div')
+                        div(class='title')
+                          if address.name
+                            | #{address.name}
+                          else
+                            | Address
+                        div(class='info')
+                          div(class='add-info')
+                            | #{address.street}
+                          div(class='add-info')
+                            | #{address.street2}
+                          div(class='add-info')
+                            if address.city
+                              | #{address.city}, #{address.state}
+                          div(class='add-info')
+                            | #{address.zip_code}
+                          div(class='add-info')
+                            | #{address.country}
+                  
+                  else
+                    div(class='info-div')
+                      div(class='title')
+                        | Addresses
+                      div(class='info-none')
+                        | None
             
-          +PaperTab index=1
-          
-        
-        
-//- Addresses
-//- Telephones
-//- Edit
-//- Sells
+            div(class='sub-title')
+              | Permissons
+            div(class='flex-grid')
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Owner
+                if permission 'owner' 
+                  i(class="material-icons")
+                    | radio_button_checked
+                else 
+                  i(class="material-icons")
+                    | radio_button_unchecked
+                
+                      
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Viewer
+                if permission 'viewer' 
+                  i(class="material-icons")
+                    | radio_button_checked
+                else 
+                  i(class="material-icons")
+                    | radio_button_unchecked
+                    
+                    
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Expenses Manager
+                if permission 'expenses_manager' 
+                  i(class="material-icons")
+                    | radio_button_checked
+                else 
+                  i(class="material-icons")
+                    | radio_button_unchecked
+                    
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Sells Manager
+                if permission 'sells_manager' 
+                  i(class="material-icons")
+                    | radio_button_checked
+                else 
+                  i(class="material-icons")
+                    | radio_button_unchecked
+                    
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Units Manager
+                if permission 'units_manager' 
+                  i(class="material-icons")
+                    | radio_button_checked
+                else 
+                  i(class="material-icons")
+                    | radio_button_unchecked
+                    
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Inventories Manager
+                if permission 'inventories_manager' 
+                  i(class="material-icons")
+                    | radio_button_checked
+                else 
+                  i(class="material-icons")
+                    | radio_button_unchecked
+                    
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Users Manager
+                if permission 'users_manager' 
+                  i(class="material-icons")
+                    | radio_button_checked
+                else 
+                  i(class="material-icons")
+                    | radio_button_unchecked
+              div(class='section elevation-0' style='max-height: 0; min-height: 0; border: none')
+              div(class='section elevation-0' style='max-height: 0; min-height: 0; border: none')

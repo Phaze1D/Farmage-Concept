@@ -41,6 +41,9 @@ class SellsNew extends BlazeComponent
   inventories: (product_id) ->
     @currentList("inventories#{product_id}")
 
+  date: (date) ->
+    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    "#{months[date.getMonth()]} #{date.getDate()}, #{date.getFullYear()}"
 
   invIdentifier: (inventory) ->
     if inventory.name?

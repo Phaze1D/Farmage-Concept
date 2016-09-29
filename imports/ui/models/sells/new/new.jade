@@ -66,7 +66,7 @@ template(name='sellsNew')
                       div(class='detail-info')
                         div(class='col p-right')
                           label(class='label')
-                            | Price
+                            | Unit Price
                             span
                               | (Tax Exc)
                           div(class='value')
@@ -80,7 +80,7 @@ template(name='sellsNew')
                         
                         div(class='col p-right')
                           label(class='label')
-                            | Price 
+                            | Sub Total
                             span
                               | (Tax Inc)
                           div(class='value')
@@ -111,7 +111,7 @@ template(name='sellsNew')
                                 label(class='label')
                                   | Expiration Date
                                 div(class='value')
-                                  | #{inventory.expiration_date}
+                                  =date(inventory.expiration_date)
                             
                           div(class='inventory-amount col-4')
                             label(class='label')

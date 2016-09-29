@@ -31,7 +31,10 @@ class SelectList extends BlazeComponent
     subscription.charAt(0).toUpperCase() + subscription.slice(1);
 
   items: (subscription) ->
-    mlists[subscription].find()
+    if @data().parent? && @data().parent.length > 0
+      mlists[subscription].find "#{@data().parent}_id": @data().parent_id
+    else
+      mlists[subscription].find()
 
   itemIsSelected: (item_id, subscription, parent_id) ->
     if @data().clists.get(subscription + parent_id)?
