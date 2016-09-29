@@ -37,7 +37,7 @@ class ShowMixin extends BlazeComponent
       o:
         duration: duration
 
-  hideFab: (duration) ->
+  hideFab: (duration, onShrink = false) ->
     @fabHidden = true
     @fab.velocity
       p:
@@ -45,6 +45,11 @@ class ShowMixin extends BlazeComponent
         scaleY: 0
       o:
         duration: duration
+        complete: =>
+          if onShrink
+            @tabBar.css
+              position: ''
+              top: ''
 
 
   changeFab: (index) ->
@@ -106,7 +111,7 @@ class ShowMixin extends BlazeComponent
       @showFab(250)
 
   onBackClick: (event) ->
-    @hideFab(200)
+    @hideFab(200, true)
 
 
   events: ->
