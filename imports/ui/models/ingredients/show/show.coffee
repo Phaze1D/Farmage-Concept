@@ -16,13 +16,10 @@ class IngredientShow extends ShowMixin
           console.log "sub stop #{err}"
         onReady: ->
 
-      @subscribe "products", organization_id, 'ingredient', @data().ingredient._id,
-        onStop: (err) ->
-          console.log "sub stop #{err}"
-        onReady: ->
-
   onRendered: ->
     super
+    @parentComponent().parentComponent().parentComponent().rightData.set update_id: @data().ingredient._id
+
 
   tabs: ->
     ['Information', 'Analytics', 'Reports']

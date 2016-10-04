@@ -10,7 +10,8 @@ class AddressAdd extends BlazeComponent
 
 
   onCreated: ->
-    @addresses = new ReactiveVar([])
+    adds = if @data().addresses? then @data().addresses else []
+    @addresses = new ReactiveVar(adds)
     @data().title = 'Address' unless @data().title?
 
 

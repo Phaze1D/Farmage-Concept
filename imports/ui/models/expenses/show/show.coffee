@@ -13,6 +13,11 @@ class ExpenseShow extends ShowMixin
 
   onRendered: ->
     super
+    @parentComponent().parentComponent().parentComponent().rightData.set
+      update_id: @data().expense._id
+      provider_id: @data().expense.provider_id
+      unit_id: @data().expense.unit_id
+
 
   tabs: ->
     ['Information']

@@ -46,7 +46,6 @@ Meteor.publish 'expense.parents', (organization_id, expense_id) ->
     throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   expense = ExpenseModule.Expenses.findOne(expense_id)
-
   unless(expense? && expense.organization_id is organization._id)
     throw new Meteor.Error 'notAuthorized', 'not authorized'
 

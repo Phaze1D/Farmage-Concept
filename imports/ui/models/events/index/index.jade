@@ -1,4 +1,11 @@
 template(name='events.index')
+  +PaperRightPanel callbacks=rightCallbacks
+    div(class='js-show-right')
+    div(class="js-right-content")
+      if rightShown.get
+        +Template.dynamic template=rightTemplate.get data=rightData.get
+        
+        
   if subscriptionsReady
     div(class='events main-content')
       div(class='card-wrapper')

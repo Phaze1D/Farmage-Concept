@@ -14,22 +14,26 @@ require './ingredients/new/new.coffee'
 require './ingredients/selector/selector.coffee'
 require './ingredients/card/card.coffee'
 require './ingredients/show/show.coffee'
+require './ingredients/update/update.coffee'
 
 
 require './customers/index/index.coffee'
 require './customers/new/new.coffee'
 require './customers/show/show.coffee'
 require './customers/card/card.coffee'
+require './customers/update/update.coffee'
 
 require './events/index/index.coffee'
 require './events/card/card.coffee'
 require './events/show/show.coffee'
+require './events/update/update.coffee'
 
 
 require './expenses/index/index.coffee'
 require './expenses/new/new.coffee'
 require './expenses/card/card.coffee'
 require './expenses/show/show.coffee'
+require './expenses/update/update.coffee'
 
 
 require './inventories/index/index.coffee'
@@ -56,6 +60,7 @@ require './providers/index/index.coffee'
 require './providers/new/new.coffee'
 require './providers/card/card.coffee'
 require './providers/show/show.coffee'
+require './providers/update/update.coffee'
 
 
 require './sells/index/index.coffee'

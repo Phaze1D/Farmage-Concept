@@ -15,7 +15,7 @@ class ExpenseCard extends BlazeComponent
     super
     organization_id = FlowRouter.getParam("organization_id")
     @autorun =>
-      @subscribe "expense.parents", organization_id, @data().expense._id,
+      @subscribe "expense.parents", organization_id, @data().expense._id, @data().expense.unit_id,
         onStop: (err) ->
           console.log "sub stop #{err}"
         onReady: ->

@@ -24,8 +24,8 @@ template(name='ExpenseShow')
         
     div(class='scroll-section')
     
-      +PaperButton classes="show-fab" elevation=2 rippleOn='true' rippleFill='white'
-        div(class='plus-icon-div')
+      +PaperButton classes="show-fab js-show-new" elevation=2 rippleOn='true' rippleFill='white'
+        div(class='plus-icon-div' data-template='expensesUpdate')
           i(class="material-icons plus-icon")
             | #{fabT}
     
@@ -115,7 +115,7 @@ template(name='ExpenseShow')
             div(class='sub-title')
               | Receipt
             div(class='flex-grid')
-              +PaperButton classes="section no-padding" raise=false rippleOn=true submit=false elevation=0
+              +PaperButton classes="section no-padding" raise=true rippleOn=true submit=false elevation=1
                 if expense.receipt_url
                   div(class='receipt-div' style='background-image: url(/receipt.jpg)')
                 else

@@ -118,7 +118,7 @@ class ShowMixin extends BlazeComponent
     super.concat
       'scroll .scroll-section': @onScroll
       'click .show-tab': @onTabClick
-      'click .card-shrink-action':@onBackClick
+      'click .card-shrink-action': @onBackClick
 
 
 module.exports = ShowMixin

@@ -8,6 +8,8 @@ class IndexMixin extends BlazeComponent
     super
     @cardExpand = new ReactiveVar(false)
     @rightShown = new ReactiveVar(false)
+    @rightTemplate = new ReactiveVar("")
+    @rightData = new ReactiveVar()
     @size = 1
     @ticking = false
 
@@ -15,8 +17,10 @@ class IndexMixin extends BlazeComponent
     super
 
 
+
   onShow: (event) ->
     @parentComponent().data().hasFAB = false
+    @rightTemplate.set $(event.currentTarget).find('.plus-icon-div').attr('data-template')
     @fabShrink()
     @rightShown.set true
     $('.js-show-right').trigger('click')

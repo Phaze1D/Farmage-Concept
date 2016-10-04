@@ -3,11 +3,11 @@ template(name='customers.index')
     div(class='js-show-right')
     div(class="js-right-content")
       if rightShown.get
-        +customersNew
+        +Template.dynamic template=rightTemplate.get data=rightData.get
     
 
   +PaperButton classes="new-action js-show-new" elevation=2 rippleOn='true' rippleFill='white'
-    div(class='plus-icon-div')
+    div(class='plus-icon-div' data-template='customersNew')
       i(class="material-icons plus-icon")
         | add
         

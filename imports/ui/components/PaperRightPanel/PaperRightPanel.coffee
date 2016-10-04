@@ -5,8 +5,7 @@ class PaperRightPanel extends BlazeComponent
   @register 'PaperRightPanel'
 
   constructor: (args) ->
-
-
+    @shown = false
 
   onRendered: ->
     @headerMain = $("#paper-drawer-main")
@@ -15,10 +14,12 @@ class PaperRightPanel extends BlazeComponent
 
 
   onShow: (event) ->
-    if window.innerWidth >= 1024
-      @showSmall()
-    else
-      @showFull()
+    unless @shown
+      @shown = true
+      if window.innerWidth >= 1024
+        @showSmall()
+      else
+        @showFull()
 
 
   showSmall:  ->
@@ -26,6 +27,7 @@ class PaperRightPanel extends BlazeComponent
       p:
         translateX: ['0', '100%']
       o:
+        mobileHA: false
         duration: 350
         easing: 'ease-in-out'
         complete: =>
@@ -37,6 +39,7 @@ class PaperRightPanel extends BlazeComponent
       p:
         'padding-right': '35%'
       o:
+        mobileHA: false
         duration: 350
         easing: 'ease-in-out'
 
@@ -51,6 +54,7 @@ class PaperRightPanel extends BlazeComponent
       p:
         translateX: ['0', '100%']
       o:
+        mobileHA: false
         duration: 350
         easing: 'ease-in-out'
         complete: =>
@@ -61,10 +65,12 @@ class PaperRightPanel extends BlazeComponent
 
 
   onHide: (event) ->
-    if window.innerWidth >= 1024
-      @hideSmall()
-    else
-      @hideFull()
+    if @shown
+      @shown = false
+      if window.innerWidth >= 1024
+        @hideSmall()
+      else
+        @hideFull()
 
 
   hideSmall: ->
@@ -72,6 +78,7 @@ class PaperRightPanel extends BlazeComponent
       p:
         translateX: '100%'
       o:
+        mobileHA: false
         duration: 250
         easing: 'ease-in-out'
         complete: =>
@@ -82,6 +89,7 @@ class PaperRightPanel extends BlazeComponent
       p:
         'padding-right': 0
       o:
+        mobileHA: false
         duration: 250
         easing: 'ease-in-out'
 
@@ -95,6 +103,7 @@ class PaperRightPanel extends BlazeComponent
       p:
         translateX: '100%'
       o:
+        mobileHA: false
         duration: 250
         easing: 'ease-in-out'
         complete: =>

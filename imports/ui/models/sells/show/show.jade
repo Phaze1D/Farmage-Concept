@@ -156,7 +156,7 @@ template(name='SellShow')
             
             each detail in sell.details
               div(class='flex-grid')
-                div(class='section elevation-0' style='border: 1px solid white; padding-bottom: 0; margin-bottom: 0')
+                div(class='section elevation-0' style='border: 1px solid white; padding-bottom: 0; margin-bottom: 0; flex-wrap: wrap')
                   div(class='it')
                     div(class='info-div')
                       div(class='title')
@@ -218,18 +218,12 @@ template(name='SellShow')
                               | Quantity Taken
                             div(class='info')
                               | #{inventory.quantity_taken}
-                        
-              if hasInventories detail
-                +PaperButton classes="js-expand-button expand-button" raise=0 rippleOn=false submit=false elevation=0      
+
+              +PaperButton classes="js-expand-button expand-button" raise=0 rippleOn=false submit=false elevation=0                              
+                if hasInventories detail
                   div(class='title')
                     | Inventories
                   i(class='material-icons')
-                    | expand_more
-              else
-                +PaperButton classes="expand-button" raise=0 rippleOn=false submit=false elevation=0   
-                  div(class='title' disabled)
-                    | Inventories
-                  i(class='material-icons' disabled)
                     | expand_more
                     
                 

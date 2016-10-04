@@ -18,6 +18,7 @@ class ProviderShow extends ShowMixin
 
   onRendered: ->
     super
+    @parentComponent().parentComponent().parentComponent().rightData.set update_id: @data().provider._id
 
 
   tabs: ->

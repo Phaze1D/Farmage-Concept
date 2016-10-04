@@ -18,6 +18,7 @@ class CustomerShow extends ShowMixin
 
   onRendered: ->
     super
+    @parentComponent().parentComponent().parentComponent().rightData.set update_id: @data().customer._id
 
   tabs: ->
     ['Information', 'Analytics', 'Reports']

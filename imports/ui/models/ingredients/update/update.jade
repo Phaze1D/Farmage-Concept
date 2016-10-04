@@ -1,0 +1,30 @@
+template(name="ingredientsUpdate")
+  form(class="js-ingredient-update-form")
+    +PaperHeaderPanel id="right" 
+      +PaperHeaderSmall id='right' classes='right-header'
+        +PaperButton classes="save-icon-div js-submit-update-ingredient" raise=0 rippleOn=true submit=true
+          i(class="material-icons")
+            | check
+            
+        +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+          i(class="material-icons")
+            | clear
+      
+      
+      +PaperHeaderBig id="right"
+        +PaperButton classes="save-icon-div js-submit-update-ingredient" raise=0 rippleOn=true submit=true
+          i(class="material-icons")
+            | check
+            
+        +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+          i(class="material-icons")
+            | clear
+      
+      +PaperHeaderMain id="right"
+        div(class='organization-bottom')
+          div(class='input-area')
+            div(class='organ-input-div organ-name-div')
+              +PaperInput type="text" name="name" label="Name" focusColor="darkblue" size='size-medium' value=ingredient.name
+            div(class='organ-input-div organ-email-div')
+              +PaperInput type="text" name="measurement_unit" label="Measurement Unit" focusColor="darkblue" value=ingredient.measurement_unit
+              

@@ -11,7 +11,8 @@ class TelephoneAdd extends BlazeComponent
 
 
   onCreated: ->
-    @telephones = new ReactiveVar([])
+    tels = if @data().telephones? then @data().telephones else []
+    @telephones = new ReactiveVar(tels)
     @data().title = 'Telephone' unless @data().title?
 
   onRendered: ->

@@ -23,7 +23,7 @@ class ExpensesNew extends BlazeComponent
 
   provider: ->
     provider = @currentList('providers')[0]
-    return {}unless provider?
+    return {} unless provider?
     provider
 
   unit: ->

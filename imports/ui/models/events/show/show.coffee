@@ -9,6 +9,10 @@ class EventShow extends ShowMixin
 
   onRendered: ->
     super
+    @parentComponent().parentComponent().parentComponent().rightData.set
+      update_id: @data().event._id
+      for_id: @data().event.for_id
+      for_type: @data().event.for_type
 
   tabs: ->
     ['Information']
