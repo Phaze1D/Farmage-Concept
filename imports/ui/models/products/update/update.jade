@@ -1,0 +1,79 @@
+template(name="productsUpdate")
+  div(class="products-new")
+    +dialogMixin
+        
+    form(class="js-product-update-form")
+      +PaperHeaderPanel id="right"
+        +PaperHeaderSmall id='right' classes='right-header'
+          +PaperButton classes="save-icon-div js-submit-update-product" raise=0 rippleOn=true submit=true
+            i(class="material-icons")
+              | check
+              
+          +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+            i(class="material-icons")
+              | clear
+        
+        
+        +PaperHeaderBig id="right"
+          +PaperButton classes="save-icon-div js-submit-update-product" raise=0 rippleOn=true submit=true
+            i(class="material-icons")
+              | check
+              
+          +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+            i(class="material-icons")
+              | clear
+        
+        +PaperHeaderMain id="right"
+          div(class='organization-bottom')
+            div(class='input-area')
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperInput type="text" name="name" label="Product Name" focusColor="darkblue" size="size-medium" value=product.name
+                  
+              div(class='grid-wrapper')
+                div(class="col-8 p-left p-right")
+                  +PaperInput type="text" name="size" label="Size" focusColor="darkblue" value=product.size
+                div(class='col-4 p-right')
+                  +PaperInput type="text" name="sku" label="SKU" focusColor="darkblue" value=product.sku
+
+              div(class='grid-wrapper')
+                div(class='col-4 p-right p-left')
+                  +PaperInput type="number" classes="js-calc-p uprice" name="unit_price" label="Price" focusColor="darkblue" prefix="$" step="0.01" min='0' span="(tax exc)" value=product.unit_price labelFloat=true
+                div(class='col-4 p-right')
+                  +PaperInput type="number" classes="js-calc-p tax" name="tax_rate" label="Tax Rate" focusColor="darkblue" defix="%" step="any" min="0" max="100" value=product.tax_rate labelFloat=true
+                div(class='col-4 p-right')
+                  +PaperInput type="number" classes="js-calc-p tprice" name="none" label="Price" value=totalPrice.get focusColor="darkblue" prefix="$" step="any" min='0' span="(tax inc)" disabled="true" labelFloat=true
+                  
+                  
+                  
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperInput type="textarea" name="description" label="Description" focusColor="darkblue" charMax='512' showCount=true value=product.description
+              
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  div(class=' button-wrapper')
+                    div(class="resources-b js-dialog-b" data-sub='pingredients' data-many='true')
+                      div(class="text-div") Resources
+
+                        
+              
+              each pingredient in pingredients
+                with ingredient pingredient.ingredient_id
+                  div(id='dialog-scrollTo' class='grid-wrapper')
+                    div(class='col-7 p-left')
+                      div(class='ing-info')
+                        div(class='ing-img')
+                          div(class="circle-image")
+                        
+                        div(class='ing-text')
+                          div(class='ing-name')
+                            | #{name}
+                          
+                        
+                    div(class='col-5 p-right p-left')
+                      div(class='ing-info')
+                        +PaperInput type="number" value=pingredient.amount disabled=true span="pre product" classes='amount-input' name=_id label="Amount" focusColor="darkblue" min="0" defix=measurement_unit labelFloat=false size='size-small' hideTop=true
+                      
+            
+                  

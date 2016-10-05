@@ -25,6 +25,8 @@ class ProductShow extends ShowMixin
 
   onRendered: ->
     super
+    @parentComponent().parentComponent().parentComponent().rightData.set
+      update_id: @data().product._id
 
   tabs: ->
     ['Information', 'Analytics', 'Reports']

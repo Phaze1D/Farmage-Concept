@@ -12,6 +12,8 @@ class YieldShow extends ShowMixin
 
   onRendered: ->
     super
+    @parentComponent().parentComponent().parentComponent().rightData.set
+      update_id: @data().yield._id
 
   tabs: ->
     ['Information', 'Analytics', 'Reports']

@@ -1,23 +1,35 @@
 DialogMixin = require '../../../mixins/dialog_mixin/dialog_mixin.coffee'
 EventMixin = require '../../../mixins/event_mixin/event_mixin.coffee'
 YMethods = require '../../../../api/collections/yields/methods.coffee'
+YieldModule = require '../../../../api/collections/yields/yields.coffee'
 EMethods = require '../../../../api/collections/events/methods.coffee'
 
+require './update.jade'
 
-require './new.jade'
-
-class YieldsNew extends BlazeComponent
-  @register 'yieldsNew'
+class YieldsUpdate extends BlazeComponent
+  @register 'yieldsUpdate'
 
   constructor: (args) ->
     super
-    @initAmount = 0
 
   mixins: -> [ DialogMixin, EventMixin ]
+
+  onCreated: ->
+    super
+    @initAmount = @yield().amount
 
   onRendered: ->
     super
     $('#right-paper-header-panel').addClass('touchScroll')
+    clist = @callFirstWith(@, 'clistsDict')
+    _yield = YieldModule.Yields.findOne @data().update_id
+    unit = _yield.unit().fetch()[0]
+    ingredient = _yield.ingredient().fetch()[0]
+    clist.set 'units', [unit]
+    clist.set 'ingredients', [ingredient]
+
+  yield: ->
+    YieldModule.Yields.findOne @data().update_id
 
   currentList: (subscription)->
     return @callFirstWith(@, 'currentList', subscription);
@@ -32,16 +44,16 @@ class YieldsNew extends BlazeComponent
     return {} unless unit?
     unit
 
-  insert: (yield_doc, event_doc) ->
+  update: (yield_doc, event_doc) ->
     amount = event_doc.amount
-    yield_doc.amount = 0
-    yield_doc.organization_id = FlowRouter.getParam('organization_id')
-    event_doc.organization_id = yield_doc.organization_id
+    yield_id = @data().update_id
+    organization_id = FlowRouter.getParam('organization_id')
+    event_doc.organization_id = organization_id
 
-    YMethods.insert.call {yield_doc}, (err, res) =>
+    YMethods.update.call {organization_id, yield_id, yield_doc}, (err, res) =>
       console.log err
-      @insertEvent(event_doc, res) if amount > 0 && res?
-      $('.js-hide-new').trigger('click') if amount <= 0 && !err?
+      @insertEvent(event_doc, yield_id) if amount isnt 0 && !err?
+      $('.js-hide-new').trigger('click') if amount is 0 && !err?
 
   insertEvent: (event_doc, yield_id) =>
     event_doc.for_type = 'yield'
@@ -54,22 +66,20 @@ class YieldsNew extends BlazeComponent
 
   onSubmit: (event) ->
     event.preventDefault()
-    form = $('.js-yields-new-form')
+    form = $('.js-yields-update-form')
     yield_doc =
       name: form.find('[name=name]').val()
-      amount: 0
       notes: form.find('[name=notes]').val()
-      ingredient_id: @ingredient()._id
       unit_id: @unit()._id
 
     event_doc =
       amount: Number form.find('[name=event_amount]').val()
       description: form.find('[name=event_description]').val()
 
-    @insert yield_doc, event_doc
+    @update yield_doc, event_doc
 
 
   events: ->
     super.concat
-      'submit .js-yields-new-form': @onSubmit
-      'click .js-submit-new-yield': @onSubmit
+      'submit .js-yields-update-form': @onSubmit
+      'click .js-submit-update-yield': @onSubmit

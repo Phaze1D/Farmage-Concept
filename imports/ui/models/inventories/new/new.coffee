@@ -5,8 +5,6 @@ IngredientModule= require '../../../../api/collections/ingredients/ingredients.c
 IMethods= require '../../../../api/collections/inventories/methods.coffee'
 EMethods = require '../../../../api/collections/events/methods.coffee'
 
-
-
 Big = require 'big.js'
 
 require './new.jade'
@@ -16,10 +14,10 @@ class InventoriesNew extends BlazeComponent
   @register 'inventoriesNew'
 
   constructor: (args) ->
+    super
+    @initAmount = 0
 
-  mixins: ->[
-    EventMixin, DialogMixin
-  ]
+  mixins: ->[ DialogMixin, EventMixin ]
 
   onCreated: ->
     super
@@ -134,6 +132,7 @@ class InventoriesNew extends BlazeComponent
 
   hideEvent: ->
     unless @isEventHidden()
+      console.log 'asdf'
       @callFirstWith(@, 'hideEvent')
 
 

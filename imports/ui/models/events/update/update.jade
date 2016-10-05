@@ -23,8 +23,36 @@ template(name='eventsUpdate')
       +PaperHeaderMain id="right"
         div(class='organization-bottom')
           div(class='input-area')
-            div(class='organ-input-div organ-name-div')
-              +PaperInput type="text" name="name" label="Name" focusColor="darkblue" size='size-medium' value=event.name
-            div(class='organ-input-div organ-email-div')
-              +PaperInput type="text" name="measurement_unit" label="Measurement Unit" focusColor="darkblue" value=event.measurement_unit
+            div(class="grid-wrapper")
+              div(class='col-12 p-right p-left')
+                +PaperInput type="textarea" name="description" label="Description" focusColor="darkblue" value=event.description
               
+            div(class="grid-wrapper")
+              div(class='col-4 p-right p-left')
+                +PaperInput type="text" name="amount" label="Amount" focusColor="darkblue" value=event.amount disabled=true
+              
+              div(class='col-4 p-left')
+                +PaperInput type="text" name="for_type" label="For Type" focusColor="darkblue" value=forType disabled=true
+                
+              div(class='col-4 p-left')
+                +PaperInput type="text" name="for_id" label="For Identifer" focusColor="darkblue" value=identifer disabled=true
+
+                
+            div(class="grid-wrapper")
+              div(class='col-9 p-left')
+                div(class='js-ou-label ou-label' style='cursor: auto')
+                  label
+                    | Is Manual
+                  div(class='ou-info')
+                    | Did the user created this event manually 
+                    
+              div(class='col-3 p-right')
+                div(class='u-toggle-div')
+                  div(class='ou-toggle')
+                    if event.is_user_event
+                      i(class="material-icons")
+                        | radio_button_checked
+                    else
+                      i(class="material-icons")
+                        | radio_button_unchecked
+                

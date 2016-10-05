@@ -1,7 +1,7 @@
 template(name='eventMixin')
   div(class='grid-wrapper')
     div(class='col-6 p-left')
-      +PaperInput type="number" name="amount" label=amountLabel focusColor="darkblue" size="size-small" disabled='true' value=getMainAmount min='0' step='any'
+      +PaperInput type="number" name="amount" label=amountLabel focusColor="darkblue" size="size-small" disabled='true' value=getMainAmount min=0 step='any'
     
     div(class='col-6 p-right p-left')
       div(class='b-change-wrapper')
@@ -21,4 +21,4 @@ template(name='eventMixin')
           div(class='col-9 p-right')
             +PaperInput type="textarea" name="event_description" label="Event Description" focusColor="darkblue" charMax='512' showCount=true
           div(class='col-3')
-            +PaperInput type="number" name="event_amount" label=amountLabel focusColor="darkblue" size="size-small" value=0 min='0' step='any' classes='js-event-amount'
+            +PaperInput type="number" name="event_amount" label=amountLabel focusColor="darkblue" size="size-small" value=0 min=minAmount step='any' classes='js-event-amount'

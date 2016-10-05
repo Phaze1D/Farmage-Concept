@@ -30,9 +30,30 @@ collections.Yields = YieldModule.Yields
 ###
 
 
+module.exports.update = new ValidatedMethod
+  name: "events.update"
+  validate: ({organization_id, event_id, event_doc}) ->
+    EventModule.Events.simpleSchema().validate({$set: event_doc}, modifier: true)
+
+    new SimpleSchema(
+      organization_id:
+        type: String
+      event_id:
+        type: String
+    ).validate({organization_id, event_id})
+
+  run: ({organization_id, event_id, event_doc}) ->
+    mixins.loggedIn(@userId)
+
+    unless @isSimulation
+      mixins.hasPermission(@userId, organization_id, "owner")
+      mixins.eventBelongsToOrgan(event_id, organization_id)
+
+    EventModule.Events.update event_id,
+                              $set: description: event_doc.description
+
 
 # +++++++++++++++++++ User Event
-
 module.exports.userEvent = new ValidatedMethod
   name: "events.userEvent"
   validate: ({event_doc}) ->
@@ -51,6 +72,7 @@ module.exports.userEvent = new ValidatedMethod
           transcation event_doc, @userId, "yieldBelongsToOrgan", "Yields", "units_manager"
         when 'inventory'
           transcation event_doc, @userId, "inventoryBelongsToOrgan", "Inventories", "inventories_manager"
+
 
 
 transcation = (event_doc, userId, belongsToM, collection, permission) ->

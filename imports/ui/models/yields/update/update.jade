@@ -1,0 +1,59 @@
+template(name='yieldsUpdate')
+  div(class="yields-new")
+    +dialogMixin
+    
+    form(class="js-yields-update-form js-form-event")    
+      +PaperHeaderPanel id="right" 
+        +PaperHeaderSmall id='right' classes='right-header'
+          +PaperButton classes="save-icon-div js-submit-update-yield" raise=0 rippleOn=true submit=true
+            i(class="material-icons")
+              | check
+              
+          +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+            i(class="material-icons")
+              | clear
+        
+        
+        +PaperHeaderBig id="right"
+          +PaperButton classes="save-icon-div js-submit-update-yield" raise=0 rippleOn=true submit=true
+            i(class="material-icons")
+              | check
+              
+          +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+            i(class="material-icons")
+              | clear
+        
+        +PaperHeaderMain id="right"
+          div(class='organization-bottom')
+            div(class='input-area')
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperInput type="text" name="name" label="Identifier" focusColor="darkblue" size="size-medium" value=yield.name
+                  
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperInput type="textarea" name="notes" label="Notes" focusColor="darkblue" charMax='512' showCount=true value=yield.notes
+                      
+              +eventMixin amountLabel="Amount"
+                  
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
+                    div(class="resources-b js-dialog-b" data-sub='units' data-many='false')
+                      div(class="text-div") Unit
+                      div(class="icon-div")
+                        i(class="material-icons icon") add_circle
+                        
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  | #{unit.name}
+                        
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  div(class='button-wrapper')
+                    div(class="resources-b js-dialog-b" data-sub='ingredients' data-many='false')
+                      div(class="text-div") Resource
+                        
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  | #{ingredient.name}

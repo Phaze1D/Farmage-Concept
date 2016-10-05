@@ -1,29 +1,43 @@
-DialogMixin = require '../../../mixins/dialog_mixin/dialog_mixin.coffee'
 EventMixin = require '../../../mixins/event_mixin/event_mixin.coffee'
+DialogMixin = require '../../../mixins/dialog_mixin/dialog_mixin.coffee'
 UMethods = require '../../../../api/collections/units/methods.coffee'
+UnitModule = require '../../../../api/collections/units/units.coffee'
 EMethods = require '../../../../api/collections/events/methods.coffee'
 
+require './update.jade'
 
-
-require './new.jade'
-
-class UnitsNew extends BlazeComponent
-  @register 'unitsNew'
+class UnitsUpdate extends BlazeComponent
+  @register 'unitsUpdate'
 
   constructor: (args) ->
     super
-    @initAmount = 0
 
   mixins: -> [ DialogMixin, EventMixin ]
 
-
   onCreated: ->
     super
+    @initAmount = @unit().amount
 
   onRendered: ->
     super
     $('#right-paper-header-panel').addClass('touchScroll')
+    clist = @callFirstWith(@, 'clistsDict')
+    unit = UnitModule.Units.findOne @data().parent_id
+    clist.set 'units', [unit] if unit?
 
+
+  unit: ->
+    UnitModule.Units.findOne @data().update_id
+
+  tracking: ->
+    if @unit().tracking
+      'on'
+    else
+      'off'
+
+  trackAttr: ->
+    unless @unit().tracking
+      'height: 0px'
 
   currentList: (subscription)->
     return @callFirstWith(@, 'currentList', subscription);
@@ -37,16 +51,17 @@ class UnitsNew extends BlazeComponent
     return true if value is 'on'
     return false if value is 'off'
 
-  insert: (unit_doc, event_doc) ->
+  update: (unit_doc, event_doc) ->
     amount = event_doc.amount
     unit_doc.amount = 0
-    unit_doc.organization_id = FlowRouter.getParam('organization_id')
-    event_doc.organization_id = unit_doc.organization_id
+    unit_id = @data().update_id
+    organization_id = FlowRouter.getParam('organization_id')
+    event_doc.organization_id = organization_id
 
-    UMethods.insert.call {unit_doc}, (err, res) =>
+    UMethods.update.call {organization_id, unit_id ,unit_doc}, (err, res) =>
       console.log err
-      @insertEvent(event_doc, res) if amount > 0 && res?
-      $('.js-hide-new').trigger('click') if amount <= 0 && !err?
+      @insertEvent(event_doc, unit_id) if amount isnt 0 && !err?
+      $('.js-hide-new').trigger('click') if amount is 0 && !err?
 
 
   insertEvent: (event_doc, unit_id) =>
@@ -60,11 +75,10 @@ class UnitsNew extends BlazeComponent
 
   onSubmit: (event) ->
     event.preventDefault()
-    form = $('.js-units-new-form')
+    form = $('.js-units-update-form')
     unit_doc =
       name: form.find('[name=name]').val()
       description: form.find('[name=description]').val()
-      amount: Number form.find('[name=event_amount]').val()
       tracking: @convert form.find('.js-toggle-box[track]').find('.js-toggle').attr('toggled')
       unit_id: @parentUnit()._id
 
@@ -72,7 +86,7 @@ class UnitsNew extends BlazeComponent
       amount: Number form.find('[name=event_amount]').val()
       description: form.find('[name=event_description]').val()
 
-    @insert unit_doc, event_doc
+    @update unit_doc, event_doc
 
 
   onToggleGrid: (event) ->
@@ -114,5 +128,5 @@ class UnitsNew extends BlazeComponent
   events: ->
     super.concat
       'click .js-toggle-grid': @onToggleGrid
-      'submit .js-units-new-form': @onSubmit
-      'click .js-submit-new-unit': @onSubmit
+      'submit .js-units-update-form': @onSubmit
+      'click .js-submit-update-unit': @onSubmit

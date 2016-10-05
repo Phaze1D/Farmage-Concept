@@ -6,8 +6,10 @@ class EventMixin extends BlazeComponent
   onCreated: ->
     @eventTitle = new ReactiveVar('Change')
     @eventHidden = true
-    @mainAmount = new ReactiveVar(0)
+    @mainAmount = new ReactiveVar @mixinParent().initAmount
 
+  minAmount: ->
+    -@mixinParent().initAmount
 
   onToggleEvent: (event) ->
     unless $(event.currentTarget).attr('disabled')?
@@ -19,7 +21,7 @@ class EventMixin extends BlazeComponent
   showEvent: ->
     @eventHidden = false
     @eventTitle.set 'Undo'
-    @mainAmount.set 0
+    @mainAmount.set @mixinParent().initAmount
     ebox = $(@find '.event-box')
     ebox.css visibility: 'visible'
     ebox.velocity
@@ -37,7 +39,7 @@ class EventMixin extends BlazeComponent
   hideEvent: ->
     @eventHidden = true
     @eventTitle.set 'Change'
-    @mainAmount.set 0
+    @mainAmount.set @mixinParent().initAmount
     form = $('.js-form-event')
     form.find('[name=event_description]').val('')
     ebox = $(@find '.event-box')
@@ -62,13 +64,13 @@ class EventMixin extends BlazeComponent
 
   onAmountChange: (event) ->
     input = $(event.currentTarget)
-    @mainAmount.set input.val()
+    am = @mixinParent().initAmount + Number input.val()
+    @mainAmount.set am
 
 
-  events: -> [
+  events: ->
+    super.concat
       'click .js-event-b': @onToggleEvent
       'input .js-event-amount .pinput': @onAmountChange
-    ]
-
 
 module.exports = EventMixin

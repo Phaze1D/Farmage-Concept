@@ -50,7 +50,7 @@ class CustomersUpdate extends BlazeComponent
         name: $(@).find('[name=telephone_name]').val()
         number: $(@).find('[name=number]').val()
 
-    email = $form.find('[name=email]').val()
+    email = $form.find('[name=email]').val().trim()
     customer_doc =
       first_name: $form.find('[name=first_name]').val()
       last_name: $form.find('[name=last_name]').val()

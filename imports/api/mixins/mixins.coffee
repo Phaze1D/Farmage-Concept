@@ -5,6 +5,7 @@ CustomerModule = require '../collections/customers/customers.coffee'
 UnitModule = require '../collections/units/units.coffee'
 YieldModule = require '../collections/yields/yields.coffee'
 ExpenseModule = require '../collections/expenses/expenses.coffee'
+EventModule = require '../collections/events/events.coffee'
 InventoryModule = require '../collections/inventories/inventories.coffee'
 IngredientModule = require '../collections/ingredients/ingredients.coffee'
 SellModule = require '../collections/sells/sells.coffee'
@@ -111,3 +112,12 @@ module.exports.sellBelongsToOrgan = (sell_id, organization_id) ->
     throw new Meteor.Error 'notAuthorized', 'sell does not belong'
 
   return sell
+
+
+module.exports.eventBelongsToOrgan = (event_id, organization_id) ->
+  event = EventModule.Events.findOne(_id: event_id)
+
+  unless (event? && event.organization_id is organization_id)
+    throw new Meteor.Error 'notAuthorized', 'event does not belong'
+
+  return event

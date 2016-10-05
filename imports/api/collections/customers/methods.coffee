@@ -41,7 +41,6 @@ module.exports.insert = new ValidatedMethod
 module.exports.update = new ValidatedMethod
   name: 'customers.update'
   validate: ({organization_id, customer_id, customer_doc}) ->
-    CustomerModule.Customers.simpleSchema().clean({$set: customer_doc}, {isModifier: true, removeEmptyStrings: false})
     CustomerModule.Customers.simpleSchema().validate({$set: customer_doc}, modifier: true)
 
     new SimpleSchema(

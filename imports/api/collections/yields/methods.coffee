@@ -38,7 +38,6 @@ module.exports.insert = new ValidatedMethod
 module.exports.update = new ValidatedMethod
   name: "yields.update"
   validate: ({organization_id, yield_id, yield_doc}) ->
-    YieldModule.Yields.simpleSchema().clean({$set: yield_doc}, {isModifier: true})
     YieldModule.Yields.simpleSchema().validate({$set: yield_doc}, modifier: true)
     new SimpleSchema(
       organization_id:

@@ -54,6 +54,7 @@ require './products/new/new.coffee'
 require './products/selector/selector.coffee'
 require './products/card/card.coffee'
 require './products/show/show.coffee'
+require './products/update/update.coffee'
 
 
 require './providers/index/index.coffee'
@@ -74,6 +75,7 @@ require './units/new/new.coffee'
 require './units/selector/selector.coffee'
 require './units/card/card.coffee'
 require './units/show/show.coffee'
+require './units/update/update.coffee'
 
 
 require './yields/index/index.coffee'
@@ -81,5 +83,7 @@ require './yields/new/new.coffee'
 require './yields/selector/selector.coffee'
 require './yields/card/card.coffee'
 require './yields/show/show.coffee'
+require './yields/update/update.coffee'
+
 
 require './select_list/select_list.coffee'

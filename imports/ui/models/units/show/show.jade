@@ -23,7 +23,7 @@ template(name='UnitShow')
     div(class='scroll-section')
     
       +PaperButton classes="show-fab js-show-new" elevation=2 rippleOn='true' rippleFill='white'
-        div(class='plus-icon-div')
+        div(class='plus-icon-div' data-template='unitsUpdate')
           i(class="material-icons plus-icon")
             | #{fabT}
     
@@ -36,7 +36,7 @@ template(name='UnitShow')
                   div(class='info-div')
                     div(class='title')
                       | Description
-                    if yield.notes
+                    if unit.description
                       div(class='info')
                         | #{unit.description}
                     else
@@ -81,7 +81,7 @@ template(name='UnitShow')
                       +PaperButton classes="flex-info" raise=0 rippleOn=true submit=false elevation=0                      
                         div(class='info-div' style='margin: 0')
                           div(class='info text-overflow')
-                            | Granja
+                            | #{parent.name}
                             
                         i(class='material-icons' style='margin: 0 0 0 15px')
                           | open_in_new
