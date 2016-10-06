@@ -12,6 +12,8 @@ class InventoryShow extends ShowMixin
 
   onRendered: ->
     super
+    @parentComponent().parentComponent().parentComponent().rightData.set
+      update_id: @data().inventory._id
 
   tabs: ->
     ['Information', 'Analytics', 'Reports']

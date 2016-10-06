@@ -10,11 +10,6 @@ class IngredientShow extends ShowMixin
   onCreated: ->
     super
     organization_id = FlowRouter.getParam("organization_id")
-    @autorun =>
-      @subscribe "timestamp", organization_id, @data().ingredient.created_user_id, @data().ingredient.updated_user_id,
-        onStop: (err) ->
-          console.log "sub stop #{err}"
-        onReady: ->
 
   onRendered: ->
     super

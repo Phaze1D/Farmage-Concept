@@ -41,12 +41,14 @@ require './inventories/new/new.coffee'
 require './inventories/selector/selector.coffee'
 require './inventories/card/card.coffee'
 require './inventories/show/show.coffee'
+require './inventories/update/update.coffee'
 
 
 require './ousers/index/index.coffee'
 require './ousers/new/new.coffee'
 require './ousers/card/card.coffee'
 require './ousers/show/show.coffee'
+require './ousers/update/update.coffee'
 
 
 require './products/index/index.coffee'

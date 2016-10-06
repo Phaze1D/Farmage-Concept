@@ -1,31 +1,35 @@
 DialogMixin = require '../../../mixins/dialog_mixin/dialog_mixin.coffee'
 EventMixin = require '../../../mixins/event_mixin/event_mixin.coffee'
-
-IngredientModule= require '../../../../api/collections/ingredients/ingredients.coffee'
+IngredientModule = require '../../../../api/collections/ingredients/ingredients.coffee'
+InventoryModule = require '../../../../api/collections/inventories/inventories.coffee'
 IMethods= require '../../../../api/collections/inventories/methods.coffee'
 EMethods = require '../../../../api/collections/events/methods.coffee'
 
 Big = require 'big.js'
 
-require './new.jade'
+require './update.jade'
 
-
-class InventoriesNew extends BlazeComponent
-  @register 'inventoriesNew'
+class InventoriesUpdate extends BlazeComponent
+  @register 'inventoriesUpdate'
 
   constructor: (args) ->
     super
-    @initAmount = 0
 
   mixins: ->[ DialogMixin, EventMixin ]
 
   onCreated: ->
     super
+    @initAmount = @inventory().amount
     @iAmounts = new ReactiveDict()
+
 
   onRendered: ->
     super
     $('#right-paper-header-panel').addClass('touchScroll')
+    clist = @callFirstWith(@, 'clistsDict')
+    product = @inventory().product().fetch()[0]
+    clist.set 'products', [product]
+
     @autorun =>
       product = @product()
       if product?
@@ -33,6 +37,11 @@ class InventoriesNew extends BlazeComponent
           onStop: (err) ->
             console.log "sub stop #{err}"
           onReady: ->
+
+
+  inventory: ->
+    InventoryModule.Inventories.findOne @data().update_id
+
 
   currentList: (subscription)->
     return @callFirstWith(@, 'currentList', subscription);
@@ -51,6 +60,7 @@ class InventoriesNew extends BlazeComponent
       if min > value.inv_amount
         min = value.inv_amount
 
+    min += @initAmount
     return @callFirstWith(@, 'setMainAmount', min);
 
 
@@ -68,14 +78,14 @@ class InventoriesNew extends BlazeComponent
 
   ingyields: (ingredient_id, amountPre) ->
     if @iAmounts.get(ingredient_id)?
-      return @iAmounts.get(ingredient_id).inv_amount
+      return @iAmounts.get(ingredient_id).inv_amount + @initAmount
     else
       ingObj =
         inv_amount: 0
         amountPre: amountPre
         yields: {}
       @iAmounts.set(ingredient_id, ingObj)
-      return 0
+      return @initAmount
 
 
   addYield: (ingredient_id, yield_id) ->
@@ -129,7 +139,6 @@ class InventoriesNew extends BlazeComponent
 
   hideEvent: ->
     unless @isEventHidden()
-      console.log 'asdf'
       @callFirstWith(@, 'hideEvent')
 
 
@@ -159,19 +168,19 @@ class InventoriesNew extends BlazeComponent
 
   onSubmit: (event) ->
     event.preventDefault()
-    form = $('.js-inventories-new-form')
+    form = $('.js-inventories-update-form')
     yield_objects = []
     for ik, iv of @iAmounts.all()
       for yk, yv of iv.yields
         yield_objects.push yield_id: yk, amount_taken: yv
 
+    amount = Number(form.find('[name=amount]').val()) - @initAmount
     inventory_doc =
       name: form.find('[name=name]').val()
-      amount: Number form.find('[name=amount]').val()
+      amount: amount
       expiration_date: form.find('[name=expiration_date]').val()
       notes: form.find('[name=notes]').val()
       yield_objects: yield_objects
-      product_id: if @product()? then @product()._id else null
 
     event_doc = null
     unless @isEventHidden()
@@ -179,23 +188,24 @@ class InventoriesNew extends BlazeComponent
         amount: Number form.find('[name=event_amount]').val()
         description: form.find('[name=event_description]').val()
 
-    @insert inventory_doc, event_doc
+    @update inventory_doc, event_doc
 
 
-  insert: (inventory_doc, event_doc) ->
+  update: (inventory_doc, event_doc) ->
     amount = inventory_doc.amount
     yield_objects = inventory_doc.yield_objects
     delete inventory_doc.amount
     delete inventory_doc.yield_objects
-    inventory_doc.organization_id = FlowRouter.getParam('organization_id')
-    IMethods.insert.call {inventory_doc}, (err, res) =>
+    organization_id = FlowRouter.getParam('organization_id')
+    inventory_id = @data().update_id
+    IMethods.update.call {organization_id, inventory_id, inventory_doc}, (err, res) =>
       console.log err
-      if res?
+      unless err?
         if yield_objects.length > 0
-          @packEvent(amount, yield_objects, res, inventory_doc.organization_id)
+          @packEvent(amount, yield_objects, inventory_id, organization_id)
         else if event_doc?
-          event_doc.organization_id = inventory_doc.organization_id
-          @userEvent(event_doc, res)
+          event_doc.organization_id = organization_id
+          @userEvent(event_doc, inventory_id)
         else
           $('.js-hide-new').trigger('click') unless err?
 
@@ -203,7 +213,6 @@ class InventoriesNew extends BlazeComponent
   packEvent: (amount, yield_objects, inventory_id, organization_id) =>
     EMethods.pack.call {organization_id, inventory_id, yield_objects, amount}, (err, res) =>
       console.log err
-      @delete(organization_id, inventory_id) if err?
       $('.js-hide-new').trigger('click') unless err?
 
 
@@ -213,17 +222,11 @@ class InventoriesNew extends BlazeComponent
 
     EMethods.userEvent.call {event_doc}, (err, res) =>
       console.log err
-      @delete(event_doc.organization_id, inventory_id) if err?
       $('.js-hide-new').trigger('click') unless err?
-
-
-  delete: (organization_id, inventory_id) =>
-    IMethods.delete.call {organization_id, inventory_id}, (err, res) =>
-      console.log err
 
 
   events: ->
     super.concat
       'input .js-amount-taken': @onInputAT
-      'submit .js-inventories-new-form': @onSubmit
-      'click .js-submit-new-inventory': @onSubmit
+      'submit .js-inventories-update-form': @onSubmit
+      'click .js-submit-update-inventory': @onSubmit

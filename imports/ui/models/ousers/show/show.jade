@@ -25,8 +25,8 @@ template(name='OUserShow')
         
     div(class='scroll-section')
     
-      +PaperButton classes="show-fab" elevation=2 rippleOn='true' rippleFill='white'
-        div(class='plus-icon-div')
+      +PaperButton classes="show-fab js-show-new" elevation=2 rippleOn='true' rippleFill='white'
+        div(class='plus-icon-div' data-template='ousersUpdate')
           i(class="material-icons plus-icon")
             | #{fabT}
     

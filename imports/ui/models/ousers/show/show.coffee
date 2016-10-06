@@ -13,6 +13,8 @@ class OUserShow extends ShowMixin
 
   onRendered: ->
     super
+    @parentComponent().parentComponent().parentComponent().rightData.set
+      update_id: @data().ouser._id
 
   tabs: ->
     ['Information', 'Analytics', 'Reports']
