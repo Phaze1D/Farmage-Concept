@@ -70,6 +70,7 @@ require './sells/index/index.coffee'
 require './sells/new/new.coffee'
 require './sells/card/card.coffee'
 require './sells/show/show.coffee'
+require './sells/update/update.coffee'
 
 
 require './units/index/index.coffee'
