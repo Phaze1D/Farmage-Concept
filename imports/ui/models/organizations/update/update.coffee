@@ -1,28 +1,32 @@
-
-
 OMethods = require '../../../../api/collections/organizations/methods.coffee'
+OrganizationModule = require '../../../../api/collections/organizations/organizations.coffee'
 
-require './new.jade'
+require './update.jade'
 
-class OrganizationsNew extends BlazeComponent
-  @register 'organizationsNew'
+
+class OrganizationsUpdate extends BlazeComponent
+  @register 'organizationsUpdate'
 
   constructor: (args) ->
+    # body...
 
   onRendered: ->
     super
     $('#right-paper-header-panel').addClass('touchScroll')
 
+  organization: ->
+    OrganizationModule.Organizations.findOne @data().update_id
 
-  insert: (organization_doc) ->
-    OMethods.insert.call {organization_doc}, (err, res) =>
+  update: (organization_doc) ->
+    organization_id = @data().update_id
+    OMethods.update.call {organization_id, organization_doc}, (err, res) =>
       console.log err
       $('.js-hide-new').trigger('click') unless err
 
 
   onSubmit: (event) ->
     event.preventDefault()
-    $form = $('.js-organization-new-form')
+    $form = $('.js-organization-update-form')
 
     adds =[]
     $form.find('.address-form').each ->
@@ -47,10 +51,10 @@ class OrganizationsNew extends BlazeComponent
       addresses: adds
       telephones: teles
 
-    @insert organization_doc
+    @update organization_doc
 
 
   events: ->
     super.concat
-      'submit .js-organization-new-form': @onSubmit
-      'click .js-submit-new-organ': @onSubmit
+      'submit .js-organization-update-form': @onSubmit
+      'click .js-submit-update-organ': @onSubmit

@@ -17,23 +17,119 @@ template(name='OrganizationShow')
       
           
     div(class='top')
-      img(src='/default_avatar.png')
       h3
-        | #{customer.first_name} #{customer.last_name}
+        | #{organization.name}
       h4
-        | #{customer.company}
+        | #{founder.profile.first_name} #{founder.profile.last_name}
         
     div(class='scroll-section')
     
-      +PaperButton classes="show-fab" elevation=2 rippleOn='true' rippleFill='white'
-        div(class='plus-icon-div')
+      +PaperButton classes="show-fab js-show-new" elevation=2 rippleOn='true' rippleFill='white'
+        div(class='plus-icon-div' data-template='organizationsUpdate')
           i(class="material-icons plus-icon")
             | #{fabT}
     
       div(class='middle')
-        +PaperTabPanel tabs=tabs scrollable=true tabClasses='show-tab'     
-          +PaperTab classes='active-panel' index=0
-            
+        +PaperTabPanel tabs=tabs scrollable=true classes='show-bar'     
+          +PaperTab classes='active-panel show-panel' index=0
+            div(class='flex-grid')
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Name
+                    div(class='info')
+                      | #{organization.name}
+              
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Founder 
+                    +PaperButton classes="flex-info" raise=0 rippleOn=true submit=false elevation=0
+                      img(src='/default_avatar.png')
+                      
+                      div(class='info-flex-sec')
+                        div(class='info text-overflow')
+                          | #{founder.profile.first_name} #{founder.profile.last_name}
+                        div(class='info-small text-overflow')
+                          | #{email}
+                          
+                      i(class='material-icons' style='margin: 0 0 0 15px')
+                        | open_in_new
+                        
+            div(class='flex-grid')
+              div(class='section elevation-0')
+                i(class='material-icons')
+                  | email
+                
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Email
+                    if organization.email
+                      div(class='info')
+                        | #{organization.email}
+                    else
+                      div(class='info-none')
+                        | None
+                        
+              div(class='section elevation-0')
+                i(class='material-icons')
+                  | phone
+                  
+                div(class='it')
+                  if telephones
+                    each telephone in telephones
+                      div(class='info-div')
+                        div(class='title')
+                          if telephone.name
+                            | #{telephone.name}
+                          else
+                            | Telephone
+                        div(class='info')
+                            | #{telephone.number}
+                  
+                  else
+                    div(class='info-div')
+                      div(class='title')
+                        | Telephones
+                      div(class='info-none')
+                        | None
+      
+              div(class='section elevation-0')
+                i(class='material-icons')
+                  | location_on
+                  
+                div(class='it')
+                  if addresses
+                    each address in addresses
+                      div(class='info-div')
+                        div(class='title')
+                          if address.name
+                            | #{address.name}
+                          else
+                            | Address
+                        div(class='info')
+                          div(class='add-info')
+                            | #{address.street}
+                          div(class='add-info')
+                            | #{address.street2}
+                          div(class='add-info')
+                            if address.city
+                              | #{address.city}, #{address.state}
+                          div(class='add-info')
+                            | #{address.zip_code}
+                          div(class='add-info')
+                            | #{address.country}
+                  
+                  else
+                    div(class='info-div')
+                      div(class='title')
+                        | Addresses
+                      div(class='info-none')
+                        | None
+              
           +PaperTab index=1
           
         

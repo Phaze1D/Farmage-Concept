@@ -4,6 +4,7 @@ require './organizations/index/index.coffee'
 require './organizations/new/new.coffee'
 require './organizations/card/card.coffee'
 require './organizations/show/show.coffee'
+require './organizations/update/update.coffee'
 
 
 require './contact_info/addresses.coffee'

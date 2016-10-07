@@ -1,0 +1,49 @@
+template(name='organizationsUpdate')
+  form(class="js-organization-update-form")
+    +PaperHeaderPanel id="right" 
+      +PaperHeaderSmall id='right' classes='right-header'
+        +PaperButton classes="save-icon-div js-submit-update-organ" raise=0 rippleOn=true submit=true
+          i(class="material-icons")
+            | check
+            
+        +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+          i(class="material-icons")
+            | clear
+      
+      
+      +PaperHeaderBig id="right"
+        +PaperButton classes="save-icon-div js-submit-update-organ" raise=0 rippleOn=true submit=true
+          i(class="material-icons")
+            | check
+            
+        +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+          i(class="material-icons")
+            | clear
+      
+      +PaperHeaderMain id="right"    
+        div(class='organization-bottom')
+          div(class='input-area')
+            
+            div(class="grid-wrapper")
+              div(class='col-12 p-left p-right')
+                +PaperInput type="text" name="company_name" label="Organization Name" focusColor="darkblue" size='size-medium' value=organization.name
+              
+            div(class="grid-wrapper")
+              div(class='col-12 p-left p-right')
+                +PaperInput type="text" name="email" label="Contact Email" focusColor="darkblue" value=organization.email
+          
+            div(class="grid-wrapper")
+              div(class='col-12 p-left p-right')
+                +telephonesAdd max=5 telephones=organization.telephones
+              
+            div(class="grid-wrapper")
+              div(class='col-12 p-left p-right')
+                +addressesAdd  max=5 addresses=organization.addresses
+      
+          
+          
+        
+        
+      
+        
+      
