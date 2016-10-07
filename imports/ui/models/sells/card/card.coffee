@@ -18,9 +18,9 @@ class SellCard extends BlazeComponent
     super
     organization_id = FlowRouter.getParam("organization_id")
     @autorun =>
-      @subscribe "sell.parents", organization_id, @data().sell._id,
+      @subscribe "sell.parents", organization_id, @data().sell._id, @data().sell.details,
         onStop: (err) ->
-          console.log "sub stop #{err}"
+          console.log err
         onReady: ->
 
   customer: ->

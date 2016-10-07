@@ -16,6 +16,8 @@ class SellShow extends ShowMixin
 
   onRendered: ->
     super
+    @parentComponent().parentComponent().parentComponent().rightData.set update_id: @data().sell._id
+
 
   tabs: ->
     ['Information', 'Invoice']
@@ -42,8 +44,9 @@ class SellShow extends ShowMixin
     invs = []
     for inv in detail.inventories
       inventory = InventoryModule.Inventories.findOne(_id: inv.inventory_id)
-      inventory.quantity_taken = inv.quantity_taken
-      invs.push inventory
+      if inventory?
+        inventory.quantity_taken = inv.quantity_taken
+        invs.push inventory
     invs
 
   invIdentifer: (inventory) ->

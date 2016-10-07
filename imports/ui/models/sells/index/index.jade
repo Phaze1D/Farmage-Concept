@@ -3,7 +3,7 @@ template(name='sells.index')
     div(class='js-show-right')
     div(class="js-right-content")
       if rightShown.get
-        +Template.dynamic template=rightTemplate.get data=rightData
+        +Template.dynamic template=rightTemplate.get data=rightData.get
     
 
   +PaperButton classes="new-action js-show-new" elevation=2 rippleOn='true' rippleFill='white'

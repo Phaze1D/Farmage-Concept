@@ -24,8 +24,8 @@ template(name='SellShow')
         
     div(class='scroll-section')
     
-      +PaperButton classes="show-fab" elevation=2 rippleOn='true' rippleFill='white'
-        div(class='plus-icon-div')
+      +PaperButton classes="show-fab js-show-new" elevation=2 rippleOn='true' rippleFill='white'
+        div(class='plus-icon-div' data-template='sellsUpdate')
           i(class="material-icons plus-icon")
             | #{fabT}
     
@@ -170,7 +170,7 @@ template(name='SellShow')
                             div(class='info-small text-overflow')
                               | #{sku}
                     
-                  div(class='it')      
+                  div(class='it' style='flex-grow: 0')      
                     div(class='info-div')
                       div(class='title')
                         | Unit Price
@@ -213,7 +213,7 @@ template(name='SellShow')
                               | Identifer
                             div(class='info')
                               =invIdentifer(inventory)
-                          div(class='info-div')
+                          div(class='info-div' style='flex-grow: 0')
                             div(class='title')
                               | Quantity Taken
                             div(class='info')

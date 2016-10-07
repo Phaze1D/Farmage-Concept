@@ -130,7 +130,7 @@ module.exports.addItems = new ValidatedMethod
       addToDetailInventories(sell, invsByProduct)
       setQuantities(sell)
       removeZeroDetail(sell)
-      setupSell(sell)
+      setupSell(sell, sell)
       updateInventories(inventories, -1, sell)
       removeUnauthUpdateFields(sell)
       SellModule.Sells.simpleSchema().clean(sell)
@@ -164,7 +164,7 @@ module.exports.putBackItems = new ValidatedMethod
       putBackInventories(sell, invsByProduct)
       setQuantities(sell)
       removeZeroDetail(sell)
-      setupSell(sell)
+      setupSell(sell, sell)
       updateInventories(inventories, 1, sell)
       removeUnauthUpdateFields(sell)
       SellModule.Sells.simpleSchema().clean(sell)
@@ -203,7 +203,7 @@ module.exports.pay = new ValidatedMethod
         unless sum is detail.quantity
           throw new Meteor.Error 'detailMismatch', 'Detail quantity and inventories quantities dont match'
 
-      setupSell(sell)
+      setupSell(sell, sell)
       removeUnauthUpdateFields(sell)
 
       sell.paid = true
@@ -261,13 +261,23 @@ removePaidFields = (sell_doc) ->
   delete sell_doc.paid_date
   delete sell_doc.payment_method
 
-setupSell = (sell_doc) ->
+convertToDict = (array, key) ->
+  dic = {}
+  for item in array
+    if item[key]?
+      dic[item[key]] = item
+  dic
+
+setupSell = (sell_doc, previousSell) ->
   resetSell sell_doc
+
+  if previousSell?
+    preSellDict = convertToDict previousSell.details, 'product_id'
 
   for detail in sell_doc.details
     product = mixins.productBelongsToOrgan detail.product_id, sell_doc.organization_id
-    detail.unit_price = product.unit_price
-    detail.tax_rate = product.tax_rate
+    detail.unit_price = if previousSell? && preSellDict[detail.product_id]? then preSellDict[detail.product_id].unit_price else product.unit_price
+    detail.tax_rate = if previousSell? && preSellDict[detail.product_id]? then preSellDict[detail.product_id].tax_rate else product.tax_rate
     sell_doc.sub_total += detail.unit_price * detail.quantity
     sell_doc.tax_total += (detail.unit_price * detail.quantity) * (detail.tax_rate/100)
 
@@ -320,7 +330,7 @@ modifyUnPaid = (sell_doc, organization_id, sell) ->
   if sell_doc.details?
     removeInventoriesFields sell_doc
     addSavedDetails sell_doc, sell
-    setupSell sell_doc
+    setupSell sell_doc, sell
     removeZeroDetail sell_doc
 
 addSavedDetails = (sell_doc, savedSell) ->
