@@ -35,6 +35,25 @@ template(name='yieldsNew')
                   +PaperInput type="textarea" name="notes" label="Notes" focusColor="darkblue" charMax='512' showCount=true
                       
               +eventMixin amountLabel="Amount"
+              
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
+                    div(class="resources-b js-dialog-b" data-sub='ingredients' data-many='false')
+                      div(class="text-div") Resource
+                      div(class="icon-div")
+                        i(class="material-icons icon") add_circle
+              
+              if ingredient.name
+                div(class='grid-wrapper')
+                  div(class='col-7 p-left unit-div')
+                    div(class='provider-info')
+                      img(src='/no_image0.png')
+                      div(class='p-nsk')
+                        div(class='p-name')
+                          | #{ingredient.name}
+                        div(class='p-description')
+                          | #{ingredient.measurement_unit}
                   
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
@@ -45,9 +64,12 @@ template(name='yieldsNew')
                         i(class="material-icons icon") add_circle
                         
               div(class='grid-wrapper')
-                div(class='col-12 p-right p-left')
-                  +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
-                    div(class="resources-b js-dialog-b" data-sub='ingredients' data-many='false')
-                      div(class="text-div") Resource
-                      div(class="icon-div")
-                        i(class="material-icons icon") add_circle
+                div(class='col-12 p-right p-left unit-div')
+                  div(class='provider-info')
+                    div(class='p-nsk')
+                      div(class='p-name')
+                        | #{unit.name}
+                      div(class='p-description')
+                        | #{unit.description}
+                        
+              

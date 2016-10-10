@@ -46,16 +46,36 @@ template(name="expensesUpdate")
 
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
+                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
                     div(class="resources-b js-dialog-b" data-sub='providers'  data-many='false')
                       div(class="text-div") Provider
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
+              
+              if provider.first_name
+                div(class='grid-wrapper')
+                  div(class='col-12 p-right p-left unit-div')
+                    div(class='provider-info')
+                      img(src='/default_avatar.png')
+                      div(class='p-nsk')
+                        div(class='p-name')
+                          | #{provider.first_name} #{provider.last_name}
+                        div(class='p-description')
+                          | #{provider.company}
                         
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
+                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
                     div(class="resources-b js-dialog-b" data-sub='units'  data-many='false')
                       div(class="text-div") Unit
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
+              
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left unit-div')
+                  div(class='provider-info')
+                    div(class='p-nsk')
+                      div(class='p-name')
+                        | #{unit.name}
+                      div(class='p-description')
+                        | #{unit.description}

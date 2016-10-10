@@ -15,10 +15,17 @@ class PaperRadio extends BlazeComponent
 
   onClick: (event) ->
     event.stopImmediatePropagation()
+    tar = $(event.currentTarget).find('.radio-mark')
+
+    if $(event.currentTarget).find('.radio-mark').hasClass('checked')
+      $('.radio-mark.checked').not(tar).trigger('click')
+    else
+      $('.radio-mark.checked').not(tar).trigger('click')
+
     if @data().clickCallback.callback?
       @data().clickCallback.callback(event)
 
-    tar = $(event.currentTarget).find('.radio-mark')
+
     tar.toggleClass('checked')
     if @color.get() isnt @data().fcolor
       @color.set @data().fcolor

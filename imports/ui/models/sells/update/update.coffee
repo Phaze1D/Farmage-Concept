@@ -33,6 +33,8 @@ class SellsUpdate extends BlazeComponent
     $('#right-paper-header-panel').addClass('touchScroll')
     clist = @callFirstWith(@, 'clistsDict')
     sell = @sell()
+    customer = sell.customer().fetch()[0]
+    clist.set "customers", [customer] if customer?
     products = []
 
     if sell.discount_type
@@ -73,6 +75,9 @@ class SellsUpdate extends BlazeComponent
 
   inventories: (product_id) ->
     @currentList("inventories#{product_id}")
+
+  customer: ->
+    @currentList('customers')[0]
 
   unitPrice: (product) ->
     for detail in @sell().details
@@ -320,7 +325,7 @@ class SellsUpdate extends BlazeComponent
       details: classified.details
       status: $form.find('[name=status]').val()
       notes: $form.find('[name=notes]').val()
-      # customer_id:
+      customer_id: if @customer()? then @customer()._id else null
       # shipping_address:
       # billing_address:
       # telephone:

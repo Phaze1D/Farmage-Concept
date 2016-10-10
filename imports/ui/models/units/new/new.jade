@@ -53,12 +53,19 @@ template(name='unitsNew')
                   
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
+                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
                     div(class="resources-b js-dialog-b" data-sub='units' data-many='false')
                       div(class="text-div") Unit Parent
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
                     
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left unit-div')
+                  div(class='provider-info')
+                    div(class='p-nsk')
+                      div(class='p-name')
+                        | #{parentUnit.name}
+                      div(class='p-description')
+                        | #{parentUnit.description}
               
-              
-                
+                        

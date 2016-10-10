@@ -41,6 +41,10 @@ class SellsNew extends BlazeComponent
   inventories: (product_id) ->
     @currentList("inventories#{product_id}")
 
+  customer: ->
+    @currentList('customers')[0]
+
+
   date: (date) ->
     months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
     "#{months[date.getMonth()]} #{date.getDate()}, #{date.getFullYear()}"
@@ -270,7 +274,7 @@ class SellsNew extends BlazeComponent
       details: details
       status: $form.find('[name=status]').val()
       notes: $form.find('[name=notes]').val()
-      # customer_id:
+      customer_id: if @customer()? then @customer()._id else null
       # shipping_address:
       # billing_address:
       # telephone:

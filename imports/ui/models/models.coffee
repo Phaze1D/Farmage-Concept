@@ -23,6 +23,7 @@ require './customers/new/new.coffee'
 require './customers/show/show.coffee'
 require './customers/card/card.coffee'
 require './customers/update/update.coffee'
+require './customers/selector/selector.coffee'
 
 require './events/index/index.coffee'
 require './events/card/card.coffee'
@@ -65,6 +66,7 @@ require './providers/new/new.coffee'
 require './providers/card/card.coffee'
 require './providers/show/show.coffee'
 require './providers/update/update.coffee'
+require './providers/selector/selector.coffee'
 
 
 require './sells/index/index.coffee'

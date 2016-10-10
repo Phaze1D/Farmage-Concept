@@ -26,7 +26,7 @@ class ExpensesUpdate extends BlazeComponent
     clist = @callFirstWith(@, 'clistsDict')
     provider = ProviderModule.Providers.findOne @data().provider_id
     unit = UnitModule.Units.findOne @data().unit_id
-    clist.set 'providers', [provider]
+    clist.set 'providers', [provider] if provider?
     clist.set 'units', [unit]
 
 
@@ -60,11 +60,10 @@ class ExpensesUpdate extends BlazeComponent
     $form = $('.js-expenses-update-form')
     expense_doc =
       name: $form.find('[name=name]').val()
-      price: $form.find('[name=price]').val()
+      price: Number $form.find('[name=price]').val()
       currency: $form.find('[name=currency]').val()
       description: $form.find('[name=description]').val()
-      quantity: $form.find('[name=quantity]').val()
-      receipt_id: $form.find('[name=receipt_id]').val()
+      quantity: Number $form.find('[name=quantity]').val()
       provider_id: @provider()._id
       unit_id: @unit()._id
     @update expense_doc

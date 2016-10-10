@@ -148,9 +148,7 @@ template(name='sellsUpdate')
                     div(class='discount-icon' type='#{discountType.value}')
                       | #{discountType.option} 
                   
-                  
 
-              
               
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
@@ -163,6 +161,17 @@ template(name='sellsUpdate')
                       div(class="text-div-sm") Customer
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
+                        
+              if customer
+                div(class='grid-wrapper')
+                  div(class='col-12 p-right p-left unit-div')
+                    div(class='provider-info')
+                      img(src='/default_avatar.png')
+                      div(class='p-nsk')
+                        div(class='p-name')
+                          | #{customer.first_name} #{customer.last_name}
+                        div(class='p-description')
+                          | #{customer.company}
               
               
               div(class='grid-wrapper')

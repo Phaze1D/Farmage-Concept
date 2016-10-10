@@ -35,25 +35,39 @@ template(name='yieldsUpdate')
                   +PaperInput type="textarea" name="notes" label="Notes" focusColor="darkblue" charMax='512' showCount=true value=yield.notes
                       
               +eventMixin amountLabel="Amount"
+              
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  div(class='button-wrapper')
+                    div(class="resources-b js-dialog-b" data-sub='ingredients' data-many='false')
+                      div(class="text-div") Resource
+              
+              if ingredient.name
+                div(class='grid-wrapper')
+                  div(class='col-7 p-left unit-div')
+                    div(class='provider-info')
+                      img(src='/no_image0.png')
+                      div(class='p-nsk')
+                        div(class='p-name')
+                          | #{ingredient.name}
+                        div(class='p-description')
+                          | #{ingredient.measurement_unit}
+                        
                   
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
+                  +PaperButton raise=0 submit=false rippleOn=true classes="js-show-d button-wrapper"
                     div(class="resources-b js-dialog-b" data-sub='units' data-many='false')
                       div(class="text-div") Unit
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
                         
               div(class='grid-wrapper')
-                div(class='col-12 p-right p-left')
-                  | #{unit.name}
-                        
-              div(class='grid-wrapper')
-                div(class='col-12 p-right p-left')
-                  div(class='button-wrapper')
-                    div(class="resources-b js-dialog-b" data-sub='ingredients' data-many='false')
-                      div(class="text-div") Resource
-                        
-              div(class='grid-wrapper')
-                div(class='col-12 p-right p-left')
-                  | #{ingredient.name}
+                div(class='col-12 p-right p-left unit-div')
+                  div(class='provider-info')
+                    div(class='p-nsk')
+                      div(class='p-name')
+                        | #{unit.name}
+                      div(class='p-description')
+                        | #{unit.description}
+            

@@ -34,7 +34,7 @@ Meteor.publish "sells", (organization_id, parent, parent_id) ->
     @ready();
 
 
-Meteor.publish 'sell.parents', (organization_id, sell_id, details) ->
+Meteor.publish 'sell.parents', (organization_id, sell_id) ->
   info = publicationInfo organization_id, 'sell', sell_id
   organization = info.organization
 

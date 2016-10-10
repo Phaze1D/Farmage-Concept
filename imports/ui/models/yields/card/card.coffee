@@ -21,7 +21,7 @@ class YieldCard extends BlazeComponent
     super
     organization_id = FlowRouter.getParam("organization_id")
     @autorun =>
-      @subscribe "yield.parents", organization_id, @data().yield._id,
+      @subscribe "yield.parents", organization_id, @data().yield._id, @data().yield.unit_id,
         onStop: (err) ->
           console.log "sub stop #{err}"
         onReady: ->

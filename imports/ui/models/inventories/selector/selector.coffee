@@ -11,6 +11,15 @@ class InventorySelector extends BlazeComponent
     super
     @data().isChecked = new ReactiveVar(@data().isChecked)
 
+  product: ->
+    @data().item.product().fetch()[0]
+
+  identifer: ->
+    if @data().item.name?
+      @data().item.name
+    else
+      @data().item._id
+
   onItemClick: (event) ->
     if @data().many
       $(event.currentTarget).find('.js-checkbox').trigger('click')

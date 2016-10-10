@@ -6,9 +6,10 @@ template(name='yieldsSelector')
     div(class='info-div')
       div
         div(class="main")
-          | #{item.name}
+          | #{identifer}
         div(class="sub")
-          | #{item.amount}
+          | #{item.amount} #{resourse.measurement_unit} available 
+          
       
     if many
       div(class="checker-div")

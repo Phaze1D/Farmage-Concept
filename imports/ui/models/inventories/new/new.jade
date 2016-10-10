@@ -75,6 +75,7 @@ template(name='inventoriesNew')
                         div(class='col-12')
                           div(class='ing-subtitle')
                             | Product Resources
+                            
                       {{setMainAmount}}
                       each ping in product.pingredients
                         with ingredient ping
@@ -86,7 +87,7 @@ template(name='inventoriesNew')
                                   div(class="js-dialog-b" data-sub='yields' data-many='true' data-parent='ingredient' data-parentid="#{_id}")
                                     div(class='y-divider')
                                       div(class='y-subtitle')
-                                        | Inventory Amount - {{ingyields ping.ingredient_id ping.amount}}
+                                        | Yields
                                       div(class="icon-div")
                                         i(class="material-icons icon") add_circle
                                         
@@ -100,6 +101,11 @@ template(name='inventoriesNew')
                                           | #{ping.amount} #{measurement_unit}
                                           span
                                             | pre product
+                                        div(class='ing-a')
+                                          | Inventory Amount - {{ingyields ping.ingredient_id ping.amount}}
+                                      
+                                          
+                                        
 
                             each yield in yields ping.ingredient_id
                               div(class='grid-wrapper')

@@ -3,12 +3,12 @@ template(name='inventoriesSelector')
     div(class="circle-image" selected='#{isChecked.get}')
       //- img(src='/no_image.png')
       
-    div(class='info-div')
+    div(class='info-div text-overflow')
       div
         div(class="main")
-          | #{item.name}
+          | #{identifer}
         div(class="sub")
-          | #{item.amount}
+          | #{item.amount} #{product.name} available 
       
     if many
       div(class="checker-div")

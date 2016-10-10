@@ -43,11 +43,10 @@ class ExpensesNew extends BlazeComponent
     $form = $('.js-expenses-new-form')
     expense_doc =
       name: $form.find('[name=name]').val()
-      price: $form.find('[name=price]').val()
+      price: Number $form.find('[name=price]').val()
       currency: $form.find('[name=currency]').val()
       description: $form.find('[name=description]').val()
-      quantity: $form.find('[name=quantity]').val()
-      receipt_id: $form.find('[name=receipt_id]').val()
+      quantity: Number $form.find('[name=quantity]').val()
       provider_id: @provider()._id
       unit_id: @unit()._id
     @insert expense_doc

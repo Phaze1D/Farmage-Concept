@@ -15,12 +15,9 @@ class UnitSelector extends BlazeComponent
     if @data().many
       $(event.currentTarget).find('.js-checkbox').trigger('click')
     else
+      $(event.currentTarget).find('.js-radio').trigger('click')
 
-      if $(event.currentTarget).find('.radio-mark').hasClass('checked')
-        $('.radio-mark.checked').trigger('click')
-      else
-        $('.radio-mark.checked').trigger('click')
-        $(event.currentTarget).find('.js-radio').trigger('click')
+
 
   color: ->
     if @data().isChecked

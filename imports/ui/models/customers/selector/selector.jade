@@ -1,6 +1,15 @@
-template(name='unitsSelector')
+template(name='customersSelector')
   div(class='js-list-item list-item' data-id="#{item._id}" selected='#{isChecked.get}')
-  
+    div(class="circle-image" selected='#{isChecked.get}' style="background-image: url('/default_avatar.png')")
+      //- img(src='/no_image.png')
+
+    div(class='info-div')
+      div
+        div(class="main")
+          | #{item.first_name} #{item.last_name}
+        div(class="sub")
+          | #{item.company}
+    
     if many
       div(class="checker-div")
         +PaperCheckbox classes="checkbox" rippleFill='darkblue' fcolor='darkblue' clickCallback=onItemClickCallback checked=isChecked.get
@@ -8,12 +17,4 @@ template(name='unitsSelector')
       div(class='checker-div')
         +PaperRadio classes="checkbox" rippleFill='darkblue' fcolor='darkblue' clickCallback=onItemClickCallback checked=isChecked.get
 
-  
-    div(class='info-div')
-      div
-        div(class="main")
-          | #{item.name}
-        div(class="sub")
-          | #{item.description}
-      
   
