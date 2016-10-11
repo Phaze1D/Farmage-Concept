@@ -78,7 +78,7 @@ class InventoriesUpdate extends BlazeComponent
 
   ingyields: (ingredient_id, amountPre) ->
     if @iAmounts.get(ingredient_id)?
-      return @iAmounts.get(ingredient_id).inv_amount + @initAmount
+      return Number( (@iAmounts.get(ingredient_id).inv_amount + @initAmount).toFixed(4) )
     else
       ingObj =
         inv_amount: 0

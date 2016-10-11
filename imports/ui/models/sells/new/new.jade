@@ -121,8 +121,7 @@ template(name='sellsNew')
                           
                           div(class='inventory-input col-3')
                             +PaperInput classes='js-inventory-input' type="number" name="amount_taken" value="1" label="Taken" focusColor="darkblue" min='0' max=inventory.amount labelFloat=true
-
-                          
+              
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperInput type="number" alwaysFloating=true name="total_price" label="Total" value=sell.total_price focusColor="darkblue" prefix="$" step="any" min='0' disabled="true" size="size-medium"
@@ -133,7 +132,6 @@ template(name='sellsNew')
 
                 div(class='col-6 p-right p-left')
                   +PaperInput type="number" alwaysFloating=true name="tax_total" label="Tax Total" value=sell.tax_total focusColor="darkblue" prefix="$" step="any" min='0' disabled="true"
-
               
               div(class='grid-wrapper')
                 div(class='col-6 p-left')
@@ -146,8 +144,6 @@ template(name='sellsNew')
                     div(class='discount-icon' type='#{discountType.value}')
                       | #{discountType.option} 
                   
-                  
-
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperInput type="textarea" name="notes" label="Notes" focusColor="darkblue" charMax='512' showCount=true
@@ -170,34 +166,31 @@ template(name='sellsNew')
                           | #{customer.first_name} #{customer.last_name}
                         div(class='p-description')
                           | #{customer.company}
-              
-              
+                          
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
-                    div(class="resources-b js-dialog-b" data-sub='customers' data-many='false')
+                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-sell-d button-wrapper"
+                    div(class="resources-b js-dialog-b" data-info='telephones')
                       div(class="text-div-sm") Telephone
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
 
-
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
-                    div(class="resources-b js-dialog-b" data-sub='customers' data-many='false')
+                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-sell-d button-wrapper"
+                    div(class="resources-b js-dialog-b" data-info='addresses')
                       div(class="text-div-sm") Billing Address
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
                         
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
-                    div(class="resources-b js-dialog-b" data-sub='customers' data-many='false')
+                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-sell-d button-wrapper"
+                    div(class="resources-b js-dialog-b" data-info='addresses')
                       div(class="text-div-sm") Shipping Address
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
-                        
-              
+                                      
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperButton raise=1 elevation=1 submit=false rippleOn=true classes='pay-button'  disabled=canPay
@@ -205,3 +198,7 @@ template(name='sellsNew')
                       | monetization_on
                         
             
+    +PaperDialog title='Test'
+      div(class="js-open-dialog js-open-sd")
+      if showInfo.get
+        div(class='sell-info-dialog')

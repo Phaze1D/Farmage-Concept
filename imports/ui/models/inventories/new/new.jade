@@ -94,14 +94,15 @@ template(name='inventoriesNew')
                                     div(class='ing-info')
                                       img(src='/no_image0.png')
                                       
-                                      div(class='ing-nsk')
+                                      div(class='ing-nsk' style='flex-grow: 1')
                                         div(class='ing-name')
                                           | #{name}
                                         div(class='ing-a')
                                           | #{ping.amount} #{measurement_unit}
                                           span
                                             | pre product
-                                        div(class='ing-a')
+                                      div(class='ing-nsk')
+                                        div(class='ing-name')
                                           | Inventory Amount - {{ingyields ping.ingredient_id ping.amount}}
                                       
                                           

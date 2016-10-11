@@ -304,6 +304,7 @@ class SellsNew extends BlazeComponent
       console.log err
 
 
+
   events: ->
     super.concat
       'click .js-discount-select': @onToggleDiscount
@@ -314,3 +315,8 @@ class SellsNew extends BlazeComponent
       'input .js-inventory-input .pinput': @onInputInventory
       'submit .js-sell-new-form': @onSubmit
       'click .js-submit-new-sell': @onSubmit
+      'click .js-show-sell-d': @onSellDialog
+
+
+  onSellDialog: (event) ->
+    $(@find('.js-open-sd')).trigger('click')
