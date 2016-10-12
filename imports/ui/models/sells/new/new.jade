@@ -174,22 +174,77 @@ template(name='sellsNew')
                       div(class="text-div-sm") Telephone
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
+                        
+              with showNew "telephones"
+                div(class='grid-wrapper telephone-form')
+                  div(class='col-12 p-left p-right')
+                    div(class="grid-wrapper")
+                      div(class="col-12 p-right")
+                        +PaperInput type="text" alwaysFloating=true name="number" label="Number" labelFloat=true focusColor="darkblue" value=number
+                        
+                      +PaperButton raise=0 submit=false rippleOn=false classes="js-remove-info remove-telephone-b"
+                        div(class="icon-div" data-info='telephones')
+                          i(class="material-icons icon") remove_circle
 
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperButton raise=0 submit=false rippleOn=false classes="js-show-sell-d button-wrapper"
-                    div(class="resources-b js-dialog-b" data-info='addresses')
+                    div(class="resources-b js-dialog-b" data-info='billing addresses')
                       div(class="text-div-sm") Billing Address
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
+                                              
+              with showNew "billing addresses"
+                div(class='grid-wrapper billing-address-form')
+                  div(class='col-12 p-left p-right')
+                    div(class="grid-wrapper")
+                      div(class="col-12 p-right")
+                        +PaperInput type="text" alwaysFloating=true name="street" labelFloat=true label="Address Line 1" focusColor="darkblue"  value=street
+                        +PaperInput type="text" alwaysFloating=true name="street2" labelFloat=true label="Address Line 2" focusColor="darkblue" value=street2
+                        div(class='grid-wrapper')
+                          div(class="col-6 p-right")
+                            +PaperInput type="text" alwaysFloating=true name="city" labelFloat=true label="City" focusColor="darkblue" value=city
+                          div(class="col-6")
+                            +PaperInput type="text" alwaysFloating=true name="state" labelFloat=true label="State" focusColor="darkblue" value=state
+                        div(class='grid-wrapper')
+                          div(class="col-6 p-right")
+                            +PaperInput type="text" alwaysFloating=true name="zip_code" labelFloat=true label="Zip Code" focusColor="darkblue" value=zip_code
+                          div(class="col-6")
+                            +PaperInput type="text" alwaysFloating=true name="country" labelFloat=true label="Country" focusColor="darkblue" value=country
+                            
+                      +PaperButton raise=0 submit=false rippleOn=false classes="js-remove-info remove-address-b"
+                        div(class="icon-div" data-info='billing addresses')
+                          i(class="material-icons icon") remove_circle
                         
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperButton raise=0 submit=false rippleOn=false classes="js-show-sell-d button-wrapper"
-                    div(class="resources-b js-dialog-b" data-info='addresses')
+                    div(class="resources-b js-dialog-b" data-info='shipping addresses')
                       div(class="text-div-sm") Shipping Address
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
+                        
+              with showNew "shipping addresses"
+                div(class='grid-wrapper shipping-address-form')
+                  div(class='col-12 p-left p-right')
+                    div(class="grid-wrapper")
+                      div(class="col-12 p-right")
+                        +PaperInput type="text" alwaysFloating=true name="street" labelFloat=true label="Address Line 1" focusColor="darkblue"  value=street
+                        +PaperInput type="text" alwaysFloating=true name="street2" labelFloat=true label="Address Line 2" focusColor="darkblue" value=street2
+                        div(class='grid-wrapper')
+                          div(class="col-6 p-right")
+                            +PaperInput type="text" alwaysFloating=true name="city" labelFloat=true label="City" focusColor="darkblue" value=city
+                          div(class="col-6")
+                            +PaperInput type="text" alwaysFloating=true name="state" labelFloat=true label="State" focusColor="darkblue" value=state
+                        div(class='grid-wrapper')
+                          div(class="col-6 p-right")
+                            +PaperInput type="text" alwaysFloating=true name="zip_code" labelFloat=true label="Zip Code" focusColor="darkblue" value=zip_code
+                          div(class="col-6")
+                            +PaperInput type="text" alwaysFloating=true name="country" labelFloat=true label="Country" focusColor="darkblue" value=country
+                            
+                      +PaperButton raise=0 submit=false rippleOn=false classes="js-remove-info remove-address-b"
+                        div(class="icon-div" data-info='shipping addresses')
+                          i(class="material-icons icon") remove_circle
                                       
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
@@ -200,5 +255,75 @@ template(name='sellsNew')
             
     +PaperDialog title='Test'
       div(class="js-open-dialog js-open-sd")
-      if showInfo.get
-        div(class='sell-info-dialog')
+      if showTA.get
+        div(class="list")
+          div(class='header-panel elevation-2')
+            div(class='options-panel')
+              +PaperButton elevation=0 raise=0 classes="b-wrap js-close-dialog close-dialog" rippleOn=true
+                i(class="material-icons") arrow_back
+                        
+              div(class='one-title')
+                | #{taTitle.get}
+          
+          div(class="items sell-items")
+            if showTelephones
+              each telephone in customer.telephones
+                div(class='add-section mini js-selectable' data-index="{{@index}}")
+                  div(class='title')
+                    if telephone.name
+                      | #{telephone.name}
+                    else
+                      | Telephone
+                      
+                  div(class='info' name='number')
+                    | #{telephone.number}
+                  
+                  +PaperRipple fill="lightgrey"
+                  
+              div(class='new-section js-new-selectable mini in-elevation-1 js-close-dialog')
+                div(class='new-title')
+                  | Create New
+                div(class='icon-sec')
+                  i(class='material-icons mini')
+                    | add_circle_outline
+                    
+                +PaperRipple fill="lightgrey"
+              
+            else
+              each address in customer.addresses
+                div(class='add-section js-selectable' data-index="{{@index}}")
+                  div(class='title')
+                    if address.name
+                      | #{address.name}
+                    else
+                      | Address
+                      
+                  div(class='info' name='street')
+                    | #{address.street}
+                  div(class='info' name='street2')
+                    | #{address.street2}
+                  if address.city
+                    div(class='info-inline' name='city')
+                      | #{address.city}
+                    div(class='info-inline')
+                      | , 
+                  if address.state
+                    div(class='info-inline' name='state')
+                      | #{address.state}
+                  div(class='info' name='zip_code')
+                    | #{address.zip_code}
+                  div(class='info' name='country')
+                    | #{address.country}
+                  
+                  +PaperRipple fill="lightgrey"
+              
+            
+            
+              div(class='new-section js-new-selectable in-elevation-1 js-close-dialog')
+                div(class='new-title')
+                  | Create New
+                div(class='icon-sec')
+                  i(class='material-icons')
+                    | add_circle_outline
+                    
+                +PaperRipple fill="lightgrey"

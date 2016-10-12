@@ -51,7 +51,6 @@ class PaperInput extends BlazeComponent
 
 
   onInput: (input) ->
-
     if input.value.length <= 0
       @colorL.set ''
       if @data().alwaysFloating

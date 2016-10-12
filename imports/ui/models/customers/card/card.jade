@@ -104,7 +104,8 @@ template(name='CustomerCard')
                                     | #{address.street2}
                                   div(class='add-info')
                                     if address.city
-                                      | #{address.city}, #{address.state}
+                                      | #{address.city}, 
+                                    | #{address.state}
                                   div(class='add-info')
                                     | #{address.zip_code}
                                   div(class='add-info')

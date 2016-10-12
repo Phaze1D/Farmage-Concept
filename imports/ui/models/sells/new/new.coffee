@@ -25,9 +25,11 @@ class SellsNew extends BlazeComponent
     @discountDict = new ReactiveDict
     @discountDict.set('option', '%')
     @discountDict.set('value', true)
-
+    @showTA = new ReactiveVar(false)
+    @taTitle = new ReactiveVar('')
     @sellDoc = new ReactiveVar {total_price: '0.00', sub_total: '0.00', tax_total: '0.00', discount: 0}
     @pDetails = new ReactiveDict
+    @extraInfo = new ReactiveDict
 
 
   currentList: (subscription)->
@@ -266,6 +268,34 @@ class SellsNew extends BlazeComponent
           quantity_taken: value
         inventories.push invdoc
 
+
+    saForm = $('.shipping-address-form')
+    if saForm.length > 0
+      shipping_address =
+        street: saForm.find("[name=street]").val()
+        street2: saForm.find("[name=street2]").val()
+        city: saForm.find("[name=city]").val()
+        state: saForm.find("[name=state]").val()
+        zip_code: saForm.find("[name=zip_code]").val()
+        country:  saForm.find("[name=country]").val()
+
+    baForm = $('.billing-address-form')
+    if baForm.length > 0
+      billing_address =
+        street: baForm.find("[name=street]").val()
+        street2: baForm.find("[name=street2]").val()
+        city: baForm.find("[name=city]").val()
+        state: baForm.find("[name=state]").val()
+        zip_code: baForm.find("[name=zip_code]").val()
+        country:  baForm.find("[name=country]").val()
+
+    tForm = $('.telephone-form')
+    if tForm.length > 0
+      telephone =
+        number: tForm.find("[name=number]").val()
+
+
+
     $form = $('.js-sell-new-form')
     sell_doc =
       discount: @sellDoc.get().discount
@@ -275,9 +305,9 @@ class SellsNew extends BlazeComponent
       status: $form.find('[name=status]').val()
       notes: $form.find('[name=notes]').val()
       customer_id: if @customer()? then @customer()._id else null
-      # shipping_address:
-      # billing_address:
-      # telephone:
+      shipping_address: shipping_address
+      billing_address: billing_address
+      telephone: telephone
 
     @insert sell_doc, inventories
 
@@ -316,7 +346,54 @@ class SellsNew extends BlazeComponent
       'submit .js-sell-new-form': @onSubmit
       'click .js-submit-new-sell': @onSubmit
       'click .js-show-sell-d': @onSellDialog
+      'click .js-selectable': @onInfoSelected
+      'click .js-new-selectable': @onCreateNew
+      'click .js-remove-info': @onRemoveInfo
+
+  onRemoveInfo: (event) ->
+    title = $(event.currentTarget).find('.icon-div').attr('data-info')
+    @extraInfo.set title, null
+
+  onCreateNew: (event) ->
+    @extraInfo.set @taTitle.get(), new: true
+    $('.js-selectable').removeClass('selected')
+
+
+  onInfoSelected: (event) ->
+    tar = $(event.currentTarget)
+    title = @taTitle.get()
+    if tar.hasClass('selected')
+      $('.js-selectable').removeClass('selected')
+      @extraInfo.set title, null
+    else
+      $('.js-selectable').removeClass('selected')
+      tar.addClass('selected')
+
+      if title is 'telephones'
+        form =
+          number: tar.find("[name=number]").html()
+        @extraInfo.set title, form
+
+      else
+        form =
+          street: tar.find("[name=street]").html()
+          street2: tar.find("[name=street2]").html()
+          city: tar.find("[name=city]").html()
+          state: tar.find("[name=state]").html()
+          zip_code: tar.find("[name=zip_code]").html()
+          country:  tar.find("[name=country]").html()
+        @extraInfo.set title, form
+
 
 
   onSellDialog: (event) ->
+    @taTitle.set $(event.currentTarget).find('.js-dialog-b').attr('data-info')
+    @showTA.set(true)
     $(@find('.js-open-sd')).trigger('click')
+
+
+  showTelephones: ->
+    @taTitle.get() is 'telephones'
+
+  showNew: (type) ->
+    @extraInfo.get(type)

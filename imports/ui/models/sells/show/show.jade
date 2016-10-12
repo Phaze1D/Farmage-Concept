@@ -81,75 +81,7 @@ template(name='SellShow')
                     else
                       div(class='info-none')
                         | Not Paid
-                        
-            div(class='flex-grid')
-              div(class='section elevation-0')
-                div(class='it')
-                  div(class='info-div')
-                    div(class='title')
-                      | Customer 
-                    if sell.customer_id
-                      +PaperButton classes="flex-info" raise=0 rippleOn=true submit=false elevation=0
-                        img(src='/default_avatar.png')
-                        
-                        div(class='info-flex-sec')
-                          div(class='info text-overflow')
-                            | #{customer.first_name} #{customer.last_name} 
-                          div(class='info-small text-overflow')
-                            | #{customer.company}
-                            
-                        i(class='material-icons' style='margin: 0 0 0 15px')
-                          | open_in_new
-                        
-                    else
-                      div(class='info-none')
-                        | None
-        
-              div(class='section elevation-0')
-                i(class='material-icons')
-                  | phone
-                
-                div(class='it')
-                  div(class='info-div')
-                    div(class='title')
-                      | Telephone
-                    if sell.telephone
-                      div(class='info')
-                        | #{sell.telephone.number}
-                    else
-                      div(class='info-none')
-                        | None
-          
-            div(class='flex-grid')
-              div(class='section elevation-0')
-                i(class='material-icons')
-                  | location_on
-                
-                div(class='it')
-                  div(class='info-div')
-                    div(class='title')
-                      | Shipping Address
-                    if sell.shipping_address
-                      div(class='info')
-                        | MISSING
-                    else
-                      div(class='info-none')
-                        | None
-                        
-              div(class='section elevation-0')
-                i(class='material-icons')
-                  | location_on
-                
-                div(class='it')
-                  div(class='info-div')
-                    div(class='title')
-                      | Billing Address
-                    if sell.billing_address
-                      div(class='info')
-                        | MISSING
-                    else
-                      div(class='info-none')
-                        | None
+            
             
             div(class='sub-title')
               | Details 
@@ -260,8 +192,98 @@ template(name='SellShow')
                     else
                       div(class='info')
                         | $#{sell.discount}  
-                    
+                      
+            div(class='flex-grid')
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Customer 
+                    if sell.customer_id
+                      +PaperButton classes="flex-info" raise=0 rippleOn=true submit=false elevation=0
+                        img(src='/default_avatar.png')
+                        
+                        div(class='info-flex-sec')
+                          div(class='info text-overflow')
+                            | #{customer.first_name} #{customer.last_name} 
+                          div(class='info-small text-overflow')
+                            | #{customer.company}
+                            
+                        i(class='material-icons' style='margin: 0 0 0 15px')
+                          | open_in_new
+                        
+                    else
+                      div(class='info-none')
+                        | None
+        
+              div(class='section elevation-0')
+                i(class='material-icons')
+                  | phone
+                
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Telephone
+                    if sell.telephone
+                      div(class='info')
+                        | #{sell.telephone.number}
+                    else
+                      div(class='info-none')
+                        | None
+          
+            div(class='flex-grid')
+              div(class='section elevation-0')
+                i(class='material-icons')
+                  | location_on
+                
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Shipping Address
+                    with sell.shipping_address
+                      div(class='info')
+                        div(class='add-info')
+                          | #{street}
+                        div(class='add-info')
+                          | #{street2}
+                        div(class='add-info')
+                          if city
+                            | #{city}, #{state}
+                        div(class='add-info')
+                          | #{zip_code}
+                        div(class='add-info')
+                          | #{country}
+                    else
+                      div(class='info-none')
+                        | None
+                        
+              div(class='section elevation-0')
+                i(class='material-icons')
+                  | location_on
+                
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Billing Address
+                    with sell.billing_address
+                      div(class='info')
+                        div(class='add-info')
+                          | #{street}
+                        div(class='add-info')
+                          | #{street2}
+                        div(class='add-info')
+                          if city
+                            | #{city}, #{state}
+                        div(class='add-info')
+                          | #{zip_code}
+                        div(class='add-info')
+                          | #{country}
+                    else
+                      div(class='info-none')
+                        | None
             
+            
+                  
             +Timestamp item=sell
                       
           +PaperTab index=1
