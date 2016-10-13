@@ -12,8 +12,15 @@ template(name='expenses.index')
       i(class="material-icons plus-icon")
         | add
 
-  if subscriptionsReady
-    div(class='expenses main-content')
-      div(class='card-wrapper')
-        each expense in expenses
-          +ExpenseCard expense=expense
+  div(class='expenses main-content' ready=ready)
+    div(class='card-wrapper')
+      each expense in expenses
+        +ExpenseCard expense=expense
+
+  unless page.ready 
+    div(class="spinner")
+      div(class="rect1")
+      div(class="rect2")
+      div(class="rect3")
+      div(class="rect4")
+      div(class="rect5")

@@ -13,11 +13,21 @@ class SellsIndex extends IndexMixin
   onCreated: ->
     super
     organization_id = FlowRouter.getParam("organization_id")
+    @canLoadMore = true
     @autorun =>
-      @subscribe "sells", organization_id,
-        onStop: (err) ->
-          console.log "sub stop #{err}"
-        onReady: ->
+        @page = Meteor.subscribeWithPagination "sells", organization_id, 'organization', organization_id, 9,
+                  onStop: (err) ->
+                    console.log "sub stop #{err}"
+                  onReady: ->
 
   sells: ->
     SellModule.Sells.find()
+
+  ready: ->
+    if @page.ready()
+      count = SellModule.Sells.find().count()
+      if @previous is count
+        @canLoadMore = false
+      else
+        @canLoadMore = true
+        @previous = count

@@ -13,7 +13,7 @@ collections.ingredient = IngredientModule.Ingredients
 collections.inventory = InventoryModule.Inventories
 
 # Missing permissions and pagenation
-Meteor.publish "yields", (organization_id, parent, parent_id) ->
+Meteor.publish "yields", (organization_id, parent, parent_id, limit) ->
 
   info = publicationInfo organization_id, parent, parent_id
   organization = info.organization
@@ -31,7 +31,7 @@ Meteor.publish "yields", (organization_id, parent, parent_id) ->
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   if @userId? && (permissions.viewer || permissions.units_manager || permissions.owner)
-    return parentDoc.yields()
+    return parentDoc.yields(limit)
   else
     @ready();
 

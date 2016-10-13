@@ -50,6 +50,13 @@ class Structure extends BlazeComponent
   isOpened: (routeName, params) ->
     routeName is FlowRouter.getRouteName() and params is FlowRouter.getParam('organization_id')
 
+  scrollCallbacks: ->
+    ret =
+      scrollBottom: =>
+        child = @childComponents()[0].childComponents()[1].childComponents()[0]
+        if child.page.ready() && child.canLoadMore
+          child.page.loadNextPage()
+
 
   onLogout: (event) ->
     @onExitAnimation()

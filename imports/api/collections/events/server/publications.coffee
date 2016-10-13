@@ -12,7 +12,7 @@ collections.yield = YieldModule.Yields
 collections.unit = UnitModule.Units
 collections.inventory = InventoryModule.Inventories
 
-Meteor.publish "events", (organization_id, parent, parent_id) ->
+Meteor.publish "events", (organization_id, parent, parent_id, limit) ->
 
   info = publicationInfo organization_id, parent, parent_id
   parentDoc = info.parentDoc
@@ -30,7 +30,8 @@ Meteor.publish "events", (organization_id, parent, parent_id) ->
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   if @userId? && parentDoc? && (permissions.viewer || permissions.owner)
-    return parentDoc.events()
+    # Meteor._sleepForMs(5000);
+    return parentDoc.events(limit)
   else
     @ready();
 

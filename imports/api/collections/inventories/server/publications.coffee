@@ -12,7 +12,7 @@ collections.yield = YieldModule.Yields
 collections.sell = SellModule.Sells
 
 # Missing permissions and pagenation
-Meteor.publish "inventories", (organization_id, parent, parent_id) ->
+Meteor.publish "inventories", (organization_id, parent, parent_id, limit) ->
 
   info = publicationInfo organization_id, parent, parent_id
   parentDoc = info.parentDoc
@@ -30,7 +30,7 @@ Meteor.publish "inventories", (organization_id, parent, parent_id) ->
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   if @userId? && parentDoc? && (permissions.viewer || permissions.inventories_manager || permissions.owner)
-    return parentDoc.inventories()
+    return parentDoc.inventories(limit)
   else
     @ready();
 

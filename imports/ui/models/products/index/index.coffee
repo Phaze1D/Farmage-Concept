@@ -14,11 +14,12 @@ class ProductsIndex extends IndexMixin
   onCreated: ->
     super
     organization_id = FlowRouter.getParam("organization_id")
+    @canLoadMore = true
     @autorun =>
-      @subscribe "products", organization_id,
-        onStop: (err) ->
-          console.log "sub stop #{err}"
-        onReady: ->
+        @page = Meteor.subscribeWithPagination "products", organization_id, 'organization', organization_id, 9,
+                  onStop: (err) ->
+                    console.log "sub stop #{err}"
+                  onReady: ->
 
   onRendered: ->
     super
@@ -26,3 +27,12 @@ class ProductsIndex extends IndexMixin
 
   products: ->
     ProductModule.Products.find()
+
+  ready: ->
+    if @page.ready()
+      count = ProductModule.Products.find().count()
+      if @previous is count
+        @canLoadMore = false
+      else
+        @canLoadMore = true
+        @previous = count

@@ -13,13 +13,25 @@ class OUsersIndex extends IndexMixin
   onCreated: ->
     super
     organization_id = FlowRouter.getParam("organization_id")
+    @canLoadMore = true
     @autorun =>
-      @subscribe "ousers", organization_id,
-        onStop: (err) ->
-          console.log "sub stop #{err}"
-        onReady: ->
+        @page = Meteor.subscribeWithPagination "ousers", organization_id, 'organization', organization_id, 9,
+                  onStop: (err) ->
+                    console.log "sub stop #{err}"
+                  onReady: ->
 
   ousers: ->
     organ = OrganizationModule.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
     if organ?
       organ.o_users()
+
+  ready: ->
+    if @page.ready()
+      organ = OrganizationModule.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')
+      if organ?
+        count = organ.o_users().count()
+      if @previous is count
+        @canLoadMore = false
+      else
+        @canLoadMore = true
+        @previous = count

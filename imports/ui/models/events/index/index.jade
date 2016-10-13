@@ -1,4 +1,5 @@
 template(name='events.index')
+    
   +PaperRightPanel callbacks=rightCallbacks
     div(class='js-show-right')
     div(class="js-right-content")
@@ -6,8 +7,20 @@ template(name='events.index')
         +Template.dynamic template=rightTemplate.get data=rightData.get
         
         
-  if subscriptionsReady
-    div(class='events main-content')
-      div(class='card-wrapper')
-        each event in mEvents
-          +EventCard event=event
+  
+  div(class='events main-content' ready=ready)
+    div(class='card-wrapper')
+      each event in mEvents
+        +EventCard event=event
+  
+  unless page.ready 
+    div(class="spinner")
+      div(class="rect1")
+      div(class="rect2")
+      div(class="rect3")
+      div(class="rect4")
+      div(class="rect5")
+
+  
+  
+      

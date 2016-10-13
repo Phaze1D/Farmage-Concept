@@ -12,8 +12,9 @@ class CustomersIndex extends IndexMixin
   onCreated: ->
     super
     organization_id = FlowRouter.getParam("organization_id")
+    @canLoadMore = true
     @autorun =>
-      @subscribe "customers", organization_id,
+      @page = Meteor.subscribeWithPagination "customers", organization_id, 'organization', organization_id, 9,
         onStop: (err) ->
           console.log "sub stop #{err}"
         onReady: ->
@@ -21,3 +22,12 @@ class CustomersIndex extends IndexMixin
 
   customers: ->
     CustomerModule.Customers.find()
+
+  ready: ->
+    if @page.ready()
+      count = CustomerModule.Customers.find().count()
+      if @previous is count
+        @canLoadMore = false
+      else
+        @canLoadMore = true
+        @previous = count

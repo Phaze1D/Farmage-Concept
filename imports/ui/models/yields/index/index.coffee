@@ -13,11 +13,21 @@ class YieldsIndex extends IndexMixin
   onCreated: ->
     super
     organization_id = FlowRouter.getParam("organization_id")
+    @canLoadMore = true
     @autorun =>
-      @subscribe "yields", organization_id,
-        onStop: (err) ->
-          console.log "sub stop #{err}"
-        onReady: ->
+        @page = Meteor.subscribeWithPagination "yields", organization_id, 'organization', organization_id, 9,
+                  onStop: (err) ->
+                    console.log "sub stop #{err}"
+                  onReady: ->
 
   yields: ->
     YieldModule.Yields.find()
+
+  ready: ->
+    if @page.ready()
+      count = YieldModule.Yields.find().count()
+      if @previous is count
+        @canLoadMore = false
+      else
+        @canLoadMore = true
+        @previous = count

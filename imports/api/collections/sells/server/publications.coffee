@@ -11,7 +11,7 @@ collections.product = ProductModule.Products
 collections.customer = CustomerModule.Customers
 collections.inventory = InventoryModule.Inventories
 
-Meteor.publish "sells", (organization_id, parent, parent_id) ->
+Meteor.publish "sells", (organization_id, parent, parent_id, limit) ->
 
   info = publicationInfo organization_id, parent, parent_id
   organization = info.organization
@@ -29,7 +29,7 @@ Meteor.publish "sells", (organization_id, parent, parent_id) ->
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   if @userId? && (permissions.viewer || permissions.sells_manager || permissions.owner)
-    return parentDoc.sells()
+    return parentDoc.sells(limit)
   else
     @ready();
 

@@ -8,7 +8,7 @@ collections.product = ProductModule.Products
 
 
 
-Meteor.publish "ingredients", (organization_id, parent, parent_id) ->
+Meteor.publish "ingredients", (organization_id, parent, parent_id, limit) ->
 
   info = publicationInfo organization_id, parent, parent_id
   parentDoc = info.parentDoc
@@ -27,6 +27,6 @@ Meteor.publish "ingredients", (organization_id, parent, parent_id) ->
 
 
   if @userId? && parentDoc? && (permissions.viewer || permissions.owner)
-    return parentDoc.ingredients()
+    return parentDoc.ingredients(limit)
   else
     @ready();

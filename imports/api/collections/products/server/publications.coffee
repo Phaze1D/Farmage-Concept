@@ -11,7 +11,7 @@ collections.sell = SellModule.Sells
 collections.ingredient = IngredientModule.Ingredients
 
 # Missing permissions and pagenation
-Meteor.publish "products", (organization_id, parent, parent_id) ->
+Meteor.publish "products", (organization_id, parent, parent_id, limit) ->
 
   info = publicationInfo organization_id, parent, parent_id
   parentDoc = info.parentDoc
@@ -30,6 +30,6 @@ Meteor.publish "products", (organization_id, parent, parent_id) ->
 
 
   if @userId? && parentDoc? && (permissions.viewer || permissions.inventories_manager || permissions.owner)
-    return parentDoc.products()
+    return parentDoc.products(limit)
   else
     @ready();

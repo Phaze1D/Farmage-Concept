@@ -13,8 +13,16 @@ template(name='products.index')
       i(class="material-icons plus-icon")
         | add
         
-  if subscriptionsReady
-    div(class='products main-content')
-      div(class='card-wrapper')
-        each product in products
-          +ProductCard product=product
+
+  div(class='products main-content' ready=ready )
+    div(class='card-wrapper')
+      each product in products
+        +ProductCard product=product
+
+  unless page.ready 
+    div(class="spinner")
+      div(class="rect1")
+      div(class="rect2")
+      div(class="rect3")
+      div(class="rect4")
+      div(class="rect5")

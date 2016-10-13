@@ -8,7 +8,7 @@ collections = {}
 collections.unit = UnitModule.Units
 
 # Missing permissions and pagenation
-Meteor.publish "units", (organization_id, parent, parent_id) ->
+Meteor.publish "units", (organization_id, parent, parent_id, limit) ->
 
   info = publicationInfo organization_id, parent, parent_id
   organization = info.organization
@@ -26,7 +26,7 @@ Meteor.publish "units", (organization_id, parent, parent_id) ->
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   if @userId? && (permissions.viewer || permissions.units_manager || permissions.owner)
-    return parentDoc.units()
+    return parentDoc.units(limit)
   else
     @ready();
 

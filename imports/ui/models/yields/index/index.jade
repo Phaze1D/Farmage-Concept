@@ -12,8 +12,15 @@ template(name='yields.index')
         | add
 
 
-  if subscriptionsReady
-    div(class='yields main-content')
-      div(class='card-wrapper')
-        each yield in yields
-          +YieldCard yield=yield
+  div(class='yields main-content' ready=ready )
+    div(class='card-wrapper')
+      each yield in yields
+        +YieldCard yield=yield
+
+  unless page.ready 
+    div(class="spinner")
+      div(class="rect1")
+      div(class="rect2")
+      div(class="rect3")
+      div(class="rect4")
+      div(class="rect5")

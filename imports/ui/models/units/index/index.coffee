@@ -13,11 +13,21 @@ class UnitsIndex extends IndexMixin
   onCreated: ->
     super
     organization_id = FlowRouter.getParam("organization_id")
+    @canLoadMore = true
     @autorun =>
-      @subscribe "units", organization_id,
-        onStop: (err) ->
-          console.log "sub stop #{err}"
-        onReady: ->
+        @page = Meteor.subscribeWithPagination "units", organization_id, 'organization', organization_id, 9,
+                  onStop: (err) ->
+                    console.log "sub stop #{err}"
+                  onReady: ->
 
   units: ->
     UnitModule.Units.find()
+
+  ready: ->
+    if @page.ready()
+      count = UnitModule.Units.find().count()
+      if @previous is count
+        @canLoadMore = false
+      else
+        @canLoadMore = true
+        @previous = count

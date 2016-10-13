@@ -13,12 +13,13 @@ class EventsIndex extends IndexMixin
   onCreated: ->
     super
     organization_id = FlowRouter.getParam("organization_id")
+    @previous = 0
+    @canLoadMore = true
     @autorun =>
-      @subscribe "events", organization_id,
+      @page = Meteor.subscribeWithPagination "events", organization_id, 'organization', organization_id, 12,
         onStop: (err) ->
           console.log "sub stop #{err}"
         onReady: ->
-
 
   onRendered: ->
     super
@@ -26,3 +27,12 @@ class EventsIndex extends IndexMixin
 
   mEvents: ->
     EventModule.Events.find()
+
+  ready: ->
+    if @page.ready()
+      count = EventModule.Events.find().count()
+      if @previous is count
+        @canLoadMore = false
+      else
+        @canLoadMore = true
+        @previous = count

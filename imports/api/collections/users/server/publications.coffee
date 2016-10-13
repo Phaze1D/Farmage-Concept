@@ -2,7 +2,7 @@
 { publicationInfo } = require '../../../mixins/server/publications_mixin.coffee'
 
 
-Meteor.publish "ousers", (organization_id, parent, parent_id) ->
+Meteor.publish "ousers", (organization_id, parent, parent_id, limit) ->
 
   info = publicationInfo organization_id, parent, parent_id
   parentDoc = info.parentDoc
@@ -18,7 +18,7 @@ Meteor.publish "ousers", (organization_id, parent, parent_id) ->
     throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   if @userId? && parentDoc? && (permissions.users_manager || permissions.viewer || permissions.owner)
-    return parentDoc.o_users()
+    return parentDoc.o_users(limit)
   else
     @ready();
 

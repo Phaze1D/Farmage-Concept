@@ -11,9 +11,17 @@ template(name='ingredients.index')
       i(class="material-icons plus-icon")
         | add
 
-  if subscriptionsReady
-    div(class='ingredients main-content')
-      div(class='card-wrapper')
-        each ingredient in ingredients
-          +IngredientCard ingredient=ingredient
+
+  div(class='ingredients main-content' ready=ready )
+    div(class='card-wrapper')
+      each ingredient in ingredients
+        +IngredientCard ingredient=ingredient
             
+
+  unless page.ready 
+    div(class="spinner")
+      div(class="rect1")
+      div(class="rect2")
+      div(class="rect3")
+      div(class="rect4")
+      div(class="rect5")

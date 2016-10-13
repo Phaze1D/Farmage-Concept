@@ -11,8 +11,15 @@ template(name='ousers.index')
       i(class="material-icons plus-icon")
         | add
 
-  if subscriptionsReady
-    div(class='ousers main-content')
-      div(class='card-wrapper')
-        each ouser in ousers
-          +OUserCard ouser=ouser
+  div(class='ousers main-content' ready=ready )
+    div(class='card-wrapper')
+      each ouser in ousers
+        +OUserCard ouser=ouser
+
+  unless page.ready 
+    div(class="spinner")
+      div(class="rect1")
+      div(class="rect2")
+      div(class="rect3")
+      div(class="rect4")
+      div(class="rect5")

@@ -12,11 +12,12 @@ class IngredientsIndex extends IndexMixin
   onCreated: ->
     super
     organization_id = FlowRouter.getParam("organization_id")
+    @canLoadMore = true
     @autorun =>
-      @subscribe "ingredients", organization_id,
-        onStop: (err) ->
-          console.log "sub stop #{err}"
-        onReady: ->
+        @page = Meteor.subscribeWithPagination "ingredients", organization_id, 'organization', organization_id, 12,
+                  onStop: (err) ->
+                    console.log "sub stop #{err}"
+                  onReady: ->
 
 
   onRendered: ->
@@ -25,3 +26,12 @@ class IngredientsIndex extends IndexMixin
 
   ingredients: ->
     IngredientModule.Ingredients.find()
+
+  ready: ->
+    if @page.ready()
+      count = IngredientModule.Ingredients.find().count()
+      if @previous is count
+        @canLoadMore = false
+      else
+        @canLoadMore = true
+        @previous = count

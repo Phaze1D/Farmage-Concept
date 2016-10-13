@@ -11,9 +11,16 @@ template(name='inventories.index')
       i(class="material-icons plus-icon")
         | add
     
-  if subscriptionsReady
-    div(class='inventories main-content')
-      div(class='card-wrapper')
-        each inventory in inventories
-          +InventoryCard inventory=inventory
+  div(class='inventories main-content' ready=ready)
+    div(class='card-wrapper')
+      each inventory in inventories
+        +InventoryCard inventory=inventory
         
+
+  unless page.ready 
+    div(class="spinner")
+      div(class="rect1")
+      div(class="rect2")
+      div(class="rect3")
+      div(class="rect4")
+      div(class="rect5")

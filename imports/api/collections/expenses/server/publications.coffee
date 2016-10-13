@@ -10,7 +10,7 @@ collections = {}
 collections.unit = UnitModule.Units
 collections.provider = ProviderModule.Providers
 
-Meteor.publish "expenses", (organization_id, parent, parent_id) ->
+Meteor.publish "expenses", (organization_id, parent, parent_id, limit) ->
 
   info = publicationInfo organization_id, parent, parent_id
   parentDoc = info.parentDoc
@@ -29,7 +29,7 @@ Meteor.publish "expenses", (organization_id, parent, parent_id) ->
 
 
   if @userId? && parentDoc? && (permissions.viewer || permissions.expenses_manager || permissions.owner)
-    return parentDoc.expenses()
+    return parentDoc.expenses(limit)
   else
     @ready();
 

@@ -12,8 +12,15 @@ template(name='customers.index')
         | add
         
         
-  if subscriptionsReady
-    div(class='customers main-content')
-      div(class='card-wrapper')
-        each customer in customers
-          +CustomerCard customer=customer
+  div(class='customers main-content' ready=ready)
+    div(class='card-wrapper')
+      each customer in customers
+        +CustomerCard customer=customer
+
+  unless page.ready 
+    div(class="spinner")
+      div(class="rect1")
+      div(class="rect2")
+      div(class="rect3")
+      div(class="rect4")
+      div(class="rect5")
