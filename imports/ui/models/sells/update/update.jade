@@ -32,17 +32,18 @@ template(name='sellsUpdate')
                   div(class='detail-title-wrapper')
                     div(class='detail-title')
                       | Products 
-                      
-                    div(class='db-wrapper')
-                      +PaperButton classes="add-detail" raise=0 rippleOn=true submit=false
-                        i(class="material-icons")
-                          | camera_alt
                     
-                    div(class='db-wrapper')
-                      +PaperButton classes="add-detail js-show-d" raise=0 rippleOn=false submit=false
-                        div(class="js-dialog-b" data-tab1='products' data-tab2='inventories' data-many='true' tabs='true')
-                        i(class="material-icons")
-                          | add
+                    unless sell.paid
+                      div(class='db-wrapper')
+                        +PaperButton classes="add-detail" raise=0 rippleOn=true submit=false
+                          i(class="material-icons")
+                            | camera_alt
+                      
+                      div(class='db-wrapper')
+                        +PaperButton classes="add-detail js-show-d" raise=0 rippleOn=false submit=false
+                          div(class="js-dialog-b" data-tab1='products' data-tab2='inventories' data-many='true' tabs='true')
+                          i(class="material-icons")
+                            | add
               
               div(class='grid-wrapper sell-detail')
                 div(class='col-12 p-right p-left')
@@ -93,11 +94,18 @@ template(name='sellsUpdate')
 
                       div(class='grid-wrapper')
                         div(class='col-12')
-                          +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d inv-button-wrapper"
-                            div(class="inv-b js-dialog-b" data-sub='inventories' data-many='true' data-parent='product' data-parentid="#{product._id}")
-                              div(class="text-div-sm") Inventories
-                              div(class="icon-div")
-                                i(class="material-icons icon") add_circle
+                          if sell.paid
+                            div(class="inv-button-wrapper")
+                              div(class="inv-b js-dialog-b" data-sub='inventories' data-many='true' data-parent='product' data-parentid="#{product._id}")
+                                div(class="text-div-sm") Inventories
+                                
+                          
+                          else
+                            +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d inv-button-wrapper"
+                              div(class="inv-b js-dialog-b" data-sub='inventories' data-many='true' data-parent='product' data-parentid="#{product._id}")
+                                div(class="text-div-sm") Inventories
+                                div(class="icon-div")
+                                  i(class="material-icons icon") add_circle
                   
                       each inventory in inventories product._id
                         div(class='inventory-box grid-wrapper' data-id='#{inventory._id}')
@@ -122,7 +130,12 @@ template(name='sellsUpdate')
                               = invAvailable(inventory)
                           
                           div(class='inventory-input col-3')
-                            +PaperInput classes='js-inventory-input' type="number" name="amount_taken" value=(defaultInvQuantity inventory) label="Taken" focusColor="darkblue" min='0' max=(invMax inventory) labelFloat=true
+                            with defaultInvQuantity inventory
+                              if sell.paid
+                                +PaperInput disabled=true classes='js-inventory-input' type="number" name="amount_taken" value=quan label="Taken" focusColor="darkblue" min='0' max=(invMax inventory) labelFloat=true
+
+                              else
+                                +PaperInput classes='js-inventory-input' type="number" name="amount_taken" value=quan label="Taken" focusColor="darkblue" min='0' max=(invMax inventory) labelFloat=true
 
                           
               div(class='grid-wrapper')
@@ -141,12 +154,20 @@ template(name='sellsUpdate')
                 div(class='col-6 p-left')
                   +PaperInput type="text" name="status" label="Status" focusColor="darkblue" value=sell.status
                   
-                div(class='col-6 p-left p-right')
-                  +PaperInput type="number" classes="js-discount-input discount-input" name="discount" label="Discount" focusColor="darkblue" step="any" min='0' value=sell.discount
+                div(class='col-6 p-left p-right')                  
+                  if sell.paid
+                    +PaperInput disabled=true type="number" classes="js-discount-input discount-input" name="discount" label="Discount" focusColor="darkblue" step="any" min='0' value=sell.discount
+
+                    div(class='discount-select')
+                      div(class='discount-icon' type='#{discountType.value}')
+                        | #{discountType.option} 
                   
-                  +PaperButton classes='js-discount-select discount-select' elevation=1 raise=0 submit=false rippleOn=true
-                    div(class='discount-icon' type='#{discountType.value}')
-                      | #{discountType.option} 
+                  else
+                    +PaperInput type="number" classes="js-discount-input discount-input" name="discount" label="Discount" focusColor="darkblue" step="any" min='0' value=sell.discount
+
+                    +PaperButton classes='js-discount-select discount-select' elevation=1 raise=0 submit=false rippleOn=true
+                      div(class='discount-icon' type='#{discountType.value}')
+                        | #{discountType.option} 
                   
 
               
@@ -154,13 +175,20 @@ template(name='sellsUpdate')
                 div(class='col-12 p-right p-left')
                   +PaperInput type="textarea" name="notes" label="Notes" focusColor="darkblue" charMax='512' showCount=true value=sell.notes
                   
+                  
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
-                    div(class="resources-b js-dialog-b" data-sub='customers' data-many='false')
-                      div(class="text-div-sm") Customer
-                      div(class="icon-div")
-                        i(class="material-icons icon") add_circle
+                  if sell.paid
+                    div(class="button-wrapper")
+                      div(class="resources-b js-dialog-b" data-sub='customers' data-many='false')
+                        div(class="text-div-sm") Customer
+              
+                  else
+                    +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
+                      div(class="resources-b js-dialog-b" data-sub='customers' data-many='false')
+                        div(class="text-div-sm") Customer
+                        div(class="icon-div")
+                          i(class="material-icons icon") add_circle
                         
               if customer
                 div(class='grid-wrapper')
@@ -251,15 +279,16 @@ template(name='sellsUpdate')
                       +PaperButton raise=0 submit=false rippleOn=false classes="js-remove-info remove-address-b"
                         div(class="icon-div" data-info='shipping addresses')
                           i(class="material-icons icon") remove_circle
-                                      
-              div(class='grid-wrapper')
-                div(class='col-12 p-right p-left')
-                  +PaperButton raise=1 elevation=1 submit=false rippleOn=true classes='pay-button'  disabled=canPay
-                    i(class="material-icons")
-                      | monetization_on
+                          
+              unless sell.paid                  
+                div(class='grid-wrapper')
+                  div(class='col-12 p-right p-left')
+                    +PaperButton raise=1 elevation=1 submit=false rippleOn=true classes='js-pay pay-button'  disabled=canPay
+                      i(class="material-icons")
+                        | monetization_on
                         
             
-    +PaperDialog title='Test'
+    +PaperDialog callbacks=infoCallbacks
       div(class="js-open-dialog js-open-sd")
       if showTA.get
         div(class="list")
@@ -335,4 +364,8 @@ template(name='sellsUpdate')
                 +PaperRipple fill="lightgrey"
 
                         
-            
+    +PaperDialog callbacks=payCallbacks
+      div(class="js-open-dialog js-open-pay")
+      if showPay.get
+        +sellPay products=products pDetails=pDetails sellDoc=sellDoc discount_type=discountType.value inventories=allInventories onConfirmCallBack=payConfirmCallback
+    

@@ -26,10 +26,12 @@ class SellsNew extends BlazeComponent
     @discountDict.set('option', '%')
     @discountDict.set('value', true)
     @showTA = new ReactiveVar(false)
+    @showPay = new ReactiveVar(false)
     @taTitle = new ReactiveVar('')
     @sellDoc = new ReactiveVar {total_price: '0.00', sub_total: '0.00', tax_total: '0.00', discount: 0}
     @pDetails = new ReactiveDict
     @extraInfo = new ReactiveDict
+    @paymentInfo = {}
 
 
   currentList: (subscription)->
@@ -45,6 +47,13 @@ class SellsNew extends BlazeComponent
 
   customer: ->
     @currentList('customers')[0]
+
+  allInventories: ->
+    invs = []
+    for product in @products()
+      for inv in @inventories(product._id)
+        invs.push inv
+    invs
 
 
   date: (date) ->
@@ -254,7 +263,7 @@ class SellsNew extends BlazeComponent
 
 
   onSubmit: (event) ->
-    event.preventDefault()
+    event.preventDefault() if event?
     inventories = []
     details = []
     for pkey, pdetail of @pDetails.all()
@@ -319,19 +328,41 @@ class SellsNew extends BlazeComponent
       if inventories.length > 0 and res?
         @addItems(sell_doc.organization_id, res, inventories)
       else
+        if @paymentInfo.pay && err?
+          $(@find '.cancel-b').trigger('click')
+
         $('.js-hide-new').trigger('click') unless err?
 
   addItems: (organization_id, sell_id, inventories) ->
     SMethods.addItems.call {organization_id, sell_id, inventories}, (err, res) =>
       console.log err
       if err?
+
+        $(@find '.cancel-b').trigger('click') if @paymentInfo.pay 
         @remove(organization_id, sell_id)
       else
-        $('.js-hide-new').trigger('click') unless err?
+        if @paymentInfo.pay
+          @pay(organization_id, sell_id)
+        else
+          $('.js-hide-new').trigger('click')
 
   remove: (organization_id, sell_id) =>
     SMethods.remove.call {organization_id, sell_id}, (err, res) ->
       console.log err
+
+
+
+  pay: (organization_id, sell_id) ->
+    payment_method = @paymentInfo.payment_method
+    SMethods.pay.call {organization_id, sell_id, payment_method}, (err, res) =>
+      if err?
+        # Move to update sell view
+        console.log err
+        @paymentInfo = {}
+      else
+        $(@find '.cancel-b').trigger('click')
+        $('.js-hide-new').trigger('click')
+
 
 
 
@@ -349,6 +380,22 @@ class SellsNew extends BlazeComponent
       'click .js-selectable': @onInfoSelected
       'click .js-new-selectable': @onCreateNew
       'click .js-remove-info': @onRemoveInfo
+      'click .js-pay': @onPay
+
+  payConfirmCallback: ->
+    paymentInfo = {}
+    @onConfirmCallBack
+
+  onConfirmCallBack: (payment_method, payment_date) =>
+    @paymentInfo.pay = true
+    @paymentInfo.payment_method = payment_method
+    @paymentInfo.payment_date = payment_date
+    @onSubmit()
+
+  onPay: (event) ->
+    unless @canPay()
+      @showPay.set true
+      $('.js-open-pay').trigger('click')
 
   onRemoveInfo: (event) ->
     title = $(event.currentTarget).find('.icon-div').attr('data-info')
@@ -397,3 +444,14 @@ class SellsNew extends BlazeComponent
 
   showNew: (type) ->
     @extraInfo.get(type)
+
+
+  infoCallbacks: ->
+    ret =
+      hideClick: =>
+        @showTA.set false
+
+  payCallbacks: ->
+    ret =
+      hideClick: =>
+        @showPay.set false

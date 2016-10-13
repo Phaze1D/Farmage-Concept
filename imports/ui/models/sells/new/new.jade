@@ -248,12 +248,12 @@ template(name='sellsNew')
                                       
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperButton raise=1 elevation=1 submit=false rippleOn=true classes='pay-button'  disabled=canPay
+                  +PaperButton raise=1 elevation=1 submit=false rippleOn=true classes='js-pay pay-button'  disabled=canPay
                     i(class="material-icons")
                       | monetization_on
                         
             
-    +PaperDialog title='Test'
+    +PaperDialog callbacks=infoCallbacks
       div(class="js-open-dialog js-open-sd")
       if showTA.get
         div(class="list")
@@ -327,3 +327,9 @@ template(name='sellsNew')
                     | add_circle_outline
                     
                 +PaperRipple fill="lightgrey"
+
+
+    +PaperDialog callbacks=payCallbacks
+      div(class="js-open-dialog js-open-pay")
+      if showPay.get
+        +sellPay products=products pDetails=pDetails sellDoc=sellDoc discount_type=discountType.value inventories=allInventories onConfirmCallBack=payConfirmCallback

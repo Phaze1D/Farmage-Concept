@@ -25,10 +25,12 @@ class SellsUpdate extends BlazeComponent
     @discountDict.set('value', true)
     @done = new ReactiveDict
     @showTA = new ReactiveVar(false)
+    @showPay = new ReactiveVar(false)
     @taTitle = new ReactiveVar('')
     @sellDoc = new ReactiveVar {total_price: '0.00', sub_total: '0.00', tax_total: '0.00', discount: 0}
     @pDetails = new ReactiveDict
     @extraInfo = new ReactiveDict
+    @paymentInfo = {}
 
 
 
@@ -84,6 +86,13 @@ class SellsUpdate extends BlazeComponent
   inventories: (product_id) ->
     @currentList("inventories#{product_id}")
 
+  allInventories: ->
+    invs = []
+    for product in @products()
+      for inv in @inventories(product._id)
+        invs.push inv
+    invs
+
   customer: ->
     @currentList('customers')[0]
 
@@ -102,7 +111,9 @@ class SellsUpdate extends BlazeComponent
     product.tax_rate
 
   invMax: (inventory) ->
-    inventory.amount + @defaultInvQuantity(inventory)
+    df = @defaultInvQuantity(inventory)
+    df = if df.inPre then df.quan else 0
+    inventory.amount + df
 
 
   date: (date) ->
@@ -193,9 +204,9 @@ class SellsUpdate extends BlazeComponent
       if detail.product_id is inventory.product_id
         for inv in detail.inventories
           if inv.inventory_id is inventory._id
-            return inv.quantity_taken
+            return inPre: true, quan: inv.quantity_taken
 
-    return 1
+    return inPre: false, quan: 1
 
   initInventories: ->
     for pdkey, pdvalue of @pDetails.all()
@@ -221,6 +232,7 @@ class SellsUpdate extends BlazeComponent
 
   invAvailable: (inventory) ->
     defaultQuantity = @defaultInvQuantity(inventory)
+    defaultQuantity = if defaultQuantity.inPre then defaultQuantity.quan else 0
     if @pDetails.get(inventory.product_id)?
       return inventory.amount - @pDetails.get(inventory.product_id).inventories[inventory._id] + defaultQuantity
 
@@ -322,7 +334,7 @@ class SellsUpdate extends BlazeComponent
 
 
   onSubmit: (event) ->
-    event.preventDefault()
+    event.preventDefault() if event?
     classified = @classify()
 
     saForm = $('.shipping-address-form')
@@ -426,18 +438,22 @@ class SellsUpdate extends BlazeComponent
     organization_id = FlowRouter.getParam 'organization_id'
     sell_id = @data().update_id
 
-    if putBackInventories.length > 0
-      @putBackItems(organization_id, sell_id, putBackInventories)
-    else
-      @done.set('putback', true)
-
-    if addInventories.length > 0
-      @addItems(organization_id, sell_id, addInventories)
-    else
-      @done.set('add', true)
-
     SMethods.update.call {organization_id, sell_id, sell_doc}, (err, res) =>
       console.log err
+
+      if @paymentInfo.pay && err?
+        $(@find '.cancel-b').trigger('click')
+
+      if putBackInventories.length > 0 && !err?
+        @putBackItems(organization_id, sell_id, putBackInventories)
+      else if !err?
+        @done.set('putback', true)
+
+      if addInventories.length > 0 && !err?
+        @addItems(organization_id, sell_id, addInventories)
+      else if !err?
+        @done.set('add', true)
+
       @reRoute(organization_id, sell_id) unless err?
 
 
@@ -445,17 +461,41 @@ class SellsUpdate extends BlazeComponent
     SMethods.addItems.call {organization_id, sell_id, inventories}, (err, res) =>
       console.log err
       @done.set('add', true) unless err?
-      @reRoute(organization_id, sell_id)
+
+      if @paymentInfo.pay && err?
+        $(@find '.cancel-b').trigger('click')
+
+      @reRoute(organization_id, sell_id) unless err?
 
   putBackItems: (organization_id, sell_id, inventories) =>
     SMethods.putBackItems.call {organization_id, sell_id, inventories}, (err, res) =>
       console.log err
       @done.set('putback', true) unless err?
-      @reRoute(organization_id, sell_id)
+
+      if @paymentInfo.pay && err?
+        $(@find '.cancel-b').trigger('click')
+
+      @reRoute(organization_id, sell_id) unless err?
 
   reRoute: (organization_id, sell_id) ->
     if @done.get('putback') && @done.get('add')
-      $('.js-hide-new').trigger('click')
+      if @paymentInfo.pay
+        @pay(organization_id, sell_id)
+      else
+        $(@find '.js-hide-new').trigger('click')
+
+  pay: (organization_id, sell_id) ->
+    payment_method = @paymentInfo.payment_method
+    @paymentInfo = {}
+    SMethods.pay.call {organization_id, sell_id, payment_method}, (err, res) =>
+      if err?
+        # Move to update sell view
+        console.log err
+      else
+        $(@find '.cancel-b').trigger('click')
+        $(@find '.js-hide-new').trigger('click')
+
+
 
 
 
@@ -473,6 +513,22 @@ class SellsUpdate extends BlazeComponent
       'click .js-selectable': @onInfoSelected
       'click .js-new-selectable': @onCreateNew
       'click .js-remove-info': @onRemoveInfo
+      'click .js-pay': @onPay
+
+  payConfirmCallback: ->
+    paymentInfo = {}
+    @onConfirmCallBack
+
+  onConfirmCallBack: (payment_method, payment_date) =>
+    @paymentInfo.pay = true
+    @paymentInfo.payment_method = payment_method
+    @paymentInfo.payment_date = payment_date
+    @onSubmit()
+
+  onPay: (event) ->
+    unless @canPay()
+      @showPay.set true
+      $('.js-open-pay').trigger('click')
 
   onRemoveInfo: (event) ->
     title = $(event.currentTarget).find('.icon-div').attr('data-info')
@@ -521,3 +577,13 @@ class SellsUpdate extends BlazeComponent
 
   showNew: (type) ->
     @extraInfo.get(type)
+
+  infoCallbacks: ->
+    ret =
+      hideClick: =>
+        @showTA.set false
+
+  payCallbacks: ->
+    ret =
+      hideClick: =>
+        @showPay.set false

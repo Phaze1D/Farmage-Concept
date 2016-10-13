@@ -276,8 +276,10 @@ setupSell = (sell_doc, previousSell) ->
 
   for detail in sell_doc.details
     product = mixins.productBelongsToOrgan detail.product_id, sell_doc.organization_id
-    detail.unit_price = if previousSell? && preSellDict[detail.product_id]? then preSellDict[detail.product_id].unit_price else product.unit_price
-    detail.tax_rate = if previousSell? && preSellDict[detail.product_id]? then preSellDict[detail.product_id].tax_rate else product.tax_rate
+    # console.log preSellDict[detail.product_id]
+    preCheck = previousSell? && preSellDict[detail.product_id]? && preSellDict[detail.product_id].unit_price?
+    detail.unit_price = if preCheck then preSellDict[detail.product_id].unit_price else product.unit_price
+    detail.tax_rate = if preCheck then preSellDict[detail.product_id].tax_rate else product.tax_rate
     sell_doc.sub_total += detail.unit_price * detail.quantity
     sell_doc.tax_total += (detail.unit_price * detail.quantity) * (detail.tax_rate/100)
 

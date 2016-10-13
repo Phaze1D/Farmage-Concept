@@ -1,0 +1,96 @@
+template(name='sellPay')
+  div(class='sell-pay')
+    h4(class='pa-title')
+      | Details 
+    
+    table(class='pa-table')
+      thead
+        tr
+          th Product
+          th Unit Price
+          th Tax Rate
+          th Quantity
+          th SubTotal
+          
+      
+      tbody
+        each product in products
+          tr
+            td
+              div(class='pa-product')
+                img(src='/no_image2.jpg')
+                div
+                  | #{product.name}
+                  span
+                   | #{product.sku}
+            with pdetail product._id
+              td
+                | $#{unit_price}
+              td 
+                | #{tax_rate}%
+              td
+                | #{quantity}
+              td
+                | $#{sub_total}
+          
+      with sellDoc
+        tfoot
+          tr
+            td(colspan='5')
+              div(class='f-sm')
+                | Sub Total: $#{sub_total}
+              div(class='f-sm')
+                | Tax Total: $#{tax_total}
+              if discountType
+                div(class='f-sm')
+                  | Discount: #{discount}%
+              else
+                div(class='f-sm')
+                  | Discount: $#{discount}
+                
+              div(class='f-sm' style='font-size: 18px')
+                | Total: $#{total_price}
+                        
+    h4(class='pa-title')
+      | Inventories 
+    
+    table(class='pa-table')
+      thead
+        tr
+          th Inventory Identifier
+          th Product
+          th Quantity Taken
+          
+      tbody
+        each inventory in inventories 
+          tr
+          
+            td
+              =identifer(inventory)
+              
+            td
+              with productF inventory.product_id
+                div(class='pa-product')
+                  img(src='/no_image2.jpg' style='width: 32px; height: 32px')
+                  div
+                    | #{name}
+                    span
+                     | #{sku}            
+              
+            td
+              =quantityTaken(inventory)
+                
+        
+    div(class='grid-wrapper' style='margin-top: 30px')
+      div(class='col-6 p-right p-left')
+        +PaperInput type="text" name="payment_date" label="Payment Date" focusColor="darkblue"
+        
+      div(class='col-6 p-left p-right')
+        +PaperInput type="text" name="payment_method" label="Payment Method" focusColor="darkblue"
+    
+    div(class='submit-div')
+      +PaperButton raise=1 elevation=1 submit=false rippleOn=true classes='cancel-b js-close-dialog' 
+        | Cancel
+      
+      +PaperButton raise=1 elevation=1 submit=false rippleOn=true classes='confirm-b js-confirm-b' 
+        | Confirm
