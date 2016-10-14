@@ -12,6 +12,10 @@ class EventsUpdate extends BlazeComponent
   constructor: (args) ->
     super
 
+  onCreated: ->
+    super
+    @schema = EventModule.Events.simpleSchema()
+
   event: ->
     EventModule.Events.findOne @data().update_id
 

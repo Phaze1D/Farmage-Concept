@@ -1,5 +1,7 @@
 DialogMixin = require '../../../mixins/dialog_mixin/dialog_mixin.coffee'
 EMethods = require '../../../../api/collections/expenses/methods.coffee'
+ExpenseModule = require '../../../../api/collections/expenses/expenses.coffee'
+
 
 require './new.jade'
 
@@ -13,6 +15,7 @@ class ExpensesNew extends BlazeComponent
   onCreated: ->
     super
     @totalPrice = new ReactiveVar('0.00')
+    @schema = ExpenseModule.Expenses.simpleSchema()
 
   onRendered: ->
     super

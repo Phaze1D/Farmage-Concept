@@ -28,21 +28,21 @@ template(name="expensesUpdate")
             div(class='input-area')
               div(class="grid-wrapper")
                 div(class='col-12 p-right p-left')
-                  +PaperInput type="text" name="name" label="Item Name" focusColor="darkblue" size="size-medium" value=expense.name
+                  +PaperInput type="text" name="name" label="Item Name" focusColor="darkblue" size="size-medium" value=expense.name schema=schema
                   
               div(class='grid-wrapper')
                 div(class='col-6 p-left')
-                  +PaperInput classes='js-value-changed unit-price' type="number" name="price" label="Unit Cost" focusColor="darkblue" prefix="$" step="0.01" min='0' value=expense.price
+                  +PaperInput classes='js-value-changed unit-price' type="number" name="price" label="Unit Cost" focusColor="darkblue" prefix="$" step="0.01" min='0' value=expense.price schema=schema
 
                 div(class='col-6 p-right p-left')
-                  +PaperInput classes='js-value-changed quantity' type="number" name="quantity" label="Quantity" focusColor="darkblue" min='0' value=expense.quantity
+                  +PaperInput classes='js-value-changed quantity' type="number" name="quantity" label="Quantity" focusColor="darkblue" min='0' value=expense.quantity schema=schema
                   
                 div(class='col-6 p-left')
                   +PaperInput type="number" alwaysFloating=true name="total_price" label="Total" value=totalPrice.get focusColor="darkblue" prefix="$" step="any" min='0' disabled="true"
 
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperInput type="textarea" name="description" label="Description" focusColor="darkblue" charMax='512' showCount=true value=expense.description
+                  +PaperInput type="textarea" name="description" label="Description" focusColor="darkblue" charMax='512' showCount=true value=expense.description schema=schema
 
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')

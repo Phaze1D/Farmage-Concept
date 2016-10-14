@@ -29,14 +29,14 @@ template(name='inventoriesNew')
               
               div(class='grid-wrapper')
                 div(class='col-6 p-left')
-                  +PaperInput type="text" name="name" label="Identifier" focusColor="darkblue" size="size-small"
+                  +PaperInput type="text" name="name" label="Identifier" focusColor="darkblue" size="size-small" schema=schema
                 
                 div(class='col-6 p-left p-right')
-                  +PaperInput type="text" name="expiration_date" label="Expiration Date" focusColor="darkblue" size="size-small"
+                  +PaperInput type="text" name="expiration_date" label="Expiration Date" focusColor="darkblue" size="size-small" schema=schema
                   
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperInput type="textarea" name="notes" label="Notes" focusColor="darkblue" charMax='512' showCount=true
+                  +PaperInput type="textarea" name="notes" label="Notes" focusColor="darkblue" charMax='512' showCount=true schema=schema
                   
                       
               +eventMixin amountLabel="Amount"

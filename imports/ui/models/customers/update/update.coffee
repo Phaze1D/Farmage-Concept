@@ -12,6 +12,7 @@ class CustomersUpdate extends BlazeComponent
 
   onCreated: ->
     super
+    @schema = CustomerModule.Customers.simpleSchema()
 
   onRendered: ->
     super

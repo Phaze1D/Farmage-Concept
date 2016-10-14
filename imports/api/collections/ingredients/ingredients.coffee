@@ -23,13 +23,11 @@ IngredientSchema =
   new SimpleSchema([
     name:
       type: String
-      label: 'ingredient'
       max: 128
       denyUpdate: true
 
     measurement_unit:
       type: String
-      label: 'measurement_unit'
       max: 64
       denyUpdate: true
 

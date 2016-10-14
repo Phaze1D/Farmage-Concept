@@ -25,14 +25,14 @@ template(name='eventsUpdate')
           div(class='input-area')
             div(class="grid-wrapper")
               div(class='col-12 p-right p-left')
-                +PaperInput type="textarea" name="description" label="Description" focusColor="darkblue" value=event.description
+                +PaperInput type="textarea" name="description" label="Description" focusColor="darkblue" value=event.description schema=schema
               
             div(class="grid-wrapper")
               div(class='col-4 p-right p-left')
                 +PaperInput type="text" name="amount" label="Amount" focusColor="darkblue" value=event.amount disabled=true
               
               div(class='col-4 p-left')
-                +PaperInput type="text" name="for_type" label="For Type" focusColor="darkblue" value=forType disabled=true
+                +PaperInput type="text" name="for_type" label="For Type" focusColor="darkblue" value=forType disabled=true 
                 
               div(class='col-4 p-left')
                 +PaperInput type="text" name="for_id" label="For Identifer" focusColor="darkblue" value=identifer disabled=true

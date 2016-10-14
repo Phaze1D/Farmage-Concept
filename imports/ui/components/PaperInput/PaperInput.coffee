@@ -12,8 +12,11 @@ class PaperInput extends BlazeComponent
     @colorL = new ReactiveVar ''
     @underline = new ReactiveVar ''
     @float = new ReactiveVar ''
+    @errorLine = new ReactiveVar ''
+    @error = new ReactiveVar
     @charCount = new ReactiveVar "0/#{@data().charMax}"
     @textarea = @data().type is 'textarea'
+    @fi = false
     @data().size = "size-small" unless @data().size?
     @data().labelFloat = true unless @data().labelFloat?
 
@@ -28,9 +31,9 @@ class PaperInput extends BlazeComponent
 
 
   onFocusIn: (event) ->
+    @fi = true
     @underline.set('highlight')
     @color.set @data().focusColor
-    @colorL.set @data().focusColor if event.target.value.length > 0
     if @data().labelFloat
       @float.set('label-floating')
       if @data().prefix?
@@ -38,7 +41,10 @@ class PaperInput extends BlazeComponent
     else
       @float.set('label-hidden') unless @data().alwaysFloating
 
-    @colorL.set @data().focusColor
+    if @error.get()?
+      @colorL.set '#dd2c00'
+    else
+      @colorL.set @data().focusColor
 
 
   onFocusOut: (event) ->
@@ -46,8 +52,24 @@ class PaperInput extends BlazeComponent
     @underline.set ''
     @color.set ''
     @colorL.set ''
+    if @fi
+      @fi = false
+      @validate(event.currentTarget.value)
 
 
+  validate: (value) ->
+    if @data().schema
+      obj = {}
+      obj[@data().name] = value
+      @data().schema.clean(obj)
+      context = @data().schema.namedContext()
+      if context.validateOne(obj, @data().name)
+        @error.set null
+        @errorLine.set ''
+        @colorL.set ''
+      else
+        @error.set context.keyErrorMessage(@data().name)
+        @errorLine.set 'highlight'
 
 
   onInput: (input) ->
@@ -74,7 +96,9 @@ class PaperInput extends BlazeComponent
       @charCount.set("#{input.value.length}/#{@data().charMax}")
 
 
-
+  onChange: (event) ->
+    console.log 'acahgn'
+    @validate(event.currentTarget.value)
 
 
   events: ->

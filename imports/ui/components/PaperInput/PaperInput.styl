@@ -113,8 +113,33 @@
     transition: transform 0.25s
 
 
+.underline-error
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  transform-origin: center center;
+  transform: scale3d(0,1,1);
+  background-color: #dd2c00
+
+  &.highlight
+    transform: none
+    transition: transform 0.25s
+
+.error-mes
+  display: inline-block;
+  position: absolute;
+  font-size: 12px
+  font-weight: 300;
+  line-height: 20px
+  color: #dd2c00
+
+
 .add-on-content
   position: relative;
+  margin-bottom: 5px
 
 .char-count
   display: inline-block;

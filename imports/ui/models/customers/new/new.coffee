@@ -1,4 +1,6 @@
 CMethods = require '../../../../api/collections/customers/methods.coffee'
+CustomerModule = require '../../../../api/collections/customers/customers.coffee'
+
 
 require './new.jade'
 
@@ -8,6 +10,11 @@ class CustomersNew extends BlazeComponent
 
   constructor: (args) ->
     # body...
+
+  onCreated: ->
+    super
+    @schema = CustomerModule.Customers.simpleSchema()
+
 
   onRendered: ->
     super

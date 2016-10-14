@@ -19,6 +19,7 @@ class ExpensesUpdate extends BlazeComponent
   onCreated: ->
     super
     @totalPrice = new ReactiveVar()
+    @schema = ExpenseModule.Expenses.simpleSchema()
 
   onRendered: ->
     super

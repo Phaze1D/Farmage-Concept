@@ -1,5 +1,7 @@
 
 IMethods = require '../../../../api/collections/ingredients/methods.coffee'
+IngredientModule = require '../../../../api/collections/ingredients/ingredients.coffee'
+
 
 require './new.jade'
 
@@ -8,6 +10,10 @@ class IngredientsNew extends BlazeComponent
   @register 'ingredientsNew'
 
   constructor: (args) ->
+
+  onCreated: ->
+    super
+    @schema = IngredientModule.Ingredients.simpleSchema()
 
   onRendered: ->
     super

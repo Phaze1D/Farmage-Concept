@@ -100,7 +100,7 @@ class PaperHeaderPanel extends BlazeComponent
       @fabFirst = true
 
     if yPosition + event.target.clientHeight is event.target.scrollHeight
-      @data().callbacks.scrollBottom()
+      @data().callbacks.scrollBottom() if @data()? and @data().callbacks?
 
     @lastP = yPosition
 
