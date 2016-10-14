@@ -23,8 +23,9 @@ Meteor.publish "products", (organization_id, parent, parent_id, limit) ->
   unless permissions?
     throw new Meteor.Error 'notAuthorized', 'not authorized'
 
+
   unless parentDoc?
-    parentDoc = collections[parent].findOne(parent_id)
+    parentDoc = collections[parent].findOne(parent_id) if collections[parent]?
     unless(parentDoc? && parentDoc.organization_id is organization._id)
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 

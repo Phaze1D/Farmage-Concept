@@ -69,12 +69,23 @@ class IndexMixin extends BlazeComponent
         rootphp.css overflow: '' unless @cardExpand.get()
 
 
+  onAction: (event) ->
+    a = $(event.currentTarget).find('a')
+    params = {}
+
+    params.organization_id = a.attr('data-organ') if a.attr('data-organ')?
+    params.child_id = a.attr('data-child') if a.attr('data-child')?
+
+    FlowRouter.go a.attr('href'), params
+
+
   events: ->
     super.concat
       'click .js-show-new': @onShow
       'click .js-hide-new': @onHide
       'click .card-expand-action': @onCardExpand
       'click .card-shrink-action': @onCardShrink
+      'click .js-action': @onAction
 
 
 module.exports = IndexMixin

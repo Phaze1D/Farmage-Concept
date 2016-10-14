@@ -62,9 +62,14 @@ template(name='InventoryCard')
                     | #{event.amount} 
         
         div(class='bottom')
-          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
-            | Events
-          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
-            | Yields
-          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
-            | Sells
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/events/index?parent=inventory&parent_id=#{inventory._id}' data-organ='#{inventory.organization_id}')
+              | Events
+              
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/yields/index?parent=inventory&parent_id=#{inventory._id}' data-organ='#{inventory.organization_id}')
+              | Yields
+              
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/sells/index?parent=inventory&parent_id=#{inventory._id}' data-organ='#{inventory.organization_id}')
+              | Sells

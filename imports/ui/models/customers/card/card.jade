@@ -132,6 +132,7 @@ template(name='CustomerCard')
         
                 
           div(class='bottom')
-            +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
-              | Sells
+            +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+              a(href='/organizations/:organization_id/sells/index?parent=customer&parent_id=#{customer._id}' data-organ='#{customer.organization_id}')
+                | Sells
           

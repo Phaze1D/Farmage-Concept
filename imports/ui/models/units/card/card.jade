@@ -58,17 +58,21 @@ template(name='UnitCard')
         
         div(class='bottom')
           if unit.tracking
-            +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
-              | Events
+            +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+              a(href='/organizations/:organization_id/events/index?parent=unit&parent_id=#{unit._id}' data-organ='#{unit.organization_id}')
+                | Events
             
-          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
-            | Children
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/units/index?parent=unit&parent_id=#{unit._id}' data-organ='#{unit.organization_id}')
+              | Children
             
-          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
-            | Expenses
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/expenses/index?parent=unit&parent_id=#{unit._id}' data-organ='#{unit.organization_id}')
+              | Expenses
           
-          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
-            | Yields
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/yields/index?parent=unit&parent_id=#{unit._id}' data-organ='#{unit.organization_id}')
+              | Yields
             
       
        

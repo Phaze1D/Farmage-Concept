@@ -131,6 +131,7 @@ template(name='ProviderCard')
       
               
         div(class='bottom')
-          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
-            | Expenses
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/expenses/index?parent=provider&parent_id=#{provider._id}' data-organ='#{provider.organization_id}')
+              | Expenses
           

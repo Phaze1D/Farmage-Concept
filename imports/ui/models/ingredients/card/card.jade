@@ -32,10 +32,12 @@ template(name='IngredientCard')
                 | In Stock
               
         div(class='bottom')
-          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
-            | Yields
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/yields/index?parent=ingredient&parent_id=#{ingredient._id}' data-organ='#{ingredient.organization_id}')
+              | Yields
             
-          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
-            | Products
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/products/index?parent=ingredient&parent_id=#{ingredient._id}' data-organ='#{ingredient.organization_id}')
+              | Products
   //- Total Currently Available 
   //- Last 5 Yields x yield Intifer y amount

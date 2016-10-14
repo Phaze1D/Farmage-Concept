@@ -190,7 +190,7 @@ InventoryModule.Inventories.helpers
       sort:
         createdAt: -1
     options.limit = limit if limit?
-    SellModule.Sells.find { sell_details: $elemMatch: inventories: $elemMatch: inventory_id: @_id }, options   # Careful could lead to error
+    SellModule.Sells.find { details: $elemMatch: inventories: $elemMatch: inventory_id: @_id }, options   # Careful could lead to error
 
   events: (limit)->
     options =

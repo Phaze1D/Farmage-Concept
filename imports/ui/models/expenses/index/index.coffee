@@ -15,10 +15,12 @@ class ExpensesIndex extends IndexMixin
     organization_id = FlowRouter.getParam("organization_id")
     @canLoadMore = true
     @autorun =>
-        @page = Meteor.subscribeWithPagination "expenses", organization_id, 'organization', organization_id, 12,
-                  onStop: (err) ->
-                    console.log "sub stop #{err}"
-                  onReady: ->
+      parent = FlowRouter.getQueryParam('parent')
+      parent_id = FlowRouter.getQueryParam('parent_id')
+      @page = Meteor.subscribeWithPagination "expenses", organization_id, parent, parent_id, 12,
+                onStop: (err) ->
+                  console.log "sub stop #{err}"
+                onReady: ->
 
 
   onRendered: ->
@@ -26,7 +28,7 @@ class ExpensesIndex extends IndexMixin
 
 
   expenses: ->
-    ExpenseModule.Expenses.find()
+    ExpenseModule.Expenses.find({}, {sort: createdAt: -1})
 
   ready: ->
     if @page.ready()
