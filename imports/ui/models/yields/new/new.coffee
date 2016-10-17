@@ -1,6 +1,7 @@
 DialogMixin = require '../../../mixins/dialog_mixin/dialog_mixin.coffee'
 EventMixin = require '../../../mixins/event_mixin/event_mixin.coffee'
 YMethods = require '../../../../api/collections/yields/methods.coffee'
+YieldModule = require '../../../../api/collections/yields/yields.coffee'
 EMethods = require '../../../../api/collections/events/methods.coffee'
 
 
@@ -15,9 +16,36 @@ class YieldsNew extends BlazeComponent
 
   mixins: -> [ DialogMixin, EventMixin ]
 
+  onCreated: ->
+    super
+    @schema = YieldModule.Yields.simpleSchema()
+
+
   onRendered: ->
     super
     $('#right-paper-header-panel').addClass('touchScroll')
+
+  eventSchema: ->
+    new SimpleSchema(
+      amount:
+        type: Number
+        label: 'amount'
+        decimal: true
+        min: 0
+
+      event_amount:
+        type: Number
+        label: 'amount'
+        decimal: true
+        optional: true
+        min: 0
+
+      event_description:
+        type: String
+        label: 'description'
+        max: 512
+        optional: true
+    )
 
   currentList: (subscription)->
     return @callFirstWith(@, 'currentList', subscription);

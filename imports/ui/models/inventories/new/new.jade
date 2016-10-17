@@ -129,7 +129,7 @@ template(name='inventoriesNew')
                                       
                                       
                                     div(class='yield-input-div')
-                                      +PaperInput classes="js-amount-taken" type="number" name="amount_taken" label="Amount Taken" focusColor="darkblue" size="size-small" min='0' max=yield.amount step='any' defix=measurement_unit labelFloat=false hideTop=true
+                                      +PaperInput classes="js-amount-taken js-event-amount" schema=(cYieldSchema yield.amount) type="number" name="amount_taken" label="Amount Taken" focusColor="darkblue" size="size-small" min='0' max=yield.amount step='any' defix=measurement_unit labelFloat=false hideTop=true
                                   
                                   
                                   

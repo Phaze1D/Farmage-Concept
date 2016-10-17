@@ -15,6 +15,7 @@ class ProductsUpdate extends BlazeComponent
 
   onCreated: ->
     super
+    @schema = ProductModule.Products.simpleSchema()
     @totalPrice = new ReactiveVar()
 
   product: ->

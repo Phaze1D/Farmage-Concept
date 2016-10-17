@@ -8,6 +8,10 @@ class ProvidersUpdate extends BlazeComponent
 
   constructor: (args) ->
 
+  onCreated: ->
+    super
+    @schema = ProviderModule.Providers.simpleSchema()
+
   onRendered: ->
     super
     $('#right-paper-header-panel').addClass('touchScroll')

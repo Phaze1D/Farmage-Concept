@@ -1,3 +1,4 @@
+ContactInfo = require '../../../api/shared/contact_info.coffee'
 
 
 require './telephones.jade'
@@ -14,6 +15,7 @@ class TelephoneAdd extends BlazeComponent
     tels = if @data().telephones? then @data().telephones else []
     @telephones = new ReactiveVar(tels)
     @data().title = 'Telephone' unless @data().title?
+    @schema = ContactInfo.TelephoneSchema
 
   onRendered: ->
     super

@@ -28,11 +28,11 @@ template(name='yieldsUpdate')
             div(class='input-area')
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperInput type="text" name="name" label="Identifier" focusColor="darkblue" size="size-medium" value=yield.name
+                  +PaperInput type="text" name="name" label="Identifier" focusColor="darkblue" size="size-medium" value=yield.name schema=schema
                   
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperInput type="textarea" name="notes" label="Notes" focusColor="darkblue" charMax='512' showCount=true value=yield.notes
+                  +PaperInput type="textarea" name="notes" label="Notes" focusColor="darkblue" charMax='512' showCount=true value=yield.notes schema=schema
                       
               +eventMixin amountLabel="Amount"
               

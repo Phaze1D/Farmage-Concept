@@ -1,5 +1,6 @@
 
 PMethods = require '../../../../api/collections/products/methods.coffee'
+ProductModule = require '../../../../api/collections/products/products.coffee'
 DialogMixin = require '../../../mixins/dialog_mixin/dialog_mixin.coffee'
 
 require './new.jade'
@@ -14,13 +15,23 @@ class ProductsNew extends BlazeComponent
   constructor: (args) ->
     super
 
+  onCreated: ->
+    super
+    @schema = ProductModule.Products.simpleSchema()
+
   onRendered: ->
     super
     $('#right-paper-header-panel').addClass('touchScroll')
 
-  onCreated: ->
-    super
 
+  ingSchema: (_id) ->
+    new SimpleSchema(
+      "#{_id}":
+        type: Number
+        label: 'Resource'
+        decimal: true
+        min: 0
+    )
 
   onCalcPrice: (event) ->
     upv = @find('.uprice .pinput').value

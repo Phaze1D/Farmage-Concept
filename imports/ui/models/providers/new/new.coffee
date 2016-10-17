@@ -1,4 +1,6 @@
 PMethods = require '../../../../api/collections/providers/methods.coffee'
+ProviderModule = require '../../../../api/collections/providers/providers.coffee'
+
 
 require './new.jade'
 
@@ -12,6 +14,10 @@ class ProvidersNew extends BlazeComponent
   onRendered: ->
     super
     $('#right-paper-header-panel').addClass('touchScroll')
+
+  onCreated: ->
+    super
+    @schema = ProviderModule.Providers.simpleSchema()
 
   insert: (provider_doc) ->
     provider_doc.organization_id = FlowRouter.getParam('organization_id')

@@ -120,7 +120,7 @@ template(name='sellsNew')
                               = invAvailable(inventory)
                           
                           div(class='inventory-input col-3')
-                            +PaperInput classes='js-inventory-input' type="number" name="amount_taken" value="1" label="Taken" focusColor="darkblue" min='0' max=inventory.amount labelFloat=true
+                            +PaperInput classes='js-inventory-input' schema=(invSchema inventory.amount) type="number" name="amount_taken" value="1" label="Taken" focusColor="darkblue" min='0' max=inventory.amount labelFloat=true
               
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
@@ -135,10 +135,10 @@ template(name='sellsNew')
               
               div(class='grid-wrapper')
                 div(class='col-6 p-left')
-                  +PaperInput type="text" name="status" label="Status" focusColor="darkblue"
+                  +PaperInput type="text" name="status" label="Status" focusColor="darkblue" schema=schema
                   
                 div(class='col-6 p-left p-right')
-                  +PaperInput type="number" classes="js-discount-input discount-input" name="discount" label="Discount" focusColor="darkblue" step="any" min='0'
+                  +PaperInput type="number" classes="js-discount-input discount-input" name="discount" label="Discount" focusColor="darkblue" step="any" min='0' schema=schema
                   
                   +PaperButton classes='js-discount-select discount-select' elevation=1 raise=0 submit=false rippleOn=true
                     div(class='discount-icon' type='#{discountType.value}')
@@ -146,7 +146,7 @@ template(name='sellsNew')
                   
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperInput type="textarea" name="notes" label="Notes" focusColor="darkblue" charMax='512' showCount=true
+                  +PaperInput type="textarea" name="notes" label="Notes" focusColor="darkblue" charMax='512' showCount=true schema=schema
                   
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
@@ -180,7 +180,7 @@ template(name='sellsNew')
                   div(class='col-12 p-left p-right')
                     div(class="grid-wrapper")
                       div(class="col-12 p-right")
-                        +PaperInput type="text" alwaysFloating=true name="number" label="Number" labelFloat=true focusColor="darkblue" value=number
+                        +PaperInput type="text" schema=teleSchema alwaysFloating=true name="number" label="Number" labelFloat=true focusColor="darkblue" value=number
                         
                       +PaperButton raise=0 submit=false rippleOn=false classes="js-remove-info remove-telephone-b"
                         div(class="icon-div" data-info='telephones')
@@ -199,18 +199,18 @@ template(name='sellsNew')
                   div(class='col-12 p-left p-right')
                     div(class="grid-wrapper")
                       div(class="col-12 p-right")
-                        +PaperInput type="text" alwaysFloating=true name="street" labelFloat=true label="Address Line 1" focusColor="darkblue"  value=street
-                        +PaperInput type="text" alwaysFloating=true name="street2" labelFloat=true label="Address Line 2" focusColor="darkblue" value=street2
+                        +PaperInput type="text" schema=addSchema alwaysFloating=true name="street" labelFloat=true label="Address Line 1" focusColor="darkblue"  value=street
+                        +PaperInput type="text" schema=addSchema alwaysFloating=true name="street2" labelFloat=true label="Address Line 2" focusColor="darkblue" value=street2
                         div(class='grid-wrapper')
                           div(class="col-6 p-right")
-                            +PaperInput type="text" alwaysFloating=true name="city" labelFloat=true label="City" focusColor="darkblue" value=city
+                            +PaperInput type="text" schema=addSchema alwaysFloating=true name="city" labelFloat=true label="City" focusColor="darkblue" value=city
                           div(class="col-6")
-                            +PaperInput type="text" alwaysFloating=true name="state" labelFloat=true label="State" focusColor="darkblue" value=state
+                            +PaperInput type="text" schema=addSchema alwaysFloating=true name="state" labelFloat=true label="State" focusColor="darkblue" value=state
                         div(class='grid-wrapper')
                           div(class="col-6 p-right")
-                            +PaperInput type="text" alwaysFloating=true name="zip_code" labelFloat=true label="Zip Code" focusColor="darkblue" value=zip_code
+                            +PaperInput type="text" schema=addSchema alwaysFloating=true name="zip_code" labelFloat=true label="Zip Code" focusColor="darkblue" value=zip_code
                           div(class="col-6")
-                            +PaperInput type="text" alwaysFloating=true name="country" labelFloat=true label="Country" focusColor="darkblue" value=country
+                            +PaperInput type="text" schema=addSchema alwaysFloating=true name="country" labelFloat=true label="Country" focusColor="darkblue" value=country
                             
                       +PaperButton raise=0 submit=false rippleOn=false classes="js-remove-info remove-address-b"
                         div(class="icon-div" data-info='billing addresses')
@@ -229,18 +229,18 @@ template(name='sellsNew')
                   div(class='col-12 p-left p-right')
                     div(class="grid-wrapper")
                       div(class="col-12 p-right")
-                        +PaperInput type="text" alwaysFloating=true name="street" labelFloat=true label="Address Line 1" focusColor="darkblue"  value=street
-                        +PaperInput type="text" alwaysFloating=true name="street2" labelFloat=true label="Address Line 2" focusColor="darkblue" value=street2
+                        +PaperInput type="text" schema=addSchema alwaysFloating=true name="street" labelFloat=true label="Address Line 1" focusColor="darkblue"  value=street
+                        +PaperInput type="text" schema=addSchema alwaysFloating=true name="street2" labelFloat=true label="Address Line 2" focusColor="darkblue" value=street2
                         div(class='grid-wrapper')
                           div(class="col-6 p-right")
-                            +PaperInput type="text" alwaysFloating=true name="city" labelFloat=true label="City" focusColor="darkblue" value=city
+                            +PaperInput type="text" schema=addSchema alwaysFloating=true name="city" labelFloat=true label="City" focusColor="darkblue" value=city
                           div(class="col-6")
-                            +PaperInput type="text" alwaysFloating=true name="state" labelFloat=true label="State" focusColor="darkblue" value=state
+                            +PaperInput type="text" schema=addSchema alwaysFloating=true name="state" labelFloat=true label="State" focusColor="darkblue" value=state
                         div(class='grid-wrapper')
                           div(class="col-6 p-right")
-                            +PaperInput type="text" alwaysFloating=true name="zip_code" labelFloat=true label="Zip Code" focusColor="darkblue" value=zip_code
+                            +PaperInput type="text" schema=addSchema alwaysFloating=true name="zip_code" labelFloat=true label="Zip Code" focusColor="darkblue" value=zip_code
                           div(class="col-6")
-                            +PaperInput type="text" alwaysFloating=true name="country" labelFloat=true label="Country" focusColor="darkblue" value=country
+                            +PaperInput type="text" schema=addSchema alwaysFloating=true name="country" labelFloat=true label="Country" focusColor="darkblue" value=country
                             
                       +PaperButton raise=0 submit=false rippleOn=false classes="js-remove-info remove-address-b"
                         div(class="icon-div" data-info='shipping addresses')

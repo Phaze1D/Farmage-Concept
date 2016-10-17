@@ -17,6 +17,7 @@ class YieldsUpdate extends BlazeComponent
   onCreated: ->
     super
     @initAmount = @yield().amount
+    @schema = YieldModule.Yields.simpleSchema()
 
   onRendered: ->
     super
@@ -27,6 +28,29 @@ class YieldsUpdate extends BlazeComponent
     ingredient = _yield.ingredient().fetch()[0]
     clist.set 'units', [unit]
     clist.set 'ingredients', [ingredient]
+
+  eventSchema: ->
+    new SimpleSchema(
+      amount:
+        type: Number
+        label: 'amount'
+        decimal: false
+        min: 0
+
+      event_amount:
+        type: Number
+        label: 'amount'
+        decimal: false
+        optional: true
+        min: -@yield().amount
+
+      event_description:
+        type: String
+        label: 'description'
+        max: 512
+        decimal: false
+        optional: true
+    )
 
   yield: ->
     YieldModule.Yields.findOne @data().update_id

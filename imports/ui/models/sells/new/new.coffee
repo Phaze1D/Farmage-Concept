@@ -1,6 +1,9 @@
 
 DialogMixin = require '../../../mixins/dialog_mixin/dialog_mixin.coffee'
+SellModule = require '../../../../api/collections/sells/sells.coffee'
 SMethods = require '../../../../api/collections/sells/methods.coffee'
+ContactInfo = require '../../../../api/shared/contact_info.coffee'
+
 
 
 require './new.jade'
@@ -16,10 +19,6 @@ class SellsNew extends BlazeComponent
   constructor: (args) ->
     # body...
 
-  onRendered: ->
-    super
-    $('#right-paper-header-panel').addClass('touchScroll')
-
   onCreated: ->
     super
     @discountDict = new ReactiveDict
@@ -32,6 +31,20 @@ class SellsNew extends BlazeComponent
     @pDetails = new ReactiveDict
     @extraInfo = new ReactiveDict
     @paymentInfo = {}
+    @schema = SellModule.Sells.simpleSchema()
+    @teleSchema = ContactInfo.TelephoneSchema
+    @addSchema = ContactInfo.AddressSchema
+
+  onRendered: ->
+    super
+    $('#right-paper-header-panel').addClass('touchScroll')
+
+  invSchema: (max) ->
+    new SimpleSchema(
+      amount_taken:
+        type: Number
+        max: max
+    )
 
 
   currentList: (subscription)->
@@ -338,7 +351,7 @@ class SellsNew extends BlazeComponent
       console.log err
       if err?
 
-        $(@find '.cancel-b').trigger('click') if @paymentInfo.pay 
+        $(@find '.cancel-b').trigger('click') if @paymentInfo.pay
         @remove(organization_id, sell_id)
       else
         if @paymentInfo.pay

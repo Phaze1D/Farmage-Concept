@@ -43,7 +43,7 @@ InventorySchema =
       label: 'name'
       max: 64
       optional: true
-      
+
     amount:
       type: Number
       label: 'amount'
@@ -52,7 +52,7 @@ InventorySchema =
       min: 0
 
     expiration_date:
-      type: String
+      type: Date
       label: 'expiration_date'
       optional: true
 

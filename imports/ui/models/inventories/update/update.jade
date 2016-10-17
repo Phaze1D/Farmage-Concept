@@ -29,14 +29,14 @@ template(name='inventoriesUpdate')
               
               div(class='grid-wrapper')
                 div(class='col-6 p-left')
-                  +PaperInput type="text" name="name" label="Identifier" focusColor="darkblue" size="size-small" value=inventory.name
+                  +PaperInput type="text" name="name" label="Identifier" focusColor="darkblue" size="size-small" value=inventory.name schema=schema
                 
                 div(class='col-6 p-left p-right')
-                  +PaperInput type="text" name="expiration_date" label="Expiration Date" focusColor="darkblue" size="size-small" value=inventory.expiration_date
+                  +PaperInput type="text" name="expiration_date" label="Expiration Date" focusColor="darkblue" size="size-small" value=inventory.expiration_date schema=schema
                   
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperInput type="textarea" name="notes" label="Notes" focusColor="darkblue" charMax='512' showCount=true value=inventory.notes
+                  +PaperInput type="textarea" name="notes" label="Notes" focusColor="darkblue" charMax='512' showCount=true value=inventory.notes schema=schema
                   
                       
               +eventMixin amountLabel="Amount"
@@ -124,7 +124,7 @@ template(name='inventoriesUpdate')
                                       
                                       
                                     div(class='yield-input-div')
-                                      +PaperInput classes="js-amount-taken" type="number" name="amount_taken" label="Amount Taken" focusColor="darkblue" size="size-small" min='0' max=yield.amount step='any' defix=measurement_unit labelFloat=false hideTop=true
+                                      +PaperInput classes="js-amount-taken js-event-amount" schema=(cYieldSchema yield.amount) type="number" name="amount_taken" label="Amount Taken" focusColor="darkblue" size="size-small" min='0' max=yield.amount step='any' defix=measurement_unit labelFloat=false hideTop=true
                                   
                                   
                                   

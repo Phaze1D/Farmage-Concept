@@ -2,6 +2,8 @@ DialogMixin = require '../../../mixins/dialog_mixin/dialog_mixin.coffee'
 EventMixin = require '../../../mixins/event_mixin/event_mixin.coffee'
 UMethods = require '../../../../api/collections/units/methods.coffee'
 EMethods = require '../../../../api/collections/events/methods.coffee'
+UnitModule = require '../../../../api/collections/units/units.coffee'
+
 
 
 
@@ -19,10 +21,34 @@ class UnitsNew extends BlazeComponent
 
   onCreated: ->
     super
+    @schema = UnitModule.Units.simpleSchema()
 
   onRendered: ->
     super
     $('#right-paper-header-panel').addClass('touchScroll')
+
+  eventSchema: ->
+    new SimpleSchema(
+      amount:
+        type: Number
+        label: 'amount'
+        decimal: false
+        min: 0
+
+      event_amount:
+        type: Number
+        label: 'amount'
+        decimal: false
+        optional: true
+        min: 0
+
+      event_description:
+        type: String
+        label: 'description'
+        max: 512
+        decimal: false
+        optional: true
+    )
 
 
   currentList: (subscription)->

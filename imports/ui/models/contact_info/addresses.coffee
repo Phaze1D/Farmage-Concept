@@ -1,3 +1,4 @@
+ContactInfo = require '../../../api/shared/contact_info.coffee'
 
 # Show Animation is weird pls fix
 
@@ -13,6 +14,7 @@ class AddressAdd extends BlazeComponent
     adds = if @data().addresses? then @data().addresses else []
     @addresses = new ReactiveVar(adds)
     @data().title = 'Address' unless @data().title?
+    @schema = ContactInfo.AddressSchema
 
 
   onRendered: ->

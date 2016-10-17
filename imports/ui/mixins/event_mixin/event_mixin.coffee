@@ -67,10 +67,16 @@ class EventMixin extends BlazeComponent
     am = @mixinParent().initAmount + Number input.val()
     @mainAmount.set am
 
+  onFocusOut: (event) ->
+    $(@find '.js-main-amount .pinput').trigger('focusin')
+    $(@find '.js-main-amount .pinput').trigger('focusout')
+
+
 
   events: ->
     super.concat
       'click .js-event-b': @onToggleEvent
       'input .js-event-amount .pinput': @onAmountChange
+      'focusout .js-event-amount .pinput': @onFocusOut
 
 module.exports = EventMixin

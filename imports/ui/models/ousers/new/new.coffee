@@ -1,5 +1,6 @@
 UMethods = require '../../../../api/collections/users/methods.coffee'
 
+
 require './new.jade'
 
 class OUsersNew extends BlazeComponent
@@ -8,9 +9,21 @@ class OUsersNew extends BlazeComponent
   constructor: (args) ->
     # body...
 
+  onCreated: ->
+    super
+
   onRendered: ->
     super
     $('#right-paper-header-panel').addClass('touchScroll')
+
+  emailSchema: ->
+    new SimpleSchema(
+      email:
+        type: String
+        label: "email"
+        regEx: SimpleSchema.RegEx.Email
+        max: 45
+    )
 
   convert: (value) ->
     return true if value is 'on'

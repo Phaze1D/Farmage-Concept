@@ -66,10 +66,7 @@ ProductSchema =
       label: 'SKU'
       index: true
       max: 64
-      autoValue: () ->
-        if @isSet
-          if /\s/g.test(@value)
-            throw new Meteor.Error "regExError", "Cannot contain whitespaces"
+      regEx: /^((?!\s).)*$/
 
 
     unit_price: # Excluding tax

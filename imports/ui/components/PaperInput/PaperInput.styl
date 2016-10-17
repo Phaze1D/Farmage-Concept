@@ -1,6 +1,7 @@
 .paper-input
   display: block;
   padding: 8px 0
+  position: relative;
 
 
 .floated-label-container
@@ -130,21 +131,25 @@
 
 .error-mes
   display: inline-block;
-  position: absolute;
+  position: relative;
   font-size: 12px
   font-weight: 300;
   line-height: 20px
   color: #dd2c00
+  white-space: pre-wrap
 
 
 .add-on-content
   position: relative;
+  width: 100%
   margin-bottom: 5px
+  white-space: pre;
 
 .char-count
   display: inline-block;
   position: absolute;
   right: 0
+  top: 0
   -webkit-font-smoothing: antialiased;
   white-space: nowrap;
   overflow: hidden;

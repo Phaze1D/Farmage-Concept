@@ -3,6 +3,7 @@ EventMixin = require '../../../mixins/event_mixin/event_mixin.coffee'
 
 IngredientModule= require '../../../../api/collections/ingredients/ingredients.coffee'
 IMethods= require '../../../../api/collections/inventories/methods.coffee'
+InventoryModule = require '../../../../api/collections/inventories/inventories.coffee'
 EMethods = require '../../../../api/collections/events/methods.coffee'
 
 Big = require 'big.js'
@@ -22,6 +23,7 @@ class InventoriesNew extends BlazeComponent
   onCreated: ->
     super
     @iAmounts = new ReactiveDict()
+    @schema = InventoryModule.Inventories.simpleSchema()
 
   onRendered: ->
     super
@@ -33,6 +35,38 @@ class InventoriesNew extends BlazeComponent
           onStop: (err) ->
             console.log "sub stop #{err}"
           onReady: ->
+
+  cYieldSchema: (max) ->
+    new SimpleSchema(
+      amount_taken:
+        type: Number
+        decimal: true
+        max: max
+    )
+
+  eventSchema: ->
+    new SimpleSchema(
+      amount:
+        type: Number
+        label: 'amount'
+        decimal: false
+        min: 0
+
+      event_amount:
+        type: Number
+        label: 'amount'
+        decimal: false
+        optional: true
+        min: 0
+
+      event_description:
+        type: String
+        label: 'description'
+        max: 512
+        decimal: false
+        optional: true
+    )
+
 
   currentList: (subscription)->
     return @callFirstWith(@, 'currentList', subscription);

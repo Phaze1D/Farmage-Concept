@@ -28,19 +28,19 @@ template(name="productsUpdate")
             div(class='input-area')
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperInput type="text" name="name" label="Product Name" focusColor="darkblue" size="size-medium" value=product.name
+                  +PaperInput type="text" name="name" label="Product Name" focusColor="darkblue" size="size-medium" value=product.name schema=schema
                   
               div(class='grid-wrapper')
                 div(class="col-8 p-left p-right")
-                  +PaperInput type="text" name="size" label="Size" focusColor="darkblue" value=product.size
+                  +PaperInput type="text" name="size" label="Size" focusColor="darkblue" value=product.size schema=schema
                 div(class='col-4 p-right')
-                  +PaperInput type="text" name="sku" label="SKU" focusColor="darkblue" value=product.sku
+                  +PaperInput type="text" name="sku" label="SKU" focusColor="darkblue" value=product.sku schema=schema
 
               div(class='grid-wrapper')
                 div(class='col-4 p-right p-left')
-                  +PaperInput type="number" classes="js-calc-p uprice" name="unit_price" label="Price" focusColor="darkblue" prefix="$" step="0.01" min='0' span="(tax exc)" value=product.unit_price labelFloat=true
+                  +PaperInput type="number" classes="js-calc-p uprice" name="unit_price" label="Price" focusColor="darkblue" prefix="$" step="0.01" min='0' span="(tax exc)" value=product.unit_price labelFloat=true schema=schema
                 div(class='col-4 p-right')
-                  +PaperInput type="number" classes="js-calc-p tax" name="tax_rate" label="Tax Rate" focusColor="darkblue" defix="%" step="any" min="0" max="100" value=product.tax_rate labelFloat=true
+                  +PaperInput type="number" classes="js-calc-p tax" name="tax_rate" label="Tax Rate" focusColor="darkblue" defix="%" step="any" min="0" max="100" value=product.tax_rate labelFloat=true schema=schema
                 div(class='col-4 p-right')
                   +PaperInput type="number" classes="js-calc-p tprice" name="none" label="Price" value=totalPrice.get focusColor="darkblue" prefix="$" step="any" min='0' span="(tax inc)" disabled="true" labelFloat=true
                   
@@ -48,7 +48,7 @@ template(name="productsUpdate")
                   
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperInput type="textarea" name="description" label="Description" focusColor="darkblue" charMax='512' showCount=true value=product.description
+                  +PaperInput type="textarea" name="description" label="Description" focusColor="darkblue" charMax='512' showCount=true value=product.description schema=schema
               
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
@@ -63,8 +63,7 @@ template(name="productsUpdate")
                   div(id='dialog-scrollTo' class='grid-wrapper')
                     div(class='col-7 p-left')
                       div(class='ing-info')
-                        div(class='ing-img')
-                          div(class="circle-image")
+                        img(src='/no_image2.jpg')
                         
                         div(class='ing-text')
                           div(class='ing-name')

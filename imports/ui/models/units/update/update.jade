@@ -28,11 +28,11 @@ template(name='unitsUpdate')
             div(class='input-area')
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperInput type="text" name="name" label="Name" focusColor="darkblue" size="size-medium" value=unit.name
+                  +PaperInput type="text" name="name" label="Name" focusColor="darkblue" size="size-medium" value=unit.name schema=schema
                   
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
-                  +PaperInput type="textarea" name="description" label="Description" focusColor="darkblue" charMax='512' showCount=true value=unit.description
+                  +PaperInput type="textarea" name="description" label="Description" focusColor="darkblue" charMax='512' showCount=true value=unit.description schema=schema
                           
               div(class='event-div' style='#{trackAttr}')
                 +eventMixin amountLabel="Amount" amount=unit.amount

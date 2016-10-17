@@ -17,6 +17,7 @@ class UnitsUpdate extends BlazeComponent
   onCreated: ->
     super
     @initAmount = @unit().amount
+    @schema = UnitModule.Units.simpleSchema()
 
   onRendered: ->
     super
@@ -24,6 +25,30 @@ class UnitsUpdate extends BlazeComponent
     clist = @callFirstWith(@, 'clistsDict')
     unit = UnitModule.Units.findOne @data().parent_id
     clist.set 'units', [unit] if unit?
+
+
+  eventSchema: ->
+    new SimpleSchema(
+      amount:
+        type: Number
+        label: 'amount'
+        decimal: false
+        min: 0
+
+      event_amount:
+        type: Number
+        label: 'amount'
+        decimal: false
+        optional: true
+        min: -@unit().amount
+
+      event_description:
+        type: String
+        label: 'description'
+        max: 512
+        decimal: false
+        optional: true
+    )
 
 
   unit: ->

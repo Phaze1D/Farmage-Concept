@@ -3,6 +3,7 @@ SMethods = require '../../../../api/collections/sells/methods.coffee'
 SellModule = require '../../../../api/collections/sells/sells.coffee'
 ProductModule = require '../../../../api/collections/products/products.coffee'
 InventoryModule = require '../../../../api/collections/inventories/inventories.coffee'
+ContactInfo = require '../../../../api/shared/contact_info.coffee'
 
 
 
@@ -31,6 +32,17 @@ class SellsUpdate extends BlazeComponent
     @pDetails = new ReactiveDict
     @extraInfo = new ReactiveDict
     @paymentInfo = {}
+    @schema = SellModule.Sells.simpleSchema()
+    @teleSchema = ContactInfo.TelephoneSchema
+    @addSchema = ContactInfo.AddressSchema
+
+
+  invSchema: (inventory) ->
+    new SimpleSchema(
+      amount_taken:
+        type: Number
+        max: @invMax(inventory)
+    )
 
 
 

@@ -21,6 +21,7 @@ class InventoriesUpdate extends BlazeComponent
     super
     @initAmount = @inventory().amount
     @iAmounts = new ReactiveDict()
+    @schema = InventoryModule.Inventories.simpleSchema()
 
 
   onRendered: ->
@@ -37,6 +38,38 @@ class InventoriesUpdate extends BlazeComponent
           onStop: (err) ->
             console.log "sub stop #{err}"
           onReady: ->
+
+
+  cYieldSchema: (max) ->
+    new SimpleSchema(
+      amount_taken:
+        type: Number
+        decimal: true
+        max: max
+    )
+
+  eventSchema: ->
+    new SimpleSchema(
+      amount:
+        type: Number
+        label: 'amount'
+        decimal: false
+        min: 0
+
+      event_amount:
+        type: Number
+        label: 'amount'
+        decimal: false
+        optional: true
+        min: -@inventory().amount
+
+      event_description:
+        type: String
+        label: 'description'
+        max: 512
+        decimal: false
+        optional: true
+    )
 
 
   inventory: ->
