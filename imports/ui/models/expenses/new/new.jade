@@ -66,10 +66,15 @@ template(name="expensesNew")
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left')
                   +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
-                    div(class="resources-b js-dialog-b" data-sub='units'  data-many='false')
+                    div(class="resources-b js-dialog-b" data-sub='units'  data-many='false' error="{{error 'unit_id'}}")
                       div(class="text-div") Unit
                       div(class="icon-div")
                         i(class="material-icons icon") add_circle
+                  
+                  if error 'unit_id'
+                    div(class='err-div')
+                      | Unit is required
+                    
               
               div(class='grid-wrapper')
                 div(class='col-12 p-right p-left unit-div')

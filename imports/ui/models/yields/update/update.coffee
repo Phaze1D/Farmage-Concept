@@ -3,10 +3,12 @@ EventMixin = require '../../../mixins/event_mixin/event_mixin.coffee'
 YMethods = require '../../../../api/collections/yields/methods.coffee'
 YieldModule = require '../../../../api/collections/yields/yields.coffee'
 EMethods = require '../../../../api/collections/events/methods.coffee'
+ErrorComponent = require '../../../mixins/error_mixin.coffee'
+
 
 require './update.jade'
 
-class YieldsUpdate extends BlazeComponent
+class YieldsUpdate extends ErrorComponent
   @register 'yieldsUpdate'
 
   constructor: (args) ->
@@ -61,11 +63,13 @@ class YieldsUpdate extends BlazeComponent
   ingredient: ->
     ingredient = @currentList('ingredients')[0]
     return {} unless ingredient?
+    @errorDict.set 'ingredient_id', false
     ingredient
 
   unit: ->
     unit = @currentList('units')[0]
     return {} unless unit?
+    @errorDict.set 'unit_id', false
     unit
 
   update: (yield_doc, event_doc) ->
@@ -76,6 +80,7 @@ class YieldsUpdate extends BlazeComponent
 
     YMethods.update.call {organization_id, yield_id, yield_doc}, (err, res) =>
       console.log err
+      @errorDict.set ed.name, true for ed in err.details if err?
       @insertEvent(event_doc, yield_id) if amount isnt 0 && !err?
       $('.js-hide-new').trigger('click') if amount is 0 && !err?
 

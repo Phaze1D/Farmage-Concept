@@ -2,10 +2,12 @@
 PMethods = require '../../../../api/collections/products/methods.coffee'
 ProductModule = require '../../../../api/collections/products/products.coffee'
 DialogMixin = require '../../../mixins/dialog_mixin/dialog_mixin.coffee'
+ErrorComponent = require '../../../mixins/error_mixin.coffee'
+
 
 require './new.jade'
 
-class ProductsNew extends BlazeComponent
+class ProductsNew extends ErrorComponent
   @register 'productsNew'
 
   mixins: ->[
@@ -46,11 +48,17 @@ class ProductsNew extends BlazeComponent
   currentList: (subscription)->
     return @callFirstWith(@, 'currentList', subscription);
 
+  ingredients: ->
+    ings = @currentList 'ingredients'
+    @errorDict.set('pingredients', false) if ings.length > 0
+    ings
+
 
   insert: (product_doc) ->
     product_doc.organization_id = FlowRouter.getParam('organization_id')
-    PMethods.insert.call {product_doc}, (err, res) ->
+    PMethods.insert.call {product_doc}, (err, res) =>
       console.log err
+      @errorDict.set ed.name, true for ed in err.details if err?
       $('.js-hide-new').trigger('click') unless err?
 
 

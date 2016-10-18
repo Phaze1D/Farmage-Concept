@@ -22,7 +22,7 @@ class InventoriesIndex extends IndexMixin
                 onReady: ->
 
   inventories: ->
-    InventoryModule.Inventories.find()
+    InventoryModule.Inventories.find({}, {sort: createdAt: -1})
 
   ready: ->
     if @page.ready()

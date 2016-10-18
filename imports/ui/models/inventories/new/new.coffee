@@ -1,6 +1,6 @@
 DialogMixin = require '../../../mixins/dialog_mixin/dialog_mixin.coffee'
 EventMixin = require '../../../mixins/event_mixin/event_mixin.coffee'
-
+ErrorComponent = require '../../../mixins/error_mixin.coffee'
 IngredientModule= require '../../../../api/collections/ingredients/ingredients.coffee'
 IMethods= require '../../../../api/collections/inventories/methods.coffee'
 InventoryModule = require '../../../../api/collections/inventories/inventories.coffee'
@@ -11,7 +11,7 @@ Big = require 'big.js'
 require './new.jade'
 
 
-class InventoriesNew extends BlazeComponent
+class InventoriesNew extends ErrorComponent
   @register 'inventoriesNew'
 
   constructor: (args) ->
@@ -42,6 +42,8 @@ class InventoriesNew extends BlazeComponent
         type: Number
         decimal: true
         max: max
+        min: 0
+        exclusiveMin: true
     )
 
   eventSchema: ->
@@ -89,7 +91,9 @@ class InventoriesNew extends BlazeComponent
 
 
   product: ->
-    @currentList('products')[0]
+    product = @currentList('products')[0]
+    @errorDict.set('product_id', false) if product?
+    product
 
 
   yields: (ingredient_id) ->
@@ -101,6 +105,7 @@ class InventoriesNew extends BlazeComponent
 
 
   ingyields: (ingredient_id, amountPre) ->
+    @errorDict.set 'ing_mismatch', false
     if @iAmounts.get(ingredient_id)?
       return Number @iAmounts.get(ingredient_id).inv_amount.toFixed(4)
     else
@@ -224,6 +229,8 @@ class InventoriesNew extends BlazeComponent
     inventory_doc.organization_id = FlowRouter.getParam('organization_id')
     IMethods.insert.call {inventory_doc}, (err, res) =>
       console.log err
+      @errorDict.set ed.name, true for ed in err.details if err?
+
       if res?
         if yield_objects.length > 0
           @packEvent(amount, yield_objects, res, inventory_doc.organization_id)
@@ -237,6 +244,7 @@ class InventoriesNew extends BlazeComponent
   packEvent: (amount, yield_objects, inventory_id, organization_id) =>
     EMethods.pack.call {organization_id, inventory_id, yield_objects, amount}, (err, res) =>
       console.log err
+      @errorDict.set ed.name, true for ed in err.details if err?
       @delete(organization_id, inventory_id) if err?
       $('.js-hide-new').trigger('click') unless err?
 

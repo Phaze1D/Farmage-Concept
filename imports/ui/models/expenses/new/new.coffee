@@ -1,16 +1,21 @@
 DialogMixin = require '../../../mixins/dialog_mixin/dialog_mixin.coffee'
 EMethods = require '../../../../api/collections/expenses/methods.coffee'
 ExpenseModule = require '../../../../api/collections/expenses/expenses.coffee'
+ErrorComponent = require '../../../mixins/error_mixin.coffee'
+
 
 
 require './new.jade'
 
-class ExpensesNew extends BlazeComponent
+class ExpensesNew extends ErrorComponent
   @register 'expensesNew'
 
   mixins: -> [
     DialogMixin
   ]
+
+  constructor: (args) ->
+    super
 
   onCreated: ->
     super
@@ -32,13 +37,16 @@ class ExpensesNew extends BlazeComponent
   unit: ->
     unit = @currentList('units')[0]
     return {} unless unit?
+    @errorDict.set 'unit_id', false
     unit
 
 
   insert: (expense_doc) ->
     expense_doc.organization_id = FlowRouter.getParam('organization_id')
-    EMethods.insert.call {expense_doc}, (err, res) ->
+    EMethods.insert.call {expense_doc}, (err, res) =>
       console.log err
+      @errorDict.set ed.name, true for ed in err.details if err?
+
       $('.js-hide-new').trigger('click') unless err?
 
   onSubmit: (event) ->

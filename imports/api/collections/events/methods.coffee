@@ -207,7 +207,7 @@ checkAmounts = (sums, product, amount, organization_id) ->
     fixedB = sum.div ing.amount
     a = new Big amount
     unless a.eq fixedB
-      throw new Meteor.Error "ingredientError", "ingredient amount mismatch"
+      throw new Meteor.Error "ingredientError", "ingredient amount mismatch", [{name: 'ing_mismatch', type: 'ing mismatch'}]
 
 
 takeFromYields = (yield_objects, inventory_id, organization_id) ->

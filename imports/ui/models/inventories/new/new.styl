@@ -65,6 +65,11 @@
   display: flex;
   border-bottom: 1px solid #E0E0E0;
 
+  &[error='true']
+    border-bottom: 1px solid #dd2c00
+    margin-bottom: 10px;
+
+
 
   .y-subtitle
     font-weight: 300;
@@ -103,6 +108,9 @@
       font-size: 17px
       line-height: 17px
       color: #737373
+
+      &[error='true']
+        color: #dd2c00
 
     .ing-a
       font-size: 14px
