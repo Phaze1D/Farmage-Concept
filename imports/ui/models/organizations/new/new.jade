@@ -26,11 +26,11 @@ template(name='organizationsNew')
             
             div(class="grid-wrapper")
               div(class='col-12 p-left p-right')
-                +PaperInput type="text" name="company_name" label="Organization Name" focusColor="darkblue" size='size-medium'
+                +PaperInput type="text" name="name" label="Organization Name" focusColor="darkblue" size='size-medium' schema=schema
               
             div(class="grid-wrapper")
               div(class='col-12 p-left p-right')
-                +PaperInput type="text" name="email" label="Contact Email" focusColor="darkblue"
+                +PaperInput type="text" name="email" label="Contact Email" focusColor="darkblue" schema=schema
           
             div(class="grid-wrapper")
               div(class='col-12 p-left p-right')

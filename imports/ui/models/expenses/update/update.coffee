@@ -56,7 +56,11 @@ class ExpensesUpdate extends ErrorComponent
     organization_id = FlowRouter.getParam('organization_id')
     expense_id = @data().update_id
     EMethods.update.call {organization_id, expense_id, expense_doc}, (err, res) =>
-      @errorDict.set ed.name, true for ed in err.details if err?
+      if err?
+        @errorDict.set ed.name, true for ed in err.details
+        pins = @findAll('.pinput')
+        $(pins).trigger('focusin')
+        $(pins).trigger('focusout')
       console.log err
       $('.js-hide-new').trigger('click') unless err?
 

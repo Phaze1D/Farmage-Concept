@@ -24,6 +24,11 @@ class CustomersUpdate extends BlazeComponent
   update: (customer_doc) ->
     organization_id = FlowRouter.getParam 'organization_id'
     customer_id = @data().update_id
+    if err?
+      pins = @findAll('.pinput')
+      $(pins).trigger('focusin')
+      $(pins).trigger('focusout')
+
     CMethods.update.call {organization_id, customer_id, customer_doc}, (err, res) =>
       console.log err
       $('.js-hide-new').trigger('click') unless err?
@@ -52,13 +57,14 @@ class CustomersUpdate extends BlazeComponent
         number: $(@).find('[name=number]').val()
 
     email = $form.find('[name=email]').val().trim()
+    date =  new Date $form.find('[name=date_of_birth]').val()
     customer_doc =
       first_name: $form.find('[name=first_name]').val()
       last_name: $form.find('[name=last_name]').val()
       company: $form.find('[name=company]').val()
       email: if email.length is 0 then null else email
       notes: $form.find('[name=notes]').val()
-      date_of_birth: $form.find('[name=date_of_birth]').val()
+      date_of_birth: if isNaN(date.getMonth()) then null else date
       addresses: addresses
       telephones: telephones
 

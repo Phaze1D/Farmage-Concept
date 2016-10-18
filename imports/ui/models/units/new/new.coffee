@@ -71,6 +71,10 @@ class UnitsNew extends BlazeComponent
 
     UMethods.insert.call {unit_doc}, (err, res) =>
       console.log err
+      if err?
+        pins = @findAll('.pinput')
+        $(pins).trigger('focusin')
+        $(pins).trigger('focusout')
       @insertEvent(event_doc, res) if amount > 0 && res?
       $('.js-hide-new').trigger('click') if amount <= 0 && !err?
 

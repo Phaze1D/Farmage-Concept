@@ -23,6 +23,10 @@ class ProvidersUpdate extends BlazeComponent
     organization_id = FlowRouter.getParam 'organization_id'
     provider_id = @data().update_id
     PMethods.update.call {organization_id, provider_id, provider_doc}, (err, res) =>
+      if err?
+        pins = @findAll('.pinput')
+        $(pins).trigger('focusin')
+        $(pins).trigger('focusout')
       console.log err
       $('.js-hide-new').trigger('click') unless err?
 
@@ -50,13 +54,14 @@ class ProvidersUpdate extends BlazeComponent
         number: $(@).find('[name=number]').val()
 
     email = $form.find('[name=email]').val()
+    date =  new Date $form.find('[name=date_of_birth]').val()
     provider_doc =
       first_name: $form.find('[name=first_name]').val()
       last_name: $form.find('[name=last_name]').val()
       company: $form.find('[name=company]').val()
       email: if email.length is 0 then null else email
       notes: $form.find('[name=notes]').val()
-      date_of_birth: $form.find('[name=date_of_birth]').val()
+      date_of_birth: if isNaN(date.getMonth()) then null else date
       addresses: addresses
       telephones: telephones
 

@@ -41,7 +41,7 @@ class ProductsUpdate extends BlazeComponent
     organization_id = FlowRouter.getParam('organization_id')
     product_id = @data().update_id
 
-    PMethods.update.call {organization_id, product_id, product_doc}, (err, res) ->
+    PMethods.update.call {organization_id, product_id, product_doc}, (err, res) =>
       console.log err
       $('.js-hide-new').trigger('click') unless err?
 

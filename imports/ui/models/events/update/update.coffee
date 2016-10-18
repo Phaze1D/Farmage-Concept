@@ -30,7 +30,7 @@ class EventsUpdate extends BlazeComponent
   update: (event_doc) ->
     organization_id = FlowRouter.getParam('organization_id')
     event_id = @data().update_id
-    EMethods.update.call {organization_id, event_id, event_doc}, (err, res) ->
+    EMethods.update.call {organization_id, event_id, event_doc}, (err, res) =>
       console.log err
       $('.js-hide-new').trigger('click') unless err?
 

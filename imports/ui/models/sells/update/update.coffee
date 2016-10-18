@@ -453,6 +453,11 @@ class SellsUpdate extends BlazeComponent
     SMethods.update.call {organization_id, sell_id, sell_doc}, (err, res) =>
       console.log err
 
+      if err?
+        pins = @findAll('.pinput')
+        $(pins).trigger('focusin')
+        $(pins).trigger('focusout')
+
       if @paymentInfo.pay && err?
         $(@find '.cancel-b').trigger('click')
 

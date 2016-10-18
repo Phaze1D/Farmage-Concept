@@ -204,10 +204,11 @@ class InventoriesNew extends ErrorComponent
       for yk, yv of iv.yields
         yield_objects.push yield_id: yk, amount_taken: yv
 
+    date =  new Date form.find('[name=expiration_date]').val()
     inventory_doc =
       name: form.find('[name=name]').val()
       amount: Number form.find('[name=amount]').val()
-      expiration_date: form.find('[name=expiration_date]').val()
+      expiration_date: if isNaN(date.getMonth()) then null else date
       notes: form.find('[name=notes]').val()
       yield_objects: yield_objects
       product_id: if @product()? then @product()._id else null
@@ -229,7 +230,11 @@ class InventoriesNew extends ErrorComponent
     inventory_doc.organization_id = FlowRouter.getParam('organization_id')
     IMethods.insert.call {inventory_doc}, (err, res) =>
       console.log err
-      @errorDict.set ed.name, true for ed in err.details if err?
+      if err?
+        @errorDict.set ed.name, true for ed in err.details
+        pins = @findAll('.pinput')
+        $(pins).trigger('focusin')
+        $(pins).trigger('focusout')
 
       if res?
         if yield_objects.length > 0
@@ -244,7 +249,11 @@ class InventoriesNew extends ErrorComponent
   packEvent: (amount, yield_objects, inventory_id, organization_id) =>
     EMethods.pack.call {organization_id, inventory_id, yield_objects, amount}, (err, res) =>
       console.log err
-      @errorDict.set ed.name, true for ed in err.details if err?
+      if err?
+        @errorDict.set ed.name, true for ed in err.details
+        pins = @findAll('.pinput')
+        $(pins).trigger('focusin')
+        $(pins).trigger('focusout')
       @delete(organization_id, inventory_id) if err?
       $('.js-hide-new').trigger('click') unless err?
 

@@ -80,7 +80,11 @@ class YieldsUpdate extends ErrorComponent
 
     YMethods.update.call {organization_id, yield_id, yield_doc}, (err, res) =>
       console.log err
-      @errorDict.set ed.name, true for ed in err.details if err?
+      if err?
+        @errorDict.set ed.name, true for ed in err.details
+        pins = @findAll('.pinput')
+        $(pins).trigger('focusin')
+        $(pins).trigger('focusout')
       @insertEvent(event_doc, yield_id) if amount isnt 0 && !err?
       $('.js-hide-new').trigger('click') if amount is 0 && !err?
 

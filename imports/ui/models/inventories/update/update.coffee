@@ -4,12 +4,14 @@ IngredientModule = require '../../../../api/collections/ingredients/ingredients.
 InventoryModule = require '../../../../api/collections/inventories/inventories.coffee'
 IMethods= require '../../../../api/collections/inventories/methods.coffee'
 EMethods = require '../../../../api/collections/events/methods.coffee'
+ErrorComponent = require '../../../mixins/error_mixin.coffee'
+
 
 Big = require 'big.js'
 
 require './update.jade'
 
-class InventoriesUpdate extends BlazeComponent
+class InventoriesUpdate extends ErrorComponent
   @register 'inventoriesUpdate'
 
   constructor: (args) ->
@@ -110,6 +112,7 @@ class InventoriesUpdate extends BlazeComponent
 
 
   ingyields: (ingredient_id, amountPre) ->
+    @errorDict.set 'ing_mismatch', false
     if @iAmounts.get(ingredient_id)?
       return Number( (@iAmounts.get(ingredient_id).inv_amount + @initAmount).toFixed(4) )
     else
@@ -208,10 +211,12 @@ class InventoriesUpdate extends BlazeComponent
         yield_objects.push yield_id: yk, amount_taken: yv
 
     amount = Number(form.find('[name=amount]').val()) - @initAmount
+    date =  new Date form.find('[name=expiration_date]').val()
+
     inventory_doc =
       name: form.find('[name=name]').val()
       amount: amount
-      expiration_date: form.find('[name=expiration_date]').val()
+      expiration_date: if isNaN(date.getMonth()) then null else date
       notes: form.find('[name=notes]').val()
       yield_objects: yield_objects
 
@@ -233,6 +238,11 @@ class InventoriesUpdate extends BlazeComponent
     inventory_id = @data().update_id
     IMethods.update.call {organization_id, inventory_id, inventory_doc}, (err, res) =>
       console.log err
+      if err?
+        @errorDict.set ed.name, true for ed in err.details
+        pins = @findAll('.pinput')
+        $(pins).trigger('focusin')
+        $(pins).trigger('focusout')
       unless err?
         if yield_objects.length > 0
           @packEvent(amount, yield_objects, inventory_id, organization_id)
@@ -247,6 +257,11 @@ class InventoriesUpdate extends BlazeComponent
     EMethods.pack.call {organization_id, inventory_id, yield_objects, amount}, (err, res) =>
       console.log err
       $('.js-hide-new').trigger('click') unless err?
+      if err?
+        @errorDict.set ed.name, true for ed in err.details
+        pins = @findAll('.pinput')
+        $(pins).trigger('focusin')
+        $(pins).trigger('focusout')
 
 
   userEvent: (event_doc, inventory_id) =>

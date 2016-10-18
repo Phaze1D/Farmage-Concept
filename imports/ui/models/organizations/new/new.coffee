@@ -1,5 +1,5 @@
 
-
+OrganizationModule = require '../../../../api/collections/organizations/organizations.coffee'
 OMethods = require '../../../../api/collections/organizations/methods.coffee'
 
 require './new.jade'
@@ -9,6 +9,10 @@ class OrganizationsNew extends BlazeComponent
 
   constructor: (args) ->
 
+  onCreated: ->
+    super
+    @schema = OrganizationModule.Organizations.simpleSchema()
+
   onRendered: ->
     super
     $('#right-paper-header-panel').addClass('touchScroll')
@@ -17,6 +21,10 @@ class OrganizationsNew extends BlazeComponent
   insert: (organization_doc) ->
     OMethods.insert.call {organization_doc}, (err, res) =>
       console.log err
+      if err?
+        pins = @findAll('.pinput')
+        $(pins).trigger('focusin')
+        $(pins).trigger('focusout')
       $('.js-hide-new').trigger('click') unless err
 
 
@@ -42,7 +50,7 @@ class OrganizationsNew extends BlazeComponent
         number: $(@).find('[name=number]').val()
 
     organization_doc =
-      name: $form.find('[name=company_name]').val()
+      name: $form.find('[name=name]').val()
       email: $form.find('[name=email]').val()
       addresses: adds
       telephones: teles

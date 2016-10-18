@@ -71,7 +71,11 @@ class YieldsNew extends ErrorComponent
 
     YMethods.insert.call {yield_doc}, (err, res) =>
       console.log err
-      @errorDict.set ed.name, true for ed in err.details if err?
+      if err?
+        @errorDict.set ed.name, true for ed in err.details
+        pins = @findAll('.pinput')
+        $(pins).trigger('focusin')
+        $(pins).trigger('focusout')
       @insertEvent(event_doc, res) if amount > 0 && res?
       $('.js-hide-new').trigger('click') if amount <= 0 && !err?
 

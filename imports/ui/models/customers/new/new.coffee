@@ -22,8 +22,13 @@ class CustomersNew extends BlazeComponent
 
   insert: (customer_doc) ->
     customer_doc.organization_id = FlowRouter.getParam('organization_id')
-    CMethods.insert.call {customer_doc}, (err, res) ->
+    CMethods.insert.call {customer_doc}, (err, res) =>
       console.log err
+      if err?
+        pins = @findAll('.pinput')
+        $(pins).trigger('focusin')
+        $(pins).trigger('focusout')
+
       $('.js-hide-new').trigger('click') unless err?
 
 
@@ -48,13 +53,14 @@ class CustomersNew extends BlazeComponent
         name: $(@).find('[name=telephone_name]').val()
         number: $(@).find('[name=number]').val()
 
+    date =  new Date $form.find('[name=date_of_birth]').val()
     customer_doc =
       first_name: $form.find('[name=first_name]').val()
       last_name: $form.find('[name=last_name]').val()
       company: $form.find('[name=company]').val()
       email: $form.find('[name=email]').val()
       notes: $form.find('[name=notes]').val()
-      date_of_birth: $form.find('[name=date_of_birth]').val()
+      date_of_birth: if isNaN(date.getMonth()) then null else date
       addresses: addresses
       telephones: telephones
 

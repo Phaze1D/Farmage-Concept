@@ -85,6 +85,10 @@ class UnitsUpdate extends BlazeComponent
 
     UMethods.update.call {organization_id, unit_id ,unit_doc}, (err, res) =>
       console.log err
+      if err?
+        pins = @findAll('.pinput')
+        $(pins).trigger('focusin')
+        $(pins).trigger('focusout')
       @insertEvent(event_doc, unit_id) if amount isnt 0 && !err?
       $('.js-hide-new').trigger('click') if amount is 0 && !err?
 

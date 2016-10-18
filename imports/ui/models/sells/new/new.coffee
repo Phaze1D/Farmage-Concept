@@ -338,6 +338,11 @@ class SellsNew extends BlazeComponent
     sell_doc.organization_id = FlowRouter.getParam('organization_id')
     SMethods.insert.call {sell_doc}, (err, res) =>
       console.log err
+      if err?
+        pins = @findAll('.pinput')
+        $(pins).trigger('focusin')
+        $(pins).trigger('focusout')
+        
       if inventories.length > 0 and res?
         @addItems(sell_doc.organization_id, res, inventories)
       else
@@ -360,7 +365,7 @@ class SellsNew extends BlazeComponent
           $('.js-hide-new').trigger('click')
 
   remove: (organization_id, sell_id) =>
-    SMethods.remove.call {organization_id, sell_id}, (err, res) ->
+    SMethods.remove.call {organization_id, sell_id}, (err, res) =>
       console.log err
 
 

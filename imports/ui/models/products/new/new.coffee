@@ -58,7 +58,11 @@ class ProductsNew extends ErrorComponent
     product_doc.organization_id = FlowRouter.getParam('organization_id')
     PMethods.insert.call {product_doc}, (err, res) =>
       console.log err
-      @errorDict.set ed.name, true for ed in err.details if err?
+      if err?
+        @errorDict.set ed.name, true for ed in err.details
+        pins = @findAll('.pinput')
+        $(pins).trigger('focusin')
+        $(pins).trigger('focusout')
       $('.js-hide-new').trigger('click') unless err?
 
 

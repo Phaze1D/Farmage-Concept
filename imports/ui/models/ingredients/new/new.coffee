@@ -23,6 +23,10 @@ class IngredientsNew extends BlazeComponent
     ingredient_doc.organization_id = FlowRouter.getParam('organization_id')
     IMethods.insert.call {ingredient_doc}, (err, res) =>
       console.log err
+      if err?
+        pins = @findAll('.pinput')
+        $(pins).trigger('focusin')
+        $(pins).trigger('focusout')
       $('.js-hide-new').trigger('click') unless err
 
 

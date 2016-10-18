@@ -10,6 +10,10 @@ class OrganizationsUpdate extends BlazeComponent
   constructor: (args) ->
     # body...
 
+  onCreated: ->
+    super
+    @schema = OrganizationModule.Organizations.simpleSchema()
+
   onRendered: ->
     super
     $('#right-paper-header-panel').addClass('touchScroll')
@@ -20,6 +24,10 @@ class OrganizationsUpdate extends BlazeComponent
   update: (organization_doc) ->
     organization_id = @data().update_id
     OMethods.update.call {organization_id, organization_doc}, (err, res) =>
+      if err?
+        pins = @findAll('.pinput')
+        $(pins).trigger('focusin')
+        $(pins).trigger('focusout')
       console.log err
       $('.js-hide-new').trigger('click') unless err
 
@@ -46,7 +54,7 @@ class OrganizationsUpdate extends BlazeComponent
         number: $(@).find('[name=number]').val()
 
     organization_doc =
-      name: $form.find('[name=company_name]').val()
+      name: $form.find('[name=name]').val()
       email: $form.find('[name=email]').val()
       addresses: adds
       telephones: teles
