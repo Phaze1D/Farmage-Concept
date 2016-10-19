@@ -39,13 +39,14 @@ div(class="paper-input #{classes}" disabled=disabled)
     div(class='underline-focused #{underline.get}' style="background: #{focusColor}; ")
     div(class='underline-error #{errorLine.get}')
   
-  div(class='add-on-content')
-    if error.get
-      div(class='error-mes')
-        | #{error.get}
-      
-    if showCount
-      div(class='char-count' style="color: #{color.get}; ")
-        span
-          | #{charCount.get}
+  unless hideBottom
+    div(class='add-on-content')
+      if error.get
+        div(class='error-mes')
+          | #{error.get}
+        
+      if showCount
+        div(class='char-count' style="color: #{color.get}; ")
+          span
+            | #{charCount.get}
   

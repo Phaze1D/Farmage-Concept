@@ -53,7 +53,7 @@ class Structure extends BlazeComponent
   scrollCallbacks: ->
     ret =
       scrollBottom: =>
-        child = @childComponents()[0].childComponents()[1].childComponents()[0]
+        child = @childComponents()[0].childComponents()[1].childComponentsWith('canLoadMore')[0]
         if child.page.ready() && child.canLoadMore
           child.page.loadNextPage()
 
@@ -143,7 +143,44 @@ class Structure extends BlazeComponent
       FlowRouter.go a.attr('href'), params
 
 
+  onShowSearch: (event) ->
+    tar = $(event.currentTarget).closest('.search-header').find('.search-hidden')
+
+    if tar.attr('show') is 'true'
+      @onSearch(event)
+    else
+      tar.attr('show', 'true')
+      tar.velocity
+        p:
+          width: 320
+        o:
+          duration: 200
+
+    tar.closest('.search-header').find('.pinput').focus()
+
+  onHideSearch: (event) ->
+    child = @childComponents()[0].childComponents()[1].childComponentsWith('search')[0]
+    child.clearSearch()
+    tar = $(event.currentTarget).closest('.search-header').find('.search-hidden')
+    tar.attr('show', 'false')
+    tar.closest('.search-header').find('.pinput').val('')
+    tar.velocity
+      p:
+        width: 0
+      o:
+        duration: 200
+
+  onSearch: (event) ->
+    event.preventDefault()
+    child = @childComponents()[0].childComponents()[1].childComponentsWith('search')[0]
+    child.search($(event.currentTarget).find('.pinput').val())
+
+
+
   events: ->
     super.concat
       'click .js-logout': @onLogout
       'click a': @onChangeRoute
+      'click .js-search': @onShowSearch
+      'click .js-cross': @onHideSearch
+      'submit .search-form': @onSearch

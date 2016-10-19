@@ -125,8 +125,40 @@ template(name="structure")
     +PaperDrawerMain
       +PaperHeaderPanel id="root" hasFAB=true classes='touchScroll' callbacks=scrollCallbacks
         +PaperHeaderBig id="root" 
-        
+          div(class='search-header')
+            +PaperButton classes='js-search search-b' raise=0 rippleOn=false submit=true
+              i(class='material-icons search-icon')
+                | search
+            
+            form(class='search-form')
+              div(class='search-hidden' style='width: 0')
+                +PaperInput type="text" name="search" label="" focusColor="darkblue" classes="search-input" labelFloat=false placeholder="Search" hideTop=true hideBottom=true
+                
+                div(class='cross js-cross')
+                  i(class='material-icons')
+                    | clear
+                    
+            +PaperButton classes='search-b' raise=0 rippleOn=false submit=false
+              i(class='material-icons search-icon')
+                | filter_list
+              
         +PaperHeaderSmall id="root"
+          div(class='search-header')
+            +PaperButton classes='js-search search-b' raise=0 rippleOn=false submit=true
+              i(class='material-icons search-icon')
+                | search
+            
+            form(class='search-form')
+              div(class='search-hidden' style='width: 0')
+                +PaperInput type="text" name="search" label="" focusColor="darkblue" classes="search-input" labelFloat=false placeholder="Search" hideTop=true hideBottom=true
+                
+                div(class='cross js-cross')
+                  i(class='material-icons')
+                    | clear
+                    
+            +PaperButton classes='search-b' raise=0 rippleOn=false submit=false
+              i(class='material-icons search-icon')
+                | filter_list
         
         
         +PaperHeaderMain id="root" 

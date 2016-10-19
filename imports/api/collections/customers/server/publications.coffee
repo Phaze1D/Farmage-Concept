@@ -1,7 +1,13 @@
 { Meteor } = require 'meteor/meteor'
 { publicationInfo } = require '../../../mixins/server/publications_mixin.coffee'
 
-Meteor.publish "customers", (organization_id, parent, parent_id, limit) ->
+Meteor.publish "customers", (organization_id, parent, parent_id, search, limit) ->
+
+  new SimpleSchema(
+    search:
+      type: String
+      optional: true
+  ).validate({search: search})
 
   info = publicationInfo organization_id, parent, parent_id
   organization = info.organization
@@ -17,6 +23,6 @@ Meteor.publish "customers", (organization_id, parent, parent_id, limit) ->
     throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   if @userId? && (permissions.sells_manager || permissions.viewer || permissions.owner)
-    return parentDoc.customers(limit)
+    return parentDoc.customers(limit, search)
   else
     @ready();

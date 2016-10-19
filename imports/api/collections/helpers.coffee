@@ -14,7 +14,7 @@ IngredientModule = require './ingredients/ingredients.coffee'
 
 # User Helpers
 Meteor.users.helpers
-  customers: (limit) ->
+  customers: (limit, search) ->
     options =
       sort:
         first_name: 1
@@ -317,12 +317,25 @@ OrganizationModule.Organizations.helpers
     options.limit = limit if limit?
     EventModule.Events.find { organization_id: @_id }, options
 
-  customers: (limit) ->
+  customers: (limit, search) ->
     options =
       sort:
         first_name: 1
     options.limit = limit if limit?
-    CustomerModule.Customers.find { organization_id: @_id }, options
+    regex = new RegExp( "^#{search}", 'i' );
+
+    query =
+      organization_id: @_id
+
+    if search? && search.length > 0
+      query.$or = [
+          {first_name: regex},
+          {last_name: regex},
+          {company: regex},
+          {email: regex}
+        ]
+
+    CustomerModule.Customers.find query, options
 
   expenses: (limit) ->
     options =

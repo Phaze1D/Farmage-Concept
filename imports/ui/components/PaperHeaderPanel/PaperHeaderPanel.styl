@@ -19,11 +19,15 @@
 .paper-header-small
   position: fixed;
   top: 0px
-  width: 100%
+  width: calc(100% - 240px)
   height: 64px
   background-color: white
   z-index: 2
   transform: translate3d(0, -70px, 0);
+
+@media(min-width: 1024px)
+  width: 100%
+
 
 
 

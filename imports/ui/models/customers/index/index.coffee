@@ -14,14 +14,14 @@ class CustomersIndex extends IndexMixin
     organization_id = FlowRouter.getParam("organization_id")
     @canLoadMore = true
     @autorun =>
-      @page = Meteor.subscribeWithPagination "customers", organization_id, 'organization', organization_id, 9,
+      @page = Meteor.subscribeWithPagination "customers", organization_id, 'organization', organization_id, @searchValue.get(), 9,
         onStop: (err) ->
           console.log "sub stop #{err}"
         onReady: ->
 
 
   customers: ->
-    CustomerModule.Customers.find()
+    CustomerModule.Customers.find({}, {sort: first_name: 1})
 
   ready: ->
     if @page.ready()

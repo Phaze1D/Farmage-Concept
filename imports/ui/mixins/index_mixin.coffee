@@ -12,11 +12,16 @@ class IndexMixin extends BlazeComponent
     @rightData = new ReactiveVar()
     @size = 1
     @ticking = false
+    @searchValue = new ReactiveVar(null)
 
   onRendered: ->
     super
 
+  search: (value) ->
+    @searchValue.set value
 
+  clearSearch: ->
+    @searchValue.set null
 
   onShow: (event) ->
     @parentComponent().data().hasFAB = false
