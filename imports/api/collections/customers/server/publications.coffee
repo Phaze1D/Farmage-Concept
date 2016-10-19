@@ -23,6 +23,7 @@ Meteor.publish "customers", (organization_id, parent, parent_id, search, limit) 
     throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   if @userId? && (permissions.sells_manager || permissions.viewer || permissions.owner)
+    Meteor._sleepForMs(2000);
     return parentDoc.customers(limit, search)
   else
     @ready();

@@ -175,6 +175,16 @@ class Structure extends BlazeComponent
     child = @childComponents()[0].childComponents()[1].childComponentsWith('search')[0]
     child.search($(event.currentTarget).find('.pinput').val())
 
+  onShowFilter: (event) ->
+    tar = $('.filter-area')
+    tar.removeClass 'hide-f'
+    tar.addClass 'show-f'
+
+  onCloseFilter: (event) ->
+    tar = $('.filter-area')
+    tar.addClass 'hide-f'
+    tar.removeClass 'show-f'
+
 
 
   events: ->
@@ -184,3 +194,5 @@ class Structure extends BlazeComponent
       'click .js-search': @onShowSearch
       'click .js-cross': @onHideSearch
       'submit .search-form': @onSearch
+      'click .js-filter': @onShowFilter
+      'click .js-close-filter': @onCloseFilter

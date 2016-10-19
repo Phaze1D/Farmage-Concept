@@ -9,7 +9,10 @@ class PaperRightPanel extends BlazeComponent
 
   onRendered: ->
     @headerMain = $("#paper-drawer-main")
+    @headerSmall = $('#root-paper-header-small')
     @rightPanel = $('#paper-right-panel')
+    @adSearch = $('.filter-area')
+
     # Missing on window resize event
 
 
@@ -42,6 +45,9 @@ class PaperRightPanel extends BlazeComponent
         mobileHA: false
         duration: 350
         easing: 'ease-in-out'
+
+    @headerSmall.addClass('right-opened')
+    @adSearch.addClass('right-opened')
 
 
 
@@ -92,6 +98,9 @@ class PaperRightPanel extends BlazeComponent
         mobileHA: false
         duration: 250
         easing: 'ease-in-out'
+
+    @headerSmall.removeClass('right-opened')
+    @adSearch.removeClass('right-opened')
 
 
 

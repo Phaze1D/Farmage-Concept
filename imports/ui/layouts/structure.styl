@@ -111,3 +111,66 @@
 
   .search-icon
     font-size: 28px
+
+
+
+.filter-area
+  position: fixed;
+  top: 0px
+  left: 0;
+  height: 0px
+  width: 100%;
+  background: white
+  z-index: 2
+  padding: 0px 15px
+  overflow: hidden
+  transition: .25s height
+
+  &.show-f
+    height: auto
+    display: block;
+
+  &.hide-f
+    height: 0px
+    display: none;
+
+  &.right-opened
+    width: calc(65% - 240px) !important
+
+  @media(min-width: 1024px)
+    width: calc(100% - 240px)
+    left: 240px
+
+
+  .f-title
+    margin: 10px 0 0
+    font-size: 14px
+    color: black
+    font-weight: 300;
+
+  .search-options
+    display: flex
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+  .search-grid
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+
+  .option-input
+    width: 250px
+
+  .submit-search
+    padding: 5px 15px
+    margin-top: 25px
+    margin-bottom: 5px
+
+
+  .option-radio
+    display: flex;
+    align-items: center;
+    font-weight: 300;
+    cursor: pointer;
+    color: #757575

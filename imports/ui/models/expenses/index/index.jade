@@ -1,4 +1,31 @@
 template(name='expenses.index')
+  div(class='filter-area elevation-2')
+    div(class='f-title')
+      | Advanced Search
+      
+    div(class='search-options')
+      div(class='search-grid')
+        +PaperInput type="text" name="first_name" label="First Name" focusColor="darkblue" size="size-small" classes='option-input' hideBottom=true
+        +PaperInput type="text" name="last_name" label="Last Name" focusColor="darkblue" size="size-small" classes='option-input' hideBottom=true
+      
+      div(class='search-grid')
+        +PaperInput type="text" name="company" label="Company" focusColor="darkblue" size="size-small" classes='option-input' hideBottom=true
+        +PaperInput type="text" name="email" label="Email" focusColor="darkblue" size="size-small" classes='option-input' hideBottom=true
+      
+      div(class='search-grid')
+        +PaperInput type="date" name="date_one" label="Birthday From" focusColor="darkblue" size="size-small" classes='option-input' hideBottom=true alwaysFloating=true
+        +PaperInput type="date" name="date_two" label="Birthday To" focusColor="darkblue" size="size-small" classes='option-input' hideBottom=true alwaysFloating=true
+    
+      div(class='search-grid')
+        +PaperInput type="date" name="create_one" label="Created From" focusColor="darkblue" size="size-small" classes='option-input' hideBottom=true alwaysFloating=true
+        +PaperInput type="date" name="create_two" label="Created To" focusColor="darkblue" size="size-small" classes='option-input' hideBottom=true alwaysFloating=true
+      
+    +PaperButton classes='submit-search' raise=true rippleOn=true submit=false elevation=1
+      | Submit
+      
+    +PaperButton classes='submit-search js-close-filter' raise=true rippleOn=true submit=false elevation=1
+      | Cancel
+
   +PaperRightPanel callbacks=rightCallbacks
     div(class='js-show-right')
     div(class="js-right-content")

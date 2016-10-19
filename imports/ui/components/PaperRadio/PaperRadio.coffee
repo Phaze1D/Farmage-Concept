@@ -22,7 +22,7 @@ class PaperRadio extends BlazeComponent
     else
       $('.radio-mark.checked').not(tar).trigger('click')
 
-    if @data().clickCallback.callback?
+    if @data().clickCallback? && @data().clickCallback.callback?
       @data().clickCallback.callback(event)
 
 
