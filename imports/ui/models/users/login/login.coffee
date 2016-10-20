@@ -8,6 +8,24 @@ class Login extends BlazeComponent
 
   onCreated: ->
     @state = new ReactiveDict
+    @schema = new SimpleSchema(
+                    email:
+                      type: String
+                      label: "Email"
+                      regEx: SimpleSchema.RegEx.Email
+
+                    password:
+                      type: String
+                      label: 'Password'
+
+                    first_name:
+                      type: String
+                      label: 'First Name'
+
+                    last_name:
+                      type: String
+                      label: 'Last Name'
+                  )
     @loginState()
 
   onRendered: ->
@@ -32,7 +50,7 @@ class Login extends BlazeComponent
     @state.set('log', false)
     @state.set('title', 'Sign Up')
     @state.set('forgot', '0')
-    @state.set('height', '131px')
+    @state.set('height', '170px')
     @state.set('form', 'js-signup-form')
     @state.set('button', 'js-signup-button')
 
