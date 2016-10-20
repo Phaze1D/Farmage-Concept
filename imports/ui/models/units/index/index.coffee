@@ -17,10 +17,11 @@ class UnitsIndex extends IndexMixin
     @autorun =>
       parent = FlowRouter.getQueryParam('parent')
       parent_id = FlowRouter.getQueryParam('parent_id')
-      @page = Meteor.subscribeWithPagination "units", organization_id, parent, parent_id, 9,
+      @page = Meteor.subscribeWithPagination "units", organization_id, parent, parent_id, @searchValue.get(), 9,
                 onStop: (err) ->
                   console.log "sub stop #{err}"
                 onReady: ->
+      @pReady.set @page.ready()
 
   units: ->
     UnitModule.Units.find({}, {sort: name: 1})

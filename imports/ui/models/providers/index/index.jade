@@ -39,13 +39,13 @@ template(name='providers.index')
       i(class="material-icons plus-icon")
         | add
 
+  if pReady.get
+    div(class='providers main-content')
+      div(class='card-wrapper')
+        each provider in providers
+          +ProviderCard provider=provider
 
-  div(class='providers main-content')
-    div(class='card-wrapper')
-      each provider in providers
-        +ProviderCard provider=provider
-
-  unless page.ready 
+  unless pReady.get 
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")

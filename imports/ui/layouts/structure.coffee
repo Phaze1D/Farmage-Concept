@@ -54,7 +54,7 @@ class Structure extends BlazeComponent
     ret =
       scrollBottom: =>
         child = @childComponents()[0].childComponents()[1].childComponentsWith('canLoadMore')[0]
-        if child.page.ready() && child.canLoadMore
+        if child? && child.page.ready() && child.canLoadMore
           child.page.loadNextPage()
 
 

@@ -10,7 +10,13 @@ collections = {}
 collections.unit = UnitModule.Units
 collections.provider = ProviderModule.Providers
 
-Meteor.publish "expenses", (organization_id, parent, parent_id, limit) ->
+Meteor.publish "expenses", (organization_id, parent, parent_id, search, limit) ->
+
+  new SimpleSchema(
+    search:
+      type: String
+      optional: true
+  ).validate({search: search})
 
   info = publicationInfo organization_id, parent, parent_id
   parentDoc = info.parentDoc
@@ -29,7 +35,7 @@ Meteor.publish "expenses", (organization_id, parent, parent_id, limit) ->
 
 
   if @userId? && parentDoc? && (permissions.viewer || permissions.expenses_manager || permissions.owner)
-    return parentDoc.expenses(limit)
+    return parentDoc.expenses(limit, search)
   else
     @ready();
 

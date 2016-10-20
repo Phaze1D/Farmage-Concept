@@ -8,7 +8,13 @@ collections = {}
 collections.unit = UnitModule.Units
 
 # Missing permissions and pagenation
-Meteor.publish "units", (organization_id, parent, parent_id, limit) ->
+Meteor.publish "units", (organization_id, parent, parent_id, search, limit) ->
+
+  new SimpleSchema(
+    search:
+      type: String
+      optional: true
+  ).validate({search: search})
 
   info = publicationInfo organization_id, parent, parent_id
   organization = info.organization
@@ -26,7 +32,7 @@ Meteor.publish "units", (organization_id, parent, parent_id, limit) ->
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   if @userId? && (permissions.viewer || permissions.units_manager || permissions.owner)
-    return parentDoc.units(limit)
+    return parentDoc.units(limit, search)
   else
     @ready();
 

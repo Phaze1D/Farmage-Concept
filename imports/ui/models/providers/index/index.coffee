@@ -16,11 +16,12 @@ class ProvidersIndex extends IndexMixin
     organization_id = FlowRouter.getParam("organization_id")
     @canLoadMore = true
     @autorun =>
-        @page = Meteor.subscribeWithPagination "providers", organization_id, 'organization', organization_id, 9,
-                  onStop: (err) ->
-                    console.log "sub stop #{err}"
-                  onReady: ->
+      @page = Meteor.subscribeWithPagination "providers", organization_id, 'organization', organization_id, @searchValue.get(), 9,
+                onStop: (err) ->
+                  console.log "sub stop #{err}"
+                onReady: ->
 
+      @pReady.set @page.ready()
 
   providers: ->
     ProviderModule.Providers.find()

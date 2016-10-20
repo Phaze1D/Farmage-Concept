@@ -2,7 +2,13 @@
 { publicationInfo } = require '../../../mixins/server/publications_mixin.coffee'
 
 
-Meteor.publish "ousers", (organization_id, parent, parent_id, limit) ->
+Meteor.publish "ousers", (organization_id, parent, parent_id, search, limit) ->
+
+  new SimpleSchema(
+    search:
+      type: String
+      optional: true
+  ).validate({search: search})
 
   info = publicationInfo organization_id, parent, parent_id
   parentDoc = info.parentDoc
@@ -18,7 +24,7 @@ Meteor.publish "ousers", (organization_id, parent, parent_id, limit) ->
     throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   if @userId? && parentDoc? && (permissions.users_manager || permissions.viewer || permissions.owner)
-    return parentDoc.o_users(limit)
+    return parentDoc.o_users(limit, search)
   else
     @ready();
 

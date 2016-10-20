@@ -11,7 +11,13 @@ collections.sell = SellModule.Sells
 collections.ingredient = IngredientModule.Ingredients
 
 # Missing permissions and pagenation
-Meteor.publish "products", (organization_id, parent, parent_id, limit) ->
+Meteor.publish "products", (organization_id, parent, parent_id, search, limit) ->
+
+  new SimpleSchema(
+    search:
+      type: String
+      optional: true
+  ).validate({search: search})
 
   info = publicationInfo organization_id, parent, parent_id
   parentDoc = info.parentDoc
@@ -31,6 +37,6 @@ Meteor.publish "products", (organization_id, parent, parent_id, limit) ->
 
 
   if @userId? && parentDoc? && (permissions.viewer || permissions.inventories_manager || permissions.owner)
-    return parentDoc.products(limit)
+    return parentDoc.products(limit, search)
   else
     @ready();

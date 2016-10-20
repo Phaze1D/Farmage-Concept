@@ -37,13 +37,14 @@ template(name='ousers.index')
     div(class='plus-icon-div' data-template='ousersNew')
       i(class="material-icons plus-icon")
         | add
+        
+  if pReady.get
+    div(class='ousers main-content' ready=ready )
+      div(class='card-wrapper')
+        each ouser in ousers
+          +OUserCard ouser=ouser
 
-  div(class='ousers main-content' ready=ready )
-    div(class='card-wrapper')
-      each ouser in ousers
-        +OUserCard ouser=ouser
-
-  unless page.ready 
+  unless pReady.get 
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")

@@ -38,13 +38,13 @@ template(name='sells.index')
     div(class='plus-icon-div' data-template='sellsNew')
       i(class="material-icons plus-icon")
         | add
+  if pReady.get
+    div(class='sells main-content' ready=ready )
+      div(class='card-wrapper')
+        each sell in sells
+          +SellCard sell=sell
 
-  div(class='sells main-content' ready=ready )
-    div(class='card-wrapper')
-      each sell in sells
-        +SellCard sell=sell
-
-  unless page.ready 
+  unless pReady.get
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")

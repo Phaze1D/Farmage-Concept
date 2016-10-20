@@ -11,7 +11,13 @@ collections.product = ProductModule.Products
 collections.customer = CustomerModule.Customers
 collections.inventory = InventoryModule.Inventories
 
-Meteor.publish "sells", (organization_id, parent, parent_id, limit) ->
+Meteor.publish "sells", (organization_id, parent, parent_id, search, limit) ->
+
+  new SimpleSchema(
+    search:
+      type: String
+      optional: true
+  ).validate({search: search})
 
   info = publicationInfo organization_id, parent, parent_id
   organization = info.organization
@@ -29,7 +35,7 @@ Meteor.publish "sells", (organization_id, parent, parent_id, limit) ->
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   if @userId? && (permissions.viewer || permissions.sells_manager || permissions.owner)
-    return parentDoc.sells(limit)
+    return parentDoc.sells(limit, search)
   else
     @ready();
 

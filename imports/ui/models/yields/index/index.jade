@@ -39,13 +39,13 @@ template(name='yields.index')
       i(class="material-icons plus-icon")
         | add
 
+  if pReady.get
+    div(class='yields main-content' ready=ready )
+      div(class='card-wrapper')
+        each yield in yields
+          +YieldCard yield=yield
 
-  div(class='yields main-content' ready=ready )
-    div(class='card-wrapper')
-      each yield in yields
-        +YieldCard yield=yield
-
-  unless page.ready 
+  unless pReady.get 
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")

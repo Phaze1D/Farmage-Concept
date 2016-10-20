@@ -13,6 +13,7 @@ class IndexMixin extends BlazeComponent
     @size = 1
     @ticking = false
     @searchValue = new ReactiveVar(null)
+    @pReady = new ReactiveVar()
 
   onRendered: ->
     super

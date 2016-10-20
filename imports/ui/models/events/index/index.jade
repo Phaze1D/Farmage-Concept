@@ -33,13 +33,13 @@ template(name='events.index')
         +Template.dynamic template=rightTemplate.get data=rightData.get
         
         
+  if pReady.get
+    div(class='events main-content' ready=ready)
+      div(class='card-wrapper')
+        each event in mEvents
+          +EventCard event=event
   
-  div(class='events main-content' ready=ready)
-    div(class='card-wrapper')
-      each event in mEvents
-        +EventCard event=event
-  
-  unless page.ready 
+  unless pReady.get
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")

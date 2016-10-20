@@ -38,14 +38,14 @@ template(name='ingredients.index')
       i(class="material-icons plus-icon")
         | add
 
+  if pReady.get
+    div(class='ingredients main-content' ready=ready )
+      div(class='card-wrapper')
+        each ingredient in ingredients
+          +IngredientCard ingredient=ingredient
+              
 
-  div(class='ingredients main-content' ready=ready )
-    div(class='card-wrapper')
-      each ingredient in ingredients
-        +IngredientCard ingredient=ingredient
-            
-
-  unless page.ready 
+  unless pReady.get
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")

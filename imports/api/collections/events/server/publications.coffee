@@ -12,7 +12,13 @@ collections.yield = YieldModule.Yields
 collections.unit = UnitModule.Units
 collections.inventory = InventoryModule.Inventories
 
-Meteor.publish "events", (organization_id, parent, parent_id, limit) ->
+Meteor.publish "events", (organization_id, parent, parent_id, search, limit) ->
+
+  new SimpleSchema(
+    search:
+      type: String
+      optional: true
+  ).validate({search: search})
 
   info = publicationInfo organization_id, parent, parent_id
   parentDoc = info.parentDoc
@@ -31,7 +37,7 @@ Meteor.publish "events", (organization_id, parent, parent_id, limit) ->
 
   if @userId? && parentDoc? && (permissions.viewer || permissions.owner)
     # Meteor._sleepForMs(5000);
-    return parentDoc.events(limit)
+    return parentDoc.events(limit, search)
   else
     @ready();
 

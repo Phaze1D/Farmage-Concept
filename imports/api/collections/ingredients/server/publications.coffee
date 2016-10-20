@@ -8,7 +8,13 @@ collections.product = ProductModule.Products
 
 
 
-Meteor.publish "ingredients", (organization_id, parent, parent_id, limit) ->
+Meteor.publish "ingredients", (organization_id, parent, parent_id, search, limit) ->
+
+  new SimpleSchema(
+    search:
+      type: String
+      optional: true
+  ).validate({search: search})
 
   info = publicationInfo organization_id, parent, parent_id
   parentDoc = info.parentDoc
@@ -27,6 +33,6 @@ Meteor.publish "ingredients", (organization_id, parent, parent_id, limit) ->
 
 
   if @userId? && parentDoc? && (permissions.viewer || permissions.owner)
-    return parentDoc.ingredients(limit)
+    return parentDoc.ingredients(limit, search)
   else
     @ready();

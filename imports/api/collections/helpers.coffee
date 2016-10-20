@@ -20,7 +20,19 @@ Meteor.users.helpers
         first_name: 1
     options.limit = limit if limit?
 
-    CustomerModule.Customers.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, options
+    regex = new RegExp( "^#{search}", 'i' );
+    query = {}
+
+    if search? && search.length > 0
+      query.$or = [
+          {first_name: regex},
+          {last_name: regex},
+          {company: regex},
+          {email: regex},
+          created_user_id: @_id,
+          updated_user_id: @_id
+        ]
+    CustomerModule.Customers.find query, options
 
   events: (limit, search) ->
     options =
@@ -29,54 +41,146 @@ Meteor.users.helpers
     options.limit = limit if limit?
     EventModule.Events.find { $or:  [ created_user_id: @_id, updated_user_id: @_id]}, options
 
+
   expenses: (limit, search) ->
     options =
       sort:
         createdAt: -1
     options.limit = limit if limit?
-    ExpenseModule.Expenses.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = {}
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {description: regex},
+          created_user_id: @_id,
+          updated_user_id: @_id
+        ]
+
+    ExpenseModule.Expenses.find query, options
 
   inventories: (limit, search) ->
     options =
       sort:
         createdAt: -1
     options.limit = limit if limit?
-    InventoryModule.Inventories.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = {}
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {notes: regex},
+          {_id: regex},
+          created_user_id: @_id,
+          updated_user_id: @_id
+        ]
+
+    InventoryModule.Inventories.find query, options
 
   ingredients: (limit, search) ->
     options =
       sort:
         createdAt: -1
     options.limit = limit if limit?
-    IngredientModule.Ingredients.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = {}
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {measurement_unit: regex},
+          created_user_id: @_id,
+          updated_user_id: @_id
+        ]
+
+    IngredientModule.Ingredients.find query, options
 
   products: (limit, search) ->
     options =
       sort:
         name: 1
     options.limit = limit if limit?
-    ProductModule.Products.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = {}
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {size: regex},
+          {description: regex},
+          {sku: regex},
+          created_user_id: @_id,
+          updated_user_id: @_id
+        ]
+
+    ProductModule.Products.find query, options
 
   providers: (limit, search) ->
     options =
       sort:
         first_name: 1
     options.limit = limit if limit?
-    ProviderModule.Providers.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = {}
+
+    if search? && search.length > 0
+      query.$or = [
+          {first_name: regex},
+          {last_name: regex},
+          {company: regex},
+          {email: regex},
+          created_user_id: @_id,
+          updated_user_id: @_id
+        ]
+
+    ProviderModule.Providers.find query, options
 
   sells: (limit, search) ->
     options =
       sort:
         createdAt: -1
     options.limit = limit if limit?
-    SellModule.Sells.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, option
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = {}
+
+    if search? && search.length > 0
+      query.$or = [
+          {status: regex},
+          {notes: regex},
+          {payment_method: regex},
+          created_user_id: @_id,
+          updated_user_id: @_id
+        ]
+
+    SellModule.Sells.find query, option
 
   units: (limit, search) ->
     options =
       sort:
         name: 1
     options.limit = limit if limit?
-    UnitModule.Units.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = {}
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {description: regex},
+          {_id: regex},
+          created_user_id: @_id,
+          updated_user_id: @_id
+        ]
+
+    UnitModule.Units.find query, options
 
   users: ->
     Meteor.users.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: createdAt: -1
@@ -86,7 +190,20 @@ Meteor.users.helpers
       sort:
         createdAt: -1
     options.limit = limit if limit?
-    YieldModule.Yields.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = {}
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {notes: regex},
+          {_id: regex},
+          created_user_id: @_id,
+          updated_user_id: @_id
+        ]
+
+    YieldModule.Yields.find query, options
 
   organizations: ->
     OrganizationModule.Organizations.find { ousers: $elemMatch: user_id: @_id } # careful
@@ -104,7 +221,19 @@ SellModule.Sells.helpers
     options.limit = limit if limit?
 
     id_array = (detail.product_id for detail in @details)
-    ProductModule.Products.find { _id: $in: id_array}, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = { _id: $in: id_array}
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {size: regex},
+          {description: regex},
+          {sku: regex}
+        ]
+
+    ProductModule.Products.find query, options
 
   inventories: (limit, search) ->
     options =
@@ -116,7 +245,18 @@ SellModule.Sells.helpers
     for detail in @details
       for inventory in detail.inventories
         id_array.push inventory.inventory_id
-    InventoryModule.Inventories.find { _id: $in: id_array }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = { _id: $in: id_array }
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {notes: regex},
+          {_id: regex}
+        ]
+
+    InventoryModule.Inventories.find query, options
 
   organization: ->
     OrganizationModule.Organizations.find { _id: @organization_id }
@@ -135,7 +275,17 @@ ProviderModule.Providers.helpers
         sort:
           createdAt: -1
       options.limit = limit if limit?
-      ExpenseModule.Expenses.find { provider_id: @_id}, options
+
+      regex = new RegExp( "^#{search}", 'i' );
+      query = {provider_id: @_id}
+
+      if search? && search.length > 0
+        query.$or = [
+            {name: regex},
+            {description: regex}
+          ]
+
+      ExpenseModule.Expenses.find query, options
 
     organization: ->
       OrganizationModule.Organizations.find { _id: @organization_id }
@@ -156,14 +306,35 @@ ProductModule.Products.helpers
     options.limit = limit if limit?
 
     id_array = ( pingredient.ingredient_id for pingredient in @pingredients )
-    IngredientModule.Ingredients.find { _id: $in: id_array }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = { _id: $in: id_array }
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {measurement_unit: regex}
+        ]
+
+    IngredientModule.Ingredients.find query, options
 
   sells: (limit, search) ->
     options =
       sort:
         createdAt: -1
     options.limit = limit if limit?
-    SellModule.Sells.find {'details.product_id': @_id}, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = {'details.product_id': @_id}
+
+    if search? && search.length > 0
+      query.$or = [
+          {status: regex},
+          {notes: regex},
+          {payment_method: regex}
+        ]
+
+    SellModule.Sells.find query, options
 
   inventories: (limit, search) ->
     options =
@@ -171,7 +342,17 @@ ProductModule.Products.helpers
         createdAt: -1
     options.limit = limit if limit?
 
-    InventoryModule.Inventories.find {product_id: @_id}, options
+    regex = new RegExp( "^#{search}", 'i' );
+    query = {product_id: @_id}
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {notes: regex},
+          {_id: regex}
+        ]
+
+    InventoryModule.Inventories.find query, options
 
   organization: ->
     OrganizationModule.Organizations.find { _id: @organization_id }
@@ -190,7 +371,18 @@ InventoryModule.Inventories.helpers
       sort:
         createdAt: -1
     options.limit = limit if limit?
-    SellModule.Sells.find { details: $elemMatch: inventories: $elemMatch: inventory_id: @_id }, options   # Careful could lead to error
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = { details: $elemMatch: inventories: $elemMatch: inventory_id: @_id }
+
+    if search? && search.length > 0
+      query.$or = [
+          {status: regex},
+          {notes: regex},
+          {payment_method: regex}
+        ]
+
+    SellModule.Sells.find query, options   # Careful could lead to error
 
   events: (limit)->
     options =
@@ -206,7 +398,18 @@ InventoryModule.Inventories.helpers
         createdAt: -1
     options.limit = limit if limit?
     id_array = ( yield_item.yield_id for yield_item in @yield_objects )
-    YieldModule.Yields.find { _id: $in: id_array }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = { _id: $in: id_array }
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {notes: regex},
+          {_id: regex}
+        ]
+
+    YieldModule.Yields.find query, options
 
   product: ->
     ProductModule.Products.find @product_id
@@ -232,14 +435,36 @@ IngredientModule.Ingredients.helpers
         name: 1
     options.limit = limit if limit?
 
-    ProductModule.Products.find {'pingredients.ingredient_id': @_id} , options# possible error
+    regex = new RegExp( "^#{search}", 'i' );
+    query = {'pingredients.ingredient_id': @_id}
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {size: regex},
+          {description: regex},
+          {sku: regex}
+        ]
+
+    ProductModule.Products.find query, options# possible error
 
   yields: (limit, search) ->
     options =
       sort:
         createdAt: -1
     options.limit = limit if limit?
-    YieldModule.Yields.find {ingredient_id: @_id}, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = {ingredient_id: @_id}
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {notes: regex},
+          {_id: regex}
+        ]
+
+    YieldModule.Yields.find query, options
 
   organization: ->
     OrganizationModule.Organizations.find { _id: @organization_id }
@@ -296,7 +521,18 @@ CustomerModule.Customers.helpers
       sort:
         createdAt: -1
     options.limit = limit if limit?
-    SellModule.Sells.find {customer_id: @_id}, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = {customer_id: @_id}
+
+    if search? && search.length > 0
+      query.$or = [
+          {status: regex},
+          {notes: regex},
+          {payment_method: regex}
+        ]
+
+    SellModule.Sells.find query, options
 
   organization: ->
     OrganizationModule.Organizations.find { _id: @organization_id }
@@ -322,11 +558,10 @@ OrganizationModule.Organizations.helpers
       sort:
         first_name: 1
     options.limit = limit if limit?
-    regex = new RegExp( "^#{search}", 'i' );
 
+    regex = new RegExp( "^#{search}", 'i' );
     query =
       organization_id: @_id
-
     if search? && search.length > 0
       query.$or = [
           {first_name: regex},
@@ -342,49 +577,126 @@ OrganizationModule.Organizations.helpers
       sort:
         createdAt: -1
     options.limit = limit if limit?
-    ExpenseModule.Expenses.find { organization_id: @_id }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = { organization_id: @_id }
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {description: regex}
+        ]
+
+    ExpenseModule.Expenses.find query, options
 
   inventories: (limit, search) ->
     options =
       sort:
         createdAt: -1
     options.limit = limit if limit?
-    InventoryModule.Inventories.find { organization_id: @_id }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = { organization_id: @_id }
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {notes: regex},
+          {_id: regex}
+        ]
+
+    InventoryModule.Inventories.find query, options
 
   ingredients: (limit, search) ->
     options =
       sort:
         createdAt: 1
     options.limit = limit if limit?
-    IngredientModule.Ingredients.find { organization_id: @_id }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = { organization_id: @_id }
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {measurement_unit: regex}
+        ]
+
+    IngredientModule.Ingredients.find query, options
 
   products: (limit, search) ->
     options =
       sort:
         name: 1
     options.limit = limit if limit?
-    ProductModule.Products.find { organization_id: @_id }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = { organization_id: @_id }
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {size: regex},
+          {description: regex},
+          {sku: regex}
+        ]
+
+    ProductModule.Products.find query, options
 
   providers: (limit, search) ->
     options =
       sort:
         first_name: 1
     options.limit = limit if limit?
-    ProviderModule.Providers.find { organization_id: @_id }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = { organization_id: @_id }
+
+    if search? && search.length > 0
+      query.$or = [
+          {first_name: regex},
+          {last_name: regex},
+          {company: regex},
+          {email: regex}
+        ]
+
+    ProviderModule.Providers.find query, options
 
   sells: (limit, search) ->
     options =
       sort:
         createdAt: -1
     options.limit = limit if limit?
-    SellModule.Sells.find { organization_id: @_id }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = { organization_id: @_id }
+
+    if search? && search.length > 0
+      query.$or = [
+          {status: regex},
+          {notes: regex},
+          {payment_method: regex}
+        ]
+
+    SellModule.Sells.find query, options
 
   units: (limit, search) ->
     options =
       sort:
         name: 1
     options.limit = limit if limit?
-    UnitModule.Units.find { organization_id: @_id }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = { organization_id: @_id }
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {description: regex},
+          {_id: regex}
+        ]
+
+    UnitModule.Units.find query, options
 
   o_users: (limit) ->
     options =
@@ -402,7 +714,18 @@ OrganizationModule.Organizations.helpers
       sort:
         createdAt: -1
     options.limit = limit if limit?
-    YieldModule.Yields.find { organization_id: @_id }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = { organization_id: @_id }
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {notes: regex},
+          {_id: regex}
+        ]
+
+    YieldModule.Yields.find query, options
 
   hasUser: (user_id) ->
     for user in @ousers
@@ -427,14 +750,37 @@ UnitModule.Units.helpers
       sort:
         name: 1
     options.limit = limit if limit?
-    UnitModule.Units.find { unit_id: @_id }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = { unit_id: @_id }
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {description: regex},
+          {_id: regex}
+        ]
+
+
+    UnitModule.Units.find query, options
 
   yields: (limit, search) ->
     options =
       sort:
         createdAt: -1
     options.limit = limit if limit?
-    YieldModule.Yields.find { unit_id: @_id }, options
+
+    regex = new RegExp( "^#{search}", 'i' );
+    query = { unit_id: @_id }
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {notes: regex},
+          {_id: regex}
+        ]
+
+    YieldModule.Yields.find query, options
 
   events: (limit)->
     options =
@@ -449,7 +795,16 @@ UnitModule.Units.helpers
         createdAt: -1
     options.limit = limit if limit?
 
-    ExpenseModule.Expenses.find { unit_id: @_id }, options
+    regex = new RegExp( "^#{search}", 'i' );
+    query = { unit_id: @_id }
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {description: regex}
+        ]
+
+    ExpenseModule.Expenses.find query, options
 
   organization: ->
     OrganizationModule.Organizations.find { _id: @organization_id }
@@ -472,7 +827,17 @@ YieldModule.Yields.helpers
         createdAt: -1
     options.limit = limit if limit?
 
-    InventoryModule.Inventories.find {'yield_objects.yield_id': @_id}, options # possible error
+    regex = new RegExp( "^#{search}", 'i' );
+    query = {'yield_objects.yield_id': @_id}
+
+    if search? && search.length > 0
+      query.$or = [
+          {name: regex},
+          {notes: regex},
+          {_id: regex}
+        ]
+
+    InventoryModule.Inventories.find query, options # possible error
 
   ingredient: ->
     IngredientModule.Ingredients.find @ingredient_id

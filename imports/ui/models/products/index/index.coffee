@@ -18,10 +18,11 @@ class ProductsIndex extends IndexMixin
     @autorun =>
       parent = FlowRouter.getQueryParam('parent')
       parent_id = FlowRouter.getQueryParam('parent_id')
-      @page = Meteor.subscribeWithPagination "products", organization_id, parent, parent_id, 9,
+      @page = Meteor.subscribeWithPagination "products", organization_id, parent, parent_id,  @searchValue.get(), 9,
                 onStop: (err) ->
                   console.log "sub stop #{err}"
                 onReady: ->
+      @pReady.set @page.ready()
 
   onRendered: ->
     super

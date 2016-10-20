@@ -37,14 +37,14 @@ template(name='inventories.index')
     div(class='plus-icon-div' data-template='inventoriesNew')
       i(class="material-icons plus-icon")
         | add
-    
-  div(class='inventories main-content' ready=ready)
-    div(class='card-wrapper')
-      each inventory in inventories
-        +InventoryCard inventory=inventory
+  if pReady.get  
+    div(class='inventories main-content' ready=ready)
+      div(class='card-wrapper')
+        each inventory in inventories
+          +InventoryCard inventory=inventory
         
 
-  unless page.ready 
+  unless pReady.get
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")
