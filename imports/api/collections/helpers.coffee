@@ -22,56 +22,56 @@ Meteor.users.helpers
 
     CustomerModule.Customers.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, options
 
-  events: (limit) ->
+  events: (limit, search) ->
     options =
       sort:
         createdAt: -1
     options.limit = limit if limit?
     EventModule.Events.find { $or:  [ created_user_id: @_id, updated_user_id: @_id]}, options
 
-  expenses: (limit) ->
+  expenses: (limit, search) ->
     options =
       sort:
         createdAt: -1
     options.limit = limit if limit?
     ExpenseModule.Expenses.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, options
 
-  inventories: (limit) ->
+  inventories: (limit, search) ->
     options =
       sort:
         createdAt: -1
     options.limit = limit if limit?
     InventoryModule.Inventories.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, options
 
-  ingredients: (limit) ->
+  ingredients: (limit, search) ->
     options =
       sort:
         createdAt: -1
     options.limit = limit if limit?
     IngredientModule.Ingredients.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, options
 
-  products: ->
+  products: (limit, search) ->
     options =
       sort:
         name: 1
     options.limit = limit if limit?
     ProductModule.Products.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, options
 
-  providers: (limit) ->
+  providers: (limit, search) ->
     options =
       sort:
         first_name: 1
     options.limit = limit if limit?
     ProviderModule.Providers.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, options
 
-  sells: (limit) ->
+  sells: (limit, search) ->
     options =
       sort:
         createdAt: -1
     options.limit = limit if limit?
     SellModule.Sells.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, option
 
-  units: (limit) ->
+  units: (limit, search) ->
     options =
       sort:
         name: 1
@@ -81,7 +81,7 @@ Meteor.users.helpers
   users: ->
     Meteor.users.find { $or:  [ created_user_id: @_id, updated_user_id: @_id] }, sort: createdAt: -1
 
-  yields: (limit) ->
+  yields: (limit, search) ->
     options =
       sort:
         createdAt: -1
@@ -97,7 +97,7 @@ SellModule.Sells.helpers
   customer: ->
     CustomerModule.Customers.find _id: @customer_id
 
-  products: ->
+  products: (limit, search) ->
     options =
       sort:
         name: 1
@@ -106,7 +106,7 @@ SellModule.Sells.helpers
     id_array = (detail.product_id for detail in @details)
     ProductModule.Products.find { _id: $in: id_array}, options
 
-  inventories: (limit) ->
+  inventories: (limit, search) ->
     options =
       sort:
         createdAt: -1
@@ -130,7 +130,7 @@ SellModule.Sells.helpers
 
 # Provider Helpers
 ProviderModule.Providers.helpers
-    expenses: (limit) ->
+    expenses: (limit, search) ->
       options =
         sort:
           createdAt: -1
@@ -149,7 +149,7 @@ ProviderModule.Providers.helpers
 
 # Product Helpers
 ProductModule.Products.helpers
-  ingredients: (limit) ->
+  ingredients: (limit, search) ->
     options =
       sort:
         createdAt: 1
@@ -158,14 +158,14 @@ ProductModule.Products.helpers
     id_array = ( pingredient.ingredient_id for pingredient in @pingredients )
     IngredientModule.Ingredients.find { _id: $in: id_array }, options
 
-  sells: (limit) ->
+  sells: (limit, search) ->
     options =
       sort:
         createdAt: -1
     options.limit = limit if limit?
     SellModule.Sells.find {'details.product_id': @_id}, options
 
-  inventories: (limit) ->
+  inventories: (limit, search) ->
     options =
       sort:
         createdAt: -1
@@ -185,7 +185,7 @@ ProductModule.Products.helpers
 # Inventories Helpers
 InventoryModule.Inventories.helpers
 
-  sells: (limit) ->
+  sells: (limit, search) ->
     options =
       sort:
         createdAt: -1
@@ -200,7 +200,7 @@ InventoryModule.Inventories.helpers
     EventModule.Events.find { for_id: @_id }, options
 
 
-  yields: (limit) ->
+  yields: (limit, search) ->
     options =
       sort:
         createdAt: -1
@@ -226,7 +226,7 @@ InventoryModule.Inventories.helpers
 
 # Ingredient Helpers
 IngredientModule.Ingredients.helpers
-  products: ->
+  products: (limit, search) ->
     options =
       sort:
         name: 1
@@ -234,7 +234,7 @@ IngredientModule.Ingredients.helpers
 
     ProductModule.Products.find {'pingredients.ingredient_id': @_id} , options# possible error
 
-  yields: (limit) ->
+  yields: (limit, search) ->
     options =
       sort:
         createdAt: -1
@@ -291,7 +291,7 @@ EventModule.Events.helpers
 
 # Customer Helpers
 CustomerModule.Customers.helpers
-  sells: (limit) ->
+  sells: (limit, search) ->
     options =
       sort:
         createdAt: -1
@@ -337,49 +337,49 @@ OrganizationModule.Organizations.helpers
 
     CustomerModule.Customers.find query, options
 
-  expenses: (limit) ->
+  expenses: (limit, search) ->
     options =
       sort:
         createdAt: -1
     options.limit = limit if limit?
     ExpenseModule.Expenses.find { organization_id: @_id }, options
 
-  inventories: (limit) ->
+  inventories: (limit, search) ->
     options =
       sort:
         createdAt: -1
     options.limit = limit if limit?
     InventoryModule.Inventories.find { organization_id: @_id }, options
 
-  ingredients: (limit) ->
+  ingredients: (limit, search) ->
     options =
       sort:
         createdAt: 1
     options.limit = limit if limit?
     IngredientModule.Ingredients.find { organization_id: @_id }, options
 
-  products: ->
+  products: (limit, search) ->
     options =
       sort:
         name: 1
     options.limit = limit if limit?
     ProductModule.Products.find { organization_id: @_id }, options
 
-  providers: (limit) ->
+  providers: (limit, search) ->
     options =
       sort:
         first_name: 1
     options.limit = limit if limit?
     ProviderModule.Providers.find { organization_id: @_id }, options
 
-  sells: (limit) ->
+  sells: (limit, search) ->
     options =
       sort:
         createdAt: -1
     options.limit = limit if limit?
     SellModule.Sells.find { organization_id: @_id }, options
 
-  units: (limit) ->
+  units: (limit, search) ->
     options =
       sort:
         name: 1
@@ -397,7 +397,7 @@ OrganizationModule.Organizations.helpers
     id_array = ( user.user_id for user in @ousers )
     Meteor.users.find { _id: $in: id_array }, options
 
-  yields: (limit) ->
+  yields: (limit, search) ->
     options =
       sort:
         createdAt: -1
@@ -422,14 +422,14 @@ UnitModule.Units.helpers
   unit: ->
     UnitModule.Units.find @unit_id
 
-  units: (limit) ->
+  units: (limit, search) ->
     options =
       sort:
         name: 1
     options.limit = limit if limit?
     UnitModule.Units.find { unit_id: @_id }, options
 
-  yields: (limit) ->
+  yields: (limit, search) ->
     options =
       sort:
         createdAt: -1
@@ -443,7 +443,7 @@ UnitModule.Units.helpers
     options.limit = limit if limit?
     EventModule.Events.find { for_id: @_id }, options
 
-  expenses: (limit) ->
+  expenses: (limit, search) ->
     options =
       sort:
         createdAt: -1
@@ -466,7 +466,7 @@ YieldModule.Yields.helpers
   unit: ->
     UnitModule.Units.find @unit_id
 
-  inventories: (limit) ->
+  inventories: (limit, search) ->
     options =
       sort:
         createdAt: -1
