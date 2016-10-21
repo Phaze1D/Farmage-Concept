@@ -39,7 +39,7 @@ template(name='events.index')
         each event in mEvents
           +EventCard event=event
   
-  unless pReady.get
+  else
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")

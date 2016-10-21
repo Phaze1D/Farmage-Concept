@@ -8,18 +8,19 @@ template(name="selectList")
         +PaperButton elevation=0 raise=0 classes="b-wrap js-close-dialog close-dialog" rippleOn=true
           i(class="material-icons") arrow_back
         
-        div(class='search-tools')
-          +PaperButton elevation=0 raise=0 classes="js-search-icon b-wrap" rippleOn=false
-            i(class="material-icons") search
-            
-          div(class='search-input-div' style='width: 0')
-            div(class='cross-div js-cross-search')
-              i(class='material-icons') clear
-            +PaperInput type="text" name="search" label="" focusColor="darkblue" hideBottom=true classes="search-input" labelFloat=false placeholder="Search" hideTop=true
-      
-            
-          +PaperButton elevation=0 raise=0 classes="b-wrap" rippleOn=true
-            i(class="material-icons") filter_list
+        form(class='js-search-form' style='width: 100%')
+          div(class='search-tools')
+            +PaperButton elevation=0 raise=0 classes="js-search-icon b-wrap" rippleOn=false submit=true
+              i(class="material-icons") search
+              
+            div(class='search-input-div' style='width: 0')
+              div(class='cross-div js-cross-search')
+                i(class='material-icons') clear
+              +PaperInput type="text" name="search" label="" focusColor="darkblue" hideBottom=true classes="search-input" labelFloat=false placeholder="Search" hideTop=true
+          
+                
+            +PaperButton elevation=0 raise=0 classes="b-wrap" rippleOn=true
+              i(class="material-icons") filter_list
             
     
           
@@ -36,18 +37,24 @@ template(name="selectList")
           = title(subscription)
         
     
-    if subscriptionsReady
+    if pReady.get
       if tabs 
         each tab in tabSubs
-          div(class="tab-items #{tab.active}" style='left: #{tab.left}' data-sub=tab.subscription)          
+          div(class="tab-items #{tab.active}" style='left: #{tab.left}' data-sub=tab.subscription ready="{{ready tab.subscription}}")          
             each item in items tab.subscription
               {{>Template.dynamic template=(selector tab.subscription) data=(selectorData item tab.subscription)}}
       else
-        div(class="items")
+        div(class="items" ready="{{ready subscription}}")
           each item in items subscription
             {{>Template.dynamic template=(selector subscription) data=(selectorData item subscription)}}
                 
     
-        
+    else
+      div(class="spinner")
+        div(class="rect1")
+        div(class="rect2")
+        div(class="rect3")
+        div(class="rect4")
+        div(class="rect5")
       
             

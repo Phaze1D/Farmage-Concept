@@ -44,7 +44,7 @@ template(name='inventories.index')
           +InventoryCard inventory=inventory
         
 
-  unless pReady.get
+  else
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")

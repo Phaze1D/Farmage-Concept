@@ -20,7 +20,19 @@ mlists.yields = YieldModule.Yields
 mlists.inventories = InventoryModule.Inventories
 mlists.customers = CustomerModule.Customers
 
+parent = {}
+parent.yield = YieldModule.Yields
+parent.unit = UnitModule.Units
+parent.inventory = InventoryModule.Inventories
+parent.provider = ProviderModule.Providers
+parent.product = ProductModule.Products
+parent.sell = SellModule.Sells
+parent.ingredient = IngredientModule.Ingredients
 
 
 
+
+
+
+module.exports.parent = parent
 module.exports.mlists = mlists

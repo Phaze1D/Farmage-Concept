@@ -36,7 +36,7 @@ class EventsIndex extends IndexMixin
     if @page.ready()
       count = EventModule.Events.find().count()
       if @previous is count
-        @canLoadMore = false
+        @canLoadMore = true
       else
         @canLoadMore = true
         @previous = count

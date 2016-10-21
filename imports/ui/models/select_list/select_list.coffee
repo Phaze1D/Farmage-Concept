@@ -1,5 +1,7 @@
 
-{ mlists } = require '../../mixins/mlist_mixin.coffee'
+{ parent } = require '../../mixins/mlist_mixin.coffee'
+OrganizationModule = require '../../../api/collections/organizations/organizations.coffee'
+
 
 require './select_list.jade'
 
@@ -11,19 +13,24 @@ class SelectList extends BlazeComponent
     super
     organization_id = FlowRouter.getParam 'organization_id'
     @tabs = if @data().tabSubs.length > 0 then true else false
+    @searchValue = new ReactiveVar('')
+    @pReady = new ReactiveVar(false)
+    @canLoadMore = true
 
     @autorun =>
       if @tabs
         for tab in @data().tabSubs
-          @subscribe tab.subscription, organization_id,
-            onStop: (err) ->
-              console.log "sub stop #{err}"
-            onReady: ->
+          @page = Meteor.subscribeWithPagination tab.subscription, organization_id, 'organization', organization_id, @searchValue.get(), 5,
+                      onStop: (err) ->
+                        console.log "sub stop #{err}"
+                      onReady: ->
+          @pReady.set @page.ready()
       else
-        @subscribe @data().subscription, organization_id, @data().parent, @data().parent_id,
-          onStop: (err) ->
-            console.log "sub stop #{err}"
-          onReady: ->
+        @page = Meteor.subscribeWithPagination @data().subscription, organization_id, @data().parent, @data().parent_id, @searchValue.get(), 1,
+                  onStop: (err) ->
+                    console.log "sub stop #{err}"
+                  onReady: ->
+        @pReady.set @page.ready()
 
 
 
@@ -31,10 +38,12 @@ class SelectList extends BlazeComponent
     subscription.charAt(0).toUpperCase() + subscription.slice(1);
 
   items: (subscription) ->
-    if @data().parent? && @data().parent.length > 0
-      mlists[subscription].find "#{@data().parent}_id": @data().parent_id
-    else
-      mlists[subscription].find()
+    if subscription? && @data().parent? && @data().parent.length > 0
+      parent[@data().parent].findOne(@data().parent_id)[subscription](null, @searchValue.get())
+    else if subscription?
+
+      organization_id = FlowRouter.getParam 'organization_id'
+      OrganizationModule.Organizations.findOne(organization_id)[subscription](null, @searchValue.get())
 
   itemIsSelected: (item_id, subscription, parent_id) ->
     if @data().clists.get(subscription + parent_id)?
@@ -125,8 +134,35 @@ class SelectList extends BlazeComponent
           duration: 250
           easing: 'ease-in-out'
 
+
+
+  onSearch: (event) ->
+    event.preventDefault()
+    @searchValue.set $(@find '.search-input .pinput').val()
+
+
+  onScrollList: (event) ->
+    yPosition = event.target.scrollTop
+    if yPosition + event.target.clientHeight is event.target.scrollHeight
+      if @page.ready()
+        console.log 'loadmaore'
+        @page.loadNextPage()
+
+
+  ready: (subscription)->
+    if subscription? && @page.ready()
+      count = @items(subscription).count()
+      if @previous is count
+        @canLoadMore = false
+      else
+        @canLoadMore = true
+        @previous = count
+
   events: ->
     super.concat
       'click .js-search-icon': @onShowSearch
       'click .js-cross-search': @onHideSearch
       'click .js-tab': @onTabClick
+      'submit .js-search-form': @onSearch
+      'scroll .items': @onScrollList
+      'scroll .tab-items': @onScrollList

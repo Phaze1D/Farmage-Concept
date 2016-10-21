@@ -37,6 +37,7 @@ Meteor.publish "products", (organization_id, parent, parent_id, search, limit) -
 
 
   if @userId? && parentDoc? && (permissions.viewer || permissions.inventories_manager || permissions.owner)
+    # Meteor._sleepForMs(4000);
     return parentDoc.products(limit, search)
   else
     @ready();

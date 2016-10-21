@@ -44,7 +44,7 @@ template(name='ousers.index')
         each ouser in ousers
           +OUserCard ouser=ouser
 
-  unless pReady.get 
+  else 
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")

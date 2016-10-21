@@ -38,13 +38,14 @@ template(name='expenses.index')
     div(class='plus-icon-div' data-template='expensesNew')
       i(class="material-icons plus-icon")
         | add
+        
   if pReady.get
     div(class='expenses main-content' ready=ready)
       div(class='card-wrapper')
         each expense in expenses
           +ExpenseCard expense=expense
 
-  unless pReady.get
+  else
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")

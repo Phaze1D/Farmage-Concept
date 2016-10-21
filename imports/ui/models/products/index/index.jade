@@ -46,7 +46,7 @@ template(name='products.index')
         each product in products
           +ProductCard product=product
 
-  unless pReady.get 
+  else 
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")

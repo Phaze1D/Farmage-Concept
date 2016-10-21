@@ -44,7 +44,7 @@ template(name='customers.index')
         each customer in customers
           +CustomerCard customer=customer
 
-  unless pReady.get
+  else
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")

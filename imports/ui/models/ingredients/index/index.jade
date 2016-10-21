@@ -45,7 +45,7 @@ template(name='ingredients.index')
           +IngredientCard ingredient=ingredient
               
 
-  unless pReady.get
+  else
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")

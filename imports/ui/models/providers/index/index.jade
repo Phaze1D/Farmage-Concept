@@ -45,7 +45,7 @@ template(name='providers.index')
         each provider in providers
           +ProviderCard provider=provider
 
-  unless pReady.get 
+  else 
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")
