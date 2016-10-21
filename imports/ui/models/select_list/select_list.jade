@@ -43,18 +43,27 @@ template(name="selectList")
         div(class="tab-items #{tab.active}" style='left: #{tab.left}' data-sub=tab.subscription ready="{{ready tab.subscription}}")          
           each item in items tab.subscription
             {{>Template.dynamic template=(selector tab.subscription) data=(selectorData item tab.subscription)}}
+          
+          if showSpinner tab.subscription
+            div(class="spinner")
+              div(class="rect1")
+              div(class="rect2")
+              div(class="rect3")
+              div(class="rect4")
+              div(class="rect5")
+              
     else
-      div(class="items" ready="{{ready subscription}}")
+      div(class="items" ready="{{ready subscription}}" data-sub=subscription)
         each item in items subscription
           {{>Template.dynamic template=(selector subscription) data=(selectorData item subscription)}}
                 
     
-    unless page.ready
-      div(class="spinner")
-        div(class="rect1")
-        div(class="rect2")
-        div(class="rect3")
-        div(class="rect4")
-        div(class="rect5")
+        if showSpinner subscription
+          div(class="spinner")
+            div(class="rect1")
+            div(class="rect2")
+            div(class="rect3")
+            div(class="rect4")
+            div(class="rect5")
       
             

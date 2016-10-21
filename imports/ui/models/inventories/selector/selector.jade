@@ -9,6 +9,8 @@ template(name='inventoriesSelector')
           | #{identifer}
         div(class="sub")
           | #{item.amount} #{product.name} available 
+        div(class="sub")
+          =date(item.createdAt)
       
     if many
       div(class="checker-div")

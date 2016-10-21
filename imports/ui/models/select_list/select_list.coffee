@@ -14,21 +14,40 @@ class SelectList extends BlazeComponent
     organization_id = FlowRouter.getParam 'organization_id'
     @tabs = if @data().tabSubs.length > 0 then true else false
     @searchValue = new ReactiveVar('')
-    @canLoadMore = true
+    @canLoadMore = {}
+    @sReady = new ReactiveDict()
+    @page = {}
+    @previous = {}
+
+    if @tabs
+      for tab in @data().tabSubs
+        @sReady.set tab.subscription, false
+        @canLoadMore[tab.subscription] = true
+        @previous[tab.subscription] = 0
+    else
+      @sReady.set @data().subscription, false
+      @canLoadMore[@data().subscription] = true
+      @previous[@data().subscription] = 0
+
 
     @autorun =>
       if @tabs
+        @_tab = {}
         for tab in @data().tabSubs
-          @page = Meteor.subscribeWithPagination tab.subscription, organization_id, 'organization', organization_id, @searchValue.get(), 5,
-                      onStop: (err) ->
-                        console.log "sub stop #{err}"
-                      onReady: =>
+          @_tab = tab
+          @page[tab.subscription] = Meteor.subscribeWithPagination tab.subscription, organization_id, 'organization', organization_id, @searchValue.get(), 8,
+                                      onStop: (err) ->
+                                        console.log "sub stop #{err}"
+                                      onReady: =>
+
+
 
       else
-        @page = Meteor.subscribeWithPagination @data().subscription, organization_id, @data().parent, @data().parent_id, @searchValue.get(), 1,
-                  onStop: (err) ->
-                    console.log "sub stop #{err}"
-                  onReady: =>
+        @page[@data().subscription] = Meteor.subscribeWithPagination @data().subscription, organization_id, @data().parent, @data().parent_id, @searchValue.get(), 8,
+                                    onStop: (err) ->
+                                      console.log "sub stop #{err}"
+                                    onReady: =>
+                                      @sReady.set @data().subscription, true
 
 
 
@@ -37,12 +56,14 @@ class SelectList extends BlazeComponent
     subscription.charAt(0).toUpperCase() + subscription.slice(1);
 
   items: (subscription) ->
-    if subscription? && @data().parent? && @data().parent.length > 0
-      parent[@data().parent].findOne(@data().parent_id)[subscription](null, @searchValue.get())
-    else if subscription?
+    if @page[subscription].loaded() is 0
+      return []
 
+    if subscription? && @data().parent? && @data().parent.length > 0
+      parent[@data().parent].findOne(@data().parent_id)[subscription](@page[subscription].loaded(), @searchValue.get())
+    else if subscription?
       organization_id = FlowRouter.getParam 'organization_id'
-      OrganizationModule.Organizations.findOne(organization_id)[subscription](null, @searchValue.get())
+      OrganizationModule.Organizations.findOne(organization_id)[subscription](@page[subscription].loaded(), @searchValue.get())
 
   itemIsSelected: (item_id, subscription, parent_id) ->
     if @data().clists.get(subscription + parent_id)?
@@ -62,8 +83,15 @@ class SelectList extends BlazeComponent
           duration: 250
           easing: 'ease-in-out'
 
-
   onHideSearch: (event) ->
+    if @searchValue.get()? && @searchValue.get().length > 0
+      @searchValue.set null
+      if @tabs
+        for tab in @data().tabSubs
+          @sReady.set tab.subscription, false
+      else
+        @sReady.set @data().subscription, false
+
     $(@find('.js-search-icon')).css(display: 'flex')
     sid = $(@find('.search-input-div'))
     sid.velocity
@@ -138,24 +166,34 @@ class SelectList extends BlazeComponent
   onSearch: (event) ->
     event.preventDefault()
     @searchValue.set $(@find '.search-input .pinput').val()
+    if @tabs
+      for tab in @data().tabSubs
+        @sReady.set tab.subscription, false
+    else
+      @sReady.set @data().subscription, false
+
 
 
   onScrollList: (event) ->
     yPosition = event.target.scrollTop
-    if yPosition + event.target.clientHeight is event.target.scrollHeight
-      if @page.ready()
-        console.log 'loadmaore'
-        @page.loadNextPage()
+    if yPosition + event.target.clientHeight > event.target.scrollHeight - 10
+      sub = $(event.currentTarget).attr('data-sub')
+      if @page[sub].ready() && @canLoadMore[sub]
+        @page[sub].loadNextPage()
 
 
   ready: (subscription)->
-    if subscription? && @page.ready()
+    if subscription? && @page[subscription].ready()
+      @sReady.set subscription, true
       count = @items(subscription).count()
-      if @previous is count
-        @canLoadMore = false
+      if @previous[subscription] is count
+        @canLoadMore[subscription] = false
       else
-        @canLoadMore = true
-        @previous = count
+        @canLoadMore[subscription] = true
+        @previous[subscription] = count
+
+  showSpinner: (subscription) ->
+    !@page[subscription].ready() || !@sReady.get(subscription)
 
   events: ->
     super.concat

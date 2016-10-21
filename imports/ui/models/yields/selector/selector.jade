@@ -8,7 +8,9 @@ template(name='yieldsSelector')
         div(class="main")
           | #{identifer}
         div(class="sub")
-          | #{item.amount} #{resourse.measurement_unit} available 
+          | #{item.amount} #{resourse.measurement_unit} available
+        div(class='sub')
+          =date(item.createdAt)
           
       
     if many

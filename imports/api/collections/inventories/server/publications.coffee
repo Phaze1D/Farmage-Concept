@@ -36,6 +36,7 @@ Meteor.publish "inventories", (organization_id, parent, parent_id, search, limit
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   if @userId? && parentDoc? && (permissions.viewer || permissions.inventories_manager || permissions.owner)
+    # Meteor._sleepForMs(3000);
     return parentDoc.inventories(limit, search)
   else
     @ready();

@@ -11,6 +11,10 @@ class InventorySelector extends BlazeComponent
     super
     @data().isChecked = new ReactiveVar(@data().isChecked)
 
+  date: (date)->
+    months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+    "#{months[date.getMonth()]} #{date.getDate()}, #{date.getFullYear()}"
+
   product: ->
     @data().item.product().fetch()[0]
 
