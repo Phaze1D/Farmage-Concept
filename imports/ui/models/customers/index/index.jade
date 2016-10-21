@@ -38,13 +38,13 @@ template(name='customers.index')
       i(class="material-icons plus-icon")
         | add
         
-  if pReady.get
+  if sReady.get
     div(class='customers main-content' ready=ready)
       div(class='card-wrapper')
         each customer in customers
           +CustomerCard customer=customer
 
-  else
+  if showSpinner
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")

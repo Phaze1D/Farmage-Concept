@@ -40,13 +40,13 @@ template(name='products.index')
       i(class="material-icons plus-icon")
         | add
         
-  if pReady.get
+  if sReady.get
     div(class='products main-content' ready=ready )
       div(class='card-wrapper')
         each product in products
           +ProductCard product=product
 
-  else 
+  if showSpinner
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")

@@ -14,12 +14,12 @@ class ProductShow extends ShowMixin
       @subscribe "timestamp", organization_id, @data().product.created_user_id, @data().product.updated_user_id,
         onStop: (err) ->
           console.log "sub stop #{err}"
-        onReady: ->
+        onReady: =>
 
       @subscribe "ingredients", organization_id, 'product', @data().product._id,
         onStop: (err) ->
           console.log "sub stop #{err}"
-        onReady: ->
+        onReady: =>
 
 
 

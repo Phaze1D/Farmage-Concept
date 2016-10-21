@@ -20,8 +20,9 @@ class UnitsIndex extends IndexMixin
       @page = Meteor.subscribeWithPagination "units", organization_id, parent, parent_id, @searchValue.get(), 9,
                 onStop: (err) ->
                   console.log "sub stop #{err}"
-                onReady: ->
-      @pReady.set @page.ready()
+                onReady: =>
+                  @sReady.set true
+
 
   units: ->
     UnitModule.Units.find({}, {sort: name: 1})

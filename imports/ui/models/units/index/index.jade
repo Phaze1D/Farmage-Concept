@@ -38,15 +38,15 @@ template(name='units.index')
     div(class='plus-icon-div' data-template='unitsNew')
       i(class="material-icons plus-icon")
         | add
-
-  if pReady.get
+        
+  if sReady.get
     div(class='units main-content' ready=ready )
       div(class='card-wrapper')
         each unit in units
           +UnitCard unit=unit
 
 
-  else 
+  if showSpinner
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")

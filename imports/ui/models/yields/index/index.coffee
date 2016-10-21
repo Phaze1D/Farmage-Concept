@@ -20,8 +20,9 @@ class YieldsIndex extends IndexMixin
       @page = Meteor.subscribeWithPagination "yields", organization_id, parent, parent_id, @searchValue.get(), 9,
                 onStop: (err) ->
                   console.log "sub stop #{err}"
-                onReady: ->
-      @pReady.set @page.ready()
+                onReady: =>
+                  @sReady.set true
+
 
   yields: ->
     YieldModule.Yields.find({}, {sort: createdAt: -1})

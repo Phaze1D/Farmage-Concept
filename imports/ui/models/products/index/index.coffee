@@ -21,8 +21,9 @@ class ProductsIndex extends IndexMixin
       @page = Meteor.subscribeWithPagination "products", organization_id, parent, parent_id,  @searchValue.get(), 9,
                 onStop: (err) ->
                   console.log "sub stop #{err}"
-                onReady: ->
-      @pReady.set @page.ready()
+                onReady: =>
+                  @sReady.set true
+
 
   onRendered: ->
     super

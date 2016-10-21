@@ -14,7 +14,7 @@ class ProviderShow extends ShowMixin
       @subscribe "timestamp", organization_id, @data().provider.created_user_id, @data().provider.updated_user_id,
         onStop: (err) ->
           console.log "sub stop #{err}"
-        onReady: ->
+        onReady: =>
 
   onRendered: ->
     super

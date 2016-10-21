@@ -19,8 +19,9 @@ class InventoriesIndex extends IndexMixin
       @page = Meteor.subscribeWithPagination "inventories", organization_id, parent, parent_id,  @searchValue.get(), 9,
                 onStop: (err) ->
                   console.log "sub stop #{err}"
-                onReady: ->
-      @pReady.set @page.ready()
+                onReady: =>
+                  @sReady.set true
+
 
   inventories: ->
     InventoryModule.Inventories.find({}, {sort: createdAt: -1})

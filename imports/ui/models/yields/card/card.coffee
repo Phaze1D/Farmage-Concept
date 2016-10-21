@@ -24,7 +24,7 @@ class YieldCard extends BlazeComponent
       @subscribe "yield.parents", organization_id, @data().yield._id, @data().yield.unit_id,
         onStop: (err) ->
           console.log "sub stop #{err}"
-        onReady: ->
+        onReady: =>
 
   ingredient: ->
     IngredientModule.Ingredients.findOne @data().yield.ingredient_id

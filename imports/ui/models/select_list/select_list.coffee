@@ -14,7 +14,6 @@ class SelectList extends BlazeComponent
     organization_id = FlowRouter.getParam 'organization_id'
     @tabs = if @data().tabSubs.length > 0 then true else false
     @searchValue = new ReactiveVar('')
-    @pReady = new ReactiveVar(false)
     @canLoadMore = true
 
     @autorun =>
@@ -23,14 +22,14 @@ class SelectList extends BlazeComponent
           @page = Meteor.subscribeWithPagination tab.subscription, organization_id, 'organization', organization_id, @searchValue.get(), 5,
                       onStop: (err) ->
                         console.log "sub stop #{err}"
-                      onReady: ->
-          @pReady.set @page.ready()
+                      onReady: =>
+
       else
         @page = Meteor.subscribeWithPagination @data().subscription, organization_id, @data().parent, @data().parent_id, @searchValue.get(), 1,
                   onStop: (err) ->
                     console.log "sub stop #{err}"
-                  onReady: ->
-        @pReady.set @page.ready()
+                  onReady: =>
+
 
 
 

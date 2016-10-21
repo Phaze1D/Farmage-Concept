@@ -37,19 +37,19 @@ template(name="selectList")
           = title(subscription)
         
     
-    if pReady.get
-      if tabs 
-        each tab in tabSubs
-          div(class="tab-items #{tab.active}" style='left: #{tab.left}' data-sub=tab.subscription ready="{{ready tab.subscription}}")          
-            each item in items tab.subscription
-              {{>Template.dynamic template=(selector tab.subscription) data=(selectorData item tab.subscription)}}
-      else
-        div(class="items" ready="{{ready subscription}}")
-          each item in items subscription
-            {{>Template.dynamic template=(selector subscription) data=(selectorData item subscription)}}
+    
+    if tabs 
+      each tab in tabSubs
+        div(class="tab-items #{tab.active}" style='left: #{tab.left}' data-sub=tab.subscription ready="{{ready tab.subscription}}")          
+          each item in items tab.subscription
+            {{>Template.dynamic template=(selector tab.subscription) data=(selectorData item tab.subscription)}}
+    else
+      div(class="items" ready="{{ready subscription}}")
+        each item in items subscription
+          {{>Template.dynamic template=(selector subscription) data=(selectorData item subscription)}}
                 
     
-    else
+    unless page.ready
       div(class="spinner")
         div(class="rect1")
         div(class="rect2")

@@ -21,7 +21,7 @@ class SellCard extends BlazeComponent
       @subscribe "sell.parents", organization_id, @data().sell._id, @data().sell.details, @data().sell.customer_id, 
         onStop: (err) ->
           console.log err
-        onReady: ->
+        onReady: =>
 
   customer: ->
     CustomerModule.Customers.findOne @data().sell.customer_id

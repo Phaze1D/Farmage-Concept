@@ -14,7 +14,7 @@ class CustomerShow extends ShowMixin
       @subscribe "timestamp", organization_id, @data().customer.created_user_id, @data().customer.updated_user_id,
         onStop: (err) ->
           console.log "sub stop #{err}"
-        onReady: ->
+        onReady: =>
 
   onRendered: ->
     super

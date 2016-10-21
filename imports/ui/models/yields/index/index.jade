@@ -38,14 +38,14 @@ template(name='yields.index')
     div(class='plus-icon-div' data-template='yieldsNew')
       i(class="material-icons plus-icon")
         | add
-
-  if pReady.get
+        
+  if sReady.get
     div(class='yields main-content' ready=ready )
       div(class='card-wrapper')
         each yield in yields
           +YieldCard yield=yield
 
-  else 
+  if showSpinner 
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")

@@ -20,8 +20,9 @@ class ExpensesIndex extends IndexMixin
       @page = Meteor.subscribeWithPagination "expenses", organization_id, parent, parent_id,  @searchValue.get(), 12,
                 onStop: (err) ->
                   console.log "sub stop #{err}"
-                onReady: ->
-      @pReady.set @page.ready()
+                onReady: =>
+                  @sReady.set true
+
 
   onRendered: ->
     super

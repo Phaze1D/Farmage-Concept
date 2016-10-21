@@ -13,16 +13,22 @@ class IndexMixin extends BlazeComponent
     @size = 1
     @ticking = false
     @searchValue = new ReactiveVar(null)
-    @pReady = new ReactiveVar()
+    @sReady = new ReactiveVar(false)
 
   onRendered: ->
     super
 
   search: (value) ->
     @searchValue.set value
+    @sReady.set false
 
   clearSearch: ->
-    @searchValue.set null
+    if @searchValue.get()? && @searchValue.get().length > 0
+      @searchValue.set null
+      @sReady.set false
+
+  showSpinner: ->
+    !@page.ready() || !@sReady.get()
 
   onShow: (event) ->
     @parentComponent().data().hasFAB = false

@@ -18,9 +18,10 @@ class OUsersIndex extends IndexMixin
       @page = Meteor.subscribeWithPagination "ousers", organization_id, 'organization', organization_id, @searchValue.get(), 9,
                 onStop: (err) ->
                   console.log "sub stop #{err}"
-                onReady: ->
+                onReady: =>
+                  @sReady.set true
 
-      @pReady.set @page.ready()
+
 
   ousers: ->
     organ = OrganizationModule.Organizations.findOne(_id: FlowRouter.getParam 'organization_id')

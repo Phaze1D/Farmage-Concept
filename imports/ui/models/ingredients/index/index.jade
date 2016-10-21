@@ -37,15 +37,14 @@ template(name='ingredients.index')
     div(class='plus-icon-div' data-template='ingredientsNew')
       i(class="material-icons plus-icon")
         | add
-
-  if pReady.get
+  if sReady.get
     div(class='ingredients main-content' ready=ready )
       div(class='card-wrapper')
         each ingredient in ingredients
           +IngredientCard ingredient=ingredient
               
 
-  else
+  if showSpinner
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")

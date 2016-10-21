@@ -19,9 +19,10 @@ class ProvidersIndex extends IndexMixin
       @page = Meteor.subscribeWithPagination "providers", organization_id, 'organization', organization_id, @searchValue.get(), 9,
                 onStop: (err) ->
                   console.log "sub stop #{err}"
-                onReady: ->
+                onReady: =>
+                  @sReady.set true
 
-      @pReady.set @page.ready()
+
 
   providers: ->
     ProviderModule.Providers.find()

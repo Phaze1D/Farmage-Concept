@@ -17,7 +17,7 @@ class InventoryCard extends BlazeComponent
       @subscribe "inventory.parents", organization_id, @data().inventory._id,
         onStop: (err) ->
           console.log "sub stop #{err}"
-        onReady: ->
+        onReady: =>
 
   product: ->
     ProductModule.Products.findOne @data().inventory.product_id

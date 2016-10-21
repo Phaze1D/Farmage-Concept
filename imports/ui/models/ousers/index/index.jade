@@ -38,13 +38,13 @@ template(name='ousers.index')
       i(class="material-icons plus-icon")
         | add
         
-  if pReady.get
+  if sReady.get  
     div(class='ousers main-content' ready=ready )
       div(class='card-wrapper')
         each ouser in ousers
           +OUserCard ouser=ouser
 
-  else 
+  if showSpinner
     div(class="spinner")
       div(class="rect1")
       div(class="rect2")

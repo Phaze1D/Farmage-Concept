@@ -16,12 +16,12 @@ class EventCard extends BlazeComponent
       @subscribe "timestamp", organization_id, @data().event.created_user_id, @data().event.updated_user_id,
         onStop: (err) ->
           console.log "sub stop #{err}"
-        onReady: ->
+        onReady: =>
 
       @subscribe "event.parents", organization_id, @data().event._id,
         onStop: (err) ->
           console.log "sub stop #{err}"
-        onReady: ->
+        onReady: =>
 
   isManual: ->
     if @data().event.is_user_event

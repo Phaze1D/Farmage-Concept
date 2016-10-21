@@ -34,7 +34,7 @@ class InventoriesNew extends ErrorComponent
         @subscribe "ingredients", product.organization_id, 'product', product._id,
           onStop: (err) ->
             console.log "sub stop #{err}"
-          onReady: ->
+          onReady: =>
 
   cYieldSchema: (max) ->
     new SimpleSchema(
