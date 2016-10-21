@@ -38,3 +38,4 @@ peerlibrary:blaze-components
 mquandalle:jade
 shell-server@0.2.1
 percolate:paginated-subscription
+force-ssl
