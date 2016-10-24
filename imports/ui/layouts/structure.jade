@@ -125,6 +125,10 @@ template(name="structure")
     +PaperDrawerMain
       +PaperHeaderPanel id="root" hasFAB=true classes='touchScroll' callbacks=scrollCallbacks
         +PaperHeaderBig id="root" 
+          +PaperButton classes='menu-button toggle-drawer' raise=0 submit=false elevation=0 rippleOn=true
+            i(class='material-icons')
+              | menu
+          
           div(class='search-header')
             +PaperButton classes='js-search search-b' raise=0 rippleOn=false submit=true
               i(class='material-icons search-icon')

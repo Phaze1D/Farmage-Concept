@@ -94,6 +94,7 @@ class PaperDrawerPanel extends BlazeComponent
 
       $("#paper-drawer-main").velocity p,o
       @isWide.set false
+      $(".menu-button").css display: ''
       @closeDrawer()
 
     if window.innerWidth >= 1024 && (!@isWide.get()? || !@isWide.get())
@@ -108,6 +109,7 @@ class PaperDrawerPanel extends BlazeComponent
 
       $("#paper-drawer-main").velocity p, o
       @isWide.set true
+      $(".menu-button").css display: 'none'
       @openDrawer(null, duration)
 
   openDrawer: (event, duration = 250) ->
