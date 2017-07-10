@@ -11,7 +11,7 @@ This is the concept version of my farm management app that I've been working on 
 </p>
 
 ## Development
-To get started with developing the app on localhost first make sure that you have MeteorJS installed. Aftering installing MeteorJS clone the repo and in the root directory run these commands
+To get started with developing the app on localhost first make sure that you have MeteorJS installed. After installing MeteorJS clone the repo and in the root directory run these commands
 
 ```
 $ npm install
