@@ -43,7 +43,6 @@ module.exports.insert = new ValidatedMethod
 module.exports.update = new ValidatedMethod
   name: 'inventory.update'
   validate: ({organization_id, inventory_id, inventory_doc}) ->
-    InventoryModule.Inventories.simpleSchema().clean({$set: inventory_doc}, {isModifier: true})
     InventoryModule.Inventories.simpleSchema().validate({$set: inventory_doc}, modifier: true)
     new SimpleSchema(
       organization_id:

@@ -1,0 +1,68 @@
+.tpanel
+  height: 266px
+  background-color: white
+
+  .title
+    padding: 16px 16px 0
+    color: #757575
+    font-size: 13px
+
+
+.e-div
+  padding: 10px 16px
+  // border-bottom: 1px solid #eee
+
+  .event-date
+    font-size: 9px
+    font-weight: 300
+    color: #BDBDBD
+    // text-align: right;
+
+  .event-info
+    display: flex;
+
+    img
+      flex-shrink: 0
+      width: 38px
+      height: 38px
+      border-radius: 50%
+      margin-right: 16px
+
+    .einfo-div
+      flex-grow: 1
+      align-self: center;
+      padding-right: 15px
+
+      .main-title
+        font-size: 14px
+        max-width: 100%
+        font-weight: 300
+        align-self: flex-start;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+
+        &[permission='on']
+          font-weight: 500
+          color: darkblue
+
+        &[permission='off']
+          color: #757575
+
+
+      .sub-title
+        padding-left: 2px
+        font-size: 11px
+        max-width: 100%
+        color: #757575
+        font-weight: 300
+        align-self: flex-start;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
+
+    .event-amount
+      align-self: center;
+      font-size: 25px
+      padding-right: 5px
+      font-weight: 300

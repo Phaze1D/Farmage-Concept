@@ -1,0 +1,170 @@
+template(name="structure")
+  
+  +PaperDrawerPanel
+    +PaperDrawer 
+      div(class='drawer-wrapper')
+        div(class='drawer-top')
+            
+          +PaperButton classes="js-logout logout-icon" raise=0 rippleOn=false submit=false
+            i(class="material-icons")
+              | exit_to_app
+          div(class="avatar-div")
+            img(class="avatar-img" src="/default_avatar.png" alt="")
+          div(class="name-div")
+            h5(class="name-h")
+              | #{user.profile.first_name} #{user.profile.last_name}
+            h6(class="email-h")
+              | #{email}
+          
+      
+        div(class='drawer-middle')
+          if subscriptionsReady
+            +PaperMenu opened=(isOpened "home") no=0
+              .menu-item
+                +PaperItem classes='drawer-item toggle-drawer' focusColor='lightgrey'
+                  a(href="home")
+                    | Home
+            
+            +PaperMenu opened=(isOpened "user.show") no=0
+              .menu-item
+                +PaperItem classes='drawer-item toggle-drawer' focusColor='lightgrey'
+                  a(href="#")
+                    | Profile
+                
+            +PaperMenu opened=(isOpened "organizations.index") no=0
+              .menu-item
+                +PaperItem classes=organizationClasses focusColor='lightgrey'
+                  a(href="organizations.index")
+                    | Organizations
+                
+                .sub-menu
+                  each organization in organizations
+                    +PaperMenu opened=(isOpened "organization.show" organization._id) no=0
+                      .menu-item
+                        +PaperItem classes="organ-name" focusColor='lightgrey'
+                          a(href="/organizations/:organization_id" data-organ="#{organization._id}")
+                            | #{organization.name}
+                        .sub-menu
+                          if permission 'sells_manager' organization._id
+                            +PaperMenu opened=(isOpened "customers.index" organization._id) no=0
+                              .menu-item
+                                +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='darkblue'
+                                  a(href="/organizations/:organization_id/customers/index" data-organ="#{organization._id}")
+                                    | Customers
+                                    
+                            +PaperMenu opened=(isOpened "sells.index" organization._id) no=0
+                              .menu-item
+                                +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='darkblue'
+                                  a(href="/organizations/:organization_id/sells/index" data-organ="#{organization._id}")
+                                    | Sells
+                          
+                          if permission 'owner' organization._id  
+                            +PaperMenu opened=(isOpened "events.index" organization._id) no=0 
+                              .menu-item
+                                +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='darkblue'
+                                  a(href="/organizations/:organization_id/events/index" data-organ="#{organization._id}")
+                                    | Events
+                          
+                          if permission 'expenses_manager' organization._id
+                            +PaperMenu opened=(isOpened "expenses.index" organization._id) no=0
+                              .menu-item
+                                +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='darkblue'
+                                  a(href="/organizations/:organization_id/expenses/index" data-organ="#{organization._id}")
+                                    | Expenses
+                                    
+                            +PaperMenu opened=(isOpened "providers.index" organization._id) no=0
+                              .menu-item
+                                +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='darkblue'
+                                  a(href="/organizations/:organization_id/providers/index" data-organ="#{organization._id}")
+                                    | Providers
+                          
+                          if permission 'owner' organization._id  
+                            +PaperMenu opened=(isOpened "ingredients.index" organization._id) no=0
+                              .menu-item
+                                +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='darkblue'
+                                  a(href="/organizations/:organization_id/ingredients/index" data-organ="#{organization._id}")
+                                    | Resources
+                          
+                          if permission 'inventories_manager' organization._id
+                            +PaperMenu opened=(isOpened "inventories.index" organization._id) no=0
+                              .menu-item
+                                +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='darkblue'
+                                  a(href="/organizations/:organization_id/inventories/index" data-organ="#{organization._id}")
+                                    | Inventories
+                                    
+                            +PaperMenu opened=(isOpened "products.index" organization._id) no=0 
+                              .menu-item
+                                +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='darkblue'
+                                  a(href="/organizations/:organization_id/products/index" data-organ="#{organization._id}")
+                                    | Products
+                          
+                          if permission 'units_manager' organization._id
+                            +PaperMenu opened=(isOpened "units.index" organization._id) no=0
+                              .menu-item
+                                +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='darkblue'
+                                  a(href="/organizations/:organization_id/units/index" data-organ="#{organization._id}")
+                                    | Units
+                                
+                            +PaperMenu opened=(isOpened "yields.index" organization._id) no=0
+                              .menu-item
+                                +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='darkblue'
+                                  a(href="/organizations/:organization_id/yields/index" data-organ="#{organization._id}")
+                                    | Yields
+                              
+                          if permission 'users_manager' organization._id
+                            +PaperMenu opened=(isOpened "ousers.index" organization._id) no=0
+                              .menu-item
+                                +PaperItem classes="collection-name toggle-drawer" animationType=2 focusColor='darkblue'
+                                  a(href="/organizations/:organization_id/ousers/index" data-organ="#{organization._id}")
+                                    | Users
+              
+              
+    
+        div(class='drawer-button')
+        
+    +PaperDrawerMain
+      +PaperHeaderPanel id="root" hasFAB=true classes='touchScroll' callbacks=scrollCallbacks
+        +PaperHeaderBig id="root" 
+          +PaperButton classes='menu-button toggle-drawer' raise=0 submit=false elevation=0 rippleOn=true
+            i(class='material-icons')
+              | menu
+          
+          div(class='search-header')
+            +PaperButton classes='js-search search-b' raise=0 rippleOn=false submit=true
+              i(class='material-icons search-icon')
+                | search
+            
+            form(class='search-form')
+              div(class='search-hidden' style='width: 0')
+                +PaperInput type="text" name="search" label="" focusColor="darkblue" classes="search-input" labelFloat=false placeholder="Search" hideTop=true hideBottom=true
+                
+                div(class='cross js-cross')
+                  i(class='material-icons')
+                    | clear
+                    
+            +PaperButton classes='search-b js-filter' raise=0 rippleOn=false submit=false
+              i(class='material-icons search-icon')
+                | filter_list
+              
+        +PaperHeaderSmall id="root"
+          div(class='search-header')
+            +PaperButton classes='js-search search-b' raise=0 rippleOn=false submit=true
+              i(class='material-icons search-icon')
+                | search
+            
+            form(class='search-form')
+              div(class='search-hidden' style='width: 0')
+                +PaperInput type="text" name="search" label="" focusColor="darkblue" classes="search-input" labelFloat=false placeholder="Search" hideTop=true hideBottom=true
+                
+                div(class='cross js-cross')
+                  i(class='material-icons')
+                    | clear
+                    
+            +PaperButton classes='search-b js-filter' raise=0 rippleOn=false submit=false
+              i(class='material-icons search-icon')
+                | filter_list
+        
+        
+        +PaperHeaderMain id="root" 
+          +Template.dynamic template=headermain
+  

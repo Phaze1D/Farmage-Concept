@@ -1,0 +1,12 @@
+div(class="paper-button #{classes} elevation-#{elevation}" disabled=disabled)
+  unless disabled
+    if rippleOn
+      +PaperRipple fill=rippleFill
+  
+  +Template.contentBlock
+  
+  if submit
+    input(type="submit" value='')
+  
+  
+  

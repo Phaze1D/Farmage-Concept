@@ -1,0 +1,69 @@
+template(name="selectList")
+        
+  div(class="list")
+    
+    div(class='header-panel elevation-2 tabs-#{tabs}')
+    
+      div(class='options-panel tabs-#{tabs}')
+        +PaperButton elevation=0 raise=0 classes="b-wrap js-close-dialog close-dialog" rippleOn=true
+          i(class="material-icons") arrow_back
+        
+        form(class='js-search-form' style='width: 100%')
+          div(class='search-tools')
+            +PaperButton elevation=0 raise=0 classes="js-search-icon b-wrap" rippleOn=false submit=true
+              i(class="material-icons") search
+              
+            div(class='search-input-div' style='width: 0')
+              div(class='cross-div js-cross-search')
+                i(class='material-icons') clear
+              +PaperInput type="text" name="search" label="" focusColor="darkblue" hideBottom=true classes="search-input" labelFloat=false placeholder="Search" hideTop=true
+          
+                
+            +PaperButton elevation=0 raise=0 classes="b-wrap" rippleOn=true
+              i(class="material-icons") filter_list
+            
+    
+          
+      if tabs
+        div(class='tab-panel')
+          div(class='tab-underline')
+          each tab in tabSubs
+            div(class='tab #{tab.active} js-tab' data-sub=tab.subscription)
+              +PaperRipple fill='lightgrey'
+              div(class='tab-title')
+                = title(tab.subscription)
+      else
+        div(class='one-title')
+          = title(subscription)
+        
+    
+    
+    if tabs 
+      each tab in tabSubs
+        div(class="tab-items #{tab.active}" style='left: #{tab.left}' data-sub=tab.subscription ready="{{ready tab.subscription}}")          
+          each item in items tab.subscription
+            {{>Template.dynamic template=(selector tab.subscription) data=(selectorData item tab.subscription)}}
+          
+          if showSpinner tab.subscription
+            div(class="spinner")
+              div(class="rect1")
+              div(class="rect2")
+              div(class="rect3")
+              div(class="rect4")
+              div(class="rect5")
+              
+    else
+      div(class="items" ready="{{ready subscription}}" data-sub=subscription)
+        each item in items subscription
+          {{>Template.dynamic template=(selector subscription) data=(selectorData item subscription)}}
+                
+    
+        if showSpinner subscription
+          div(class="spinner")
+            div(class="rect1")
+            div(class="rect2")
+            div(class="rect3")
+            div(class="rect4")
+            div(class="rect5")
+      
+            

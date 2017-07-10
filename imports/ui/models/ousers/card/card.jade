@@ -1,0 +1,112 @@
+template(name='OUserCard')
+  div(class='mCard')
+    +PaperCard elevation=1
+      div(class='show' style='display: none; opacity: 0')
+        if show.get
+          +OUserShow ouser=ouser title=showTitle
+          
+      div(class='mCard-content with-bottom')
+        +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
+          i(class='material-icons')
+           | more_vert
+        
+        div(class='upper')
+          div(class='top')   
+            img(src='/default_avatar.png')
+            
+            div(class='titles')
+              div(class='main-title text-overflow card-expand-action')
+                | #{ouser.profile.first_name} #{ouser.profile.last_name} 
+              div(class='sub-title text-overflow')
+                | #{email}
+                
+          div(class='upper-mid')
+            div(class='main-info')
+        
+            div(class='fake-tab')
+              div(class='fake-tab-title')
+                | Permissions
+                
+        
+        div(class='middle')
+          div(class='e-div')
+            div(class='event-info js-toggle-box')              
+              div(class='einfo-div')
+                div(class='main-title js-ou-label' permission="{{permission 'owner'}}")
+                  | Owner
+                div(class='sub-title')
+                  | View and edit everything
+                  
+              
+                
+                
+          div(class='e-div')
+            div(class='event-info js-toggle-box')              
+              div(class='einfo-div')
+                div(class='main-title js-ou-label' permission="{{permission 'viewer'}}")
+                  | Viewer
+                div(class='sub-title')
+                  | View everything
+                  
+              
+              
+              
+          div(class='e-div')
+            div(class='event-info js-toggle-box')              
+              div(class='einfo-div')
+                div(class='main-title js-ou-label' permission="{{permission 'expenses_manager'}}")
+                  | Expenses Manager
+                div(class='sub-title')
+                  | View and edit expenses and providers
+                  
+              
+                
+          div(class='e-div')
+            div(class='event-info js-toggle-box')              
+              div(class='einfo-div')
+                div(class='main-title js-ou-label' permission="{{permission 'sells_manager'}}")
+                  | Sells Manager
+                div(class='sub-title')
+                  | View and edit sells and clients
+                  
+            
+                
+          div(class='e-div')
+            div(class='event-info js-toggle-box')              
+              div(class='einfo-div')
+                div(class='main-title js-ou-label' permission="{{permission 'units_manager'}}")
+                  | Units Manager
+                div(class='sub-title')
+                  | View and edit units and yields
+                  
+              
+                
+          div(class='e-div')
+            div(class='event-info js-toggle-box')              
+              div(class='einfo-div')
+                div(class='main-title js-ou-label' permission="{{permission 'inventories_manager'}}")
+                  | Inventories Manager
+                div(class='sub-title')
+                  | View and edit inventories and products
+                  
+              
+                
+          div(class='e-div')
+            div(class='event-info js-toggle-box')              
+              div(class='einfo-div')
+                div(class='main-title js-ou-label' permission="{{permission 'users_manager'}}" )
+                  | Users Manager
+                div(class='sub-title')
+                  | Invite and remove users
+                  
+              
+
+        div(class='bottom')
+          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
+            | Created
+          
+          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
+            | Updated
+            
+          +PaperButton elevation=0 rippleOn=true classes='action-button' raise=0
+            | Events

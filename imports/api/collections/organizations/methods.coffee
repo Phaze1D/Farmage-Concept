@@ -24,7 +24,7 @@ ContactModule = require '../../shared/contact_info.coffee'
 ###
 
 
-# Insert 
+# Insert
 module.exports.insert = new ValidatedMethod
   name: 'organization.insert'
   validate: ({organization_doc}) ->
@@ -40,21 +40,20 @@ module.exports.insert = new ValidatedMethod
 # Update
 module.exports.update = new ValidatedMethod
   name: 'organizations.update'
-  validate: ({organization_id, updated_organization_doc}) ->
-    OrganizationModule.Organizations.simpleSchema().clean({$set: updated_organization_doc}, {isModifier: true})
-    OrganizationModule.Organizations.simpleSchema().validate({$set: updated_organization_doc}, modifier: true)
+  validate: ({organization_id, organization_doc}) ->
+    OrganizationModule.Organizations.simpleSchema().validate({$set: organization_doc}, modifier: true)
     new SimpleSchema(
       organization_id:
         type: String
     ).validate({organization_id})
 
-  run: ({organization_id, updated_organization_doc}) ->
+  run: ({organization_id, organization_doc}) ->
 
     loggedIn(@userId)
 
     unless @isSimulation
       hasPermission(@userId, organization_id, 'owner')
 
-    delete updated_organization_doc.ousers
+    delete organization_doc.ousers
     OrganizationModule.Organizations.update _id: organization_id,
-                                            $set: updated_organization_doc
+                                            $set: organization_doc

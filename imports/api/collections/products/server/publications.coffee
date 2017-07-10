@@ -11,7 +11,13 @@ collections.sell = SellModule.Sells
 collections.ingredient = IngredientModule.Ingredients
 
 # Missing permissions and pagenation
-Meteor.publish "products", (organization_id, parent, parent_id) ->
+Meteor.publish "products", (organization_id, parent, parent_id, search, limit) ->
+
+  new SimpleSchema(
+    search:
+      type: String
+      optional: true
+  ).validate({search: search})
 
   info = publicationInfo organization_id, parent, parent_id
   parentDoc = info.parentDoc
@@ -23,34 +29,15 @@ Meteor.publish "products", (organization_id, parent, parent_id) ->
   unless permissions?
     throw new Meteor.Error 'notAuthorized', 'not authorized'
 
+
   unless parentDoc?
-    parentDoc = collections[parent].findOne(parent_id)
+    parentDoc = collections[parent].findOne(parent_id) if collections[parent]?
     unless(parentDoc? && parentDoc.organization_id is organization._id)
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
 
-  if @userId? && parentDoc? && (permissions.viwer || permissions.inventories_manager || permissions.owner)
-    return parentDoc.products()
+  if @userId? && parentDoc? && (permissions.viewer || permissions.inventories_manager || permissions.owner)
+    # Meteor._sleepForMs(4000);
+    return parentDoc.products(limit, search)
   else
     @ready();
-
-
-# Missing permissions and pagenation
-Meteor.publish 'product.ingredients', (organization_id, product_id) ->
-  info = publicationInfo organization_id, 'product', product_id
-  organization = info.organization
-
-  if organization? && organization.hasUser(@userId)?
-    permissions = organization.hasUser(@userId).permission
-
-  unless permissions?
-    throw new Meteor.Error 'notAuthorized', 'not authorized'
-
-  product = ProductModule.Products.findOne(product_id)
-  unless(product? && product.organization_id is organization._id)
-    throw new Meteor.Error 'notAuthorized', 'not authorized'
-
-  if @userId? && (permissions.viwer || permissions.inventories_manager || permissions.owner)
-    return product.ingredients()
-  else
-    @ready()

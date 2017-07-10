@@ -1,0 +1,53 @@
+.list-item
+  width: 100%
+  border-bottom: 1px solid #eee
+  padding: 20px 18px
+  display: flex;
+  cursor: pointer;
+
+  &[selected='true']
+    color: darkblue
+
+  .circle-image
+    width: 48px
+    height: 48px
+    border-radius: 50%
+    background-image:    url('/no_image2.jpg');
+    background-size:     cover;                      /* <------ */
+    background-repeat:   no-repeat;
+    background-position: center center;
+    flex-shrink: 0
+    align-self: center;
+
+    &[selected='true']
+      border: 1px solid darkblue
+
+    // & img
+    //   width: 56px
+    //   height: 56px
+
+
+  .checker-div
+    height: 100%
+    float: right;
+    align-self: center;
+    margin-left: auto;
+
+
+  .info-div
+    flex-grow: 1
+    padding: 5px 18px
+    display: flex;
+
+    & div
+      align-self: center;
+
+      .main
+        font-size: 16px
+        font-weight: 300
+
+      .sub
+        font-size: 14px
+        color: #9E9E9E
+        font-weight: 300
+        -webkit-font-smoothing: antialiased;

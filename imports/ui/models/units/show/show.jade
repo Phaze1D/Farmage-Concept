@@ -1,0 +1,161 @@
+template(name='UnitShow')
+  div(class='show-area elevation-0') 
+    
+    div(class='show-tool')
+      +PaperButton classes="so-button back card-shrink-action" raise=0 rippleOn=true submit=false elevation=0
+        i(class="material-icons")
+          | arrow_back
+          
+      div(class='tool-title text-overflow')
+        div
+          | #{toolT}
+        
+      +PaperButton classes="so-button more-ver card-shrink-action" raise=0 rippleOn=true submit=false elevation=0
+        i(class="material-icons")
+          | more_vert
+          
+      
+          
+    div(class='top')
+      h3
+        | #{unit.name}
+      
+    div(class='scroll-section')
+    
+      +PaperButton classes="show-fab js-show-new" elevation=2 rippleOn='true' rippleFill='white'
+        div(class='plus-icon-div' data-template='unitsUpdate')
+          i(class="material-icons plus-icon")
+            | #{fabT}
+    
+      div(class='middle')
+        +PaperTabPanel tabs=tabs scrollable=true classes='show-bar'     
+          +PaperTab classes='active-panel show-panel' index=0
+            div(class='flex-grid')
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Description
+                    if unit.description
+                      div(class='info')
+                        | #{unit.description}
+                    else
+                      div(class='info-none')
+                        | None
+            
+            div(class='flex-grid')
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Name 
+                    div(class='info')
+                      | #{unit.name}
+                  
+                  div(class='info-div')
+                    div(class='title')
+                      | Tracking 
+                    div(class='info')
+                      | #{tracking}
+                  
+                  if unit.tracking
+                    div(class='info-div')
+                      div(class='title')
+                        | Active
+                      div(class='info')
+                        | #{unit.amount}
+                  
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Total Child Units
+                    div(class='info')
+                      | 23
+
+                  div(class='info-div')
+                    div(class='title')
+                      | Parent Unit
+                    
+                    if unit.unit_id
+                      +PaperButton classes="flex-info" raise=0 rippleOn=true submit=false elevation=0                      
+                        div(class='info-div' style='margin: 0')
+                          div(class='info text-overflow')
+                            | #{parent.name}
+                            
+                        i(class='material-icons' style='margin: 0 0 0 15px')
+                          | open_in_new
+                    else
+                      div(class='info-none')
+                        | None
+                  
+            div(class='flex-grid')
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Yields Produced
+                    div(class='info')
+                      | 12
+
+                  div(class='info-div')
+                    div(class='title')
+                      |  Most Produced Resource
+                    div(class='info')
+                      | Eggs
+              
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Total Expenses
+                    div(class='info')
+                      | $122.12
+                      
+            if unit.tracking
+            
+              div(class='flex-grid') 
+                div(class='section elevation-0')
+                  div(class='it')
+                    div(class='info-div')
+                      div(class='title')
+                        | Total Events
+                      div(class='info')
+                        | 23
+                        
+                div(class='section elevation-0')
+                  div(class='it')
+                    div(class='info-div')
+                      div(class='title')
+                        | Total Positive Events
+                      div(class='info')
+                        | 123
+                        
+                    div(class='info-div')
+                      div(class='title')
+                        | Total Negative Events
+                      div(class='info')
+                        | 112
+                
+                div(class='section elevation-0')
+                  div(class='it')
+                    div(class='info-div')
+                      div(class='title')
+                        | Sum of Positive Events
+                      div(class='info')
+                        | 14
+                        
+                    div(class='info-div')
+                      div(class='title')
+                        | Sum of Negative Events
+                      div(class='info')
+                        | 19
+            
+          
+            +Timestamp item=unit
+            
+            
+          +PaperTab index=1
+          
+        
+      

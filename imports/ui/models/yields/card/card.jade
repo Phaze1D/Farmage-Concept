@@ -1,0 +1,72 @@
+template(name='YieldCard')
+  div(class='mCard')
+    +PaperCard elevation=1
+      div(class='show' style='display: none; opacity: 0')
+        if show.get
+          +YieldShow yield=yield title=identifer
+          
+      div(class='mCard-content with-bottom')
+        +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
+          i(class='material-icons')
+           | more_vert
+        
+        div(class='upper')
+          div(class='top')   
+            img(src='/no_image0.png')
+            
+            div(class='titles')
+              div(class='main-title text-overflow card-expand-action')
+                | #{ingredient.name} 
+              div(class='sub-title text-overflow')
+                | Yield: #{identifer}
+        
+          div(class='upper-mid')
+            div(class='main')
+              div(class='info')
+                | #{yield.amount} 
+                span
+                  | #{ingredient.measurement_yield}
+              
+              div(class='sub')
+                div(class='sub-yield')
+                  div(class='label')
+                    | Created At
+                  div(class='sub-info')
+                    =date(yield.createdAt)
+                
+                if yield.expiration_date
+                  div(class='sub-yield')
+                    div(class='label')
+                      | Expiration Date
+                    div(class='sub-info')
+                      =date(yield.expiration_date)
+        
+        div(class='middle')    
+          div(class='tpanel')
+            div(class='title') 
+              | Pass 4 Events
+            
+            each event in mEvents
+              div(class='e-div')
+                div(class='event-info')
+                  img(src='/default_avatar.png')
+                  
+                  div(class='einfo-div')
+                    div(class='main-title')
+                      | User Lastname 
+                    div(class='sub-title')
+                      | Nov 16, 2016
+          
+                      
+                  div(class='event-amount')
+                    | #{event.amount} 
+
+        div(class='bottom')
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/events/index?parent=yield&parent_id=#{yield._id}' data-organ='#{yield.organization_id}')
+              | Events
+          
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/inventories/index?parent=yield&parent_id=#{yield._id}' data-organ='#{yield.organization_id}')
+              | Inventories
+            

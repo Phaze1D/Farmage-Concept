@@ -1,0 +1,89 @@
+template(name='UnitCard')
+  div(class='mCard')
+    +PaperCard elevation=1
+      div(class='show' style='display: none; opacity: 0')
+        if show.get
+          +UnitShow unit=unit title=unit.name
+          
+      div(class='mCard-content with-bottom')
+        +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
+          i(class='material-icons')
+           | more_vert
+        
+        div(class='upper')
+          div(class='top')             
+            div(class='titles')
+              div(class='main-title card-expand-action')
+                | #{unit.name} 
+              div(class='sub-title')
+                | Tracking
+                div(tracking="#{isTracking}")
+                
+          
+          div(class='upper-mid')
+            div(class='main')
+              div(class='info')
+                | #{mainInfo.info} 
+              div(class='sub')
+                | #{mainInfo.span}
+                  
+                
+        div(class='middle' with-tabs)
+          +PaperTabPanel tabs=tabs tabClasses="js-card-bar card-bar"
+            if unit.tracking
+              +PaperTab classes='active-panel' index=0
+                div(class='tpanel')
+                  div(class='title')
+                    | Past 4
+                    
+                  each event in mEvents
+                    div(class='e-div')
+                      div(class='event-info')
+                        img(src='/default_avatar.png')
+                        
+                        div(class='einfo-div')
+                          div(class='main-title')
+                            | User Lastname 
+                          div(class='sub-title')
+                            | Nov 16, 2016
+                            
+                        div(class='event-amount')
+                          | #{event.amount}
+              +PaperTab classes='chart-div active-panel' index=1
+                canvas(class='expenses-chart chart')
+            else 
+              +PaperTab classes='chart-div active-panel' index=0
+                canvas(class='expenses-chart chart')
+            
+        
+        div(class='bottom')
+          if unit.tracking
+            +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+              a(href='/organizations/:organization_id/events/index?parent=unit&parent_id=#{unit._id}' data-organ='#{unit.organization_id}')
+                | Events
+            
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/units/index?parent=unit&parent_id=#{unit._id}' data-organ='#{unit.organization_id}')
+              | Children
+            
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/expenses/index?parent=unit&parent_id=#{unit._id}' data-organ='#{unit.organization_id}')
+              | Expenses
+          
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/yields/index?parent=unit&parent_id=#{unit._id}' data-organ='#{unit.organization_id}')
+              | Yields
+            
+      
+       
+  //- Amount
+  //- Tracking
+  //- View Childern Action Button
+
+      
+    
+  //- small user pic
+  //- user full name 
+  //- user email
+  //-  amount 
+  //- date

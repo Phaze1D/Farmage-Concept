@@ -1,0 +1,52 @@
+template(name='events.index')
+
+  div(class='filter-area elevation-2')
+    div(class='f-title')
+      | Advanced Search
+      
+    div(class='search-options')
+      div(class='search-grid')
+        +PaperInput type="number" name="amount_one" label="Amount From" focusColor="darkblue" size="size-small" classes='option-input' hideBottom=true
+        +PaperInput type="number" name="amount_to" label="Amount To" focusColor="darkblue" size="size-small" classes='option-input' hideBottom=true
+      
+      div(class='search-grid')
+        div(class='option-radio')
+          div(class='radio-label')
+            | Manual
+            
+          +PaperRadio classes="checkbox" rippleFill='darkblue' fcolor='darkblue' clickCallback=onItemClickCallback
+           
+      div(class='search-grid')
+        +PaperInput type="date" name="create_one" label="Created From" focusColor="darkblue" size="size-small" classes='option-input' hideBottom=true alwaysFloating=true
+        +PaperInput type="date" name="create_two" label="Created To" focusColor="darkblue" size="size-small" classes='option-input' hideBottom=true alwaysFloating=true
+      
+    +PaperButton classes='submit-search' raise=true rippleOn=true submit=false elevation=1
+      | Submit
+      
+    +PaperButton classes='submit-search js-close-filter' raise=true rippleOn=true submit=false elevation=1
+      | Cancel
+    
+  +PaperRightPanel callbacks=rightCallbacks
+    div(class='js-show-right')
+    div(class="js-right-content")
+      if rightShown.get
+        +Template.dynamic template=rightTemplate.get data=rightData.get
+        
+        
+  if sReady.get
+    div(class='events main-content' ready=ready)
+      div(class='card-wrapper')
+        each event in mEvents
+          +EventCard event=event
+  
+  if showSpinner
+    div(class="spinner")
+      div(class="rect1")
+      div(class="rect2")
+      div(class="rect3")
+      div(class="rect4")
+      div(class="rect5")
+
+  
+  
+      

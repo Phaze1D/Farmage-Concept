@@ -1,0 +1,75 @@
+template(name='InventoryCard')
+  div(class='mCard')
+    +PaperCard elevation=1
+      div(class='show' style='display: none; opacity: 0')
+        if show.get
+          +InventoryShow inventory=inventory title=identifer
+          
+      div(class='mCard-content with-bottom')
+        +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
+          i(class='material-icons')
+           | more_vert
+        
+        div(class='upper')
+          div(class='top')   
+            img(src='/no_image0.png')
+            
+            div(class='titles')
+              div(class='main-title text-overflow card-expand-action')
+                | #{product.name} 
+              div(class='sub-title text-overflow')
+                | Inventory: #{identifer}
+        
+          div(class='upper-mid')
+            div(class='main')
+              div(class='info')
+                | #{inventory.amount} 
+                span
+                  | In Stock
+              
+              div(class='sub')
+                div(class='sub-unit')
+                  div(class='label')
+                    | Created At
+                  div(class='sub-info')
+                    =date(inventory.createdAt)
+                
+                if inventory.expiration_date
+                  div(class='sub-unit')
+                    div(class='label')
+                      | Expiration Date
+                    div(class='sub-info')
+                      =date(inventory.expiration_date)
+        
+        div(class='middle')    
+          div(class='tpanel')
+            div(class='title') 
+              | Pass 4 Events
+            
+            each event in mEvents
+              div(class='e-div')
+                div(class='event-info')
+                  img(src='/default_avatar.png')
+                  
+                  div(class='einfo-div')
+                    div(class='main-title')
+                      | User Lastname 
+                    div(class='sub-title')
+                      | Nov 16, 2016
+          
+                      
+                  div(class='event-amount')
+                    | #{event.amount} 
+        
+        div(class='bottom')
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/events/index?parent=inventory&parent_id=#{inventory._id}' data-organ='#{inventory.organization_id}')
+              | Events
+              
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/yields/index?parent=inventory&parent_id=#{inventory._id}' data-organ='#{inventory.organization_id}')
+              | Yields
+              
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/sells/index?parent=inventory&parent_id=#{inventory._id}' data-organ='#{inventory.organization_id}')
+              | Sells

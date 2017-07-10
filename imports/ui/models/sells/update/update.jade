@@ -1,0 +1,371 @@
+template(name='sellsUpdate')
+  div(class="sells-new")
+    +dialogMixin
+        
+    form(class="js-sell-update-form")
+      +PaperHeaderPanel id="right"
+        +PaperHeaderSmall id='right' classes='right-header'
+          +PaperButton classes="save-icon-div js-submit-update-sell" raise=0 rippleOn=true submit=true
+            i(class="material-icons")
+              | check
+              
+          +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+            i(class="material-icons")
+              | clear
+        
+        
+        +PaperHeaderBig id="right"
+          +PaperButton classes="save-icon-div js-submit-update-sell" raise=0 rippleOn=true submit=true
+            i(class="material-icons")
+              | check
+              
+          +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+            i(class="material-icons")
+              | clear
+              
+                  
+        +PaperHeaderMain id="right"
+          div(class='organization-bottom')
+            div(class='input-area')
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  div(class='detail-title-wrapper')
+                    div(class='detail-title')
+                      | Products 
+                    
+                    unless sell.paid
+                      div(class='db-wrapper')
+                        +PaperButton classes="add-detail" raise=0 rippleOn=true submit=false
+                          i(class="material-icons")
+                            | camera_alt
+                      
+                      div(class='db-wrapper')
+                        +PaperButton classes="add-detail js-show-d" raise=0 rippleOn=false submit=false
+                          div(class="js-dialog-b" data-tab1='products' data-tab2='inventories' data-many='true' tabs='true')
+                          i(class="material-icons")
+                            | add
+              
+              div(class='grid-wrapper sell-detail')
+                div(class='col-12 p-right p-left')
+                  each product in products
+                    div(class='product-box' data-id='#{product._id}')
+                      div(class='product-info')
+                        img(src='/no_image0.png')
+                        div(class='p-nsk')
+                          div(class='p-name')
+                            | #{product.name} 
+                            
+                          span
+                            | #{product.size}
+                          
+                          span(class='p-sku')
+                            | SKU: #{product.sku}
+                            
+                          div(class='p-description')
+                            | #{product.description}
+                      
+                      div(class='detail-info')
+                        div(class='col p-right')
+                          label(class='label')
+                            | Unit Price
+                            span
+                              | (Tax Exc)
+                          div(class='value')
+                            | $
+                            =unitPrice(product)
+                        
+                        div(class='col p-right')
+                          label(class='label')
+                            | Tax Rate
+                          div(class='value')
+                            =taxRate(product)
+                            | %
+                        
+                        div(class='col p-right')
+                          label(class='label')
+                            | Sub Total
+                            span
+                              | (Tax Inc)
+                          div(class='value')
+                            =subTotal(product._id)
+                          
+                        div(class='col-3')
+                          +PaperInput classes='js-detail-quantity' disabled=(disableDetail product._id) type="number" name="quantity" label="Quantity" value=(pdetailQuantity product._id) focusColor="darkblue" min='0' labelFloat=true
+
+                      div(class='grid-wrapper')
+                        div(class='col-12')
+                          if sell.paid
+                            div(class="inv-button-wrapper")
+                              div(class="inv-b js-dialog-b" data-sub='inventories' data-many='true' data-parent='product' data-parentid="#{product._id}")
+                                div(class="text-div-sm") Inventories
+                                
+                          
+                          else
+                            +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d inv-button-wrapper"
+                              div(class="inv-b js-dialog-b" data-sub='inventories' data-many='true' data-parent='product' data-parentid="#{product._id}")
+                                div(class="text-div-sm") Inventories
+                                div(class="icon-div")
+                                  i(class="material-icons icon") add_circle
+                  
+                      each inventory in inventories product._id
+                        div(class='inventory-box grid-wrapper' data-id='#{inventory._id}')
+                          div(class='inventory-info col-5 p-right')
+                            div(class='info')
+                              label(class='label')
+                                | Identifier
+                              div(class='value')
+                                = invIdentifier(inventory)
+                            
+                            if inventory.expiration_date
+                              div(class='info' style='margin-top: 15px;')
+                                label(class='label')
+                                  | Expiration Date
+                                div(class='value')
+                                  =date(inventory.expiration_date)
+                            
+                          div(class='inventory-amount col-4')
+                            label(class='label')
+                              | Available
+                            div(class='value')
+                              = invAvailable(inventory)
+                          
+                          div(class='inventory-input col-3')
+                            with defaultInvQuantity inventory
+                              if sell.paid
+                                +PaperInput disabled=true classes='js-inventory-input' type="number" name="amount_taken" value=quan label="Taken" focusColor="darkblue" min='0' max=(invMax inventory) labelFloat=true
+
+                              else
+                                +PaperInput classes='js-inventory-input' schema=(invSchema inventory) type="number" name="amount_taken" value=quan label="Taken" focusColor="darkblue" min='0' max=(invMax inventory) labelFloat=true
+
+                          
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperInput type="number" alwaysFloating=true name="total_price" label="Total" value=getSellDoc.total_price focusColor="darkblue" prefix="$" step="any" min='0' disabled="true" size="size-medium"
+              
+              div(class='grid-wrapper')
+                div(class='col-6 p-left')
+                  +PaperInput type="number" alwaysFloating=true name="sub_total" label="Sub Total" value=getSellDoc.sub_total focusColor="darkblue" prefix="$" step="any" min='0' disabled="true"
+
+                div(class='col-6 p-right p-left')
+                  +PaperInput type="number" alwaysFloating=true name="tax_total" label="Tax Total" value=getSellDoc.tax_total focusColor="darkblue" prefix="$" step="any" min='0' disabled="true"
+
+              
+              div(class='grid-wrapper')
+                div(class='col-6 p-left')
+                  +PaperInput type="text" name="status" label="Status" focusColor="darkblue" value=sell.status schema=schema
+                  
+                div(class='col-6 p-left p-right')                  
+                  if sell.paid
+                    +PaperInput disabled=true type="number" classes="js-discount-input discount-input" name="discount" label="Discount" focusColor="darkblue" step="any" min='0' value=sell.discount
+
+                    div(class='discount-select')
+                      div(class='discount-icon' type='#{discountType.value}')
+                        | #{discountType.option} 
+                  
+                  else
+                    +PaperInput type="number" classes="js-discount-input discount-input" name="discount" label="Discount" focusColor="darkblue" step="any" min='0' value=sell.discount schema=schema
+
+                    +PaperButton classes='js-discount-select discount-select' elevation=1 raise=0 submit=false rippleOn=true
+                      div(class='discount-icon' type='#{discountType.value}')
+                        | #{discountType.option} 
+                  
+
+              
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperInput type="textarea" name="notes" label="Notes" focusColor="darkblue" charMax='512' showCount=true value=sell.notes schema=schema
+                  
+                  
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  if sell.paid
+                    div(class="button-wrapper")
+                      div(class="resources-b js-dialog-b" data-sub='customers' data-many='false')
+                        div(class="text-div-sm") Customer
+              
+                  else
+                    +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
+                      div(class="resources-b js-dialog-b" data-sub='customers' data-many='false')
+                        div(class="text-div-sm") Customer
+                        div(class="icon-div")
+                          i(class="material-icons icon") add_circle
+                        
+              if customer
+                div(class='grid-wrapper')
+                  div(class='col-12 p-right p-left unit-div')
+                    div(class='provider-info')
+                      img(src='/default_avatar.png')
+                      div(class='p-nsk')
+                        div(class='p-name')
+                          | #{customer.first_name} #{customer.last_name}
+                        div(class='p-description')
+                          | #{customer.company}
+  
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-sell-d button-wrapper"
+                    div(class="resources-b js-dialog-b" data-info='telephones')
+                      div(class="text-div-sm") Telephone
+                      div(class="icon-div")
+                        i(class="material-icons icon") add_circle
+                        
+              with showNew "telephones"
+                div(class='grid-wrapper telephone-form')
+                  div(class='col-12 p-left p-right')
+                    div(class="grid-wrapper")
+                      div(class="col-12 p-right")
+                        +PaperInput type="text" alwaysFloating=true name="number" label="Number" labelFloat=true focusColor="darkblue" value=number schema=teleSchema
+                        
+                      +PaperButton raise=0 submit=false rippleOn=false classes="js-remove-info remove-telephone-b"
+                        div(class="icon-div" data-info='telephones')
+                          i(class="material-icons icon") remove_circle
+
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-sell-d button-wrapper"
+                    div(class="resources-b js-dialog-b" data-info='billing addresses')
+                      div(class="text-div-sm") Billing Address
+                      div(class="icon-div")
+                        i(class="material-icons icon") add_circle
+                                              
+              with showNew "billing addresses"
+                div(class='grid-wrapper billing-address-form')
+                  div(class='col-12 p-left p-right')
+                    div(class="grid-wrapper")
+                      div(class="col-12 p-right")
+                        +PaperInput type="text" alwaysFloating=true name="street" labelFloat=true label="Address Line 1" focusColor="darkblue"  value=street schema=addSchema
+                        +PaperInput type="text" alwaysFloating=true name="street2" labelFloat=true label="Address Line 2" focusColor="darkblue" value=street2 schema=addSchema
+                        div(class='grid-wrapper')
+                          div(class="col-6 p-right")
+                            +PaperInput type="text" alwaysFloating=true name="city" labelFloat=true label="City" focusColor="darkblue" value=city schema=addSchema
+                          div(class="col-6")
+                            +PaperInput type="text" alwaysFloating=true name="state" labelFloat=true label="State" focusColor="darkblue" value=state schema=addSchema
+                        div(class='grid-wrapper')
+                          div(class="col-6 p-right")
+                            +PaperInput type="text" alwaysFloating=true name="zip_code" labelFloat=true label="Zip Code" focusColor="darkblue" value=zip_code schema=addSchema
+                          div(class="col-6")
+                            +PaperInput type="text" alwaysFloating=true name="country" labelFloat=true label="Country" focusColor="darkblue" value=country schema=addSchema
+                            
+                      +PaperButton raise=0 submit=false rippleOn=false classes="js-remove-info remove-address-b"
+                        div(class="icon-div" data-info='billing addresses')
+                          i(class="material-icons icon") remove_circle
+                        
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-sell-d button-wrapper"
+                    div(class="resources-b js-dialog-b" data-info='shipping addresses')
+                      div(class="text-div-sm") Shipping Address
+                      div(class="icon-div")
+                        i(class="material-icons icon") add_circle
+                        
+              with showNew "shipping addresses"
+                div(class='grid-wrapper shipping-address-form')
+                  div(class='col-12 p-left p-right')
+                    div(class="grid-wrapper")
+                      div(class="col-12 p-right")
+                        +PaperInput type="text" alwaysFloating=true name="street" labelFloat=true label="Address Line 1" focusColor="darkblue"  value=street schema=addSchema
+                        +PaperInput type="text" alwaysFloating=true name="street2" labelFloat=true label="Address Line 2" focusColor="darkblue" value=street2 schema=addSchema
+                        div(class='grid-wrapper')
+                          div(class="col-6 p-right")
+                            +PaperInput type="text" alwaysFloating=true name="city" labelFloat=true label="City" focusColor="darkblue" value=city schema=addSchema
+                          div(class="col-6")
+                            +PaperInput type="text" alwaysFloating=true name="state" labelFloat=true label="State" focusColor="darkblue" value=state schema=addSchema
+                        div(class='grid-wrapper')
+                          div(class="col-6 p-right")
+                            +PaperInput type="text" alwaysFloating=true name="zip_code" labelFloat=true label="Zip Code" focusColor="darkblue" value=zip_code schema=addSchema
+                          div(class="col-6")
+                            +PaperInput type="text" alwaysFloating=true name="country" labelFloat=true label="Country" focusColor="darkblue" value=country schema=addSchema
+                            
+                      +PaperButton raise=0 submit=false rippleOn=false classes="js-remove-info remove-address-b"
+                        div(class="icon-div" data-info='shipping addresses')
+                          i(class="material-icons icon") remove_circle
+                          
+              unless sell.paid                  
+                div(class='grid-wrapper')
+                  div(class='col-12 p-right p-left')
+                    +PaperButton raise=1 elevation=1 submit=false rippleOn=true classes='js-pay pay-button'  disabled=canPay
+                      i(class="material-icons")
+                        | monetization_on
+                        
+            
+    +PaperDialog callbacks=infoCallbacks
+      div(class="js-open-dialog js-open-sd")
+      if showTA.get
+        div(class="list")
+          div(class='header-panel elevation-2')
+            div(class='options-panel')
+              +PaperButton elevation=0 raise=0 classes="b-wrap js-close-dialog close-dialog" rippleOn=true
+                i(class="material-icons") arrow_back
+                        
+              div(class='one-title')
+                | #{taTitle.get}
+          
+          div(class="items sell-items")
+            if showTelephones
+              each telephone in customer.telephones
+                div(class='add-section mini js-selectable' data-index="{{@index}}")
+                  div(class='title')
+                    if telephone.name
+                      | #{telephone.name}
+                    else
+                      | Telephone
+                      
+                  div(class='info' name='number')
+                    | #{telephone.number}
+                  
+                  +PaperRipple fill="lightgrey"
+                  
+              div(class='new-section js-new-selectable mini in-elevation-1 js-close-dialog')
+                div(class='new-title')
+                  | Create New
+                div(class='icon-sec')
+                  i(class='material-icons mini')
+                    | add_circle_outline
+                    
+                +PaperRipple fill="lightgrey"
+              
+            else
+              each address in customer.addresses
+                div(class='add-section js-selectable' data-index="{{@index}}")
+                  div(class='title')
+                    if address.name
+                      | #{address.name}
+                    else
+                      | Address
+                      
+                  div(class='info' name='street')
+                    | #{address.street}
+                  div(class='info' name='street2')
+                    | #{address.street2}
+                  if address.city
+                    div(class='info-inline' name='city')
+                      | #{address.city}
+                    div(class='info-inline')
+                      | , 
+                  if address.state
+                    div(class='info-inline' name='state')
+                      | #{address.state}
+                  div(class='info' name='zip_code')
+                    | #{address.zip_code}
+                  div(class='info' name='country')
+                    | #{address.country}
+                  
+                  +PaperRipple fill="lightgrey"
+              
+            
+            
+              div(class='new-section js-new-selectable in-elevation-1 js-close-dialog')
+                div(class='new-title')
+                  | Create New
+                div(class='icon-sec')
+                  i(class='material-icons')
+                    | add_circle_outline
+                    
+                +PaperRipple fill="lightgrey"
+
+                        
+    +PaperDialog callbacks=payCallbacks
+      div(class="js-open-dialog js-open-pay")
+      if showPay.get
+        +sellPay products=products pDetails=pDetails sellDoc=sellDoc discount_type=discountType.value inventories=allInventories onConfirmCallBack=payConfirmCallback
+    

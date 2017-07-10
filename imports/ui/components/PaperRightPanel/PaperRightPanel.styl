@@ -1,0 +1,41 @@
+
+#paper-right-panel
+  position: fixed;
+  top: 0px;
+  height: 100%
+  width: 35%
+  right: 0
+  border-left: none
+  z-index: 3;
+  background: #eee;
+  // overflow-x: hidden;
+  box-sizing: border-box;
+
+
+
+  &:focus
+    outline: none
+
+  @media(min-width: 1024px)
+    border-left: 1px solid lightgray
+
+  @media(max-width: 1023px)
+    width: 100%
+
+.right-header
+  width: 35%
+  @media(max-width: 1023px)
+    width: 100%
+
+
+.focus-color-top
+  background-color: #eee
+
+.focus-color-bottom
+  background-color: #fafafa
+
+.unfocus-color-top
+  background-color: #E0E0E0
+
+.unfocus-color-bottom
+  background-color: #F5F5F5

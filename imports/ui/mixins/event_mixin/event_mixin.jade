@@ -1,0 +1,24 @@
+template(name='eventMixin')
+  div(class='grid-wrapper')
+    div(class='col-6 p-left')
+      +PaperInput type="number" classes='js-main-amount' name="amount" label=amountLabel focusColor="darkblue" size="size-small" disabled='true' value=getMainAmount min=0 step='any' schema=eventSchema alwaysFloating=true
+    
+    div(class='col-6 p-right p-left')
+      div(class='b-change-wrapper' style='padding-top: 0')
+        +PaperButton raise=1 elevation=1 submit=false rippleOn=true classes='b-change js-event-b'
+          | #{eventTitle.get}
+          
+  div(class='event-box' style='height: 0; visibility: hidden')
+    div(class='grid-wrapper')
+      div(class='col-12 p-right p-left')
+        div(class='grid-wrapper')
+          div(class='col-12')
+            div(class='e-title')
+              | Manual Event
+              
+              
+        div(class='grid-wrapper')
+          div(class='col-9 p-right')
+            +PaperInput type="textarea" name="event_description" label="Event Description" focusColor="darkblue" charMax='512' showCount=true schema=eventSchema
+          div(class='col-3')
+            +PaperInput type="number" name="event_amount" label=amountLabel focusColor="darkblue" size="size-small" value=0 min=minAmount step='any' classes='js-event-amount' schema=eventSchema

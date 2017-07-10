@@ -23,6 +23,11 @@ class ExpensesCollection extends Mongo.Collection
 
 ExpenseSchema =
   new SimpleSchema([
+    name:
+      type: String
+      label: 'name'
+      max: 64
+
     price:
       type: Number
       label: 'price'
@@ -37,6 +42,12 @@ ExpenseSchema =
       label: 'currency_ISO_4217'
       max: 3
       optional: true
+
+    quantity:
+      type: Number
+      label: 'quantity'
+      decimal: true
+      min: 0
 
     description:
       type: String

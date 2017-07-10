@@ -64,7 +64,8 @@ module.exports.inviteUser = new ValidatedMethod
     loggedIn(@userId)
 
     unless @isSimulation
-      organization = hasPermission(@userId, organization_id, "owner")
+      permission.founder = false
+      organization = hasPermission(@userId, organization_id, "users_manager")
       invited_user = Accounts.findUserByEmail invited_user_doc.emails[0].address
       if invited_user?
         addUserToOrganization(invited_user._id, organization, permission)

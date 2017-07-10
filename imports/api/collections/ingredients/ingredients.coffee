@@ -5,6 +5,7 @@
 { CreateByUserSchema } = require '../../shared/created_by_user.coffee'
 { BelongsOrganizationSchema } = require '../../shared/belong_organization.coffee'
 
+# NOT Finished add Unqiue ignore case
 
 
 class IngredientsCollection extends Mongo.Collection
@@ -22,13 +23,11 @@ IngredientSchema =
   new SimpleSchema([
     name:
       type: String
-      label: 'ingredient'
       max: 128
       denyUpdate: true
 
     measurement_unit:
       type: String
-      label: 'measurement_unit'
       max: 64
       denyUpdate: true
 

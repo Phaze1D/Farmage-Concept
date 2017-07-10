@@ -1,0 +1,5 @@
+template(name='dialogMixin')
+  +PaperDialog callbacks=dialogCB
+    div(class="js-open-dialog")
+    if showDialog.get
+      +selectList subscription=subscription.get many=many.get parent=parent.get parent_id=parentID.get clists=clists tabSubs=tabs.get

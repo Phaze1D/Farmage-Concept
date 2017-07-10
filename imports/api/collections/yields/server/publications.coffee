@@ -13,7 +13,13 @@ collections.ingredient = IngredientModule.Ingredients
 collections.inventory = InventoryModule.Inventories
 
 # Missing permissions and pagenation
-Meteor.publish "yields", (organization_id, parent, parent_id) ->
+Meteor.publish "yields", (organization_id, parent, parent_id, search, limit) ->
+
+  new SimpleSchema(
+    search:
+      type: String
+      optional: true
+  ).validate({search: search})
 
   info = publicationInfo organization_id, parent, parent_id
   organization = info.organization
@@ -26,18 +32,19 @@ Meteor.publish "yields", (organization_id, parent, parent_id) ->
     throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   unless parentDoc?
-    parentDoc = collections[parent].findOne(parent_id)
+    parentDoc = collections[parent].findOne(parent_id) if collections[parent]?
     unless(parentDoc? && parentDoc.organization_id is organization._id)
       throw new Meteor.Error 'notAuthorized', 'not authorized'
 
   if @userId? && (permissions.viewer || permissions.units_manager || permissions.owner)
-    return parentDoc.yields()
+    return parentDoc.yields(limit, search)
   else
     @ready();
 
 # Missing permissions and pagenation
 Meteor.publish 'yield.parents', (organization_id, yield_id) ->
   info = publicationInfo organization_id, 'yield', yield_id
+  organization = info.organization
 
   if organization? &&  organization.hasUser(@userId)?
     permissions = organization.hasUser(@userId).permission

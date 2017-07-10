@@ -30,7 +30,7 @@ module.exports.insert = new ValidatedMethod
       hasPermission(@userId, yield_doc.organization_id, "units_manager")
       unitBelongsToOrgan(yield_doc.unit_id, yield_doc.organization_id)
       ingredient = ingredientBelongsToOrgan(yield_doc.ingredient_id, yield_doc.organization_id)
-
+      yield_doc.measurement_unit = ingredient.measurement_unit
     delete yield_doc.amount
     YieldModule.Yields.insert yield_doc
 
@@ -38,7 +38,6 @@ module.exports.insert = new ValidatedMethod
 module.exports.update = new ValidatedMethod
   name: "yields.update"
   validate: ({organization_id, yield_id, yield_doc}) ->
-    YieldModule.Yields.simpleSchema().clean({$set: yield_doc}, {isModifier: true})
     YieldModule.Yields.simpleSchema().validate({$set: yield_doc}, modifier: true)
     new SimpleSchema(
       organization_id:

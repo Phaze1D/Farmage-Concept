@@ -1,0 +1,161 @@
+//Variables
+$drawerWidth = 240px
+$smallHeaderHeight = 217px
+
+@import "components/components"
+@import "models/models"
+@import "layouts/structure"
+
+div
+  box-sizing: border-box;
+
+.elevation-0
+  box-shadow: none
+
+.elevation-1
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+
+.elevation-2
+  box-shadow: 0 3px 5px 0 rgba(0, 0, 0, 0.14), 0 1px 10px 0 rgba(0, 0, 0, 0.12), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+
+.elevation-3
+  box-shadow: 0 5px 10px 0 rgba(0, 0, 0, 0.14), 0 1px 18px 0 rgba(0, 0, 0, 0.12), 0 3px 5px -1px rgba(0, 0, 0, 0.2);
+
+.elevation-4
+  box-shadow: 0 7px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12), 0 5px 5px -3px rgba(0, 0, 0, 0.2);
+
+.elevation-5
+  box-shadow: 0 15px 24px 2px rgba(0, 0, 0, 0.14), 0 6px 30px 5px rgba(0, 0, 0, 0.12), 0 8px 10px -5px rgba(0, 0, 0, 0.2);
+
+.text-overflow
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+
+
+.grid-wrapper
+  position: relative;
+  display: inline-flex;
+  width: 100%
+
+  .p-left
+    padding-left: 10px
+
+  .p-right
+    padding-right: 10px
+
+
+
+.col-12
+  display: inline-block;
+  width: 100%;
+
+.col-11
+  display: inline-block;
+  width: 91.66666667%;
+
+.col-10
+  display: inline-block;
+  width: 83.33333333%;
+
+.col-9
+  display: inline-block;
+  width: 75%;
+
+.col-8
+  display: inline-block;
+  width: 66.66666667%;
+
+.col-7
+  display: inline-block;
+  width: 58.33333333%;
+
+.col-6
+  display: inline-block;
+  width: 50%;
+
+.col-5
+  display: inline-block;
+  width: 41.66666667%;
+
+.col-4
+  display: inline-block;
+  width: 33.33333333%;
+
+.col-3
+  display: inline-block;
+  width: 25%;
+
+.col-2
+  display: inline-block;
+  width: 16.66666667%;
+
+.col-1
+  display: inline-block;
+  width: 8.33333333%;
+
+
+body
+  min-width: 320px
+  font-family: 'Roboto', 'Noto', sans-serif;
+
+
+.spinner {
+  margin: 100px auto;
+  width: 50px;
+  height: 40px;
+  text-align: center;
+  font-size: 10px;
+}
+
+.spinner > div {
+  background-color: #333;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+
+.spinner .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+
+.spinner .rect3 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+
+.spinner .rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+
+.spinner .rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+
+@-webkit-keyframes sk-stretchdelay {
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+  20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes sk-stretchdelay {
+  0%, 40%, 100% {
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }  20% {
+    transform: scaleY(1.0);
+    -webkit-transform: scaleY(1.0);
+  }
+}
+
+
+.err-div
+  font-size: 12px
+  font-weight: 300
+  color: #dd2c00
+  margin-top: -5px

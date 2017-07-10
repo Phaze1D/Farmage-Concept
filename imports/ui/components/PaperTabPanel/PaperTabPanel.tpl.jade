@@ -1,0 +1,16 @@
+paper-tab-panel
+  div(class='tab-bar #{classes}')
+    if showLine
+      div(class='underline' style='width: {{tabWidth}}')
+    each title in tabs
+      div(class="bar-tab js-bar-tab {{active @index}} {{tabClasses}}" data-index="{{@index}}" data-title=title scrollable=scrollable)
+        +PaperRipple fill='lightgrey'
+        div(class='tab-title')
+          | #{title}
+    
+    if scrollable
+      div(class='extra-scroll')
+      
+  div(class="tab-main-wrapper")
+    div(class='tab-panel-main')
+      +Template.contentBlock

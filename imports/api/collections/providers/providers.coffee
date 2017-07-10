@@ -37,7 +37,7 @@ ProviderSchema =
       max: 64
 
     date_of_birth:
-      type: String
+      type: Date
       label: 'date_of_birth'
       optional: true
 

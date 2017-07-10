@@ -1,0 +1,138 @@
+template(name='CustomerCard')
+  div(class='mCard')
+    +PaperCard elevation=1
+      div(class='show' style='display: none; opacity: 0')
+        if show.get
+          +CustomerShow customer=customer title=showTitle
+      
+      div(class='mCard-content with-bottom')
+          +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
+            i(class='material-icons')
+             | more_vert
+          
+             
+          div(class='upper')
+            div(class='top')
+              img(src='/default_avatar.png')
+
+              div(class='titles')
+                div(class='main-title text-overflow card-expand-action')
+                  | #{customer.first_name} #{customer.last_name}
+                  
+                div(class='sub-title text-overflow')
+                  | #{customer.company}
+              
+              
+            div(class='upper-mid')          
+              div(class='fake-tab')
+                div(class='fake-tab-title card-shrink-action')
+                  | Contact Information
+                  
+                  
+          div(class='middle')
+                   
+            div(class ="contact-div")
+              div(class='height-div')
+                div(class='section')
+                  i(class='material-icons icon')
+                    | email
+                  div(class='contact')
+                    div(class='label')
+                      | Email
+                    if customer.email
+                      div(class='info')
+                        | #{customer.email}
+                    else
+                      div(class='info-none')
+                        | None
+                    
+                
+                if telephones
+                  div(class='section')
+                    i(class='material-icons icon')
+                      | phone
+                    div(class='contact nav-wrapper' data-type='telephones')
+                      div(class='nav-info-wrapper')
+                        div(class='nav-info-mover')
+                          each telephone in telephones
+                              div(class='nav-info')
+                                div(class="label")
+                                  if telephone.name
+                                    | #{telephone.name}
+                                  else
+                                    | Telephone
+                                div(class='info')
+                                  | #{telephone.number}
+                                  
+                      div(class="nav left {{disableLeft 'telephones'}} js-nav-left")
+                        i(class='material-icons')
+                          | keyboard_arrow_left
+                      
+                      div(class="nav right js-nav-right {{disableRight 'telephones'}}")
+                        i(class='material-icons')
+                          | keyboard_arrow_right
+                          
+                else
+                  div(class='section')
+                    i(class='material-icons icon')
+                      | phone
+                    div(class='contact')
+                      div(class='label')
+                        | Telephones
+                      div(class='info-none')
+                        | None
+                      
+                
+                if addresses
+                  div(class='section')
+                    i(class='material-icons icon')
+                      | location_on
+                    div(class='contact nav-wrapper' data-type='addresses')
+                      div(class='nav-info-wrapper')
+                        div(class='nav-info-mover')
+                          each address in addresses
+                              div(class='nav-info')
+                                div(class="label")
+                                  if address.name
+                                    | #{address.name}
+                                  else
+                                    | Address
+                                div(class='info')
+                                  div(class='add-info')
+                                    | #{address.street}
+                                  div(class='add-info')
+                                    | #{address.street2}
+                                  div(class='add-info')
+                                    if address.city
+                                      | #{address.city}, 
+                                    | #{address.state}
+                                  div(class='add-info')
+                                    | #{address.zip_code}
+                                  div(class='add-info')
+                                    | #{address.country}
+                      div(class="nav left {{disableLeft 'addresses'}} js-nav-left")
+                        i(class='material-icons')
+                          | keyboard_arrow_left
+                      
+                      div(class="nav right {{disableRight 'addresses'}} js-nav-right")
+                        i(class='material-icons')
+                          | keyboard_arrow_right
+                    
+                        
+                else
+                  div(class='section')
+                    i(class='material-icons icon')
+                      | location_on
+                    div(class='contact')
+                      div(class='label')
+                        | Addresses
+                      div(class='info-none')
+                        | None
+              
+        
+                
+          div(class='bottom')
+            +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+              a(href='/organizations/:organization_id/sells/index?parent=customer&parent_id=#{customer._id}' data-organ='#{customer.organization_id}')
+                | Sells
+          

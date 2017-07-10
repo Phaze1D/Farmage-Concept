@@ -1,0 +1,190 @@
+.drawer-wrapper
+  min-height: 100%
+  padding-bottom: 96px
+  position: relative
+  box-sizing: border-box;
+
+.drawer-top
+  position: relative;
+  width: 100%
+  height: 170px
+  border-bottom: 1px solid lightgrey
+
+.drawer-button
+  border-top: 1px solid lightgrey
+  height: 80px
+  width: 100%
+  background-color: white
+  position: absolute;
+  bottom: 0
+
+.avatar-div
+  padding: 10px 10px
+
+.avatar-img
+  width: 65px
+  border-radius: 50%
+
+.name-div
+  padding: 25px 10px 0
+
+.name-h
+  margin: 8px 0
+  color: black
+  font-size: 16px
+  font-weight: 300
+
+.email-h
+  @extend .name-h
+  font-size: 14px
+
+.logout-icon
+  position: absolute;
+  bottom: 0
+  right: 0
+  padding: 0 5px 0px 0
+
+
+.drawer-middle
+  padding: 10px 0
+
+.drawer-item
+  font-size: 16px
+  font-weight: 400
+
+.organ-name
+  font-size: 15px
+  padding-left: 15px
+
+.collection-name
+  font-size: 14px
+  padding-left: 30px
+
+.item-content a
+  display: inline-block;
+  text-decoration: none;
+  color: inherit;
+  width: 100%
+  padding: 10px 10px
+  box-sizing: border-box;
+
+  &:visited
+    color: inherit;
+    text-decoration: none
+
+
+.header-start
+  top: -212px
+
+.headermain-start
+  opacity: 0
+
+
+.search-header
+  display: flex;
+  position: absolute;
+  top: 15px
+  right: 15px;
+  align-items: center;
+
+  .search-b
+    height: 28px
+    margin: 0 5px
+
+  .search-hidden
+    overflow: hidden;
+    position: relative;
+
+  .cross
+    position: absolute;
+    right: -2px;
+    top: 8px
+    cursor: pointer;
+    // background: white
+
+
+  .search-input
+    width: 320px
+
+    .input-container
+      padding-right: 20px
+
+  .search-icon
+    font-size: 28px
+
+
+
+.filter-area
+  position: fixed;
+  top: 0px
+  left: 0;
+  height: 0px
+  width: 100%;
+  background: white
+  z-index: 2
+  padding: 0px 15px
+  overflow: hidden
+  transition: .25s height
+
+  &.show-f
+    height: auto
+    display: block;
+
+  &.hide-f
+    height: 0px
+    display: none;
+
+  &.right-opened
+    width: calc(65% - 240px) !important
+
+  @media(min-width: 1024px)
+    width: calc(100% - 240px)
+    left: 240px
+
+
+  .f-title
+    margin: 10px 0 0
+    font-size: 14px
+    color: black
+    font-weight: 300;
+
+  .search-options
+    display: flex
+    flex-wrap: wrap;
+    justify-content: space-between;
+
+  .search-grid
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+
+
+  .option-input
+    width: 250px
+
+  .submit-search
+    padding: 5px 15px
+    margin-top: 25px
+    margin-bottom: 5px
+
+
+  .option-radio
+    display: flex;
+    align-items: center;
+    font-weight: 300;
+    cursor: pointer;
+    color: #757575
+
+
+.menu-button
+  position: absolute;
+  top: 7px
+  left: 10px
+  width: 48px
+  height: 48px
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  i
+    font-size: 28px

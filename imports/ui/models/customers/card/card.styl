@@ -1,0 +1,92 @@
+.contact-div
+  height: 100%
+  padding: 10px 15px
+
+  .section
+    display: flex;
+    align-items: center;
+    padding: 10px 0
+
+    .icon
+      color: #757575
+      margin-right: 15px
+
+  .contact
+    max-width: calc(100% - 39px);
+    flex-grow: 1
+
+
+    .label
+      font-size: 13px
+      font-weight: 300
+      color: #757575
+
+    .cinfo-div
+      display: flex
+      padding: 5px 0
+
+      img
+        height: 38px
+        width: 38px
+        border-radius: 50%
+        align-self: center;
+
+      .cinfo
+        padding-left: 15px
+        align-self: center;
+
+    .info
+      padding: 5px 0 0
+      font-size: 16px
+      font-weight: 300
+
+    .info-none
+      padding: 5px 0 0
+      font-size: 14px
+      font-weight: 300
+      color: #BDBDBD
+
+
+.nav-wrapper
+  display: flex;
+
+  .nav
+    align-self: center;
+    height: 30px
+    width: 30px
+    display: flex;
+    cursor: pointer;
+    flex-shrink: 0
+    user-select: none
+
+    &.disabled
+      color: #eee
+
+    &.left
+      justify-content: flex-start;
+    &.right
+      justify-content: flex-end;
+
+    i
+      align-self: center;
+
+    // &.left
+    //   padding-right: 10px
+    //
+    // &.right
+    //   padding-left: 10px
+
+  .nav-info-wrapper
+    overflow: hidden;
+    flex-grow: 1
+    width: 0
+
+    .nav-info-mover
+      // flex-grow: 1
+      // display: flex
+      white-space: nowrap;
+
+      .nav-info
+        display: inline-block;
+        width: 100%
+        flex-shrink: 0

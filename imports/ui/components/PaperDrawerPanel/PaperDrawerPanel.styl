@@ -1,0 +1,65 @@
+.paper-drawer
+  position: fixed
+  left: -240px
+  top: 0
+  bottom: 0
+  background-color: white
+  width: $drawerWidth
+  box-shadow: 1px 0 13px 0px rgba(0, 0, 0, 0.5);
+  z-index: 3
+  overflow-y: auto
+  overflow-x: hidden
+  border-right: 1px solid lightgrey
+
+
+
+.paper-drawer-main
+  z-index: 0
+  position: absolute;
+  right: 0
+  left: 0
+  top: 0
+  bottom: 0
+  background-color: #eee
+  overflow: hidden;
+
+
+.move-foward
+  z-index: 1
+
+.move-back
+  z-index: 0
+  @media (max-width: 1023px) {
+    overflow: hidden;
+  }
+
+#scrim
+  position: fixed;
+  z-index: 3
+  top: 0
+  left: 0
+  right: 0
+  bottom: 0
+  opacity: 0
+  background-color: rgba(0, 0, 0, 0.5)
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1)
+  transition-property: opacity, visibility
+  transition-duration: 0.25s
+  transition-delay: 0.1s
+
+  &.mshow
+    visibility: visible;
+    opacity: 1
+
+  &.mhide
+    visibility: hidden;
+    opacity: 0
+
+#touch-div
+  z-index: 1
+  width: 20px
+  background-color: transparent;
+  position: fixed
+  left: 0px
+  top: 0
+  bottom: 0

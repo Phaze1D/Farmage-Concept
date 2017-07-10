@@ -1,0 +1,203 @@
+.paper-input
+  display: block;
+  padding: 8px 0
+  position: relative;
+
+
+.floated-label-container
+  -webkit-font-smoothing: antialiased;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.011em;
+  line-height: 20px;
+
+.input-content
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  position: relative;
+
+.input-container
+  flex: 1 1 auto;
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+
+  &.size-small
+    line-height: 10px
+
+
+.input-label
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  width: 100%;
+  color: #737373;
+  transition: transform 0.2s, width 0.2s, left 0.2s;
+  transform-origin: left top;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 24px;
+
+  &[disabled]
+    color: #9E9E9E
+
+  &.label-floating
+    transform: translate3d(0, -75%, 0) scale(0.75);
+    width: 133%;
+
+  &.label-hidden
+    visibility: hidden;
+
+
+.pinput
+  position: relative;
+  outline: none;
+  box-shadow: none;
+  padding: 0;
+  width: 100%;
+  max-width: 100%;
+  background: transparent;
+  border: none;
+  color: #212121;
+  -webkit-appearance: none;
+  text-align: inherit;
+  -webkit-font-smoothing: antialiased;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 24px;
+
+  &[disabled]
+    -webkit-text-fill-color:#9E9E9E
+    color: #9E9E9E
+
+.pinput-textarea
+  resize: none;
+
+.underline-container
+  position: relative;
+
+.underline-unfocused
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #737373;
+  height: 1px;
+
+  &[disabled]
+    border-bottom: 1px dashed;
+    border-color: #9E9E9E;
+    background: transparent;
+
+.underline-focused
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  transform-origin: center center;
+  transform: scale3d(0,1,1);
+
+  &.highlight
+    transform: none
+    transition: transform 0.25s
+
+
+.underline-error
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  transform-origin: center center;
+  transform: scale3d(0,1,1);
+  background-color: #dd2c00
+
+  &.highlight
+    transform: none
+    transition: transform 0.25s
+
+.error-mes
+  display: inline-block;
+  position: relative;
+  font-size: 12px
+  font-weight: 300;
+  line-height: 20px
+  color: #dd2c00
+  white-space: pre-wrap
+
+
+.add-on-content
+  position: relative;
+  width: 100%
+  margin-bottom: 5px
+  white-space: pre;
+
+.char-count
+  display: inline-block;
+  position: absolute;
+  right: 0
+  top: 0
+  -webkit-font-smoothing: antialiased;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.011em;
+  line-height: 20px;
+
+.size-xsmall
+  font-size: 14px
+  line-height: 22px
+
+  & span
+    font-size: 9px;
+
+.size-small
+  font-size: 16px
+  line-height: 24px
+
+  &[type='date']
+    line-height: 22px
+
+  & span
+    font-size: 11px;
+
+.size-medium
+  font-size: 24px
+  line-height: 32px
+
+  & span
+    font-size: 19px;
+
+
+.prefix
+  flex: none
+  font-size: 14px
+  line-height: 24px
+  margin-right: 1px
+  font-weight: 300
+
+  &.size-small
+    font-size: 14px
+
+  &.size-medium
+    font-size: 22px
+
+.defix
+  flex: none
+  line-height: 24px
+  font-weight: 300

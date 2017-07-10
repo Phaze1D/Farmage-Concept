@@ -1,0 +1,46 @@
+.new-action
+  position: fixed;
+  width: 60px
+  height: 60px
+  bottom: 30px;
+  right: 30px;
+  border-radius: 50%
+  z-index: 2;
+  opacity: 1
+  background-color: #009688;
+
+  @media (max-width: 1024px) {
+    width: 56px
+    height: 56px
+    bottom: 15px;
+    right: 15px;
+  }
+
+.plus-icon-div
+  position: absolute;
+  top: 0
+  width: 60px;
+  height: 60px;
+  display: flex;
+  justify-content: center;
+  z-index: -1
+  @media (max-width: 1024px) {
+    width: 56px
+    height: 56px
+  }
+
+  .plus-icon
+    align-self: center;
+    color: white
+    cursor: pointer;
+    font-size: 28px
+    @media (max-width: 1024px) {
+      font-size: 24px
+    }
+
+
+.card-wrapper
+  display: flex
+  flex-wrap: wrap;
+  justify-content: center;
+  overflow: hidden;

@@ -1,0 +1,43 @@
+template(name='IngredientCard')
+  div(class='mCard')
+    +PaperCard elevation=1
+      div(class='show' style='display: none; opacity: 0')
+        if show.get
+          +IngredientShow ingredient=ingredient title=ingredient.name
+          
+      div(class='mCard-content with-bottom')
+        +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
+          i(class='material-icons')
+           | more_vert
+           
+        div(class='upper')
+          div(class='top')
+            img(src='/no_image0.png')
+            
+            div(class='titles')
+              div(class='main-title text-overflow card-expand-action')
+                | #{ingredient.name} 
+                
+              div(class='sub-title text-overflow')
+                | Measurement Unit - #{ingredient.measurement_unit}
+        
+          div(class='upper-mid')
+            div(class='main')
+              div(class='info')
+                | 239.23 
+                span
+                  | #{ingredient.measurement_unit}
+                
+              div(class='sub')
+                | In Stock
+              
+        div(class='bottom')
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/yields/index?parent=ingredient&parent_id=#{ingredient._id}' data-organ='#{ingredient.organization_id}')
+              | Yields
+            
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/products/index?parent=ingredient&parent_id=#{ingredient._id}' data-organ='#{ingredient.organization_id}')
+              | Products
+  //- Total Currently Available 
+  //- Last 5 Yields x yield Intifer y amount

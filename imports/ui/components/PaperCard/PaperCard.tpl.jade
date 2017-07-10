@@ -1,0 +1,11 @@
+div(class="paper-card-comp")
+  div(class="card-ghost" style='display: none') 
+  div(class="elevation-#{elevation} paper-card #{classes}")
+    if rippleOn
+      +PaperRipple fill=rippleFill classes='card-ripple'
+    .card-content
+      +Template.contentBlock
+    
+   
+
+  

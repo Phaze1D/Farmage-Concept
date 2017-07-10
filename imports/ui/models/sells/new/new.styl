@@ -1,0 +1,323 @@
+.pay-button
+  margin-top: 40px
+  font-size: 20px
+  text-align: center;
+  background-color: #4CAF50
+  height: 48px
+  // width: 100%
+  // font-weight: 300
+  color: white
+  display: flex;
+  justify-content: center;
+  transition: background-color .25s linear
+
+  i
+    font-size: 32px
+    align-self: center;
+
+
+.detail-title-wrapper
+  width: 100%
+  border-bottom: 1px solid #e0e0e0
+  margin-bottom: 20px
+  display: flex;
+
+  .detail-title
+    font-size: 20px
+    font-weight: 300
+    align-self: center;
+    flex-grow: 1
+
+  .db-wrapper
+    height: 48px
+    width: 48px
+    margin-left: 10px
+
+
+
+    .add-detail
+      display: flex;
+      justify-content: center;
+      height: 100%
+      width: 100%
+      border-radius: 24px
+      background-color: transparent;
+
+
+      & i
+        align-self: center;
+
+
+.discount-input
+  width: 100%
+
+  .input-container
+    flex: none;
+    width: calc(100% - 30px)
+
+
+.discount-select
+  position: absolute;
+  width: 26px
+  height: 26px
+  bottom: 34px
+  right: 10px
+  text-align: center;
+  cursor: pointer;
+  border-radius: 4px
+  display: flex;
+  justify-content: center;
+
+  .discount-icon
+    font-size: 18px;
+    align-self: center;
+
+.product-box
+  border-bottom: 1px solid #e0e0e0
+  margin: 0 0 15px 0
+  padding-bottom: 30px
+
+  .product-info
+    padding-top: 5px
+    display: flex;
+    // justify-content: center;
+
+    .p-nsk
+      align-self: center;
+      padding-left: 10px
+      max-width: calc(100% - 64px);
+
+
+      .p-name
+        font-size: 19px
+        font-weight: 300
+        color: #737373
+        line-height: 17px
+
+      .p-description
+        color: #9E9E9E
+        font-weight: 300
+        font-size: 14px
+        width: 100%
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+
+      span
+        display: inline-block;
+        font-size: 14px
+        white-space: nowrap;
+        font-weight: 300;
+        color: #737373
+
+
+      span.p-sku
+        display: inline-block;
+        font-size: 10px
+        font-weight: 300;
+        color: #BDBDBD
+
+    img
+      width: 56px
+      height: 56px
+      border-radius: 50%
+      align-self: center;
+
+
+  .detail-info
+    padding: 15px 0 0
+    display: flex;
+
+    .col
+      width: 25%
+      padding-top: 8px
+
+      .label
+        font-size: 12px
+        font-weight: 300;
+        color: #737373
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+
+        span
+          font-size: 10px
+
+      .value
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        padding-top: 4px
+        font-size: 16px;
+        font-weight: 300;
+        -webkit-font-smoothing: antialiased;
+        line-height: 24px;
+
+
+.inv-b
+  display: flex;
+  min-width: 130px
+  background-color: transparent;
+  justify-content: flex-start;
+
+  .text-div
+    align-self: center;
+    color: black
+    font-weight: 300
+    font-size: 18px
+
+
+
+  .text-div-sm
+    align-self: center;
+    color: #757575
+    font-weight: 300
+    font-size: 16px
+
+  .icon-div
+    margin-left: 20px
+    align-self: center;
+    display: flex;
+    justify-content: center;
+
+    .icon
+      color: #00E676
+      font-size: 24px
+      align-self: center;
+
+
+.inv-button-wrapper
+  @extend .button-wrapper
+  margin-top: 15px
+  width: auto;
+
+
+.inventory-box
+  margin-top: 10px
+  border: solid 1px #eee
+  padding: 10px
+  border-radius: 3px
+
+  .inventory-info
+    font-size: 12px
+    font-weight: 300;
+    -webkit-font-smoothing: antialiased;
+    padding-top: 10px;
+
+    .info
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+
+      .label
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        font-size: 12px
+        font-weight: 300;
+        color: #737373
+        box-sizing: border-box;
+        -webkit-font-smoothing: antialiased;
+
+      .value
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        padding-top: 1px
+        font-size: 16px;
+        font-weight: 300;
+        -webkit-font-smoothing: antialiased;
+        line-height: 24px;
+
+  .inventory-amount
+    padding-top: 7px
+
+    .label
+      font-size: 12px
+      font-weight: 300;
+      color: #737373
+      box-sizing: border-box;
+      -webkit-font-smoothing: antialiased;
+
+    .value
+      padding-top: 1px
+      font-size: 16px;
+      font-weight: 300;
+      -webkit-font-smoothing: antialiased;
+      line-height: 24px;
+
+.sell-items
+  display: flex
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: flex-start;
+
+.add-section
+  margin: 10px 5px
+  padding: 10px 15px
+  border-radius: 3px
+  height: 160px
+  width: 245px
+  font-weight: 300
+  cursor: pointer;
+  position: relative;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+
+  &.mini
+    height: 75px
+
+  &.selected
+    // color: darkblue
+    // background-color: #eee
+
+    .title
+      color: darkblue !important
+
+
+  .title
+    font-size: 13px
+    color: #757575
+    margin-bottom: 10px
+    text-transform: capitalize;
+
+  .info
+    font-size: 16px
+    margin-bottom: 2px
+
+  .info-inline
+    font-size: 16px
+    margin-bottom: 2px
+    display: inline-block;
+
+
+.in-elevation-1
+  box-shadow: inset 0 0px 3px 1px rgba(0, 0, 0, 0.2)
+
+.new-section
+  @extends .add-section
+  background-color: #F5F5F5
+  display: flex;
+  flex-direction: column;
+  font-weight: 300;
+  color: #757575
+  justify-content: center;
+  align-items: center;
+
+  &.mini
+    height: 75px
+
+  .new-title
+    font-size: 18px
+
+  .icon-sec
+    display: flex;
+    width: 100%
+    flex-grow: 1
+    justify-content: center;
+
+    i
+      color: #BDBDBD
+      align-self: center;
+      font-size: 88px
+
+      &.mini
+        font-size: 35px

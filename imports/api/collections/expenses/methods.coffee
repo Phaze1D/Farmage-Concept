@@ -37,7 +37,6 @@ module.exports.insert = new ValidatedMethod
 module.exports.update = new ValidatedMethod
   name: 'expenses.update'
   validate: ({organization_id, expense_id, expense_doc}) ->
-    ExpensesModule.Expenses.simpleSchema().clean({$set: expense_doc}, {isModifier: true})
     ExpensesModule.Expenses.simpleSchema().validate({$set: expense_doc}, modifier: true)
     new SimpleSchema(
       organization_id:

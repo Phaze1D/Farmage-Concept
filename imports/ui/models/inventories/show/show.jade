@@ -1,0 +1,165 @@
+template(name='InventoryShow')
+  div(class='show-area elevation-0') 
+    
+    div(class='show-tool')
+      +PaperButton classes="so-button back card-shrink-action" raise=0 rippleOn=true submit=false elevation=0
+        i(class="material-icons")
+          | arrow_back
+          
+      div(class='tool-title text-overflow')
+        div
+          | #{toolT}
+        
+      +PaperButton classes="so-button more-ver card-shrink-action" raise=0 rippleOn=true submit=false elevation=0
+        i(class="material-icons")
+          | more_vert
+          
+      
+          
+    div(class='top')
+      img(src='/no_image0.png')
+      h3
+        | #{identifer}
+      h4
+        | #{product.name}
+        
+    div(class='scroll-section')
+    
+      +PaperButton classes="show-fab js-show-new" elevation=2 rippleOn='true' rippleFill='white'
+        div(class='plus-icon-div' data-template='inventoriesUpdate')
+          i(class="material-icons plus-icon")
+            | #{fabT}
+    
+      div(class='middle')
+        +PaperTabPanel tabs=tabs scrollable=true classes='show-bar'     
+          +PaperTab classes='active-panel show-panel' index=0
+            div(class='flex-grid')
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Notes
+                    if inventory.notes
+                      div(class='info')
+                        | #{inventory.notes}
+                    else
+                      div(class='info-none')
+                        | None
+            
+            div(class='flex-grid')
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Identifer
+                    div(class='info')
+                      | #{identifer}
+                  
+                  div(class='info-div')
+                    div(class='title')
+                      | Stock
+                    div(class='info')
+                      | #{inventory.amount}
+                      
+                  if inventory.expiration_date
+                    div(class='info-div')
+                      div(class='title')
+                        | Expiration Date
+                      div(class='info')
+                        =date(inventory.expiration_date)
+              
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Product
+                    +PaperButton classes="flex-info" raise=0 rippleOn=true submit=false elevation=0
+                      img(src='/no_image2.jpg')
+                      
+                      div(class='info-flex-sec')
+                        div(class='info text-overflow')
+                          | #{product.name}
+                        div(class='info-small text-overflow')
+                          | #{product.sku}
+                      
+                      i(class='material-icons' style='margin: 0 0 0 15px')
+                        | open_in_new  
+                  
+            div(class='flex-grid') 
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Total Manual Events
+                    div(class='info')
+                      | 23
+                      
+                  div(class='info-div')
+                    div(class='title')
+                      | Total Auto Events
+                    div(class='info')
+                      | 49
+              
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Total Positive Events
+                    div(class='info')
+                      | 123
+                      
+                  div(class='info-div')
+                    div(class='title')
+                      | Total Negative Events
+                    div(class='info')
+                      | 112
+              
+              div(class='section elevation-0')
+                div(class='it')
+                  div(class='info-div')
+                    div(class='title')
+                      | Sum of Positive Events
+                    div(class='info')
+                      | 14
+                      
+                  div(class='info-div')
+                    div(class='title')
+                      | Sum of Negative Events
+                    div(class='info')
+                      | 19      
+            
+            if yields       
+              div(class='sub-title')
+                | Yields
+              div(class='flex-grid')
+                each yield in yields
+                  +PaperButton classes="section" raise=true rippleOn=true submit=false elevation=0
+                    div(class='it')
+                      div(class='info-div' style='padding-top: 5px')
+                        div(class='flex-info')                        
+                          div(class='info-flex-sec')
+                            div(class='info text-overflow')
+                              =yieldIdentifer(yield)
+                            div(class='info-small text-overflow')
+                              | Amount Taken -
+                              =yieldAmount(yield._id)
+                              | #{yield.measurement_unit}
+                          i(class='material-icons' style='margin-left: auto')
+                            | open_in_new
+                          
+            else
+              div(class='flex-grid')
+                div(class='section elevation-0')
+                  div(class='it')
+                    div(class='info-div')
+                      div(class='title')
+                        | Yields
+                      div(class='info-none')
+                        | None
+            
+            +Timestamp item=inventory
+            
+          +PaperTab index=1
+          
+        
+        

@@ -1,0 +1,71 @@
+template(name='unitsNew')
+  div(class="units-new")
+    +dialogMixin
+        
+    form(class="js-units-new-form js-form-event")
+      +PaperHeaderPanel id="right" 
+        +PaperHeaderSmall id='right' classes='right-header'
+          +PaperButton classes="save-icon-div js-submit-new-unit" raise=0 rippleOn=true submit=true
+            i(class="material-icons")
+              | check
+              
+          +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+            i(class="material-icons")
+              | clear
+        
+        
+        +PaperHeaderBig id="right"
+          +PaperButton classes="save-icon-div js-submit-new-unit" raise=0 rippleOn=true submit=true
+            i(class="material-icons")
+              | check
+              
+          +PaperButton classes="remove-icon-div js-hide-new js-hide-right" raise=0 rippleOn=true submit=false
+            i(class="material-icons")
+              | clear
+        
+        +PaperHeaderMain id="right"
+          div(class='organization-bottom')
+            div(class='input-area')
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperInput type="text" name="name" label="Name" focusColor="darkblue" size="size-medium" schema=schema
+                  
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperInput type="textarea" name="description" label="Description" focusColor="darkblue" charMax='512' showCount=true schema=schema
+                          
+              div(class='event-div')
+                +eventMixin amountLabel="Amount"
+              
+                  
+              div(class='grid-wrapper js-toggle-grid js-toggle-box' track)
+                div(class='col-9 p-left')
+                  div(class='js-ou-label ou-label')
+                    label
+                      | Tracking
+                    div(class='ou-info')
+                      | Track the changes in the unit's amount
+                      
+                div(class='col-3 p-right')
+                  div(class='u-toggle-div')
+                    div(class='ou-toggle')
+                      +PaperToggle onColor='#00008b' offColor='lightgrey' toggled='on' callbacks=toggleCallbacks
+                  
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left')
+                  +PaperButton raise=0 submit=false rippleOn=false classes="js-show-d button-wrapper"
+                    div(class="resources-b js-dialog-b" data-sub='units' data-many='false')
+                      div(class="text-div") Unit Parent
+                      div(class="icon-div")
+                        i(class="material-icons icon") add_circle
+                    
+              div(class='grid-wrapper')
+                div(class='col-12 p-right p-left unit-div')
+                  div(class='provider-info')
+                    div(class='p-nsk')
+                      div(class='p-name')
+                        | #{parentUnit.name}
+                      div(class='p-description')
+                        | #{parentUnit.description}
+              
+                        

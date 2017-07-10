@@ -1,0 +1,20 @@
+template(name='inventoriesSelector')
+  div(class='js-list-item list-item' data-id="#{item._id}" selected='#{isChecked.get}' data-parent='#{item.product_id}' data-parentsub='products')
+    div(class="circle-image" selected='#{isChecked.get}')
+      //- img(src='/no_image.png')
+      
+    div(class='info-div text-overflow')
+      div
+        div(class="main")
+          | #{identifer}
+        div(class="sub")
+          | #{item.amount} #{product.name} available 
+        div(class="sub")
+          =date(item.createdAt)
+      
+    if many
+      div(class="checker-div")
+        +PaperCheckbox classes="checkbox" rippleFill='darkblue' fcolor='darkblue' clickCallback=onItemClickCallback checked=isChecked.get
+    else
+      div(class='checker-div')
+        +PaperRadio classes="checkbox" rippleFill='darkblue' fcolor='darkblue' clickCallback=onItemClickCallback checked=isChecked.get

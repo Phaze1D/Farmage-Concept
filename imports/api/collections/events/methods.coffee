@@ -30,9 +30,30 @@ collections.Yields = YieldModule.Yields
 ###
 
 
+module.exports.update = new ValidatedMethod
+  name: "events.update"
+  validate: ({organization_id, event_id, event_doc}) ->
+    EventModule.Events.simpleSchema().validate({$set: event_doc}, modifier: true)
+
+    new SimpleSchema(
+      organization_id:
+        type: String
+      event_id:
+        type: String
+    ).validate({organization_id, event_id})
+
+  run: ({organization_id, event_id, event_doc}) ->
+    mixins.loggedIn(@userId)
+
+    unless @isSimulation
+      mixins.hasPermission(@userId, organization_id, "owner")
+      mixins.eventBelongsToOrgan(event_id, organization_id)
+
+    EventModule.Events.update event_id,
+                              $set: description: event_doc.description
+
 
 # +++++++++++++++++++ User Event
-
 module.exports.userEvent = new ValidatedMethod
   name: "events.userEvent"
   validate: ({event_doc}) ->
@@ -45,11 +66,13 @@ module.exports.userEvent = new ValidatedMethod
     unless @isSimulation
       switch event_doc.for_type
         when 'unit'
+
           transcation event_doc, @userId, "unitBelongsToOrgan", "Units", "units_manager"
         when 'yield'
           transcation event_doc, @userId, "yieldBelongsToOrgan", "Yields", "units_manager"
         when 'inventory'
           transcation event_doc, @userId, "inventoryBelongsToOrgan", "Inventories", "inventories_manager"
+
 
 
 transcation = (event_doc, userId, belongsToM, collection, permission) ->
@@ -61,6 +84,9 @@ transcation = (event_doc, userId, belongsToM, collection, permission) ->
   type = collections[collection].findOne event_doc.for_id
   if type.amount + event_doc.amount < 0
     throw new Meteor.Error "amountError", "amount cannot be less then 0"
+
+  if collection is 'Units' && !type.tracking
+    throw new Meteor.Error "trackingError", "turn on tracking before updating a unit amount"
 
   # Trans
   col = collections[collection].findOne(event_doc.for_id)
@@ -181,7 +207,7 @@ checkAmounts = (sums, product, amount, organization_id) ->
     fixedB = sum.div ing.amount
     a = new Big amount
     unless a.eq fixedB
-      throw new Meteor.Error "ingredientError", "ingredient amount mismatch"
+      throw new Meteor.Error "ingredientError", "ingredient amount mismatch", [{name: 'ing_mismatch', type: 'ing mismatch'}]
 
 
 takeFromYields = (yield_objects, inventory_id, organization_id) ->
@@ -205,7 +231,7 @@ takeFromYields = (yield_objects, inventory_id, organization_id) ->
 addToInventory = (inventory, amount, organization_id, yield_objects) ->
   ievent_doc =
     amount: amount
-    description: "auto added to inventory #{inventory._id} from yields #{yield_objects}"
+    description: "auto added to inventory #{inventory._id} from yields #{JSON.stringify(yield_objects)}"
     is_user_event: false
     for_type: "inventory"
     for_id: inventory._id

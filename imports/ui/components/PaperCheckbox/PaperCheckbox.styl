@@ -1,0 +1,40 @@
+.paper-checkbox-container
+  position: relative;
+  width: 48px
+  height: 48px
+  overflow: hidden;
+  display: flex
+  justify-content: center;
+  border-radius: 40px
+  background-color: transparent;
+  // z-index: -1
+
+  .checkbox
+    align-self: center;
+    width: 18px
+    height: 18px
+    border: solid 2px
+    border-radius: 2px
+    cursor: pointer;
+    z-index: 1
+
+
+    .checkbox-mark
+
+      height: 100%
+      width: 100%
+      display: flex;
+      justify-content: center;
+      transition: .2s all ease-in-out
+      transform-origin: translate3d(50%, 50%, 0)
+      transform: scale(0,0);
+
+      &.checked
+        transform: scale(1,1);
+
+
+      & i
+        align-self: center;
+        font-size: 14px
+        font-weight: 900
+        color: white

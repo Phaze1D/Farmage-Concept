@@ -1,0 +1,66 @@
+template(name="ProductCard")
+  div(class='mCard')
+    +PaperCard elevation=1
+      div(class='show' style='display: none; opacity: 0')
+        if show.get
+          +ProductShow product=product title=product.name
+          
+      div(class='mCard-content with-bottom')
+        +PaperButton elevation=0 rippleOn=true classes='options-b' raise=0
+          i(class='material-icons')
+           | more_vert
+           
+        div(class='upper')
+          div(class='top')
+            img(src='/no_image0.png')
+            
+            div(class='titles')
+              div(class='main-title card-expand-action text-overflow')
+                | #{product.name} 
+                
+              div(class='sub-title')
+                | #{product.sku}
+          
+          
+          div(class='upper-mid')
+            div(class='main')
+              div(class='info')
+                | 56
+                span 
+                 | Stock
+                 
+              div(class='sub')
+                div(class='sub-unit')
+                  div(class='label')
+                    | Unit Price
+                  div(class='sub-info')
+                    | $#{product.unit_price}   
+                div(class='sub-unit')
+                  div(class='label')
+                    | Tax Rate
+                  div(class='sub-info')
+                    | #{product.tax_rate}%
+                div(class='sub-unit')
+                  div(class='label')
+                    | Total Price
+                  div(class='sub-info')
+                    | $#{totalPrice}        
+                  
+
+            
+        div(class='middle')
+          div(class='chart-div')
+            canvas(class='canvas')
+
+        div(class='bottom')
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/inventories/index?parent=product&parent_id=#{product._id}' data-organ='#{product.organization_id}')
+              | Inventories
+            
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/sells/index?parent=product&parent_id=#{product._id}' data-organ='#{product.organization_id}')
+              | Sells
+          
+          +PaperButton elevation=0 rippleOn=true classes='js-action action-button' raise=0
+            a(href='/organizations/:organization_id/ingredients/index?parent=product&parent_id=#{product._id}' data-organ='#{product.organization_id}')
+              | Ingredients

@@ -29,6 +29,12 @@ YieldSchema =
       max: 64
       optional: true
 
+    notes:
+      type: String
+      label: 'notes'
+      max: 512
+      optional: true
+
     amount:
       type: Number
       label: 'yield.total'
@@ -50,7 +56,8 @@ YieldSchema =
       type: String
       index: true
 
-    # Possible Add updatale yield date
+    # Possible Add update yield date
+
 
   , CreateByUserSchema, BelongsOrganizationSchema, TimestampSchema])
 

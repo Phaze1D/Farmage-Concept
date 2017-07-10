@@ -1,0 +1,30 @@
+
+.paper-button
+  position: relative
+  perspective: 1px;
+  border: none
+  outline: none
+  background-color: white;
+  border-radius: 3px
+  overflow: hidden
+  color: black
+  display: inline-block;
+  box-sizing: border-box;
+  cursor: pointer;
+  user-select: none;
+
+  &[disabled]
+    box-shadow: none
+    background-color: #E0E0E0 !important
+    color: #757575 !important
+
+
+  & input
+    display: none
+
+  // &:active
+  //   // color: black
+
+
+.button-ripple
+  z-index: -1

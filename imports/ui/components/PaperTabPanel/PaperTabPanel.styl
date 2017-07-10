@@ -1,0 +1,87 @@
+paper-tab-panel
+  background-color: white
+  position: relative;
+  box-sizing: border-box;
+  width: 100%
+  height: 100%
+  display: flex;
+  flex-direction: column;
+
+  .tab-bar
+    z-index: 1
+    position: relative;
+    width: 100%
+    height: 48px
+    display: flex;
+    margin-top: -1px
+    background-color: #eee
+    overflow-x: auto;
+    // justify-content: flex-end;
+
+    &::-webkit-scrollbar
+      display: none;
+
+
+
+    .underline
+      position: absolute;
+      left: 0
+      bottom: 0
+      height: 2px
+      background-color: black
+      z-index: 1
+
+
+    .bar-tab
+      padding: 0 16px
+      flex-basis: 0
+      align-self: center;
+      height: 100%
+      flex-grow: 1
+      position: relative;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      cursor: pointer;
+      color: #757575
+
+      &[scrollable='true']
+        flex-grow: 0
+        flex-basis: auto;
+        margin: 0 2px
+
+      &.active
+        color: black
+
+      .tab-title
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        font-weight: 300
+        align-self: center;
+        display: block
+
+  .tab-main-wrapper
+    overflow: hidden;
+    flex-grow: 1
+    display: flex;
+
+  .tab-panel-main
+    flex-grow: 1
+    display: flex;
+    width: 100%
+    max-width: 100%
+
+    .single-tab-main
+      flex-grow: 1
+      flex-shrink: 0
+      width: 100%
+      max-width: 100%
+      height: 0
+
+    .active-panel
+      height: 100%
+
+
+.extra-scroll
+  min-width: 84px

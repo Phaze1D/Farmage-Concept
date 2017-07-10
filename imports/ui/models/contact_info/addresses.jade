@@ -1,0 +1,42 @@
+template(name="address_single")
+  div(class="contact-single index-#{index} address-form" data-index=index style="padding-bottom: 30px")
+    div(class="address-hide")
+      div(class="grid-wrapper")
+        div(class="col-4 p-right" style="align-self: center")      
+          +PaperInput type="text" name="address_name" labelFloat=false label="Name" focusColor="darkblue" value=name schema=schema
+        
+        div(class="col-8 p-left p-right")
+          +PaperInput type="text" name="street" labelFloat=true label="Address Line 1" focusColor="darkblue"  value=street schema=schema
+          +PaperInput type="text" name="street2" labelFloat=true label="Address Line 2" focusColor="darkblue" value=street2 schema=schema
+          div(class='grid-wrapper')
+            div(class="col-6 p-right")
+              +PaperInput type="text" name="city" labelFloat=true label="City" focusColor="darkblue" value=city schema=schema
+            div(class="col-6")
+              +PaperInput type="text" name="state" labelFloat=true label="State" focusColor="darkblue" value=state schema=schema
+          div(class='grid-wrapper')
+            div(class="col-6 p-right")
+              +PaperInput type="text" name="zip_code" labelFloat=true label="Zip Code" focusColor="darkblue" value=zip_code schema=schema
+            div(class="col-6")
+              +PaperInput type="text" name="country" labelFloat=true label="Country" focusColor="darkblue" value=country schema=schema
+        
+        +PaperButton raise=0 submit=false rippleOn=false classes="js-remove-address-b remove-address-b"
+          div(class="icon-div")
+            i(class="material-icons icon") remove_circle
+
+
+template(name="addressesAdd")
+
+  +PaperButton raise=0 submit=false rippleOn=true classes="js-add-address-b button-wrapper"
+    div(class="resources-b")
+      div(class="text-div-sm") #{title}
+      div(class="icon-div")
+        i(class="material-icons icon") add_circle
+
+  div(class="atcontact-div" style="height: #{initHeight}")
+    each addresses.get
+      +address_single index=@index name=name street=street street2=street2 city=city state=state zip_code=zip_code country=country schema=schema
+
+  
+          
+  
+    
